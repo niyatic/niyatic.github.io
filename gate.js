@@ -5,7 +5,7 @@
  * Updated 2026-05-25 — new passphrase + Hyperbots logo on gate UI.
  */
 (function(){
-  var EXPECTED='c55e0ae861221cd5d9bcdd38709e9ba867e03eb173e4b60d5a7b39f208dfb924';
+  var EXPECTED='c70584534abeba13454b6fe26d4547dceddad67d1d9d33e701f445cb5bb56259';
   if(sessionStorage.getItem('hb_auth')===EXPECTED){return;}
   document.documentElement.style.visibility='hidden';
   document.addEventListener('DOMContentLoaded',function(){
