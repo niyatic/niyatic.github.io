@@ -38,28 +38,12 @@ body {
 .kpi .n { font-size:20px; font-weight:700; color:var(--brand-9); }
 .kpi .l { color:var(--grey-10); font-size:11px; text-transform:uppercase; letter-spacing:0.04em; margin-top:2px; }
 .note { background:var(--brand-2); border-left:3px solid var(--brand-7); padding:10px 14px; border-radius:6px; margin:8px 0 16px; font-size:12.5px; color:var(--grey-12); }
-.controls {
-  display:flex; gap:8px; flex-wrap:wrap; align-items:center;
-  background:#fff; border:1px solid var(--grey-4); border-radius:10px;
-  padding:10px 12px; margin-bottom:14px;
-}
-.controls input, .controls select {
-  font:inherit; padding:6px 10px; border:1px solid var(--grey-4); border-radius:6px;
-  background:#fff; color:var(--grey-12);
-}
+.controls { display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#fff; border:1px solid var(--grey-4); border-radius:10px; padding:10px 12px; margin-bottom:14px; }
+.controls input, .controls select { font:inherit; padding:6px 10px; border:1px solid var(--grey-4); border-radius:6px; background:#fff; color:var(--grey-12); }
 .controls input { flex:1; min-width:200px; }
 .controls .count { color:var(--grey-10); font-size:12px; margin-left:auto; }
-table {
-  width:100%; border-collapse:collapse; background:#fff;
-  border:1px solid var(--grey-4); border-radius:10px; overflow:hidden;
-  box-shadow:0 1px 3px rgba(33,31,38,.04); font-size:13px;
-}
-thead th {
-  background:var(--brand-2); color:var(--brand-9);
-  font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.04em;
-  text-align:left; padding:10px 12px; border-bottom:2px solid var(--brand-4);
-  cursor:pointer; user-select:none; white-space:nowrap;
-}
+table { width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--grey-4); border-radius:10px; overflow:hidden; box-shadow:0 1px 3px rgba(33,31,38,.04); font-size:13px; }
+thead th { background:var(--brand-2); color:var(--brand-9); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:0.04em; text-align:left; padding:10px 12px; border-bottom:2px solid var(--brand-4); cursor:pointer; user-select:none; white-space:nowrap; }
 thead th:hover { background:var(--brand-3); }
 tbody td { padding:10px 12px; border-bottom:1px solid var(--grey-4); vertical-align:top; }
 tbody tr:hover { background:var(--grey-2); }
@@ -96,9 +80,9 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <img src="/assets/hyperbots-logo.svg" alt="Hyperbots"/>
   <div>
     <h1>ABM target accounts</h1>
-    <div class="sub">288 enriched accounts (numbers 51-338) — CFO + last-public-event enrichment. Curated top-50 lives at <a href="abm-top50-accounts.html" style="color:var(--brand-7);text-decoration:none">abm-top50-accounts.html</a>.</div>
+    <div class="sub">288 enriched accounts (numbers 51-338) — CFO + LinkedIn + last-public-event. Curated top-50 lives at <a href="abm-top50-accounts.html" style="color:var(--brand-7);text-decoration:none">abm-top50-accounts.html</a>.</div>
   </div>
-  <span class="tag">288 accounts</span>
+  <span class="tag">288 accounts · LinkedIn 73.6%</span>
 </div>
 
 <div class="kpis">
@@ -106,11 +90,12 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <div class="kpi"><div class="n">3</div><div class="l">tier 1</div></div>
   <div class="kpi"><div class="n">285</div><div class="l">tier 2</div></div>
   <div class="kpi"><div class="n">21</div><div class="l">domains covered</div></div>
-  <div class="kpi"><div class="n">2026-05-07</div><div class="l">latest dated event (10/288)</div></div>
+  <div class="kpi"><div class="n">212/288</div><div class="l">LinkedIn URLs (73.6%)</div></div>
+  <div class="kpi"><div class="n">2026-05-07</div><div class="l">latest dated event</div></div>
 </div>
 
 <div class="note">
-  <strong>Source:</strong> <code>~/Desktop/hyperapi-abm-team/accounts/icp-enriched-outreach-2026-05-23.csv</code>. Each row = one account with CFO, most-recent public event, and verifiable sources. Some fields show placeholder text where the enrichment pass could not surface a URL — those render as italic notes, not links. Click headers to sort; use filters to narrow.
+  <strong>Source:</strong> <code>icp-enriched-outreach-2026-05-25.csv</code> (re-enriched 2026-05-25 — coverage 14/288 → 212/288). Each row = one account with CFO + verified LinkedIn (where surfaced), most-recent public event, and source URLs. Where LinkedIn could not be verified the field is left blank rather than wrapped in a misleading link. Click headers to sort; use filters to narrow.
 </div>
 
 <div class="controls">
@@ -213,7 +198,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Kintetsu World Express</td>
   <td class="domain"><span class="domain-chip">Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Mio Nakamura</td>
+  <td class="cfo">Mio Nakamura · <a href="https://www.linkedin.com/in/mio-nakamura-74b4b921/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -225,7 +210,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">US Foods</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Dirk J. Locascio</td>
+  <td class="cfo">Dirk J. Locascio · <a href="https://www.linkedin.com/in/dirk-locascio-b773b85a/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">2026-05-07 · Q1 2026 10-Q + earnings release</div>
     <div class="event-sum">US Foods Q1 2026 (qtr ended Mar 28 2026): net sales $9.6B (+2.8%), adj. dil. EPS $0.78 (+14.7%); 10-Q certified by Dirk J. Locascio.</div>
@@ -309,7 +294,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Cigna</td>
   <td class="domain"><span class="domain-chip">Insurance/Healthcare</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Ann Dennison</td>
+  <td class="cfo">Ann Dennison · <a href="https://www.linkedin.com/in/ann-dennison-96a6ab17/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">2026-Q1 · Q1 2026 earnings</div>
     <div class="event-sum">Cigna Q1 2026: shareholders&#x27; net income $1.7B / $6.26 EPS (vs $1.3B / $4.85 in Q1 2025); 10-Q filed; Brian Evanko → CEO eff Jul 1 2026.</div>
@@ -345,7 +330,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">State Farm</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Mark Schwamberger</td>
+  <td class="cfo">Mark Schwamberger · <a href="https://www.linkedin.com/in/mark-schwamberger-9483601b/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -357,7 +342,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Nationwide</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Tim Frommeyer</td>
+  <td class="cfo">Tim Frommeyer · <a href="https://www.linkedin.com/in/tim-frommeyer-38006358/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -381,7 +366,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">AIG</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Keith Walsh</td>
+  <td class="cfo">Keith Walsh · <a href="https://www.linkedin.com/in/keith-walsh-1a01246" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">2026-05-01 · Q1 2026 earnings call</div>
     <div class="event-sum">AIG Q1 2026: adjusted pretax income $1.5B (+65% YoY); $5.6B net premiums written; $760M returned to shareholders; 11% dividend hike to $0.50.</div>
@@ -417,7 +402,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Chevron</td>
   <td class="domain"><span class="domain-chip">Energy/Utilities</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Eimear P. Bonner</td>
+  <td class="cfo">Eimear P. Bonner · <a href="https://uk.linkedin.com/in/eimearbonner" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">2026-05-01 · Q1 2026 earnings call</div>
     <div class="event-sum">Chevron Q1 2026: earnings $2.2B / $1.11 EPS (adj $2.8B / $1.41); $360M legal reserve charge; $2.9B timing charge; ~$1B derivative positions to unwind in Q2.</div>
@@ -477,7 +462,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Bank of America</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Alastair M. Borthwick</td>
+  <td class="cfo">Alastair M. Borthwick · <a href="https://www.linkedin.com/in/alastair-borthwick-074985138" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -489,7 +474,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Citi</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Gonzalo Luchetti</td>
+  <td class="cfo">Gonzalo Luchetti · <a href="https://www.linkedin.com/in/gonzalo-luchetti-74423/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -501,7 +486,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">U.S. Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">John C. Stern</td>
+  <td class="cfo">John C. Stern · <a href="https://www.linkedin.com/in/john-stern-493014a" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -525,7 +510,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Wells Fargo</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Michael P. (Mike) Santomassimo</td>
+  <td class="cfo">Michael P. (Mike) Santomassimo · <a href="https://www.linkedin.com/in/mike-santomassimo-7628961" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -549,7 +534,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Optum</td>
   <td class="domain"><span class="domain-chip">Healthcare RCM</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Wayne S. DeVeydt</td>
+  <td class="cfo">Wayne S. DeVeydt · <a href="https://www.linkedin.com/in/wayne-deveydt" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -561,7 +546,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">HCA Healthcare</td>
   <td class="domain"><span class="domain-chip">Healthcare RCM</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Michael A. (Mike) Marks</td>
+  <td class="cfo">Michael A. (Mike) Marks · <a href="https://www.linkedin.com/in/michael-marks-095aa2213/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -573,7 +558,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Ardent Health</td>
   <td class="domain"><span class="domain-chip">Healthcare RCM</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Alfred Lumsdaine</td>
+  <td class="cfo">Alfred Lumsdaine · <a href="https://www.linkedin.com/in/alfredlumsdaine/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -585,7 +570,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Molina Healthcare</td>
   <td class="domain"><span class="domain-chip">Insurance/Healthcare</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Mark L. Keim</td>
+  <td class="cfo">Mark L. Keim · <a href="https://www.linkedin.com/in/mark-k-2848a35" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -597,7 +582,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Conduent</td>
   <td class="domain"><span class="domain-chip">Business services/Healthcare</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Giles Goodburn</td>
+  <td class="cfo">Giles Goodburn · <a href="https://www.linkedin.com/in/giles-goodburn-b071632/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -621,7 +606,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">United Wholesale Mortgage</td>
   <td class="domain"><span class="domain-chip">Mortgage/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Rami Hasani</td>
+  <td class="cfo">Rami Hasani · <a href="https://www.linkedin.com/in/rami-hasani-6269424a" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -633,7 +618,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">ZIM</td>
   <td class="domain"><span class="domain-chip">Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Xavier Destriau</td>
+  <td class="cfo">Xavier Destriau · <a href="https://www.linkedin.com/in/destriau/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -657,7 +642,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Flagstar Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Lee Smith</td>
+  <td class="cfo">Lee Smith · <a href="https://www.linkedin.com/in/leemsmith10/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -669,7 +654,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Universal Health Services</td>
   <td class="domain"><span class="domain-chip">Healthcare RCM</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Steve G. Filton</td>
+  <td class="cfo">Steve G. Filton · <a href="https://www.linkedin.com/in/steve-filton-0743416/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -681,7 +666,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Community Health Systems</td>
   <td class="domain"><span class="domain-chip">Healthcare RCM</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Jason K. Johnson</td>
+  <td class="cfo">Jason K. Johnson · <a href="https://www.linkedin.com/in/jason-johnson-48499670/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -717,7 +702,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Penske Automotive Group</td>
   <td class="domain"><span class="domain-chip">Automotive retail/Distribution</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Michelle (Shelley) Hulgrave</td>
+  <td class="cfo">Michelle (Shelley) Hulgrave · <a href="https://www.linkedin.com/in/shelley-hulgrave-1a79b78/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -729,7 +714,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Kerry Logistics</td>
   <td class="domain"><span class="domain-chip">Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Cheng Chi Wai (Ellis Cheng)</td>
+  <td class="cfo">Cheng Chi Wai (Ellis Cheng) · <a href="https://www.linkedin.com/in/ellis-cheng-7643227/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -753,7 +738,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Lineage Logistics</td>
   <td class="domain"><span class="domain-chip">Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Robb LeMasters</td>
+  <td class="cfo">Robb LeMasters · <a href="https://www.linkedin.com/in/robb-lemasters-898512ab/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -765,7 +750,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Americold</td>
   <td class="domain"><span class="domain-chip">Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Christopher J. (Chris) Papa</td>
+  <td class="cfo">Christopher J. (Chris) Papa · <a href="https://www.linkedin.com/in/cjpapa" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -837,7 +822,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Lincoln Financial Group</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Christopher (Chris) Neczypor</td>
+  <td class="cfo">Christopher (Chris) Neczypor · <a href="https://www.linkedin.com/in/christopher-neczypor-3b72a7a/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -849,7 +834,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">MetLife</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">John D. McCallion</td>
+  <td class="cfo">John D. McCallion · <a href="https://www.linkedin.com/in/john-mccallion-324b21144/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -861,7 +846,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Prudential Financial</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Yanela Frias</td>
+  <td class="cfo">Yanela Frias · <a href="https://www.linkedin.com/in/yanela-frias-92b90419/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -873,7 +858,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Aflac</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Max K. Brodén</td>
+  <td class="cfo">Max K. Brodén · <a href="https://www.linkedin.com/in/max-broden-7369a81b/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -885,7 +870,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">MassMutual</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Mary Jane Fortin</td>
+  <td class="cfo">Mary Jane Fortin · <a href="https://www.linkedin.com/in/mary-jane-fortin/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -909,7 +894,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">New York Life</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Eric A. Feldstein</td>
+  <td class="cfo">Eric A. Feldstein · <a href="https://www.linkedin.com/in/ericfeldstein1/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -933,7 +918,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Farmers Insurance</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">John Griek</td>
+  <td class="cfo">John Griek · <a href="https://www.linkedin.com/in/john-griek-9330597/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -945,7 +930,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">American Family Insurance</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Troy Van Beek</td>
+  <td class="cfo">Troy Van Beek · <a href="https://www.linkedin.com/in/troy-van-beek-83552315/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -969,7 +954,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Cincinnati Financial</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Michael J. Sewell, CPA</td>
+  <td class="cfo">Michael J. Sewell, CPA · <a href="https://www.linkedin.com/in/michael-j-sewell-6488185/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -981,7 +966,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Markel Group</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Brian J. Costanzo</td>
+  <td class="cfo">Brian J. Costanzo · <a href="https://www.linkedin.com/in/brian-costanzo-8747a418/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -993,7 +978,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Old Republic International</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Frank J. Sodaro</td>
+  <td class="cfo">Frank J. Sodaro · <a href="https://www.linkedin.com/in/frank-sodaro/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1005,7 +990,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Fidelity National Financial</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Anthony J. Park</td>
+  <td class="cfo">Anthony J. Park · <a href="https://www.linkedin.com/in/tony-park-555a787" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1041,7 +1026,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">KeyBank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Clark H. Khayat</td>
+  <td class="cfo">Clark H. Khayat · <a href="https://www.linkedin.com/in/clark-khayat-441688" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1053,7 +1038,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Regions Financial</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Anil D. Chadha</td>
+  <td class="cfo">Anil D. Chadha · <a href="https://www.linkedin.com/in/anil-chadha-a311111/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1077,7 +1062,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Huntington Bancshares</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Zachary J. Wasserman</td>
+  <td class="cfo">Zachary J. Wasserman · <a href="https://www.linkedin.com/in/zachary-wasserman-cfa-69913711/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1089,7 +1074,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">M&amp;T Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Daryl N. Bible</td>
+  <td class="cfo">Daryl N. Bible · <a href="https://www.linkedin.com/in/daryl-bible/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1101,7 +1086,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Ally Financial</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Russell E. (Russ) Hutchinson</td>
+  <td class="cfo">Russell E. (Russ) Hutchinson · <a href="https://www.linkedin.com/in/russ-hutchinson-25607a5b" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1113,7 +1098,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Navy Federal Credit Union</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">John Collins</td>
+  <td class="cfo">John Collins · <a href="https://www.linkedin.com/in/john-collins-4441787/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1161,7 +1146,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Daseke</td>
   <td class="domain"><span class="domain-chip">Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Aaron Coley</td>
+  <td class="cfo">Aaron Coley · <a href="https://www.linkedin.com/in/aaroncoley/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1197,7 +1182,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">CRST International</td>
   <td class="domain"><span class="domain-chip">Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Scott Rheinschmidt</td>
+  <td class="cfo">Scott Rheinschmidt · <a href="https://www.linkedin.com/in/scott-rheinschmidt-a8872a48/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1209,7 +1194,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Western &amp; Southern Financial Group</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Bradley Hunkler</td>
+  <td class="cfo">Bradley Hunkler · <a href="https://www.linkedin.com/in/brad-h-14b793a/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1221,7 +1206,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Pacific Life</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Vibhu Sharma</td>
+  <td class="cfo">Vibhu Sharma · <a href="https://www.linkedin.com/in/vibhu-sharma-06010611/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1233,7 +1218,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Guardian Life</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Kevin Molloy</td>
+  <td class="cfo">Kevin Molloy · <a href="https://www.linkedin.com/in/kevinmolloy212/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1245,7 +1230,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Northwestern Mutual</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Todd M. Jones</td>
+  <td class="cfo">Todd M. Jones · <a href="https://www.linkedin.com/in/todd-m-jones-1b05363/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1269,7 +1254,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Unum</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Steven A. Zabel</td>
+  <td class="cfo">Steven A. Zabel · <a href="https://www.linkedin.com/in/steve-zabel/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1281,7 +1266,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Genworth Financial</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Jerome T. Upton</td>
+  <td class="cfo">Jerome T. Upton · <a href="https://www.linkedin.com/in/jerome-upton-b4257311a/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1305,7 +1290,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">CommonSpirit Health</td>
   <td class="domain"><span class="domain-chip">Healthcare RCM</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Michael P. Browning, CPA, MBA</td>
+  <td class="cfo">Michael P. Browning, CPA, MBA · <a href="https://www.linkedin.com/in/michael-browning-470978ab/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1341,7 +1326,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">AdventHealth</td>
   <td class="domain"><span class="domain-chip">Healthcare RCM</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Todd Goodman</td>
+  <td class="cfo">Todd Goodman · <a href="https://www.linkedin.com/in/toddagoodman/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1353,7 +1338,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Mercury General</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Theodore R. Stalick</td>
+  <td class="cfo">Theodore R. Stalick · <a href="https://www.linkedin.com/in/ted-stalick-a840602a/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1365,7 +1350,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">W. R. Berkley</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Richard M. Baio</td>
+  <td class="cfo">Richard M. Baio · <a href="https://www.linkedin.com/in/richard-baio-59224a80/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1377,7 +1362,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">American Financial Group</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Brian S. Hertzman</td>
+  <td class="cfo">Brian S. Hertzman · <a href="https://www.linkedin.com/in/brian-hertzman-836a1311/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1389,7 +1374,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">CNA Financial</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Scott R. Lindquist</td>
+  <td class="cfo">Scott R. Lindquist · <a href="https://www.linkedin.com/in/scott-r-lindquist-2749437/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1401,7 +1386,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Assurant</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Keith W. Meier</td>
+  <td class="cfo">Keith W. Meier · <a href="https://www.linkedin.com/in/keith-meier/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1413,7 +1398,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Kemper</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Camden Bradley</td>
+  <td class="cfo">Camden Bradley · <a href="https://www.linkedin.com/in/brad-camden-cfa-34b84152/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1425,7 +1410,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">First Horizon</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Hope Dmuchowski</td>
+  <td class="cfo">Hope Dmuchowski · <a href="https://www.linkedin.com/in/hope-dmuchowski-1872441/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1437,7 +1422,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Zions Bancorporation</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Ryan Richards</td>
+  <td class="cfo">Ryan Richards · <a href="https://www.linkedin.com/in/ryan-richards-30a45658/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1461,7 +1446,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Pinnacle Financial Partners</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Andrew Jamieson (Jamie) Gregory, Jr.</td>
+  <td class="cfo">Andrew Jamieson (Jamie) Gregory, Jr. · <a href="https://www.linkedin.com/in/jamie-gregory-7030455/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1473,7 +1458,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">East West Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Christopher Del Moral</td>
+  <td class="cfo">Christopher Del Moral · <a href="https://www.linkedin.com/in/chris-del-moral-niles" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1485,7 +1470,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">First Citizens BancShares</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Craig L. Nix</td>
+  <td class="cfo">Craig L. Nix · <a href="https://www.linkedin.com/in/craig-nix-419a25a5/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1497,7 +1482,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Freddie Mac</td>
   <td class="domain"><span class="domain-chip">Mortgage/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">James (Jim) Whitlinger</td>
+  <td class="cfo">James (Jim) Whitlinger · <a href="https://www.linkedin.com/in/jim-whitlinger-6417253/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1509,7 +1494,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Nippon Yusen (NYK Line)</td>
   <td class="domain"><span class="domain-chip">Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Takuji Banno</td>
+  <td class="cfo">Takuji Banno · <a href="https://jp.linkedin.com/in/takuji-banno-139492151" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1521,7 +1506,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Mitsui O.S.K. Lines</td>
   <td class="domain"><span class="domain-chip">Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Kazuya Hamazaki</td>
+  <td class="cfo">Kazuya Hamazaki · <a href="https://jp.linkedin.com/in/kazuya-hamazaki-409a14175" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1557,7 +1542,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">DaVita</td>
   <td class="domain"><span class="domain-chip">Healthcare RCM</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Joel Ackerman</td>
+  <td class="cfo">Joel Ackerman · <a href="https://www.linkedin.com/in/joel-ackerman-21885933/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1569,7 +1554,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Fresenius Medical Care</td>
   <td class="domain"><span class="domain-chip">Healthcare RCM</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Martin Fischer</td>
+  <td class="cfo">Martin Fischer · <a href="https://www.linkedin.com/in/mafischer" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1581,7 +1566,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Encompass Health</td>
   <td class="domain"><span class="domain-chip">Healthcare RCM</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Douglas E. (Doug) Coltharp</td>
+  <td class="cfo">Douglas E. (Doug) Coltharp · <a href="https://www.linkedin.com/in/doug-coltharp-b221a78/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1593,7 +1578,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Select Medical</td>
   <td class="domain"><span class="domain-chip">Healthcare RCM</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Martin F. Jackson</td>
+  <td class="cfo">Martin F. Jackson · <a href="https://www.linkedin.com/in/martin-jackson-5ab91647/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1617,7 +1602,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Hertz</td>
   <td class="domain"><span class="domain-chip">Logistics/Fleet</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Scott M. Haralson</td>
+  <td class="cfo">Scott M. Haralson · <a href="https://www.linkedin.com/in/scott-haralson-902b405" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1629,7 +1614,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Genuine Parts Company</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Bert Nappier</td>
+  <td class="cfo">Bert Nappier · <a href="https://www.linkedin.com/in/bert-nappier-0508155/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1641,7 +1626,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">W. W. Grainger</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Deidra C. (Dee) Merriwether</td>
+  <td class="cfo">Deidra C. (Dee) Merriwether · <a href="https://www.linkedin.com/in/deidra-cheeks-merriwether-99a8712" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1665,7 +1650,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Sonepar</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Jérôme Baniol</td>
+  <td class="cfo">Jérôme Baniol · <a href="https://www.linkedin.com/in/j%C3%A9r%C3%B4me-baniol-0595a3/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1689,7 +1674,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Core &amp; Main</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Robyn L. Bradbury</td>
+  <td class="cfo">Robyn L. Bradbury · <a href="https://www.linkedin.com/in/robyn-bradbury-65458b10/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1701,7 +1686,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Univar Solutions</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Nicholas (Nick) W. Alexos</td>
+  <td class="cfo">Nicholas (Nick) W. Alexos · <a href="https://www.linkedin.com/in/nicholas-alexos-bb02b716/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1713,7 +1698,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">MSC Industrial Direct</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Greg Clark</td>
+  <td class="cfo">Greg Clark · <a href="https://www.linkedin.com/in/grgclark" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1737,7 +1722,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Avnet</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Kenneth A. Jacobson</td>
+  <td class="cfo">Kenneth A. Jacobson · <a href="https://www.linkedin.com/in/kenneth-jacobson-969a9432/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1749,7 +1734,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Arrow Electronics</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Rajesh K. Agrawal</td>
+  <td class="cfo">Rajesh K. Agrawal · <a href="https://www.linkedin.com/in/rajagrawal65/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1773,7 +1758,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Ingram Micro</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Michael (Mike) Zilis</td>
+  <td class="cfo">Michael (Mike) Zilis · <a href="https://www.linkedin.com/in/michael-zilis-0331a12/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1785,7 +1770,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">TD Synnex</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">David Jordan</td>
+  <td class="cfo">David Jordan · <a href="https://www.linkedin.com/in/david-jordan-95279b74/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1797,7 +1782,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Cencora (AmerisourceBergen)</td>
   <td class="domain"><span class="domain-chip">Healthcare distribution</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">James F. Cleary</td>
+  <td class="cfo">James F. Cleary · <a href="https://www.linkedin.com/in/jamesfcleary/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1809,7 +1794,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Cardinal Health</td>
   <td class="domain"><span class="domain-chip">Healthcare distribution</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Aaron E. Alt</td>
+  <td class="cfo">Aaron E. Alt · <a href="https://www.linkedin.com/in/aaronalt" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1821,7 +1806,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Wintrust Financial</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">David L. Stoehr</td>
+  <td class="cfo">David L. Stoehr · <a href="https://www.linkedin.com/in/dave-stoehr-6030417/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1833,7 +1818,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Associated Banc-Corp</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Derek S. Meyer</td>
+  <td class="cfo">Derek S. Meyer · <a href="https://www.linkedin.com/in/dksmeyer" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1845,7 +1830,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">F.N.B. Corporation</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Vincent J. Calabrese, Jr.</td>
+  <td class="cfo">Vincent J. Calabrese, Jr. · <a href="https://www.linkedin.com/in/vince-calabrese-66b47614/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1857,7 +1842,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Hancock Whitney</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Michael M. Achary</td>
+  <td class="cfo">Michael M. Achary · <a href="https://www.linkedin.com/in/mike-achary-25518a92/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1869,7 +1854,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Commerce Bancshares</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Charles G. (Chuck) Kim</td>
+  <td class="cfo">Charles G. (Chuck) Kim · <a href="https://www.linkedin.com/in/charles-g-kim-ba456a11/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1881,7 +1866,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Glacier Bancorp</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Ron J. Copher</td>
+  <td class="cfo">Ron J. Copher · <a href="https://www.linkedin.com/in/ron-copher-921140119/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1893,7 +1878,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Lincoln National</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Christopher (Chris) Neczypor</td>
+  <td class="cfo">Christopher (Chris) Neczypor · <a href="https://www.linkedin.com/in/christopher-neczypor-3b72a7a/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1905,7 +1890,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Voya Financial</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Michael R. Katz</td>
+  <td class="cfo">Michael R. Katz · <a href="https://www.linkedin.com/in/michael-katz-478aa67/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1929,7 +1914,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">UMB Financial</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Ram Shankar</td>
+  <td class="cfo">Ram Shankar · <a href="https://www.linkedin.com/in/ram-shankar-ab746524" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1941,7 +1926,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Fulton Financial</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Richard (Rick) Kraemer</td>
+  <td class="cfo">Richard (Rick) Kraemer · <a href="https://www.linkedin.com/in/rick-kraemer-32192b62" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1953,7 +1938,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Dollar Tree</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Stewart Glendinning</td>
+  <td class="cfo">Stewart Glendinning · <a href="https://www.linkedin.com/in/stewart-glendinning-56b7a863/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1965,7 +1950,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Reinsurance Group of America</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Axel André</td>
+  <td class="cfo">Axel André · <a href="https://www.linkedin.com/in/axel-andre-98316b50/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1977,7 +1962,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Globe Life</td>
   <td class="domain"><span class="domain-chip">Insurance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Thomas Peter Kalmbach</td>
+  <td class="cfo">Thomas Peter Kalmbach · <a href="https://www.linkedin.com/in/thomaskalmbach" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -1989,7 +1974,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Primerica</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Tracy X. Tan</td>
+  <td class="cfo">Tracy X. Tan · <a href="https://www.linkedin.com/in/tracy-tan-10093b7/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2001,7 +1986,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Brighthouse Financial</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Edward A. (Ed) Spehar</td>
+  <td class="cfo">Edward A. (Ed) Spehar · <a href="https://www.linkedin.com/in/ed-spehar-8a84b9146/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2013,7 +1998,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Texas Capital Bancshares</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Matt Scurlock</td>
+  <td class="cfo">Matt Scurlock · <a href="https://www.linkedin.com/in/matt-scurlock-602b343/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2025,7 +2010,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">KeyCorp</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Clark H. Khayat</td>
+  <td class="cfo">Clark H. Khayat · <a href="https://www.linkedin.com/in/clark-khayat-441688" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2037,7 +2022,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Navient</td>
   <td class="domain"><span class="domain-chip">Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Steve Hauber</td>
+  <td class="cfo">Steve Hauber · <a href="https://www.linkedin.com/in/steve-hauber-4777b223/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2049,7 +2034,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">OneMain Financial</td>
   <td class="domain"><span class="domain-chip">Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Jenny (Jeannette) Osterhout</td>
+  <td class="cfo">Jenny (Jeannette) Osterhout · <a href="https://www.linkedin.com/in/jeannette-osterhout-6560535/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2073,7 +2058,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Sallie Mae</td>
   <td class="domain"><span class="domain-chip">Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Peter M. Graham</td>
+  <td class="cfo">Peter M. Graham · <a href="https://www.linkedin.com/in/petermgraham/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2085,7 +2070,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Synchrony Financial</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Brian Wenzel</td>
+  <td class="cfo">Brian Wenzel · <a href="https://www.linkedin.com/in/brianwenzelsr" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2121,7 +2106,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Advance Auto Parts</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Ryan P. Grimsland</td>
+  <td class="cfo">Ryan P. Grimsland · <a href="https://www.linkedin.com/in/ryangrimsland/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2145,7 +2130,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">BlueLinx Holdings</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Kelly Wall</td>
+  <td class="cfo">Kelly Wall · <a href="https://www.linkedin.com/in/kelly-wall-597a8160/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2157,7 +2142,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Gordon Food Service</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Ryan Fischer</td>
+  <td class="cfo">Ryan Fischer · <a href="https://www.linkedin.com/in/ryan-fischer-a282046/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2181,7 +2166,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Valley National Bancorp</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Travis Lan</td>
+  <td class="cfo">Travis Lan · <a href="https://www.linkedin.com/in/travis-lan-509bb04/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2193,7 +2178,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Cathay Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Albert J. Wang</td>
+  <td class="cfo">Albert J. Wang · <a href="https://www.linkedin.com/in/alwangpa1/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2217,7 +2202,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Cullen/Frost Bankers</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Dan Geddes</td>
+  <td class="cfo">Dan Geddes · <a href="https://www.linkedin.com/in/dan-geddes-frost/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2253,7 +2238,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Group 1 Automotive</td>
   <td class="domain"><span class="domain-chip">Automotive retail/Distribution</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Daniel J. McHenry</td>
+  <td class="cfo">Daniel J. McHenry · <a href="https://www.linkedin.com/in/daniel-mchenry-8bab0455/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2265,7 +2250,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Lithia Motors</td>
   <td class="domain"><span class="domain-chip">Automotive retail/Distribution</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Tina Miller</td>
+  <td class="cfo">Tina Miller · <a href="https://www.linkedin.com/in/tina-miller-8439084/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2277,7 +2262,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Sonic Automotive</td>
   <td class="domain"><span class="domain-chip">Automotive retail/Distribution</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Heath R. Byrd</td>
+  <td class="cfo">Heath R. Byrd · <a href="https://www.linkedin.com/in/heath-r-byrd-2a226a8/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2289,7 +2274,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Quest Diagnostics</td>
   <td class="domain"><span class="domain-chip">Healthcare RCM</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Sam Samad</td>
+  <td class="cfo">Sam Samad · <a href="https://www.linkedin.com/in/ssamad/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2301,7 +2286,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Labcorp</td>
   <td class="domain"><span class="domain-chip">Healthcare RCM</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Julia A. Wang</td>
+  <td class="cfo">Julia A. Wang · <a href="https://www.linkedin.com/in/julia-wang-113a9328" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2325,7 +2310,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">United Natural Foods</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Giorgio Matteo Tarditi</td>
+  <td class="cfo">Giorgio Matteo Tarditi · <a href="https://www.linkedin.com/in/matteo-tarditi-9b70026/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2337,7 +2322,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">C&amp;S Wholesale Grocers</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Kevin McNamara</td>
+  <td class="cfo">Kevin McNamara · <a href="https://www.linkedin.com/in/kevin-mcnamara-a311906" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2349,7 +2334,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Pool Corporation</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Melanie M. Housey Hart</td>
+  <td class="cfo">Melanie M. Housey Hart · <a href="https://www.linkedin.com/in/melanie-housey-hart-cpa-nacd-dc-632199b/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2361,7 +2346,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Beacon Building Products</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Ihsan Essaid</td>
+  <td class="cfo">Ihsan Essaid · <a href="https://www.linkedin.com/in/ihsan-essaid-942b22b" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2385,7 +2370,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Fastenal</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Max Tunnicliff</td>
+  <td class="cfo">Max Tunnicliff · <a href="https://www.linkedin.com/in/max-tunnicliff/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2397,7 +2382,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Applied Industrial Technologies</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">David K. Wells</td>
+  <td class="cfo">David K. Wells · <a href="https://www.linkedin.com/in/david-wells-79046314/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2409,7 +2394,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Rexel</td>
   <td class="domain"><span class="domain-chip">Distribution/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Laurent Delabarre</td>
+  <td class="cfo">Laurent Delabarre · <a href="https://fr.linkedin.com/in/laurent-delabarre-6b09b5134" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2421,7 +2406,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">HDFC Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Srinivasan Vaidyanathan</td>
+  <td class="cfo">Srinivasan Vaidyanathan · <a href="https://www.linkedin.com/in/srinivasan-vaidyanathan-1027735/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2433,7 +2418,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">ICICI Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Anindya Banerjee</td>
+  <td class="cfo">Anindya Banerjee · <a href="https://in.linkedin.com/in/anindyabanerjee06" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2445,7 +2430,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">State Bank of India</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Kameshwar Rao Kodavanti</td>
+  <td class="cfo">Kameshwar Rao Kodavanti · <a href="https://in.linkedin.com/in/kameshwar-rao-kodavanti-079a99201" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2469,7 +2454,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Kotak Mahindra Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Devang Gheewalla</td>
+  <td class="cfo">Devang Gheewalla · <a href="https://in.linkedin.com/in/devang-gheewalla-a9184a323" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2481,7 +2466,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Bajaj Finance</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Sandeep Jain</td>
+  <td class="cfo">Sandeep Jain · <a href="https://in.linkedin.com/in/sandeep-jain-80141317" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2493,7 +2478,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Life Insurance Corporation of India</td>
   <td class="domain"><span class="domain-chip">Insurance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Sunil Agrawal</td>
+  <td class="cfo">Sunil Agrawal · <a href="https://in.linkedin.com/in/sunil-agrawal-3b86bba" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2505,7 +2490,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">HDFC Life</td>
   <td class="domain"><span class="domain-chip">Insurance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Niraj Ashwin Shah</td>
+  <td class="cfo">Niraj Ashwin Shah · <a href="https://in.linkedin.com/in/niraj-shah-28991222" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2517,7 +2502,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">ICICI Lombard</td>
   <td class="domain"><span class="domain-chip">Insurance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Gopal Balachandran</td>
+  <td class="cfo">Gopal Balachandran · <a href="https://www.linkedin.com/in/gopal-balachandran-137b0b3/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2529,7 +2514,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">SBI Life Insurance</td>
   <td class="domain"><span class="domain-chip">Insurance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Sangramjit Sarangi</td>
+  <td class="cfo">Sangramjit Sarangi · <a href="https://in.linkedin.com/in/sangramjit-sarangi-0b762462" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2565,7 +2550,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Paytm</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Madhur Deora</td>
+  <td class="cfo">Madhur Deora · <a href="https://in.linkedin.com/in/madhurdeora" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2589,7 +2574,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Canara Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Amit Mittal</td>
+  <td class="cfo">Amit Mittal · <a href="https://in.linkedin.com/in/amit-mittal-85334823" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2601,7 +2586,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Shriram Finance</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">S. Sunder</td>
+  <td class="cfo">S. Sunder · <a href="https://in.linkedin.com/in/sunder-subramanian-76239126/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2613,7 +2598,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">IndusInd Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Arun Khurana</td>
+  <td class="cfo">Arun Khurana · <a href="https://in.linkedin.com/in/arunn-khurana-17a5616b" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2625,7 +2610,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Cholamandalam Investment and Finance</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">D. Arul Selvan</td>
+  <td class="cfo">D. Arul Selvan · <a href="https://in.linkedin.com/in/arulselvan-d-5913ab11" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2637,7 +2622,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Bajaj Finserv</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Ramandeep Singh Sahni</td>
+  <td class="cfo">Ramandeep Singh Sahni · <a href="https://in.linkedin.com/in/ramandeep-singh-sahni-bba59627" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2649,7 +2634,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Federal Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Manikandan M</td>
+  <td class="cfo">Manikandan M · <a href="https://in.linkedin.com/in/manikandan-m-a9042514b" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2661,7 +2646,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Delhivery</td>
   <td class="domain"><span class="domain-chip">Logistics (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Vivek Pabari</td>
+  <td class="cfo">Vivek Pabari · <a href="https://in.linkedin.com/in/vivekpabari" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2685,7 +2670,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Blue Dart Express</td>
   <td class="domain"><span class="domain-chip">Logistics (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Sagar Patil</td>
+  <td class="cfo">Sagar Patil · <a href="https://in.linkedin.com/in/sagarmpatil" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2697,7 +2682,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Allcargo Logistics</td>
   <td class="domain"><span class="domain-chip">Logistics (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Deepak Jagdish Pareek</td>
+  <td class="cfo">Deepak Jagdish Pareek · <a href="https://in.linkedin.com/in/deepak-pareek214" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2709,7 +2694,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Webster Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Neal Holland</td>
+  <td class="cfo">Neal Holland · <a href="https://www.linkedin.com/in/neal-holland-cfa-cpa-babb956/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2721,7 +2706,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">PennyMac Financial Services</td>
   <td class="domain"><span class="domain-chip">Mortgage/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Daniel Stanley Perotti</td>
+  <td class="cfo">Daniel Stanley Perotti · <a href="https://www.linkedin.com/in/dan-perotti-8601254/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2733,7 +2718,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Union Bank of India</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">CA Dhirendra Jain</td>
+  <td class="cfo">CA Dhirendra Jain · <a href="https://www.linkedin.com/in/ca-dhirendra-jain-219a0929/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2745,7 +2730,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">IDFC First Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Sudhanshu Jain</td>
+  <td class="cfo">Sudhanshu Jain · <a href="https://in.linkedin.com/in/sudhanshu-jain-bba59634" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2757,7 +2742,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">BankUnited</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">James G. Mackey</td>
+  <td class="cfo">James G. Mackey · <a href="https://www.linkedin.com/in/jim-mackey/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2769,7 +2754,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Aditya Birla Capital</td>
   <td class="domain"><span class="domain-chip">Insurance/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Pinky Mehta</td>
+  <td class="cfo">Pinky Mehta · <a href="https://in.linkedin.com/in/pinky-mehta" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2781,7 +2766,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Bandhan Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Rajeev Mantri</td>
+  <td class="cfo">Rajeev Mantri · <a href="https://www.linkedin.com/in/rajeev-mantri-1b39856/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2793,7 +2778,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Muthoot Finance</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Oommen K. Mammen</td>
+  <td class="cfo">Oommen K. Mammen · <a href="https://in.linkedin.com/in/oommen-k-mammen-6b522115b" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2841,7 +2826,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">United Community Banks</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Jefferson Harralson</td>
+  <td class="cfo">Jefferson Harralson · <a href="https://www.linkedin.com/in/jefferson-harralson-26877410/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2853,7 +2838,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Bank of Maharashtra</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Sunil Dhoot</td>
+  <td class="cfo">Sunil Dhoot · <a href="https://in.linkedin.com/in/sunil-dhoot-b8458618" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2865,7 +2850,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">AU Small Finance Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Gaurav Jain</td>
+  <td class="cfo">Gaurav Jain · <a href="https://in.linkedin.com/in/gjain3" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2901,7 +2886,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Axis Max Life Insurance</td>
   <td class="domain"><span class="domain-chip">Insurance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Amrit Singh</td>
+  <td class="cfo">Amrit Singh · <a href="https://in.linkedin.com/in/amritzz" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2913,7 +2898,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Transport Corporation of India</td>
   <td class="domain"><span class="domain-chip">Logistics (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Ashish Tiwari</td>
+  <td class="cfo">Ashish Tiwari · <a href="https://in.linkedin.com/in/ashish-tiwari-5ba51719" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2925,7 +2910,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Gateway Distriparks</td>
   <td class="domain"><span class="domain-chip">Logistics (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Kartik Sundaram Aiyer</td>
+  <td class="cfo">Kartik Sundaram Aiyer · <a href="https://in.linkedin.com/in/kartik-aiyer-92890870" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2937,7 +2922,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Central Bank of India</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Mukul N. Dandige</td>
+  <td class="cfo">Mukul N. Dandige · <a href="https://in.linkedin.com/in/mukul-dandige-bbb85750" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2949,7 +2934,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">UCO Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Sumit Khandelwal</td>
+  <td class="cfo">Sumit Khandelwal · <a href="https://in.linkedin.com/in/sumit-khandelwal-02486711a" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2973,7 +2958,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Genesee &amp; Wyoming</td>
   <td class="domain"><span class="domain-chip">Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Thomas (Tom) Savage</td>
+  <td class="cfo">Thomas (Tom) Savage · <a href="https://www.linkedin.com/in/tom-savage-bb98523" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -2997,7 +2982,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">CSX Transportation</td>
   <td class="domain"><span class="domain-chip">Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Kevin Boone</td>
+  <td class="cfo">Kevin Boone · <a href="https://www.linkedin.com/in/kevin-boone-045b8080/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3009,7 +2994,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">ABM Industries</td>
   <td class="domain"><span class="domain-chip">Business services/Logistics</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">David Orr</td>
+  <td class="cfo">David Orr · <a href="https://www.linkedin.com/in/david-orr-207ab412" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3021,7 +3006,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Yes Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Niranjan Banodkar</td>
+  <td class="cfo">Niranjan Banodkar · <a href="https://in.linkedin.com/in/niranjan-banodkar-a8b0666" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3033,7 +3018,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">RBL Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Deepak Ruiya</td>
+  <td class="cfo">Deepak Ruiya · <a href="https://in.linkedin.com/in/deepak-ruiya-a4324913" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3045,7 +3030,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">City Union Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">V. Ramesh</td>
+  <td class="cfo">V. Ramesh · <a href="https://in.linkedin.com/in/ramesh-venkataraman-13405a17" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3057,7 +3042,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Karur Vysya Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Ramshankar R</td>
+  <td class="cfo">Ramshankar R · <a href="https://in.linkedin.com/in/ramshankar-r-b8a82717" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3105,7 +3090,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">CSB Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Satish Subhash Gundewar</td>
+  <td class="cfo">Satish Subhash Gundewar · <a href="https://in.linkedin.com/in/satishgundewar" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3129,7 +3114,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Equitas Small Finance Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Sridharan N</td>
+  <td class="cfo">Sridharan N · <a href="https://www.linkedin.com/in/sridharan-n-56656810/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3141,7 +3126,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Ujjivan Small Finance Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">S. Balakrishna Kamath</td>
+  <td class="cfo">S. Balakrishna Kamath · <a href="https://www.linkedin.com/in/balakrishna-kamath-096558166/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3165,7 +3150,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">LIC Housing Finance</td>
   <td class="domain"><span class="domain-chip">Mortgage/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Lokesh Mundhra</td>
+  <td class="cfo">Lokesh Mundhra · <a href="https://in.linkedin.com/in/lokesh-mundhra-043b8591" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3177,7 +3162,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">PNB Housing Finance</td>
   <td class="domain"><span class="domain-chip">Mortgage/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Vinay Gupta</td>
+  <td class="cfo">Vinay Gupta · <a href="https://in.linkedin.com/in/vinay-gupta-43a9925" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3189,7 +3174,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">ICICI Prudential Life Insurance</td>
   <td class="domain"><span class="domain-chip">Insurance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Dhiren Salian</td>
+  <td class="cfo">Dhiren Salian · <a href="https://in.linkedin.com/in/dhirensalian" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3213,7 +3198,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">SBI General Insurance</td>
   <td class="domain"><span class="domain-chip">Insurance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Jitendra Attra</td>
+  <td class="cfo">Jitendra Attra · <a href="https://in.linkedin.com/in/jitendra-singh-attra-51b587174" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3249,7 +3234,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Aditya Birla Sun Life Insurance</td>
   <td class="domain"><span class="domain-chip">Insurance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Anil Kumar Singh</td>
+  <td class="cfo">Anil Kumar Singh · <a href="https://in.linkedin.com/in/anil-singh-msc-fia-fiai-b4a0057" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3261,7 +3246,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">IDBI Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Ajay Kumar Parduman Sharma</td>
+  <td class="cfo">Ajay Kumar Parduman Sharma · <a href="https://in.linkedin.com/in/ajay-sharma-798405133" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3273,7 +3258,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Jammu &amp; Kashmir Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Ketan Kumar Joshi</td>
+  <td class="cfo">Ketan Kumar Joshi · <a href="https://www.linkedin.com/in/ketan-kumar-joshi-70b183213/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3285,7 +3270,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Punjab &amp; Sind Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Arnab Goswami</td>
+  <td class="cfo">Arnab Goswami · <a href="https://in.linkedin.com/in/arnab-goswamy-36005957" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3297,7 +3282,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Indian Overseas Bank</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Madhaw Chandra Jha</td>
+  <td class="cfo">Madhaw Chandra Jha · <a href="https://in.linkedin.com/in/madhaw-jha-79b32074" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3333,7 +3318,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Indian Railway Finance Corporation</td>
   <td class="domain"><span class="domain-chip">Banking/Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Shelly Verma</td>
+  <td class="cfo">Shelly Verma · <a href="https://in.linkedin.com/in/shelly-verma-1425a816" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3345,7 +3330,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Tata Investment Corporation</td>
   <td class="domain"><span class="domain-chip">Finance (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Manoj Gupta</td>
+  <td class="cfo">Manoj Gupta · <a href="https://in.linkedin.com/in/manojjgupta" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3357,7 +3342,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">DTDC Express</td>
   <td class="domain"><span class="domain-chip">Logistics (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Aneel Gambhir</td>
+  <td class="cfo">Aneel Gambhir · <a href="https://www.linkedin.com/in/aneel-gambhir-3b699033/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3369,7 +3354,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">TVS Supply Chain Solutions</td>
   <td class="domain"><span class="domain-chip">Logistics (India)</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">R Vaidhyanathan</td>
+  <td class="cfo">R Vaidhyanathan · <a href="https://in.linkedin.com/in/vaidhyanathan-ramani-4819869" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3381,7 +3366,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Prosperity Bancshares</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Asylbek Osmonov</td>
+  <td class="cfo">Asylbek Osmonov · <a href="https://www.linkedin.com/in/asylbekosmonov" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3393,7 +3378,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Stifel Financial</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">James M. Marischen</td>
+  <td class="cfo">James M. Marischen · <a href="https://www.linkedin.com/in/jim-marischen-73aa838a" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3405,7 +3390,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Raymond James Financial</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Butch Oorlog</td>
+  <td class="cfo">Butch Oorlog · <a href="https://www.linkedin.com/in/butch-oorlog-167a20315/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3417,7 +3402,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">LPL Financial</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Matthew J. Audette</td>
+  <td class="cfo">Matthew J. Audette · <a href="https://www.linkedin.com/in/matt-audette/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3429,7 +3414,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Jefferies Financial Group</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Matthew Scott Larson</td>
+  <td class="cfo">Matthew Scott Larson · <a href="https://www.linkedin.com/in/matthew-larson-876b19100" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3441,7 +3426,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Houlihan Lokey</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">J. Lindsey Alley</td>
+  <td class="cfo">J. Lindsey Alley · <a href="https://www.linkedin.com/in/lindsey-alley-b939835/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3453,7 +3438,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Evercore</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Tim LaLonde</td>
+  <td class="cfo">Tim LaLonde · <a href="https://www.linkedin.com/in/tim-lalonde-05492a301/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3465,7 +3450,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Lazard</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Tracy Farr</td>
+  <td class="cfo">Tracy Farr · <a href="https://www.linkedin.com/in/tracyfarr/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3477,7 +3462,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Janus Henderson</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Sukh Grewal</td>
+  <td class="cfo">Sukh Grewal · <a href="https://www.linkedin.com/in/sukh-grewal-53b9039/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3501,7 +3486,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Affiliated Managers Group</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Dava E. Ritchea</td>
+  <td class="cfo">Dava E. Ritchea · <a href="https://www.linkedin.com/in/dava-ritchea-82142928/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3513,7 +3498,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Cohen &amp; Steers</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Raja Dakkuri</td>
+  <td class="cfo">Raja Dakkuri · <a href="https://www.linkedin.com/in/raja-dakkuri-835a9b7/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3525,7 +3510,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Virtus Investment Partners</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Michael A. Angerthal</td>
+  <td class="cfo">Michael A. Angerthal · <a href="https://www.linkedin.com/in/michael-angerthal-8538085/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3537,7 +3522,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Apollo Global Management</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Martin Kelly</td>
+  <td class="cfo">Martin Kelly · <a href="https://www.linkedin.com/in/martin-kelly-apollo/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3549,7 +3534,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Ares Management</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Jarrod Phillips</td>
+  <td class="cfo">Jarrod Phillips · <a href="https://www.linkedin.com/in/jarrod-phillips-33362122/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3561,7 +3546,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Blue Owl Capital</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Alan Kirshenbaum</td>
+  <td class="cfo">Alan Kirshenbaum · <a href="https://www.linkedin.com/in/alan-kirshenbaum-53b4564/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3585,7 +3570,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Hamilton Lane</td>
   <td class="domain"><span class="domain-chip">Banking/Finance</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Jeffrey Armbrister</td>
+  <td class="cfo">Jeffrey Armbrister · <a href="https://www.linkedin.com/in/jeffrey-armbrister-1078b8/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3597,7 +3582,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
   <td class="company">Asbury Automotive Group</td>
   <td class="domain"><span class="domain-chip">Automotive retail/Distribution</span></td>
   <td class="tier"><span class="tier-badge t2">T2</span></td>
-  <td class="cfo">Michael D. Welch</td>
+  <td class="cfo">Michael D. Welch · <a href="https://www.linkedin.com/in/michael-welch-68908513/" target="_blank" rel="noopener">linkedin</a></td>
   <td class="event">
     <div class="event-meta">NO-EVENT-CHECKED-IN-THIS-RUN · NO-EVENT-CHECKED-IN-THIS-RUN</div>
     <div class="event-sum">Existing CFO name verified 2026-05-20 per the source-listed in target-accounts-expansion.md &quot;Leader / decision-maker&quot; column; not re-checked this run.</div>
@@ -3620,7 +3605,7 @@ td.sources .placeholder { color:var(--grey-10); font-style:italic; }
 </table>
 
 <div class="footer">
-  Data: <code>icp-enriched-outreach-2026-05-23.csv</code> · last refresh 2026-05-25 · See also <a href="abm-top50-accounts.html">curated top-50</a>, <a href="2026-05-22-abm-agent-with-claude-code.html">ABM agent essay</a>
+  Data: <code>icp-enriched-outreach-2026-05-25.csv</code> · LinkedIn coverage 212/288 (73.6%) · 76 not-yet-found (17 leader-unverified, 59 ambiguous-name) · See also <a href="abm-top50-accounts.html">curated top-50</a>, <a href="2026-05-22-abm-agent-with-claude-code.html">ABM agent essay</a>
 </div>
 
 <script>
