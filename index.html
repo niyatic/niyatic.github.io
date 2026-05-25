@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hyperbots — content hub</title>
+<meta name="description" content="Hyperbots content hub — blog plans, editorial calendar, and a separate benchmarks lab at /lab/.">
+<style>
+:root {
+  --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font: 15px/1.6 "Rubik", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  background: var(--grey-2);
+  color: var(--grey-12);
+  max-width: 920px; margin: 0 auto; padding: 32px 24px 64px;
+  -webkit-font-smoothing: antialiased;
+}
+.brand-header {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  padding: 18px 22px; background: #FFFFFF;
+  border: 1px solid var(--grey-4); border-radius: 12px;
+  border-left: 5px solid var(--brand-7);
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(33,31,38,.06);
+}
+.brand-header h1 { font-size: 22px; color: var(--grey-12); font-weight: 600; margin: 0; }
+.brand-header .sub { color: var(--grey-10); font-size: 13px; margin-top: 4px; }
+.brand-header .tag { font-size: 11px; padding: 3px 10px; background: var(--brand-2); color: var(--brand-9); border-radius: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+h2 { font-size: 17px; color: var(--brand-9); font-weight: 600; margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+.sub { color: var(--grey-10); font-size: 13.5px; margin: 0 0 14px; line-height: 1.55; }
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin: 14px 0; }
+.card {
+  background: #FFFFFF; border: 1px solid var(--grey-4); border-radius: 10px;
+  padding: 18px 20px; transition: box-shadow 0.15s, transform 0.15s;
+  box-shadow: 0 1px 2px rgba(33,31,38,.04);
+  display: block; text-decoration: none; color: inherit;
+}
+.card:hover { box-shadow: 0 4px 12px rgba(33,31,38,.10); transform: translateY(-1px); }
+.card .icon { font-size: 22px; margin-bottom: 8px; }
+.card .title { font-weight: 600; font-size: 15px; color: var(--brand-7); margin: 0 0 6px; }
+.card .desc { color: var(--grey-10); font-size: 13px; line-height: 1.5; }
+.note { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 12px 16px; border-radius: 6px; margin: 14px 0; font-size: 13px; color: var(--grey-12); }
+.footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--grey-4); color: var(--grey-10); font-size: 12px; }
+.footer a { color: var(--brand-7); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+code { font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: 12.5px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+</style>
+</head>
+<body>
+
+<header class="brand-header">
+  <div>
+    <h1>🏛️ Hyperbots — content hub</h1>
+    <div class="sub">Editorial calendar, content plans, and a separate benchmarks lab at <a href="/lab/" style="color:var(--brand-7)">/lab/</a>.</div>
+  </div>
+  <span class="tag">draft · public</span>
+</header>
+
+<div class="note">
+  This site hosts the public-facing content surfaces: editorial plans, blog drafts in development, and the benchmarks lab. Working state for internal command centers lives elsewhere.
+</div>
+
+<h2>📚 Content &amp; editorial</h2>
+<p class="sub">Blog plans + editorial calendar + viral-title catalogs. Drafts live here until they ship to LinkedIn / the marketing site.</p>
+<div class="card-grid">
+  <a class="card" href="blog-plan.html">
+    <div class="icon">✍️</div>
+    <div class="title">Blog plan (editorial calendar)</div>
+    <div class="desc">P-1..P-5 pointer outlines + viral title catalog v5 (60+ titles across invoice / packing slip / PO / GRN / BoL / bank statement / cheque / credit note / debit note × failure-mode dimensions).</div>
+  </a>
+</div>
+
+<h2>🧪 Benchmarks lab</h2>
+<p class="sub">Separate endpoint for the benchmarks &amp; technical surfaces — primitive-level studies, per-doc-type pages, comparative leaderboards. Each anchored cell cites its source on disk.</p>
+<div class="card-grid">
+  <a class="card" href="/lab/">
+    <div class="icon">🧪</div>
+    <div class="title">Open <code>/lab/</code></div>
+    <div class="desc">Benchmark factory overview · Azure DI invoice study · 6 per-doc-type studies · SAVIOR-bench snapshot · ABM chart.</div>
+  </a>
+</div>
+
+<h2>🗺️ What's here vs not here</h2>
+<p class="sub">This Pages site is the content / GTM surface. Internal HyperAPI command center lives elsewhere; this site doesn't replace it.</p>
+<div style="background:#FFFFFF;border:1px solid var(--grey-4);border-radius:8px;padding:14px 18px;font-size:13.5px">
+  <strong style="color:var(--brand-9)">On this site:</strong> blog plans, viral title catalogs, benchmark studies cleared for public.<br>
+  <strong style="color:var(--grey-11)">Not on this site:</strong> the HyperAPI command center (stays on internal surfaces), raw cell JSONs, internal post-mortems, secrets.
+</div>
+
+<div class="footer">
+  Repo: <a href="https://github.com/niyatic/niyatic.github.io">niyatic/niyatic.github.io</a> · Brand palette: Hyperbots light · Last update: 2026-05-25
+</div>
+
+</body>
+</html>

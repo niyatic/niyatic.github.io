@@ -1,0 +1,197 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>HyperAPI — Blog Plan (early drafts, pointer form)</title>
+<style>
+body{font:16px/1.6 -apple-system,Segoe UI,sans-serif;max-width:780px;margin:48px auto;padding:0 20px;color:#211F26}
+h1{font-size:22px}h2{font-size:17px;margin-top:34px;color:#07658D;border-bottom:2px solid #DEEEF5;padding-bottom:6px}
+h3{font-size:14px;margin:18px 0 4px;color:#596263;text-transform:uppercase;letter-spacing:.04em}
+.tag{font-size:11px;padding:2px 8px;border-radius:10px}
+.draft{background:#EDFAFF;color:#07658D}.blk{background:#fde8e8;color:#b42318}
+.flag{background:#FEF3E2;color:#DC6803;font-size:13px;padding:8px 12px;border-radius:6px;display:block;margin:8px 0}
+ul{margin:6px 0}li{margin:5px 0}a{color:#0b5cad}.meta{color:#748081;font-size:13px}
+</style>
+<h1>HyperAPI — Blog Plan <span class="tag blk">DRAFT — pointer outlines only</span></h1>
+<p class="meta">Early drafts in pointer form — not full blogs. Each list flags exactly what verified data it still needs; a pointer is not a claim. Every external blog passes the content review chain (tech / brand / legal) + the human gate before publish. <a href="index.html">← back to Content &amp; Plans</a></p>
+
+<h2>P-1 · 500 line items on one invoice — extracted accurately</h2>
+<p class="meta">Depth 6/10 · Audience: AP leaders, finance-ops engineers · <span class="tag draft">DRAFT (pointers)</span></p>
+<h3>Angle</h3>
+<ul><li>High-line-count invoices (telecom, distribution, parts catalogs) are where most doc-AI quietly degrades — truncation, table-continuation drift, OCR error accumulation. HyperAPI holds accuracy at the long tail.</li></ul>
+<h3>Section pointers</h3>
+<ul>
+<li>Hook — "your extractor was demo'd on a 5-line invoice; production sends 500."</li>
+<li>Why high-line-count invoices are hard — context limits, multi-page table continuation, per-line OCR drift, sub-totals vs grand-totals.</li>
+<li>What "accurate at 500 lines" must mean — <em>per-line-item</em> precision/recall, not just header fields; line-item-count accuracy.</li>
+<li>How HyperAPI handles it — page-spanning table assembly, line-item alignment, validation.</li>
+<li>Evidence — a real ≥500-line invoice case with measured per-line accuracy.</li>
+</ul>
+<span class="flag">⚠ Needs: a real ≥500-line example + measured accuracy. On disk today: dataset_95 has a 122-line Fastenal invoice — not yet 500. "500" and "accurately" cannot ship without a measured case.</span>
+
+<h2>P-2 · 0.5 seconds on OCR — a customer case, and how we got there</h2>
+<p class="meta">Depth 6/10 · Audience: finance-ops engineers, technical buyers · <span class="tag draft">DRAFT (pointers)</span></p>
+<h3>Angle</h3>
+<ul><li>OCR/parse latency is an operational cost — it caps throughput and straight-through processing. Sub-second per page is the story.</li></ul>
+<h3>Section pointers</h3>
+<ul>
+<li>Why latency matters — throughput, STP rate, cost-per-doc, queue backpressure.</li>
+<li>The customer case — the real account, the workload, the measured 0.5s.</li>
+<li>"How we got it" — the engineering: model choice, batching, GPU path, caching.</li>
+</ul>
+<span class="flag">⚠ Needs: a named customer + that customer's written consent (customer-named content gate), a verified 0.5s measurement with method, and real engineering detail. No customer named until consent is in hand.</span>
+
+<h2>P-3 · Azure Document Intelligence vs HyperAPI — an honest invoice-extraction benchmark</h2>
+<p class="meta">Depth 8/10 · Audience: technical evaluators, CFO-office · <span class="tag draft">DRAFT (pointers)</span></p>
+<h3>Angle</h3>
+<ul><li>The public-facing companion to the benchmark-factory <code>comparative/azure-di/</code> study — a rigorous, anti-hype head-to-head.</li></ul>
+<h3>Section pointers</h3>
+<ul>
+<li>The design — 14 dimensions, 55 invoice × line-item combinations, n=5,000/dimension design, the metric set.</li>
+<li>The IDP pipeline framing — extraction is one stage; scope is explicit.</li>
+<li>Results — dimension-by-dimension.</li>
+<li>Honest limitations — n=95 pilot vs full design; reproducibility; what would falsify the hypothesis.</li>
+</ul>
+<span class="flag">⚠ Needs: real measured numbers (study currently reads all PENDING; HyperAPI 95-doc pilot scoring in progress; Azure side needs Azure DI credentials). Named competitor → legal review required before publish. Gated on the Azure DI study completing.</span>
+
+<h2>P-4 · 9,000 payment-term types — and why applying the right discount is so hard</h2>
+<p class="meta">Depth 6/10 · Audience: AP leaders, controllers, finance-ops · <span class="tag draft">DRAFT (pointers)</span></p>
+<h3>Angle</h3>
+<ul><li>"2/10 Net 30" is the tip of the iceberg — real-world payment terms sprawl into thousands of variants, and that sprawl is why early-pay discount capture leaks money.</li></ul>
+<h3>Section pointers</h3>
+<ul>
+<li>The combinatorial explosion — net days, discount %, discount windows, EOM/proximo, tiered, conditional, multi-currency.</li>
+<li>Why it breaks discount capture — missed early-pay discounts = measurable lost margin; manual term interpretation doesn't scale.</li>
+<li>How HyperAPI solves it — parse → normalize payment terms into a canonical structure → apply correct discount logic.</li>
+</ul>
+<span class="flag">⚠ Needs: a defensible source/derivation for the "9,000" figure (combinatorial count? observed corpus?) — sourced or reframed to "thousands of variants." No invented count. Plus real capability detail.</span>
+
+<h2>P-5 · The account-number mismatch problem</h2>
+<p class="meta">Depth 5/10 · Audience: AP leaders, controllers · <span class="tag draft">DRAFT (pointers)</span></p>
+<h3>Angle</h3>
+<ul><li>A concrete, recognizable AP failure — the account number on the invoice doesn't match the one in the vendor master / GL / system of record.</li></ul>
+<h3>Section pointers</h3>
+<ul>
+<li>What the mismatch is — invoice account # vs vendor-master / customer-record / GL account #.</li>
+<li>Why it happens — formatting variance, OCR confusions (O↔0, l↔1), multiple account numbers per vendor, branch/division-level accounts, vendor re-numbering.</li>
+<li>The downstream cost — misapplied payments, reconciliation effort, vendor disputes, aged items.</li>
+<li>How HyperAPI detects + resolves it — field extraction + cross-reference/validation against the vendor master, anomaly flagging.</li>
+</ul>
+<span class="flag">⚠ Lowest claim-risk of the five (a problem/solution explainer). Still needs real product-capability detail; no invented metrics.</span>
+
+<h2>Cross-cutting</h2>
+<ul>
+<li><strong>Data dependencies:</strong> P-1 (500-line case), P-2 (0.5s + customer consent), P-3 (Azure study real numbers), P-4 ("9,000" source) all block on verified data. P-5 needs product detail only.</li>
+<li><strong>Review gates:</strong> P-2 (customer-named) and P-3 (competitor-named) require legal review + sign-off. None publishes without the human gate.</li>
+</ul>
+
+<h2>📣 Viral title catalog — doc-type × failure-mode <span class="tag blk">DRAFT — pre-review</span></h2>
+<p class="meta">Generated 2026-05-25 by hyperapi-content-strategy + benchmark-factory + gtm-hub. The 14 D-dimensions come from <a href="azure-di-invoice-study.html">azure-di-invoice-study.html §4</a>. Specific numbers in italics are MEASURED on disk this session; numbers in [brackets] need a source before publish. Master catalog: <code>hyperapi-content-strategy/viral-blog-titles-2026-05-25.md</code>.</p>
+
+<p style="background:#E1F9D6;color:#027A48;padding:10px 14px;border-radius:6px;font-size:13px;margin:14px 0;border-left:4px solid #027A48">
+<strong>Anchor data, measured THIS session:</strong> Azure DI prebuilt-invoice on the 10 longest invoices in dataset_95 (49–323 line items each) — <em>line-count preservation mean 0.640, exact-match docs 1/10, line-item set-F1 mean 0.344.</em> One 88-line invoice came back as 2,150 rows (LCP 0.041). One 115-line invoice returned zero rows. Source: <code>comparative/azure-di-long-invoices/AZURE-DI-LONG-INVOICE-2026-05-25.json</code>.
+</p>
+
+<h3>🧾 Invoice (extends P-1, P-3)</h3>
+<ul>
+<li><strong>I-01</strong> · "What happens when you feed an 88-line invoice to Azure DI: it returns 2,150 rows" <span class="meta">· D8, D6 · <em>anchored</em></span></li>
+<li><strong>I-02</strong> · "The 50-page telecom invoice that broke every prebuilt model" <span class="meta">· D1, D8, D3 · needs 50pp doc</span></li>
+<li><strong>I-03</strong> · "Handwritten line items: where LLMs decide what your numbers say" <span class="meta">· D7, D8 · needs sample</span></li>
+<li><strong>I-04</strong> · "Multi-language invoices: when 'kr' could mean three currencies" <span class="meta">· D4, D5</span></li>
+<li><strong>I-05</strong> · "Why your invoice extractor silently drops one row per 100" <span class="meta">· D8 · <em>anchored</em></span></li>
+<li><strong>I-06</strong> · "Subtotal mistaken for grand total: a $345,899.94 reconciliation story" <span class="meta">· D6 · <em>dataset_95 doc 51</em></span></li>
+<li><strong>I-07</strong> · "Photo-of-a-photo: what happens when invoice scans degrade" <span class="meta">· D7</span></li>
+<li><strong>I-08</strong> · "The continuation-page trap: column identities drift between pages" <span class="meta">· D8, D3</span></li>
+</ul>
+
+<h3>📦 Packing slip</h3>
+<ul>
+<li><strong>PS-01</strong> · "Handwritten 'short by 3': when packing-slip OCR meets the warehouse pen" <span class="meta">· D7, D8</span></li>
+<li><strong>PS-02</strong> · "SKU vs description mismatch: which is the source of truth?" <span class="meta">· D2, D6</span></li>
+<li><strong>PS-03</strong> · "Multi-pallet packing slips: when one line means 80 boxes" <span class="meta">· D8</span></li>
+<li><strong>PS-04</strong> · "The 'damaged' annotation no LLM noticed" <span class="meta">· D7, D11</span></li>
+<li><strong>PS-05</strong> · "Packing slips without totals: how AI fakes a sum that isn't there" <span class="meta">· D6</span></li>
+<li><strong>PS-06</strong> · "Why your three-way match fails on a one-page packing slip" <span class="meta">· D6, D2</span></li>
+</ul>
+
+<h3>📋 Purchase Order</h3>
+<ul>
+<li><strong>PO-01</strong> · "Redline edits on a PDF PO: which version is the contract?" <span class="meta">· D2, D3</span></li>
+<li><strong>PO-02</strong> · "Split-line POs: when one item becomes two purchases" <span class="meta">· D8</span></li>
+<li><strong>PO-03</strong> · "The approval-stamp that obscures three line items" <span class="meta">· D11, D8</span></li>
+<li><strong>PO-04</strong> · "PO-001 vs PO-001-R2: revision IDs that break vendor matching" <span class="meta">· D2, D6</span></li>
+<li><strong>PO-05</strong> · "Standing orders vs one-time POs: a layout-driven misclassification" <span class="meta">· D3, D1</span></li>
+<li><strong>PO-06</strong> · "Free-text 'as agreed' on a $4M PO: how models hallucinate terms" <span class="meta">· D6</span></li>
+</ul>
+
+<h3>📑 Goods Receipt Note (GRN)</h3>
+<ul>
+<li><strong>GRN-01</strong> · "Handwritten 'received 47 of 50': the partial-receipt extraction problem" <span class="meta">· D7, D8 · bol-grn-test surface</span></li>
+<li><strong>GRN-02</strong> · "Photographed-not-scanned GRN: phone-camera artifacts vs receiving" <span class="meta">· D7</span></li>
+<li><strong>GRN-03</strong> · "GRN signatures that overlap quantities — what the LLM sees" <span class="meta">· D7, D11</span></li>
+<li><strong>GRN-04</strong> · "Three-way reconcile fails when the GRN says 47 and the PO says 50" <span class="meta">· D6</span></li>
+<li><strong>GRN-05</strong> · "Damaged-on-arrival notes: how doc-AI ignores the most important field" <span class="meta">· D2, D7</span></li>
+<li><strong>GRN-06</strong> · "Why goods-receipt automation collapses on the second pallet" <span class="meta">· D8</span></li>
+</ul>
+
+<h3>🚢 Bill of Lading</h3>
+<ul>
+<li><strong>BoL-01</strong> · "Multi-stop BoL: when 'deliver to' has 11 addresses" <span class="meta">· D8, D3</span></li>
+<li><strong>BoL-02</strong> · "Freight terms FOB vs CIF: a single-letter difference, six-figure cost" <span class="meta">· D2, D6</span></li>
+<li><strong>BoL-03</strong> · "Continuation-page BoL: 12 trailers, 4 pages, one extraction" <span class="meta">· D8, D3</span></li>
+<li><strong>BoL-04</strong> · "Handwritten weight on a typed BoL: which one wins?" <span class="meta">· D7</span></li>
+<li><strong>BoL-05</strong> · "Hazmat code OCR: when one character is the difference" <span class="meta">· D7, D2</span></li>
+<li><strong>BoL-06</strong> · "The signed-by-driver field that LLMs treat as decoration" <span class="meta">· D11, D7</span></li>
+</ul>
+
+<h3>🏦 Bank statement</h3>
+<ul>
+<li><strong>BS-01</strong> · "12 months on 1 PDF: when bank statements break context windows" <span class="meta">· D1, D8</span></li>
+<li><strong>BS-02</strong> · "Reverse-chronological vs chronological: a date-ordering bug worth $200K" <span class="meta">· D6</span></li>
+<li><strong>BS-03</strong> · "Micro-print balance lines: 4-point font is OCR's nemesis" <span class="meta">· D7</span></li>
+<li><strong>BS-04</strong> · "Why your AML rule fires on the same row twice" <span class="meta">· D8</span></li>
+<li><strong>BS-05</strong> · "Photocopy of a fax of a statement: degradation in three acts" <span class="meta">· D7</span></li>
+<li><strong>BS-06</strong> · "The 'pending' transaction that wasn't pending anymore" <span class="meta">· D6</span></li>
+</ul>
+
+<h3>💵 Cheque</h3>
+<ul>
+<li><strong>CHQ-01</strong> · "Words vs numbers: when the cheque says '$1,000' and 'one hundred dollars'" <span class="meta">· D6</span></li>
+<li><strong>CHQ-02</strong> · "The MICR line: 14 characters that decide where the money goes" <span class="meta">· D2, D7</span></li>
+<li><strong>CHQ-03</strong> · "Signature on the amount line: which field did it land in?" <span class="meta">· D11</span></li>
+<li><strong>CHQ-04</strong> · "Handwritten cheques in 2026: still 30% of B2B disbursements" <span class="meta">· D5, D7 · [needs source]</span></li>
+<li><strong>CHQ-05</strong> · "Carbon-copy cheque scans: noise that fools every layout model" <span class="meta">· D7</span></li>
+<li><strong>CHQ-06</strong> · "Stale-date vs post-date: a one-day difference, a returned cheque" <span class="meta">· D6</span></li>
+</ul>
+
+<h3>↩️ Credit note</h3>
+<ul>
+<li><strong>CN-01</strong> · "The credit note that didn't link to the invoice (and the AP review queue that paid for it)" <span class="meta">· D6</span></li>
+<li><strong>CN-02</strong> · "Negative amounts on positive forms: when sign extraction fails" <span class="meta">· D2</span></li>
+<li><strong>CN-03</strong> · "Partial-credit vs full-credit: the field LLMs hallucinate" <span class="meta">· D2, D6</span></li>
+<li><strong>CN-04</strong> · "Credit-note continuation pages: where do the refunded rows go?" <span class="meta">· D8</span></li>
+<li><strong>CN-05</strong> · "Why every accountant audits credit notes by hand" <span class="meta">· D9, D12</span></li>
+<li><strong>CN-06</strong> · "The dual-currency credit note: USD on top, EUR underneath" <span class="meta">· D4, D5</span></li>
+</ul>
+
+<h3>➖ Debit note</h3>
+<ul>
+<li><strong>DN-01</strong> · "Vendor-debit-note vs customer-debit-note: the framing problem AI gets wrong" <span class="meta">· D2, D6</span></li>
+<li><strong>DN-02</strong> · "Reason coding: 16 fields, one freeform paragraph, infinite parsing errors" <span class="meta">· D2</span></li>
+<li><strong>DN-03</strong> · "Why debit-note OCR is the loneliest benchmark in the world" <span class="meta">· D14</span></li>
+<li><strong>DN-04</strong> · "Debit note + invoice + credit note: extracting the three-way story" <span class="meta">· D6</span></li>
+<li><strong>DN-05</strong> · "The debit-note layouts no OCR vendor sells a prebuilt model for" <span class="meta">· D3, D14</span></li>
+</ul>
+
+<h3>🎯 Cross-cutting (apply to all 9 doc types)</h3>
+<ul>
+<li><strong>X-01</strong> · "The 14 ways your document-AI vendor doesn't tell you it's failing" <span class="meta">· umbrella → D1..D14</span></li>
+<li><strong>X-02</strong> · "What benchmark screenshots hide: the production doc your demo never tested" <span class="meta">· tied to the LinkedIn 500-line draft</span></li>
+<li><strong>X-03</strong> · "From 5 line items to 5,000: why scale breaks accuracy non-linearly" <span class="meta">· extends I-05</span></li>
+<li><strong>X-04</strong> · "The OCR error that became 300 ERP mismatches" <span class="meta">· extends I-05</span></li>
+<li><strong>X-05</strong> · "Demo-perfect vs warehouse-perfect: two different doc-AI products" <span class="meta">· meta</span></li>
+<li><strong>X-06</strong> · "Hand-labeled gold takes 8 hours per invoice. Here's why your test set is wrong." <span class="meta">· gold-provenance angle</span></li>
+<li><strong>X-07</strong> · "50 prebuilt-doc models. 10 long invoices. 1/10 line-count exact match." <span class="meta">· direct anchor cite</span></li>
+</ul>
+
+<span class="flag">⚠ Publish gate per title: (1) numbers cited must point to an on-disk source; (2) competitor names in titles need legal pass; (3) customer names need consent. The Azure DI long-invoice anchors are real; the 99.8/99.9/100 Hyperbots triple is <strong>STUB-PENDING-CEO-DATA</strong> (F-1 stub) and cannot anchor any title until that data lands.</span>
+
+<p class="meta">Suggested first publish ramp: <strong>I-01 → I-05 → X-07 → X-01</strong>. All four anchor to the Azure-DI-long-invoice cell measured today; no Hyperbots-side number required to ship them honestly (the comparison story stands on the competitor's measured failure).</p>

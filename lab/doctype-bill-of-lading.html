@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doc-type &middot; Bill of lading &mdash; HyperAPI Benchmark Factory</title>
+<style>
+  :root{--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;--grey-2:#F6F9F9;--grey-12:#211F26;--grey-10:#748081;--ok:#039855;--warn:#DC6803;--err:#D92D20;--card:#fff;--line:#E6EEF1;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{background:var(--grey-2);color:var(--grey-12);font-family:"Rubik","Helvetica Neue",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;}
+  a{color:var(--brand-9);text-decoration:none}a:hover{text-decoration:underline}
+  .wrap{max-width:1240px;margin:0 auto;padding:0 28px 80px;}
+  .hero{background:linear-gradient(135deg,var(--brand-9) 0%,var(--brand-7) 55%,#50B6E2 100%);color:#fff;padding:36px 28px 28px;}
+  .hero-inner{max-width:1240px;margin:0 auto;padding:0 28px;}
+  .hero .crumb{font-size:12px;letter-spacing:.16em;text-transform:uppercase;opacity:.92;font-weight:600;}
+  .hero .crumb a{color:#fff;border-bottom:1px solid rgba(255,255,255,.4);padding-bottom:1px;}
+  .hero h1{font-size:30px;font-weight:700;margin:8px 0 6px;line-height:1.18;letter-spacing:-.3px;}
+  .hero p{font-size:14.5px;opacity:.95;max-width:880px;}
+  .hero .meta{margin-top:12px;font-size:12px;opacity:.85;}
+  section{margin-top:36px;}
+  h2{font-size:20px;font-weight:700;color:var(--brand-9);margin-bottom:6px;letter-spacing:-.2px;padding-left:10px;border-left:3px solid var(--brand-7);}
+  h2 .sub{display:block;font-size:13px;font-weight:400;color:var(--grey-10);margin-top:3px;}
+  table.tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--card);border-radius:10px;overflow:hidden;border:1px solid var(--line);margin-top:12px;}
+  table.tbl th{background:var(--brand-9);color:#fff;text-align:left;padding:9px 12px;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;font-weight:600;}
+  table.tbl td{padding:8px 12px;border-top:1px solid var(--line);vertical-align:top;}
+  table.tbl tr:nth-child(even) td{background:#FAFCFD;}
+  table.tbl td.num{font-variant-numeric:tabular-nums;text-align:right;font-weight:600;}
+  table.tbl td.src{font-family:"SF Mono",Consolas,monospace;font-size:11.5px;color:var(--grey-10);}
+  .badge{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:10px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;}
+  .badge.ok{background:#E6F4EA;color:var(--ok)} .badge.att{background:#FFF4E5;color:var(--warn)} .badge.pend{background:var(--brand-2);color:var(--brand-9);border:1px solid var(--brand-4)} .badge.ip{background:#F3EBFE;color:#6941C6;border:1px solid #E0CFFC} .badge.os{background:#ECF6E8;color:#3E7C2A;border:1px solid #C8E2BD} .badge.cs{background:#FCEBEB;color:#A5371B;border:1px solid #F2CFCA}
+  .honesty{background:#F4FBF7;border:1px solid #CBE6D6;border-left:5px solid var(--ok);border-radius:10px;padding:18px 22px;font-size:13.5px;}
+  .honesty b{color:var(--ok);} .honesty ul{margin-top:6px;padding-left:20px;} .honesty li{margin:3px 0;}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:10px 0 4px;font-size:12px;color:var(--grey-10);}
+  footer{margin-top:48px;text-align:center;font-size:12px;color:var(--grey-10);border-top:1px solid var(--line);padding-top:18px;}
+  .footnote{font-size:11.5px;color:var(--grey-10);margin-top:8px;}
+  code{background:var(--brand-2);border-radius:3px;padding:1px 5px;font-family:"SF Mono",Consolas,monospace;font-size:12px;color:var(--brand-9);}
+  .callout{background:#F8FDFF;border:1px solid #CDEAF6;border-left:4px solid var(--brand-7);border-radius:8px;padding:14px 18px;margin:14px 0;font-size:13.5px;}
+  .callout b{color:var(--brand-9);}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="crumb"><a href="benchmark-factory-overview.html">&larr; Benchmark Factory</a> &middot; Document type</div>
+    <h1>Bill of lading &mdash; models compared</h1>
+    <p>Bill of lading is the upstream document in the BoL&rarr;GRN match. Parse + extract on shipping/freight documents. The corpus is being assembled; most rows are PENDING.</p>
+    <div class="meta">Doc-type: bill of lading &middot; Task families: parse &middot; extract &middot; reconcile (BoL&rarr;GRN v1.0)</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <h2>Honest framing</h2>
+    <div class="honesty">
+      <b>This is not a head-to-head accuracy claim.</b>
+      <ul>
+        <li>BoL-specific cells are <b>PENDING</b> &mdash; no on-disk results today; the BoL&rarr;GRN v1.0 reconcile spec is the planned next step.</li>
+        <li>HyperAPI parse non-error-response-rate (0.8735) is reported across the full SDK surface (not BoL-specific). For BoL-specific cells, expect a follow-on benchmark on a freight document corpus.</li>
+        <li>Linked benchmark: <i>BoL&rarr;GRN v1.0</i> &mdash; the reconcile primitive that consumes BoL output and matches against GRN. Currently <code>reconcile</code> is on the realqa skipped-SDK-surface list (5,260 skipped).</li>
+        <li>HyperAPI accuracy reported <b>per <code>apis.hyperbots.com</code></b>.</li>
+      </ul>
+      <div class="legend"><span><span class="badge ok">FR</span> factory-reproduced</span><span><span class="badge att">AT</span> attested</span><span><span class="badge pend">PEND</span> pending</span><span><span class="badge ip">IP</span> Hyperbots IP</span><span><span class="badge os">OS</span> open-source</span><span><span class="badge cs">CS</span> closed-source</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>A &middot; Parse on BoL (PENDING corpus)
+      <span class="sub">A BoL-specific corpus is queued; today we report only the SDK-level rollup.</span>
+    </h2>
+    <table class="tbl">
+      <thead><tr><th>Model</th><th>Open / Closed</th><th>Metric</th><th>Value</th><th>n</th><th>Status</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td><b>HyperAPI realqa-parse</b></td><td><span class="badge ip">IP</span></td><td>non_error_response_rate_ex_ratelimit</td><td class="num">0.8735</td><td class="num">5,062</td><td><span class="badge ok">FR</span></td><td class="src">realqa daemon 2026-05-25 (SDK-wide, not BoL-specific)</td></tr>
+        <tr><td>Hyperbots IDP (BoL field F1)</td><td><span class="badge ip">IP</span></td><td>field_f1 BoL</td><td><span class="badge pend">Per apis.hyperbots.com</span></td><td class="num">&mdash;</td><td><span class="badge pend">PEND</span></td><td class="src">no on-disk cell</td></tr>
+        <tr><td>Azure DI (general document)</td><td><span class="badge cs">CS</span></td><td>field_f1 BoL</td><td><span class="badge pend">Pending</span></td><td class="num">&mdash;</td><td><span class="badge pend">PEND</span></td><td class="src">no on-disk cell</td></tr>
+        <tr><td>Claude Sonnet 4.6</td><td><span class="badge cs">CS</span></td><td>field_f1 BoL</td><td><span class="badge pend">Pending</span></td><td class="num">&mdash;</td><td><span class="badge pend">PEND</span></td><td class="src">no on-disk cell</td></tr>
+        <tr><td>GPT-4o</td><td><span class="badge cs">CS</span></td><td>field_f1 BoL</td><td><span class="badge pend">Pending</span></td><td class="num">&mdash;</td><td><span class="badge pend">PEND</span></td><td class="src">no on-disk cell</td></tr>
+        <tr><td>Gemini 2.5 Pro</td><td><span class="badge cs">CS</span></td><td>field_f1 BoL</td><td><span class="badge pend">Pending</span></td><td class="num">&mdash;</td><td><span class="badge pend">PEND</span></td><td class="src">no on-disk cell</td></tr>
+        <tr><td>Qwen2.5-VL-72B</td><td><span class="badge os">OS</span></td><td>field_f1 BoL</td><td><span class="badge pend">Pending</span></td><td class="num">&mdash;</td><td><span class="badge pend">PEND</span></td><td class="src">no on-disk cell</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>B &middot; BoL&rarr;GRN reconcile (linked benchmark v1.0)
+      <span class="sub">The reconcile primitive that consumes BoL output and matches against GRN.</span>
+    </h2>
+    <div class="callout">
+      <b>Status of reconcile.</b> The reconcile primitive is on the realqa <b>skipped-SDK-surface</b> list (5,260 skipped units) &mdash; correctly skipped per the anti-fabrication rule, as the SDK surface for reconcile is not yet exposed. <b>BoL&rarr;GRN v1.0</b> is the planned first reconcile benchmark; it pairs a BoL parse with a GRN parse and scores match-correctness on shipment_id / container_number / qty_received. <i>Spec drafting; corpus PENDING.</i>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>Step</th><th>Metric</th><th>Value</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Parse BoL</td><td>field_f1 BoL</td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">PEND</span></td></tr>
+        <tr><td>Parse GRN</td><td>field_f1 GRN</td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">PEND</span></td></tr>
+        <tr><td>Match shipment_id</td><td>exact_match_accuracy</td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">PEND</span></td></tr>
+        <tr><td>Match qty_received</td><td>numeric_match_within_tolerance</td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">PEND</span></td></tr>
+        <tr><td>End-to-end reconcile</td><td>BoL&rarr;GRN match rate</td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">PEND</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>C &middot; Per-field breakdown (BoL)</h2>
+    <table class="tbl">
+      <thead><tr><th>Field</th><th>HyperAPI</th><th>Open-source best (TBD)</th><th>Closed-source best (TBD)</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>shipment_id / BL number</td><td><span class="badge pend">Per apis.hyperbots.com</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">PEND</span></td></tr>
+        <tr><td>shipper</td><td><span class="badge pend">Per apis.hyperbots.com</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">PEND</span></td></tr>
+        <tr><td>consignee</td><td><span class="badge pend">Per apis.hyperbots.com</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">PEND</span></td></tr>
+        <tr><td>container_number</td><td><span class="badge pend">Per apis.hyperbots.com</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">PEND</span></td></tr>
+        <tr><td>port_of_loading</td><td><span class="badge pend">Per apis.hyperbots.com</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">PEND</span></td></tr>
+        <tr><td>port_of_discharge</td><td><span class="badge pend">Per apis.hyperbots.com</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">PEND</span></td></tr>
+        <tr><td>cargo_description</td><td><span class="badge pend">Per apis.hyperbots.com</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">PEND</span></td></tr>
+        <tr><td>weight / measurements</td><td><span class="badge pend">Per apis.hyperbots.com</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">Pending</span></td><td><span class="badge pend">PEND</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    Doc-type &middot; Bill of lading &middot; 2026-05-25 &middot;
+    <a href="benchmark-factory-overview.html">&larr; back to portal</a> &middot;
+    <a href="doctype-goods-receipt-note.html">linked: Goods receipt note &rarr;</a>
+  </footer>
+
+</div>
+</body>
+</html>
