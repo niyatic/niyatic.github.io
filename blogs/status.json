@@ -1,0 +1,79 @@
+{
+  "last_updated": "2026-05-25 13:51:59 UTC",
+  "chain": {
+    "A": {
+      "status": "done",
+      "note": "Chief architect signed off \u00b7 24 KB",
+      "doc": "docs/ARCHITECT-REVIEW.md"
+    },
+    "B": {
+      "status": "done",
+      "note": "Senior engineer signed off \u00b7 16 KB",
+      "doc": "docs/SENIOR-ENG-REPORT.md"
+    },
+    "C": {
+      "status": "done",
+      "note": "Eng manager signed off \u00b7 28 KB",
+      "doc": "docs/MANAGER-APPROVAL.md"
+    },
+    "D": {
+      "status": "done",
+      "note": "QA lead signed off \u00b7 31 KB",
+      "doc": "docs/QA-REPORT.md"
+    },
+    "E": {
+      "status": "done",
+      "note": "VP Engineering signed off \u00b7 18 KB",
+      "doc": "docs/VP-GO-NOGO.md"
+    }
+  },
+  "pipeline": {
+    "classify": {
+      "done": 22,
+      "total": 22,
+      "status": "done"
+    },
+    "split": {
+      "done": 22,
+      "total": 22,
+      "status": "done"
+    },
+    "parse": {
+      "done": 22,
+      "total": 22,
+      "status": "done"
+    },
+    "hyperapi_extract": {
+      "done": 22,
+      "total": 22,
+      "status": "done"
+    },
+    "qwen_extract": {
+      "done": 22,
+      "total": 22,
+      "status": "done"
+    },
+    "format": {
+      "done": 22,
+      "total": 22,
+      "status": "done"
+    }
+  },
+  "integrity": {
+    "no_fabrication": true,
+    "hallucination_measured": true,
+    "mapping_plan_contract": true,
+    "field_research_static": true,
+    "token_id_bbox": true,
+    "manifest_atomic": true
+  },
+  "notes": [
+    "[stage 1] classify \u2014 running on 22 doc(s)",
+    "[stage 2] split \u2014 running on 22 doc(s)",
+    "[stage 3] parse \u2014 running on 22 doc(s)",
+    "[stage 4] hyperapi_extract \u2014 running on 22 doc(s)",
+    "[stage 5] qwen_extract \u2014 running on 22 doc(s)",
+    "[stage 6] format \u2014 running on 22 doc(s)",
+    "[done] manifest at /Users/niyati/Desktop/test_bol-grn-test/manifest.json"
+  ]
+}
