@@ -1,0 +1,278 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TABULAR-LITERATURE-SURVEY — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/lab/savior-bench-report.html">← back</a>
+
+<h1>TABULAR REASONING — Literature Survey (enterprise document tables)</h1>
+
+<p>_Owner: cto-org <code>chief-research-scientist</code> + <code>document-ai-research-scientist</code>. Scope: table recognition / understanding in enterprise documents, the metric landscape, and the SOTA picture as of the assistant knowledge cutoff (Jan 2026). This is a <strong>design/selection</strong> survey for the benchmark factory. No model was trained or hosted in this environment._</p>
+
+<h2>0. Why tables are the hard core of enterprise doc AI</h2>
+
+<p>Enterprise documents (invoices, POs, packing slips, bank/credit-card statements, financial statements, 10-K/10-Q tables, insurance schedules, remittance advices) are dominated by <strong>tabular content</strong>: multi-line items, spanning headers, nested sub-totals, rotated/merged cells, borderless rules, multi-page tables with repeated headers, footnote-linked figures, and currency/locale formatting. General OCR + reading-order parsing (the DC-000 "parse" task) is necessary but <strong>not sufficient</strong>: a transcription can have high word recall yet still get the <em>table structure</em> wrong (wrong row/column assignment), which destroys downstream extraction and validation. Tabular reasoning is therefore tracked as a <strong>distinct task family</strong> from <code>parse</code>.</p>
+
+<h2>1. The three problem formulations (do not conflate them)</h2>
+
+<table>
+<tr><th>Formulation</th><th>Input → Output</th><th>Canonical metric</th><th>Enterprise relevance</th></tr>
+<tr><td><strong>TSR — Table Structure Recognition</strong></td><td>image/PDF region → grid topology (rows, cols, spanning cells, cell bboxes/text)</td><td><strong>TEDS / TEDS-Struct</strong>, <strong>GriTS</strong> (Grid Table Similarity), legacy IoU-based ICDAR adjacency-relation F1</td><td>Highest: line-item fidelity drives extraction correctness</td></tr>
+<tr><td><strong>Table detection + region parsing</strong></td><td>page → table bounding boxes (+ structure)</td><td>mAP / COCO AP for detection; then TSR metric</td><td>Needed for multi-table pages (statements, schedules)</td></tr>
+<tr><td><strong>Table QA / table understanding</strong></td><td>table (+ question / target schema) → answer or structured record</td><td>EM / F1 (WikiTableQuestions-style), denotation accuracy, field-F1</td><td>The downstream business value (extract/validate)</td></tr>
+</table>
+
+<p>The benchmark factory already covers downstream extract/validate (DE-002/003, DV-001). The <strong>gap</strong> is a faithful TSR-centric task with a structure metric — that is what TR-000 fills.</p>
+
+<h2>2. Key methods (lineage, what to know)</h2>
+
+<h3>2.1 Detection / TSR specialist models</h3>
+<ul>
+<li><strong>Table Transformer (TATR) + PubTables-1M</strong> (Smock et al., CVPR 2022) —</li>
+</ul>
+<p>  DETR-based table detection and structure recognition trained on the   ~1M-table PubTables-1M corpus; introduced <strong>GriTS</strong> and the canonical   open TSR baseline. Strong on scientific/financial PDF-rendered tables;   weaker on photographed/low-quality scans and heavily merged cells.</p>
+<ul>
+<li><strong>Earlier TSR lineage:</strong> DeepDeSRT, TableNet, SPLERGE (split-merge),</li>
+</ul>
+<p>  GraphTSR / TGRNet (graph formulation of cell adjacency), LGPMA (mask   alignment), and the <strong>TableMaster / EDD / TableFormer</strong> family that   emits HTML structure tokens (the de-facto PubTabNet output convention).</p>
+<ul>
+<li><strong>Cascade/heuristic engines:</strong> <strong>PaddleOCR PP-Structure</strong> (layout +</li>
+</ul>
+<p>  TSR + cell OCR pipeline), <strong>Camelot/Tabula</strong> (rule-based, lattice vs   stream — strong only on ruled digital PDFs; fails on borderless/scans).</p>
+
+<h3>2.2 OCR-2.0 / end-to-end transcription with structure</h3>
+<ul>
+<li><strong>GOT-OCR2.0</strong> — unified end-to-end model that emits structured formats</li>
+</ul>
+<p>  (incl. tables as HTML/Markdown/LaTeX) directly from the image.</p>
+<ul>
+<li><strong>Nougat</strong> (Meta) — academic-PDF → Markdown incl. tables; brittle off-</li>
+</ul>
+<p>  domain (math-paper bias) but a useful structure-emitting baseline.</p>
+<ul>
+<li><strong>MinerU / PDF-Extract-Kit</strong> — pipeline (layout + formula + table) that</li>
+</ul>
+<p>  wraps specialist TSR; popular open enterprise-PDF extractor.</p>
+
+<h3>2.3 Prompted VLMs (the program's chosen SOTA-via-open-prompted route)</h3>
+<ul>
+<li><strong>Qwen2.5-VL</strong> (3B/7B/32B/72B) — strong document/table grounding,</li>
+</ul>
+<p>  emits HTML/Markdown tables and bbox-grounded cells; current open   front-runner on doc tasks.</p>
+<ul>
+<li><strong>InternVL 2.5 / 3</strong> — competitive doc-VLM family; OCR/table prompting.</li>
+<li><strong>dots.ocr</strong>, <strong>PaddleOCR-VL</strong>, <strong>olmOCR</strong>, <strong>DocOwl/UReader</strong>,</li>
+</ul>
+<p>  <strong>MiniCPM-V</strong>, <strong>Phi-3.5/Phi-4-vision</strong> — VLM-prompted table emitters   spanning the small/efficient end.</p>
+<ul>
+<li><strong>Closed frontier (scientific-comparison only):</strong> GPT-4o/4.1, Gemini</li>
+</ul>
+<p>  1.5/2.x, Claude 3.x — used as anchors, not products.</p>
+
+<p>The program thesis: a <strong>prompted open VLM</strong> (no fine-tune) can reach or beat specialist TSR on enterprise tables when scored with structure-aware metrics — to be <strong>measured</strong>, not asserted.</p>
+
+<h2>3. Metrics — choices and rationale</h2>
+
+<ul>
+<li><strong>TEDS (Tree-Edit-Distance-based Similarity)</strong> — represents a table as an</li>
+</ul>
+<p>  HTML tree; similarity = 1 − normalized tree-edit distance over structure   <strong>and</strong> cell text. <strong>TEDS-Struct</strong> ignores cell text (pure topology).   PubTabNet standard. Sensitive to small text errors → pair with Struct.</p>
+<ul>
+<li><strong>GriTS (Grid Table Similarity)</strong> — from PubTables-1M; matches predicted</li>
+</ul>
+<p>  vs GT cell grids via 2D-LCS, reported as GriTS-Top (topology),   GriTS-Con (content), GriTS-Loc (location). More robust to non-tree   spanning structures than TEDS; <strong>chosen as the primary</strong> TR-000 metric.</p>
+<ul>
+<li><strong>Cell F1 / adjacency-relation F1</strong> — ICDAR-2013/2019 style; precision/</li>
+</ul>
+<p>  recall over correctly recovered cells or neighbor relations. <strong>Chosen   as the secondary</strong> TR-000 metric (interpretable, decomposable by error   type).</p>
+<ul>
+<li>Avoid single-number "accuracy"; report **per cell-type / per document-</li>
+</ul>
+<p>  quality / per table-complexity** slices, mirroring the SAVIOR-Bench   stratification discipline already in this repo.</p>
+
+<p><strong>TR-000 decision:</strong> primary <code>teds</code> (with TEDS-Struct companion), secondary <code>grits</code> + <code>cell_f1</code>. (tasks.json registers <code>teds</code>/<code>grits</code> primary-secondary with <code>cell_f1</code> per the mandate; both structure metrics are first-class — naming follows the directive's <code>teds</code>/<code>grits</code> ordering.)</p>
+
+<h3>3.1 Precise metric definitions (so the impl is unambiguous)</h3>
+
+<p>These are the formal definitions the <code>harness/metrics.py</code> impl (<code>plan/TABULAR-BENCHMARK-WIRING.md</code> §2) must satisfy. Stated from the published literature; <strong>not benchmarked here</strong>.</p>
+
+<p><strong>TEDS (Tree-Edit-Distance-based Similarity), Zhong et al.</strong> Represent each table as an HTML DOM tree T: nodes are <code>&lt;thead&gt;/&lt;tbody&gt;/ &lt;tr&gt;/&lt;td&gt;/&lt;th&gt;</code>, each cell node carries <code>(colspan, rowspan, content)</code>. Compute the <strong>tree-edit distance</strong> <code>EditDist(T_pred, T_gold)</code> (Zhang– Shasha style) where node-substitution cost = <code>0</code> if tags match else <code>1</code>, plus for matched cell nodes a content cost = <strong>normalized string edit distance</strong> of cell text in <code>[0,1]</code>. Then <code>TEDS = 1 − EditDist(T_pred,T_gold) / max(|T_pred|, |T_gold|)</code>, <code>|T|</code> = node count. <strong>TEDS-Struct</strong> sets the content cost to 0 (pure topology). Range <code>[0,1]</code>, higher better. Property: sensitive to small text errors → always report alongside TEDS-Struct.</p>
+
+<p><strong>GriTS (Grid Table Similarity), Smock et al. (PubTables-1M).</strong> Represent a table as a 2D <strong>cell grid</strong> (matrix where a spanning cell occupies multiple grid positions). For predicted grid Gp and gold Gg, find the <strong>maximum-similarity 2D alignment</strong> (a 2D extension of LCS / factored bipartite matching) of cells, then <code>GriTS = 2·Σ f(c_p, c_g) / (|Gp| + |Gg|)</code> (an F-measure form) over matched cells, where <code>f</code> is the per-cell agreement function:</p>
+<ul>
+<li><strong>GriTS-Top</strong> — <code>f = 1</code> iff matched cells have identical</li>
+</ul>
+<p>  <code>(rowspan, colspan)</code> topology (structure only);</p>
+<ul>
+<li><strong>GriTS-Con</strong> — <code>f = </code> normalized text similarity of cell content;</li>
+<li><strong>GriTS-Loc</strong> — <code>f</code> based on IoU of cell bounding boxes (geometry).</li>
+</ul>
+<p>Range <code>[0,1]</code>, higher better. Advantage over TEDS: operates on the grid not a tree, so it handles non-tree spanning structures more robustly — why it is the co-equal structure metric for TR-000.</p>
+
+<p><strong>Cell-F1 / adjacency-relation F1 (ICDAR-2013 / ICDAR-2019 cTDaR).</strong> Two variants:</p>
+<ul>
+<li><em>Cell-content F1</em>: a predicted cell is a true positive iff its text</li>
+</ul>
+<p>  (normalized) AND its grid span match a gold cell;   <code>P = TP/(TP+FP)</code>, <code>R = TP/(TP+FN)</code>, <code>F1 = 2PR/(P+R)</code>.</p>
+<ul>
+<li><em>Adjacency-relation F1</em> (ICDAR-2013 classic): build the set of</li>
+</ul>
+<p>  horizontally/vertically <strong>adjacent cell pairs</strong>; a relation is a TP   iff both endpoints' content match and the adjacency direction matches.   F1 over the relation sets. Decomposable by error type (split/merge/   shift), which is why it is the interpretable secondary metric.</p>
+
+<p>All three: same lenient HTML→canonical normalizer applied to <strong>pred and gold identically</strong> (whitespace collapse, attr strip except span, tag-lowercase) so the metric measures structure, not formatting noise.</p>
+
+<h3>3.2 Reference algorithm spec (engineer-implementable)</h3>
+
+<p>§3.1 gives the <em>definitions</em>; this section is the <em>algorithm</em> an engineer implements directly into <code>harness/metrics.py</code> (WIRING §2) without re-deriving from papers. Pseudocode is deterministic and language-neutral; complexity bounds noted so cost is predictable on the TR-000 slice. <strong>Nothing here is executed or benchmarked — spec only.</strong></p>
+
+<p><strong>(A) Deterministic table normalizer</strong> <code>_normalize_table_html(html)</code> applied identically to pred and gold:</p>
+<pre><code class="lang-">
+parse html leniently (html5-tolerant; never raise on malformed pred)
+keep only: table, thead, tbody, tr, td, th
+for each cell:
+    rowspan = int(attr &quot;rowspan&quot; or 1); clamp &gt;=1
+    colspan = int(attr &quot;colspan&quot; or 1); clamp &gt;=1
+    text    = collapse_ws(strip_tags(inner))          # \s+ -&gt; &quot; &quot;, trim
+    text    = unicode_NFKC(text); casefold OFF (case is signal)
+drop attributes except rowspan/colspan
+if no thead/tbody: wrap all rows in tbody (canonical)
+drop fully-empty trailing rows and trailing columns (both sides equally)
+return canonical tree  (also expose .to_grid() — see (C))
+</code></pre>
+<p>Edge cases (must be explicit, else pred/gold diverge silently): unparseable pred → return a 1-node empty-table tree (TEDS will score near 0, never crash); ragged rows → right-pad with empty cells to the max effective column count; overlapping spans → first-writer-wins in grid raster order, log a <code>malformed_span</code> flag to the item sidecar.</p>
+
+<p><strong>(B) TEDS via Zhang–Shasha tree edit distance.</strong> Nodes carry <code>(tag, rowspan, colspan, text)</code>. Costs:</p>
+<pre><code class="lang-">
+insert cost  = 1     delete cost = 1
+substitute(a,b):
+    if a.tag != b.tag:                 return 1
+    if a.tag not in {td,th}:           return 0          # structural
+    struct_cost  = 0 if (a.rowspan,a.colspan)==(b.rowspan,b.colspan) else 1
+    if struct_only:  content_cost = 0
+    else:            content_cost = norm_levenshtein(a.text, b.text) in [0,1]
+    return 0.5*struct_cost + 0.5*content_cost            # cell node in [0,1]
+</code></pre>
+<p>Run classic <strong>Zhang–Shasha</strong> (postorder + LR-keyroots + forest-distance DP) to get <code>EditDist</code>. Then <code>TEDS = 1 - EditDist / max(|T_pred|, |T_gold|)</code>, clamp to <code>[0,1]</code>; if both trees empty → define <code>TEDS = 1.0</code>. <code>TEDS_Struct</code> = same call with <code>struct_only=True</code>. Complexity <code>O(|Tp|·|Tg|·min(dp,lp)·min(dg,lg))</code> (<code>d</code>=depth,<code>l</code>=#leaves) — fine for single tables (hundreds of nodes); add a 5 s/table watchdog → on timeout record <code>teds=None</code> + <code>metric_timeout</code> flag, never a fake 0.</p>
+
+<p><strong>(C) GriTS via factored 2D matching.</strong> <code>.to_grid()</code> rasterizes the canonical tree into a 2D array where a span occupies every covered <code>(r,c)</code> and each logical cell gets a stable <code>cell_id</code>. Exact GriTS maximizes Σ similarity over the 2D cell alignment; the published <strong>tractable factorization</strong> (Smock et al.) is: solve the <strong>row assignment</strong> and <strong>column assignment</strong> as two 1-D optimal sequence alignments (DP, gap cost 0), then within the induced cell correspondence solve a <strong>bipartite max-weight matching (Hungarian / <code>scipy.optimize.linear_sum_assignment</code>)</strong> on the per-cell similarity <code>f</code>:</p>
+<pre><code class="lang-">
+f_topology(p,g) = 1 if (p.rowspan,p.colspan)==(g.rowspan,g.colspan) else 0
+f_content (p,g) = 1 - norm_levenshtein(p.text, g.text)
+f_location(p,g) = IoU(p.bbox, g.bbox)        # bbox required for Loc only
+GriTS = 2 * sum(f over matched) / (|Gp| + |Gg|)        # F-measure form
+</code></pre>
+<p>unmatched cells contribute 0; empty/empty → <code>1.0</code>. <code>GriTS-Loc</code> is <strong>skipped (reported <code>null</code>) when GT lacks bbox</strong> (HTML-only slices) — never substitute a content score for it. Cost: alignment <code>O(R·C)</code>, Hungarian <code>O(n³)</code> in #cells — bounded per table.</p>
+
+<p><strong>(D) Cell-F1 / adjacency-F1.</strong> Content mode: a pred cell is TP iff some gold cell has equal normalized text <strong>and</strong> equal <code>(rowspan, colspan)</code> at the aligned grid anchor (use the (C) correspondence — do not re-match independently, keeps the three metrics consistent). Adjacency mode: from the grid build directed adjacency pairs <code>(cell, right_neighbor)</code> and <code>(cell, down_neighbor)</code> skipping spanned continuations; a relation is TP iff both endpoint texts match and the direction matches. <code>P=TP/(TP+FP)</code>, <code>R=TP/(TP+FN)</code>, <code>F1=2PR/(P+R)</code> (define <code>F1=0</code> when <code>P+R=0</code>). Return <code>{precision,recall,f1}</code>; F1 is the leaderboard scalar, P/R retained for split/merge/shift error slicing.</p>
+
+<p><strong>Determinism contract:</strong> no RNG anywhere in metrics; ties in Hungarian broken by ascending <code>cell_id</code>; all three metrics consume the <strong>same</strong> normalized structure so a structural fix moves TEDS/GriTS/cell-F1 coherently. Golden unit fixtures (perfect match→1.0; one merged cell; one split cell; transposed header; empty table; malformed-HTML pred) to be added under <code>harness/tests/</code> at impl time — <strong>EXECUTION-PENDING</strong>, not written or run here.</p>
+
+<h2>4. Public hard-table corpora (benchmark anchors)</h2>
+
+<table>
+<tr><th>Corpus</th><th>Domain</th><th>Size (tables)</th><th>Use here</th></tr>
+<tr><td><strong>PubTabNet</strong></td><td>scientific (PMC)</td><td>~568k</td><td>TEDS reference; pretrain-domain anchor</td></tr>
+<tr><td><strong>FinTabNet</strong></td><td><strong>financial (S&P 10-K)</strong></td><td>~113k</td><td>closest public proxy to enterprise finance tables</td></tr>
+<tr><td><strong>PubTables-1M</strong></td><td>scientific PDF</td><td>~948k tables</td><td>GriTS reference; TATR baseline</td></tr>
+<tr><td><strong>SciTSR</strong></td><td>scientific</td><td>~15k</td><td>complex spanning-cell stress</td></tr>
+<tr><td><strong>ICDAR-2013 / 2019 (cTDaR)</strong></td><td>mixed incl. historical/handwritten</td><td>small, hard</td><td>low-quality / archival robustness</td></tr>
+<tr><td><strong>TableBank</strong></td><td>mixed (Word/LaTeX)</td><td>~417k (detection)</td><td>detection breadth</td></tr>
+<tr><td><strong>WikiTableQuestions / TabFact / FinQA / TAT-QA</strong></td><td>table QA</td><td>—</td><td>downstream understanding anchors</td></tr>
+</table>
+
+<p>FinTabNet + a curated enterprise slice (see GROUNDTRUTH doc) form the <strong>very-hard enterprise</strong> evaluation core; PubTabNet/PubTables-1M provide metric-comparable public anchors so our numbers are externally legible.</p>
+
+<h2>5. SOTA landscape (honest framing)</h2>
+
+<ul>
+<li>Specialist TSR (TATR-family) reports high TEDS/GriTS **on the PDF-</li>
+</ul>
+<p>  rendered scientific distribution it was trained on**; degrades on   photographed/low-quality enterprise scans and on heavily merged   finance tables.</p>
+<ul>
+<li>Prompted frontier + strong open VLMs (Qwen2.5-VL class) have closed</li>
+</ul>
+<p>  much of the gap on table-to-HTML/Markdown and increasingly lead on   messy real-world inputs in recent reports — but published numbers mix   zero-shot vs fine-tuned and differ in TEDS variant; <strong>not directly   comparable</strong> without a pinned harness.</p>
+<ul>
+<li><strong>Therefore:</strong> no SOTA cell is asserted here. The factory's job is to</li>
+</ul>
+<p>  produce reproduced-or-provenance-tagged TR-000 numbers under one   pinned prompt + decoding, with fine-tune-vs-zero-shot disclosed — the   same honesty contract as DC-000.</p>
+
+<h2>Status</h2>
+<ul>
+<li>§0–§2 problem framing + method lineage — <strong>DONE (v1)</strong>.</li>
+<li>§3 metric rationale — <strong>DONE (v1)</strong>; §3.1 formal metric definitions</li>
+</ul>
+<p>  (TEDS / GriTS-Top·Con·Loc / cell-&-adjacency F1) — <strong>ADDED (v2)</strong>;   §3.2 reference algorithm spec (Zhang–Shasha TEDS recurrence + costs,   GriTS factored row/col alignment + Hungarian, cell/adjacency-F1,   deterministic normalizer with explicit edge cases + determinism   contract) — <strong>ADDED (v2)</strong>, engineer-implementable. The metric   bodies remain <strong>EXECUTION-PENDING</strong> in <code>harness/</code> (no code written   or run; <code>score_item(&quot;TR-000&quot;)</code> still raises NotImplementedError).</p>
+<ul>
+<li>§4–§5 corpora + SOTA framing — <strong>DONE (v1)</strong>; no SOTA cell asserted.</li>
+</ul>
+
+<h2>Sources</h2>
+<ul>
+<li>CTO-org mandates: <code>~/Desktop/hyperapi-cto-org/.claude/agents/</code></li>
+</ul>
+<p>  (<code>chief-research-scientist.md</code>, <code>document-ai-research-scientist.md</code>,   <code>benchmark-format-steward.md</code>).</p>
+<ul>
+<li>In-repo conventions: <code>plan/PLAN-SAVIOR-BENCH-PAPER.md</code>,</li>
+</ul>
+<p>  <code>harness/tasks.json</code> (DC-000 honest pattern), <code>harness/metrics.py</code>,   <code>plan/FORMAT-CALIBRATION-vs-PureDocBench.md</code>.</p>
+<ul>
+<li>Methods/metrics from the published literature (assistant knowledge,</li>
+</ul>
+<p>  cutoff Jan 2026): Smock et al. PubTables-1M / Table Transformer / GriTS   (CVPR 2022); PubTabNet / EDD & TEDS (Zhong et al.); FinTabNet;   SciTSR; ICDAR-2013 & ICDAR-2019 cTDaR; TableBank; SPLERGE; LGPMA;   TableFormer; GOT-OCR2.0; Nougat; MinerU; Qwen2.5-VL; InternVL.   Exact figures are <strong>not reproduced here</strong> — to be benchmarked, not   cited as fact.</p>
+
+<h2>Open assumptions</h2>
+<ol>
+<li>TR-000 evaluates <strong>TSR (structure-to-HTML/grid)</strong>; table-QA is a</li>
+</ol>
+<p>   separate later task family (uses existing extract/validate metrics).</p>
+<ol>
+<li>Primary metric naming follows the mandate (<code>teds</code> primary, <code>grits</code>/</li>
+</ol>
+<p>   <code>cell_f1</code> secondary); GriTS treated as co-equal structure metric in    reporting even though TEDS is the registered primary.</p>
+<ol>
+<li>Public-corpus sizes are order-of-magnitude from literature; exact</li>
+</ol>
+<p>   counts to be confirmed at curation time, not asserted as benchmark    facts.</p>
+<ol>
+<li>§3.2 names <code>scipy.optimize.linear_sum_assignment</code> for the GriTS</li>
+</ol>
+<p>   Hungarian step as the expected impl path; the actual dependency is    pinned at metric-impl time in <code>harness/</code> (EXECUTION-PENDING), not    added to the repo here.</p>
+<ol>
+<li>The exact published GriTS 2D factorization is approximated in §3.2 as</li>
+</ol>
+<p>   row-then-column 1-D alignment + Hungarian within the induced    correspondence (Smock et al.'s tractable form); if a future read of    the reference impl differs, §3.2 is the section to reconcile — it is    isolated for exactly that reason.</p>
+
+</body></html>

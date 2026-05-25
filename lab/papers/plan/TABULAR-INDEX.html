@@ -1,0 +1,169 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TABULAR-INDEX — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/lab/savior-bench-report.html">← back</a>
+
+<h1>TABULAR-INDEX — TR-000 tabular-reasoning research stream</h1>
+
+<p>Single entry point and reviewer table-of-contents for the TR-000 (Table Structure Recognition) benchmark stream. Read this first; it cross-links every TABULAR-* doc + the harness scaffold and states, per artifact, whether it is DESIGN-COMPLETE, EXECUTION-PENDING, or HUMAN-GATED.</p>
+
+<p><strong>One-line state:</strong> design + reference-impl scaffold are complete; every remaining step is blocked on human-gated compute / data / hosting. TR-000 is <strong>REGISTERED-NOT-YET-RUN</strong>: <code>score_item(&quot;TR-000&quot;)</code> raises <code>NotImplementedError</code> in code, and the metric scaffold also raises — no TR-000 number can exist anywhere.</p>
+
+<h2>Status legend</h2>
+<ul>
+<li><strong>DESIGN-COMPLETE</strong> — fully specified; no further design work adds</li>
+</ul>
+<p>  value (do not pad). Nothing executed.</p>
+<ul>
+<li><strong>EXECUTION-PENDING</strong> — interface/spec frozen; needs code + a run that</li>
+</ul>
+<p>  requires resources not present in this environment.</p>
+<ul>
+<li><strong>HUMAN-GATED</strong> — explicitly may NOT proceed without a human decision</li>
+</ul>
+<p>  (compute spend, annotator hiring, external publish, prod provisioning).</p>
+
+<h2>Document map</h2>
+
+<table>
+<tr><th>Artifact</th><th>Scope</th><th>Status</th></tr>
+<tr><td><code>plan/TABULAR-LITERATURE-SURVEY.md</code></td><td>Problem framing, method lineage, formal metric defs (§3.1), engineer-implementable algorithm spec (§3.2), public corpora, SOTA honesty framing</td><td><strong>DESIGN-COMPLETE</strong> (v1+v2); metric bodies EXECUTION-PENDING</td></tr>
+<tr><td><code>plan/TABULAR-MODELS-TO-BENCHMARK.md</code></td><td>Prompted-OSS roster, hosted-API inventory, local-host recommendation, per-model prompt/decoding/invocation spec (§5)</td><td><strong>DESIGN-COMPLETE</strong> (v1+v2); adapters + hosting EXECUTION-PENDING / HUMAN-GATED (GPU)</td></tr>
+<tr><td><code>plan/TABULAR-GROUNDTRUTH-DATA.md</code></td><td>Downloads characterization, public anchors, curation pipeline, annotation rubric (§4b), IAA protocol (§4c), data-summary schema (§4d)</td><td><strong>DESIGN-COMPLETE</strong> (v1+v2); curation + annotation EXECUTION-PENDING / HUMAN-GATED (annotators). 10k NOT asserted; honest ~3.5k–6.8k</td></tr>
+<tr><td><code>plan/TABULAR-API-HANDSHAKE.md</code></td><td>Request/response/auth/error/versioning contract; benchmark↔product separation</td><td><strong>DESIGN-COMPLETE</strong> (v1); <code>tabular</code> op + endpoint NOT provisioned — HUMAN-GATED (apis.hyperbots.com)</td></tr>
+<tr><td><code>plan/TABULAR-BENCHMARK-WIRING.md</code></td><td>Harness inventory (verified), loader contract, metric signatures (§2), repro_check contract, stratified reporting, adapter hook</td><td><strong>DESIGN-COMPLETE</strong>; loader/metric/adapter impl EXECUTION-PENDING</td></tr>
+<tr><td><code>harness/tabular_metrics.py</code></td><td>Reference-impl SKELETON: typed signatures + §3.2 algorithm as structured comments + <code>NotImplementedError</code> bodies + determinism contract</td><td><strong>EXECUTION-PENDING</strong> scaffold — raises by design; no number produced</td></tr>
+<tr><td><code>harness/tests/test_tabular_metrics.py</code></td><td>Golden-fixture acceptance scaffold (<code>@pytest.mark.skip</code>) + 2 live contract guards (metrics + <code>score_item(&quot;TR-000&quot;)</code> must raise)</td><td><strong>EXECUTION-PENDING</strong> scaffold — acceptance tests skipped; invariant guards run</td></tr>
+<tr><td><code>harness/metrics.py</code> <code>score_item(&quot;TR-000&quot;)</code></td><td>The enforced no-faked-cell gate</td><td><strong>REGISTERED-NOT-YET-RUN</strong> — raises <code>NotImplementedError</code></td></tr>
+<tr><td><code>harness/tasks.json</code> <code>&quot;TR-000&quot;</code></td><td>Frozen task (prompt + decoding pinned, identical for every <code>tabular</code> model)</td><td><strong>DESIGN-COMPLETE</strong>; <code>_status</code> = REGISTERED-NOT-YET-RUN</td></tr>
+</table>
+
+<h2>Reading order for a reviewer</h2>
+<ol>
+<li>This index.</li>
+<li><code>TABULAR-LITERATURE-SURVEY.md</code> — why TSR, which metrics, §3.1/§3.2</li>
+</ol>
+<p>   = the implementation contract.</p>
+<ol>
+<li><code>TABULAR-BENCHMARK-WIRING.md</code> — how §3.2 maps onto <code>harness/</code>.</li>
+<li><code>harness/tabular_metrics.py</code> — the typed scaffold those signatures</li>
+</ol>
+<p>   become; <code>harness/tests/test_tabular_metrics.py</code> — the acceptance    gate (skipped) + the invariant guards (live).</p>
+<ol>
+<li><code>TABULAR-GROUNDTRUTH-DATA.md</code> — what data the run consumes (honest</li>
+</ol>
+<p>   ceiling, not 10k).</p>
+<ol>
+<li><code>TABULAR-MODELS-TO-BENCHMARK.md</code> + <code>TABULAR-API-HANDSHAKE.md</code> —</li>
+</ol>
+<p>   which models, how served (none provisioned).</p>
+
+<h2>What a human / funded run must do next (checklist)</h2>
+
+<p>None of this may proceed in this environment — each item is gated on a human decision and resources not present here.</p>
+
+<ul>
+<li>[ ] <strong>HUMAN-GATED — compute approval.</strong> Authorize GPU/serving spend.</li>
+</ul>
+<p>      Stand up inference for the OSS roster (TABULAR-MODELS §1/§3) and       provision hosted-API keys for the API inventory (§2); re-verify       every <code>model_id</code> before any run (ids drift).</p>
+<ul>
+<li>[ ] <strong>HUMAN-GATED — annotators.</strong> Hire/assign annotators; execute the</li>
+</ul>
+<p>      GROUNDTRUTH §4b rubric + §4c IAA protocol on the curated very-hard       enterprise slice. Report the honest corpus size actually achieved       (range ~3.5k–6.8k stands; do NOT assert 10k).</p>
+<ul>
+<li>[ ] <strong>HUMAN-GATED — apis.hyperbots.com <code>tabular</code> provisioning.</strong></li>
+</ul>
+<p>      Provision the <code>tabular</code> op + live endpoint per API-HANDSHAKE;       nothing is deployed/live-verified here.</p>
+<ul>
+<li>[ ] <strong>EXECUTION-PENDING — metric impl.</strong> Implement</li>
+</ul>
+<p>      <code>harness/tabular_metrics.py</code> bodies against LITERATURE-SURVEY       §3.2 (NOT from papers); validate each metric against a reference       implementation; flip the <code>@pytest.mark.skip</code> acceptance tests in       <code>harness/tests/test_tabular_metrics.py</code> and make them pass; pin       the new third-party deps (html5 parser, scipy, Levenshtein) — add       to a SCALE-UP pin block, NOT the stdlib-only seed <code>PINS.txt</code>.</p>
+<ul>
+<li>[ ] <strong>EXECUTION-PENDING — score_item wiring.</strong> Only after metrics are</li>
+</ul>
+<p>      validated, replace the <code>raise NotImplementedError</code> in       <code>harness/metrics.py</code> <code>score_item(&quot;TR-000&quot;)</code> with the §2 drop-in       (primary <code>teds</code> scalar; GriTS/cell-F1 to the results sidecar).       Until then the raise stays — it is the no-faked-cell enforcement.</p>
+<ul>
+<li>[ ] <strong>EXECUTION-PENDING — loader + repro.</strong> Implement</li>
+</ul>
+<p>      <code>datasets/loaders/tabular_loader.py</code> + slice manifests (WIRING       §1); extend <code>repro_check</code> HARNESS_PATHS pins + metric-availability       guard (WIRING §3).</p>
+<ul>
+<li>[ ] <strong>EXECUTION-PENDING — run + report.</strong> Run the pinned harness;</li>
+</ul>
+<p>      emit cells with provenance (provider/endpoint/model_id/run_date),       bootstrap CI (<code>seed=20260516</code>) or <code>null</code> (never a fabricated       interval), and mandatory fine-tune-vs-zero-shot disclosure.</p>
+<ul>
+<li>[ ] <strong>HUMAN-GATED — external publish.</strong> Any leaderboard/paper release</li>
+</ul>
+<p>      of TR-000 numbers is a separate human decision; not in scope here.</p>
+
+<h2>Hard-constraint reaffirmation</h2>
+<p>NO fabrication, NO faked metric cells, NO training/hosting/external publish in this environment. TR-000 stays REGISTERED-NOT-YET-RUN with the <code>NotImplementedError</code> contract enforced in code. 10k real-doc GT is NOT asserted (honest ~3.5k–6.8k). The scaffold produces no number.</p>
+
+<h2>Sources</h2>
+<ul>
+<li>TABULAR-* docs in <code>plan/</code> (this stream); <code>harness/tabular_metrics.py</code>,</li>
+</ul>
+<p>  <code>harness/tests/test_tabular_metrics.py</code>, <code>harness/metrics.py</code>,   <code>harness/tasks.json</code>.</p>
+<ul>
+<li>CTO-org mandates: <code>~/Desktop/hyperapi-cto-org/.claude/agents/</code></li>
+</ul>
+<p>  (<code>chief-research-scientist.md</code>, <code>document-ai-research-scientist.md</code>,   <code>benchmark-format-steward.md</code>).</p>
+<ul>
+<li>In-repo conventions: <code>plan/PLAN-SAVIOR-BENCH-PAPER.md</code>,</li>
+</ul>
+<p>  <code>plan/FORMAT-CALIBRATION-vs-PureDocBench.md</code>.</p>
+
+<h2>Open assumptions</h2>
+<ol>
+<li>This index is navigation + status only; it asserts no result and is</li>
+</ol>
+<p>   not a design surface — settled sections are NOT re-derived here.</p>
+<ol>
+<li>Status values are transcribed from each doc's own <code>## Status</code></li>
+</ol>
+<p>   section + the live code state at index time; the per-doc Status is    authoritative if they ever diverge.</p>
+<ol>
+<li>"DESIGN-COMPLETE" means the prose/spec layer is saturated for that</li>
+</ol>
+<p>   artifact — further prose is explicitly out of scope (anti-padding).</p>
+
+<h2>Status</h2>
+<ul>
+<li>Index + per-doc status table + reviewer reading order + human-gated</li>
+</ul>
+<p>  next-steps checklist — <strong>DONE (v2 packaging pass)</strong>. Navigation only;   no design changed, no number produced; TR-000 still   REGISTERED-NOT-YET-RUN.</p>
+
+</body></html>

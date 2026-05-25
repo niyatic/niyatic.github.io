@@ -1,0 +1,313 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TABULAR-GROUNDTRUTH-DATA — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/lab/savior-bench-report.html">← back</a>
+
+<h1>TABULAR REASONING — Ground-Truth Data Plan</h1>
+
+<p>_Owner: cto-org <code>data-curator-finance</code> (= the data researcher, per program mandate). <strong>No document content, no PII, and no file bytes were read, exfiltrated, or committed.</strong> The <code>~/Downloads</code> scan below is <strong>metadata only</strong> (file extension counts via <code>find</code>; no <code>cat</code>/parse/open of any document). The "10,000" figure is treated as a <strong>curation TARGET</strong>, not a claim — this doc reports the honest achievable number._</p>
+
+<h2>1. <code>~/Downloads</code> characterization (read-only, metadata only)</h2>
+
+<p>Bounded scan: <code>find ~/Downloads -maxdepth 3 -type f</code>, extension tally only. <strong>No content was opened.</strong> Observed (2026-05-20):</p>
+
+<table>
+<tr><th>Type</th><th>Count (maxdepth 3)</th><th>Table-bearing likelihood</th></tr>
+<tr><td>pdf</td><td>22,080</td><td>high (invoices/statements/reports — but mixed with non-doc PDFs)</td></tr>
+<tr><td>csv</td><td>1,803</td><td>structurally tabular, but already-parsed (weak TSR GT — no layout)</td></tr>
+<tr><td>xlsx</td><td>233</td><td>tabular; usable as <em>structured GT</em> if paired with a rendered view</td></tr>
+<tr><td>docx</td><td>131</td><td>medium (embedded tables)</td></tr>
+<tr><td>xls</td><td>65</td><td>tabular (legacy)</td></tr>
+<tr><td>pptx</td><td>73</td><td>low–medium (slide tables)</td></tr>
+<tr><td>zip</td><td>344</td><td>unknown until inventoried (NOT expanded in this scan)</td></tr>
+<tr><td>(non-doc: 22k jpg, 13k png, 14k json, 1.7k eml, …)</td><td>—</td><td>excluded from the doc-like trove</td></tr>
+</table>
+
+<p><strong>Honesty note — discrepancy with the program brief.</strong> The mandate described the trove as <strong>2,730 doc-like files</strong> (1,900 pdf / 173 xlsx / 145 csv / 92 docx / 333 zip). The live <code>~/Downloads</code> at maxdepth-3 is <strong>much larger and noisier</strong> (~22k pdf, mostly NOT enterprise docs — many are images-as-pdf, web saves, manuals, etc.). The brief's 2,730 almost certainly referred to a <strong>specific curated top-level subset</strong> or an earlier state, not the whole tree. <strong>Do not treat 22,080 pdf as 22,080 enterprise tables.</strong> The real signal is small relative to the raw count; the curation pipeline (§3) exists precisely to separate signal from noise, and the achievable count (§4) is reported honestly low.</p>
+
+<h2>2. Public hard-table corpora (the legible anchors)</h2>
+
+<table>
+<tr><th>Corpus</th><th>Domain</th><th>Tables (lit. order-of-mag)</th><th>Role in TR-000 GT</th></tr>
+<tr><td><strong>FinTabNet</strong></td><td>financial 10-K</td><td>~113k</td><td><strong>primary enterprise-proxy GT</strong> (closest public match; HTML structure GT)</td></tr>
+<tr><td><strong>PubTabNet</strong></td><td>scientific</td><td>~568k</td><td>TEDS-comparable public anchor</td></tr>
+<tr><td><strong>PubTables-1M</strong></td><td>scientific PDF</td><td>~948k tables</td><td>GriTS anchor + TATR baseline parity</td></tr>
+<tr><td><strong>SciTSR</strong></td><td>scientific</td><td>~15k</td><td>complex spanning-cell stress slice</td></tr>
+<tr><td><strong>ICDAR-2013 / 2019 cTDaR</strong></td><td>mixed/archival</td><td>small, hard</td><td>low-quality / photographed robustness slice</td></tr>
+<tr><td><strong>TableBank</strong></td><td>mixed</td><td>~417k (detection)</td><td>detection breadth (optional)</td></tr>
+</table>
+
+<p>Licenses must be re-checked per corpus before redistribution; we evaluate against them and publish <em>metrics + rerun commands</em>, not the corpora themselves (same discipline as the SAVIOR-Bench plan).</p>
+
+<h2>3. "Very-hard enterprise table" criteria + curation pipeline</h2>
+
+<p>A table qualifies as <strong>very-hard enterprise</strong> if it meets ≥2 of:</p>
+<ul>
+<li>borderless / partially-ruled rules (no full grid lines);</li>
+<li>merged/spanning header or sub-total cells (rowspan/colspan > 1);</li>
+<li>multi-page continuation with repeated headers;</li>
+<li>photographed or low-quality scan (skew/noise/JPEG artifacts);</li>
+<li>finance semantics: nested line items, currency/locale formatting,</li>
+</ul>
+<p>  negative-in-parentheses, footnote-linked figures;</p>
+<ul>
+<li>multilingual or rotated content.</li>
+</ul>
+
+<p>Pipeline (each stage logs counts only; no content leaves the curator):</p>
+<ol>
+<li><strong>Inventory</strong> the doc-like subset (incl. controlled <code>zip</code> expansion</li>
+</ol>
+<p>   in a sandbox) — metadata + page count, no text extraction yet.</p>
+<ol>
+<li><strong>Doc-class filter</strong> — keep invoices/POs/statements/financials;</li>
+</ol>
+<p>   drop non-enterprise PDFs (manuals, web saves, image-PDFs).</p>
+<ol>
+<li><strong>Table-presence detection</strong> — run a table detector; keep pages with</li>
+</ol>
+<p>   ≥1 table.</p>
+<ol>
+<li><strong>Hardness scoring</strong> — apply the §3 criteria; bucket easy/medium/</li>
+</ol>
+<p>   very-hard.</p>
+<ol>
+<li><strong>GT annotation</strong> — expert cell-grid + HTML annotation for the</li>
+</ol>
+<p>   very-hard bucket (the cost bottleneck); public corpora supply    ready GT for anchors.</p>
+<ol>
+<li><strong>PII / licensing review</strong> (<code>data-privacy-compliance</code>) — redact or</li>
+</ol>
+<p>   exclude; only license-clean items enter any released split; internal    docs stay internal (metrics-only publication).</p>
+<ol>
+<li><strong>Provenance manifest</strong> — per item: source, license, class, hardness,</li>
+</ol>
+<p>   GT method (expert vs corpus-native), split.</p>
+
+<h2>4. Honest tally toward the 10,000 target</h2>
+
+<table>
+<tr><th>Bucket</th><th>Realistically achievable</th><th>Confidence</th><th>Notes</th></tr>
+<tr><td>Public very-hard anchors (FinTabNet hard subset + SciTSR + ICDAR cTDaR)</td><td>~3,000–6,000</td><td>medium-high</td><td>corpus-native GT exists; "hard subset" of FinTabNet is a fraction, not all 113k</td></tr>
+<tr><td><code>~/Downloads</code> enterprise very-hard (post-filter, post-annotation)</td><td><strong>low hundreds (est. ~200–800)</strong></td><td><strong>low</strong></td><td>raw 22k pdf is mostly non-enterprise; signal is small; needs expert annotation; PII/license cuts further</td></tr>
+<tr><td><strong>Total credibly very-hard enterprise</strong></td><td><strong>~3,500–6,800</strong></td><td>medium (range, not a point)</td><td>—</td></tr>
+</table>
+
+<p><strong>Conclusion (do not round up):</strong> the <strong>10,000 target is NOT met from real sources without additional licensed acquisition.</strong> The credible very-hard enterprise count is on the order of <strong>3.5k–6.8k</strong>, dominated by public anchors; the local <code>~/Downloads</code> contribution is <strong>low hundreds</strong>, not thousands. Reaching 10k requires either (a) relaxing "very-hard" to include medium-hardness enterprise tables, or (b) licensing additional enterprise corpora. Both paths must be stated explicitly in any published benchmark card; <strong>10k is not asserted.</strong></p>
+
+<h2>4b. Annotation rubric (very-hard enterprise slice) — DESIGNED</h2>
+
+<p>The cost bottleneck (§3 stage 5) is human cell-grid + HTML annotation. Rubric below makes it reproducible across annotators. <strong>EXECUTION-PENDING — no annotation performed in this environment (no annotators, no real docs).</strong></p>
+
+<p><strong>Unit of annotation:</strong> one detected table region → one canonical HTML tree + the explicit <code>grid</code> cell list (the §1 wiring contract in <code>plan/TABULAR-BENCHMARK-WIRING.md</code>).</p>
+
+<p>Per-cell required fields and decision rules:</p>
+<ul>
+<li><strong>Cell boundary.</strong> A cell is the smallest rectangle bounded by ruled</li>
+</ul>
+<p>  lines OR by consistent whitespace gutters. Borderless: gutter must be   ≥1.5× median intra-word gap to split a column (logged threshold, not   per-annotator taste).</p>
+<ul>
+<li><strong>Spanning.</strong> <code>rowspan</code>/<code>colspan</code> recorded as integers; a value</li>
+</ul>
+<p>  visually centered across N sub-columns under a group header → header   <code>colspan=N</code>; never duplicate the value into N cells.</p>
+<ul>
+<li><strong>Header vs body (<code>is_header</code>).</strong> Header = label row/col that names a</li>
+</ul>
+<p>  dimension. Stub column (leftmost row labels) tagged <code>is_header</code> on the   cell when it names the row's measure; ambiguous → <code>body</code> + flag   <code>header_ambiguous</code> (excluded from TEDS-Struct strictness, kept in   content scoring).</p>
+<ul>
+<li><strong>Cell text normalization.</strong> Transcribe <strong>verbatim</strong> glyphs incl.</li>
+</ul>
+<p>  currency symbols, thousands separators, and negatives. Negatives in   parentheses → keep parentheses verbatim in <code>text</code>; a parallel   <code>numeric_value</code> is NOT annotated (TR-000 is structure+text, not   semantics — semantics belong to extract/validate tasks).</p>
+<ul>
+<li><strong>Empty vs missing.</strong> Visually empty cell that is structurally present</li>
+</ul>
+<p>  → empty-string cell (counts toward grid). Cell absent from the grid   (ragged table) → omitted, <code>grid</code> records the true span layout.</p>
+<ul>
+<li><strong>Multi-page continuation.</strong> Each physical page annotated separately</li>
+</ul>
+<p>  with <code>meta.complexity=multipage</code> + a <code>continuation_group</code> id; the   metric scores per-page (the model also sees per-page input) — joining   is a downstream task, not TR-000 GT.</p>
+<ul>
+<li><strong>Reading order.</strong> Row-major, top-to-bottom, left-to-right per visual</li>
+</ul>
+<p>  layout; rotated tables annotated in their de-rotated reading frame and   tagged <code>meta.complexity=rotated</code>.</p>
+
+<p><strong>Adjudication ladder:</strong> every very-hard item is annotated by <strong>2 independent annotators</strong>; disagreements go to a <strong>3rd senior adjudicator</strong> whose call is the gold. All three versions retained for the IAA computation (§4c) and for an error-taxonomy audit.</p>
+
+<h2>4c. Inter-annotator agreement (IAA) protocol — DESIGNED</h2>
+
+<p>IAA is measured <strong>with the same metrics the benchmark scores models with</strong> (no separate ad-hoc agreement number — agreement and model quality are then on one comparable scale):</p>
+
+<ul>
+<li><strong>Structure agreement:</strong> pairwise <strong>GriTS-Top</strong> and <strong>TEDS-Struct</strong></li>
+</ul>
+<p>  between annotator A and annotator B per item; report mean ± bootstrap   ci95 (<code>seed 20260516</code>, same <code>bootstrap_ci</code> as the harness).</p>
+<ul>
+<li><strong>Content agreement:</strong> pairwise <strong>TEDS (full)</strong> and **cell-F1</li>
+</ul>
+<p>  (content)**.</p>
+<ul>
+<li><strong>Categorical fields</strong> (<code>is_header</code>, span integers): <strong>Cohen's κ</strong></li>
+</ul>
+<p>  per field; flag κ < 0.6 fields for rubric tightening before scale-up.</p>
+<ul>
+<li><strong>Acceptance gate:</strong> a slice is admissible as GT only if median</li>
+</ul>
+<p>  pairwise GriTS-Top ≥ 0.95 <strong>and</strong> TEDS-full ≥ 0.90 on a ≥50-item   calibration round; below that, rubric is revised and re-calibrated   (do not ship GT the annotators themselves can't agree on — it caps   the meaningful model ceiling).</p>
+<ul>
+<li><strong>Annotator-vs-gold ceiling:</strong> after adjudication, report</li>
+</ul>
+<p>  single-annotator-vs-gold TEDS as the <strong>human ceiling</strong>; published   model numbers are always shown against this ceiling so a model   "beating GT" is visibly a noise/ceiling artifact, not a claim.</p>
+<ul>
+<li><strong>Drift control:</strong> a fixed 30-item <strong>anchor set</strong> is re-annotated</li>
+</ul>
+<p>  every 500 items; anchor-set IAA tracked over time to catch annotator   drift (logged, not asserted).</p>
+
+<p><strong>Honest status:</strong> the protocol is fully specified; <strong>zero items have been annotated</strong> (no real corpus / annotators in this environment). All IAA numbers are EXECUTION-PENDING and MUST NOT be reported until a real calibration round runs.</p>
+
+<h2>4d. Data-summary schema (machine-readable, for the benchmark card)</h2>
+
+<p>One JSON per frozen <code>dataset_id</code> slice (consumed by §1 loader manifest and the leaderboard card builder). <strong>Schema only — not populated.</strong></p>
+
+<pre><code class="lang-jsonc">
+{
+  &quot;dataset_id&quot;: &quot;enterprise-veryhard-v1&quot;,
+  &quot;frozen_at_commit&quot;: &quot;&lt;git sha&gt;&quot;,
+  &quot;manifest_sha256&quot;: &quot;&lt;sha of the doc_id list&gt;&quot;,
+  &quot;n_items&quot;: null,                 // null until curated — never guessed
+  &quot;ceiling&quot;: {                     // honest reachability, not a target
+    &quot;aspirational_target&quot;: 10000,
+    &quot;credible_veryhard_total_range&quot;: [3500, 6800],
+    &quot;this_slice_source&quot;: &quot;enterprise-curated|fintabnet|...&quot;,
+    &quot;note&quot;: &quot;10k NOT asserted; see §4 conclusion&quot;
+  },
+  &quot;strata&quot;: {                      // counts per key, null until curated
+    &quot;source&quot;:     {&quot;fintabnet&quot;: null, &quot;enterprise-curated&quot;: null, &quot;...&quot;: null},
+    &quot;complexity&quot;: {&quot;simple&quot;: null, &quot;spanning&quot;: null, &quot;nested&quot;: null,
+                   &quot;borderless&quot;: null, &quot;multipage&quot;: null, &quot;rotated&quot;: null},
+    &quot;quality&quot;:    {&quot;digital&quot;: null, &quot;scan-clean&quot;: null,
+                   &quot;scan-degraded&quot;: null, &quot;photo&quot;: null}
+  },
+  &quot;annotation&quot;: {
+    &quot;method&quot;: &quot;expert-2plus1-adjudicated|corpus-native&quot;,
+    &quot;rubric_version&quot;: &quot;tabular-gt-rubric-v1&quot;,
+    &quot;iaa&quot;: {                       // EXECUTION-PENDING — null until run
+      &quot;grits_top_pairwise&quot;: null, &quot;teds_struct_pairwise&quot;: null,
+      &quot;teds_full_pairwise&quot;: null, &quot;cell_f1_pairwise&quot;: null,
+      &quot;kappa_is_header&quot;: null, &quot;human_ceiling_teds&quot;: null
+    }
+  },
+  &quot;license&quot;: {&quot;tag&quot;: null, &quot;redistributable&quot;: false,
+              &quot;publication&quot;: &quot;metrics+rerun-command-only&quot;},
+  &quot;pii_review&quot;: {&quot;status&quot;: &quot;pending&quot;, &quot;reviewer&quot;: &quot;data-privacy-compliance&quot;}
+}
+</code></pre>
+
+<p><code>null</code> is load-bearing: it is the honest "not yet measured" — the card builder must render <code>null</code> as "execution-pending", never as 0 or a placeholder number.</p>
+
+<h2>5. Data summary (for the benchmark card)</h2>
+
+<ul>
+<li>TR-000 GT = public very-hard anchors (legible, reproducible) + a</li>
+</ul>
+<p>  small expert-annotated enterprise slice (internal, metrics-only).</p>
+<ul>
+<li>Metrics computed: TEDS/TEDS-Struct (primary), GriTS, cell-F1</li>
+</ul>
+<p>  (secondary) — see TABULAR-LITERATURE-SURVEY.md.</p>
+<ul>
+<li>Every item carries a provenance + license + hardness tag; internal</li>
+</ul>
+<p>  items never published as data, only as metric cells with a rerun   command (SAVIOR-Bench discipline).</p>
+<ul>
+<li>Splits frozen + held-out policy per <code>plan/LEADERBOARD-SPEC.md</code>.</li>
+</ul>
+
+<h2>Sources</h2>
+<ul>
+<li><code>~/Downloads</code> metadata scan (extension counts only; no content read),</li>
+</ul>
+<p>  2026-05-20.</p>
+<ul>
+<li>Public corpora from literature (assistant knowledge, cutoff Jan 2026):</li>
+</ul>
+<p>  FinTabNet, PubTabNet, PubTables-1M, SciTSR, ICDAR-2013/2019 cTDaR,   TableBank. Sizes are order-of-magnitude, to be confirmed at curation.</p>
+<ul>
+<li>CTO-org mandates: <code>data-curator-finance.md</code>,</li>
+</ul>
+<p>  <code>data-privacy-compliance.md</code> (in <code>~/Desktop/hyperapi-cto-org/.claude/agents/</code>).</p>
+<ul>
+<li>In-repo discipline: <code>plan/PLAN-SAVIOR-BENCH-PAPER.md</code>,</li>
+</ul>
+<p>  <code>plan/LEADERBOARD-SPEC.md</code>.</p>
+
+<h2>Status</h2>
+<ul>
+<li>§1 Downloads characterization — <strong>DONE (v1, metadata-only)</strong>; honest</li>
+</ul>
+<p>  ceiling ~3.5k–6.8k credible very-hard, Downloads ~200–800.</p>
+<ul>
+<li>§2 public anchors — <strong>DONE (v1)</strong>.</li>
+<li>§3 pipeline stages — <strong>DESIGNED (v1)</strong>; execution pending.</li>
+<li>§4b annotation rubric — <strong>DESIGNED (v2)</strong>; zero items annotated.</li>
+<li>§4c IAA protocol — <strong>DESIGNED (v2)</strong>; all IAA numbers EXECUTION-PENDING.</li>
+<li>§4d data-summary schema — <strong>DESIGNED (v2)</strong>; not populated (<code>null</code>s).</li>
+<li>10k target remains <strong>NOT asserted</strong>; honest range stands.</li>
+</ul>
+
+<h2>Open assumptions</h2>
+<ol>
+<li>The brief's "2,730 doc-like / 10k" figures predate or sub-select the</li>
+</ol>
+<p>   current <code>~/Downloads</code>; the honest observed tree is larger and noisier    — achievable very-hard count reported as a <strong>range, not 10k</strong>.</p>
+<ol>
+<li><code>zip</code> (344) not expanded in this scan; could add or not add signal —</li>
+</ol>
+<p>   counted as unknown, not as ground truth.</p>
+<ol>
+<li>Expert-annotation budget is the binding constraint on the enterprise</li>
+</ol>
+<p>   slice size; not yet allocated.</p>
+<ol>
+<li>Public-corpus licenses permit metric evaluation; redistribution</li>
+</ol>
+<p>   handled per-corpus by <code>data-privacy-compliance</code> before any release.</p>
+<ol>
+<li>No document content or PII was read, stored, or committed; only</li>
+</ol>
+<p>   aggregate file-type counts appear here.</p>
+
+</body></html>
