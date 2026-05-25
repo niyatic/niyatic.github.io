@@ -1,0 +1,268 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Document-AI Reddit Engagement Strategy</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — human-gated; never auto-posted</div><div class="meta">HyperAPI GTM-hub — reddit-docai · 2026-05-22</div><h1>Document-AI Reddit Engagement Strategy</h1>
+<p>A draft engagement strategy for Reddit communities discussing **document AI,</p>
+<p>intelligent document processing (IDP), OCR, and finance-document extraction** —</p>
+<p>the technical and builder side of the conversation. It is a deliberate</p>
+<p><strong>complement</strong> to the existing <code>hyperapi-reddit-fa-listening</code> repo, not a</p>
+<p>duplicate of it.</p>
+<p>This document is <strong>DRAFT</strong> and <strong>human-gated</strong>. The automation never posts to</p>
+<p>Reddit. Every binding rule below is carried verbatim from</p>
+<p>reddit-fa-listening&#x27;s <code>ETHICS.md</code>.</p>
+<h2>How this relates to hyperapi-reddit-fa-listening</h2>
+<p><code>hyperapi-reddit-fa-listening</code> is a daily social-listening + response-drafting</p>
+<p>agent for Hyperbots&#x27; 13 Finance &amp; Accounting solution areas. Its subreddit set</p>
+<p>is finance-practitioner communities — r/Accounting, r/AccountsPayable,</p>
+<p>r/AccountsReceivable, r/bookkeeping, r/FPandA, r/smallbusiness — where the</p>
+<p>audience is the finance professional living the AP/AR/close pain.</p>
+<p>The <strong>document-AI angle is a different audience in a different room</strong>: builders,</p>
+<p>ML/data engineers, and IDP/OCR evaluators asking *how* to extract structured</p>
+<p>data from documents, which approach to use, and whether a given accuracy number</p>
+<p>is real. reddit-fa-listening already touches the edge of this — its</p>
+<p><code>finance_document_processing</code> and <code>intelligent_document_processing</code> areas</p>
+<p>override into r/accountingtech, r/datascience, and r/MachineLearning — but those</p>
+<p>communities are searched only through a finance-keyword lens.</p>
+<p>This workstream <strong>extends</strong> reddit-fa-listening rather than forking it:</p>
+<ul>
+<li><strong>Reuse, do not re-implement.</strong> The same `discover → score → draft → queue →</li>
+</ul>
+<p>  summary` pipeline, the same hard thresholds and weighted rank in</p>
+<p>  <code>config/engagement.yaml</code>, and the same <code>ETHICS.md</code> apply unchanged.</p>
+<ul>
+<li><strong>Add a document-AI subreddit layer.</strong> The subreddits and thread types below</li>
+</ul>
+<p>  are proposed as a new override group (e.g. a <code>doc_ai</code> area family in</p>
+<p>  <code>config/subreddits.yaml</code>) so discovery covers builder communities with</p>
+<p>  document-AI keywords, not only finance keywords.</p>
+<ul>
+<li><strong>Distinct relevance keywords.</strong> Match on extraction/IDP/OCR technical terms</li>
+</ul>
+<p>  (parsing accuracy, schema, field-level F1, document layout, table extraction)</p>
+<p>  rather than AP/AR workflow terms.</p>
+<ul>
+<li><strong>Shared review queue and Slack digest.</strong> Doc-AI drafts land in the same</li>
+</ul>
+<p>  <code>PENDING_REVIEW</code> queue and daily summary, tagged as a separate theme so the</p>
+<p>  human reviewer can sample them alongside the F&amp;A drafts.</p>
+<p>Net effect: one pipeline, one ethics standard, two listening lenses.</p>
+<h2>Document-AI relevant subreddits</h2>
+<p>The communities below are where document-AI / IDP / OCR / extraction questions</p>
+<p>genuinely surface. Each is tagged with its vendor-participation posture, mirrored</p>
+<p>from reddit-fa-listening&#x27;s <code>subreddits.yaml</code> model (<code>vendor_unfriendly</code>,</p>
+<p><code>vendor_naming_discouraged</code>).</p>
+<ul>
+<li><strong>r/MachineLearning</strong> — research and applied ML; document AI, layout models,</li>
+</ul>
+<p>  OCR benchmarks. Self-promotion strongly discouraged — *vendor naming</p>
+<p>  discouraged*; engage on technical substance only.</p>
+<ul>
+<li><strong>r/datascience</strong> — practitioners evaluating extraction approaches and</li>
+</ul>
+<p>  accuracy. *Vendor naming discouraged.*</p>
+<ul>
+<li><strong>r/LanguageTechnology</strong> — NLP/document-understanding discussion; layout-aware</li>
+</ul>
+<p>  models, table parsing. Helpful technical participation welcome — *vendor</p>
+<p>  naming discouraged.*</p>
+<ul>
+<li><strong>r/computervision</strong> — OCR, document image preprocessing, layout detection.</li>
+</ul>
+<p>  *Vendor naming discouraged.*</p>
+<ul>
+<li><strong>r/learnmachinelearning</strong> — newer builders asking &quot;how do I extract data</li>
+</ul>
+<p>  from PDFs / invoices&quot;. High question volume; *vendor naming discouraged*.</p>
+<ul>
+<li><strong>r/datasets</strong> — requests for document/invoice datasets and ground truth for</li>
+</ul>
+<p>  extraction evaluation. *Vendor naming discouraged.*</p>
+<ul>
+<li><strong>r/artificial</strong> and <strong>r/ArtificialIntelligence</strong> — broad AI discussion; IDP</li>
+</ul>
+<p>  and document-AI threads appear. Mixed rules — *vendor naming discouraged*.</p>
+<ul>
+<li><strong>r/LocalLLaMA</strong> — builders running open-source models, including for document</li>
+</ul>
+<p>  extraction; relevant to the Hyperbots-IP fine-tuned-OSS framing. *Vendor</p>
+<p>  naming discouraged.*</p>
+<ul>
+<li><strong>r/aws</strong>, <strong>r/Azure</strong>, <strong>r/devops</strong> — teams comparing cloud OCR/document</li>
+</ul>
+<p>  services and asking about extraction accuracy/cost at scale. Helpful</p>
+<p>  participation welcome — *vendor naming discouraged*.</p>
+<ul>
+<li><strong>r/accountingtech</strong> — the bridge community: finance-tech buyers evaluating</li>
+</ul>
+<p>  document-AI tooling. Shared with reddit-fa-listening; helpful participation</p>
+<p>  welcome but vendor self-promotion banned — *vendor naming discouraged*.</p>
+<ul>
+<li><strong>r/Rag</strong> — retrieval-augmented-generation builders who hit document parsing</li>
+</ul>
+<p>  and extraction as an upstream step. *Vendor naming discouraged.*</p>
+<p><strong>Vendor-unfriendly (surface for awareness only, <code>NO_POST_RECOMMENDED</code>):</strong></p>
+<p>r/programming and r/SaaS frequently remove vendor-flavored comments outright;</p>
+<p>threads are read for signal but no draft is posted.</p>
+<h2>Relevant thread types</h2>
+<p>Within those subreddits, qualify on <strong>thread intent</strong>, not just keywords:</p>
+<ul>
+<li><strong>&quot;How do I extract structured data from PDFs / invoices / forms&quot;</strong> — genuine</li>
+</ul>
+<p>  build questions; highest-value, helpful-first answers.</p>
+<ul>
+<li><strong>OCR / IDP approach comparisons</strong> — &quot;cloud OCR vs open-source vs build&quot; —</li>
+</ul>
+<p>  engage on trade-offs in category terms, never naming a competitor.</p>
+<ul>
+<li><strong>Accuracy / evaluation threads</strong> — &quot;what F1 / field accuracy is realistic for</li>
+</ul>
+<p>  invoice extraction&quot; — a place to discuss honest, document-class-specific</p>
+<p>  numbers; any Hyperbots figure stated only &quot;per apis.hyperbots.com&quot;.</p>
+<ul>
+<li><strong>Fine-tune vs zero-shot threads</strong> — directly relevant to the Hyperbots-IP</li>
+</ul>
+<p>  framing (open-source models fine-tuned by Hyperbots); disclose the</p>
+<p>  fine-tune-vs-zero-shot distinction.</p>
+<ul>
+<li><strong>Table / layout extraction problems</strong> — complex document structure, a</li>
+</ul>
+<p>  recognized hard problem worth substantive help.</p>
+<ul>
+<li><strong>Cost-at-scale threads</strong> — per-page or per-document economics; pricing</li>
+</ul>
+<p>  mentioned only as the published $0.05/page.</p>
+<ul>
+<li><strong>Dataset / ground-truth requests</strong> — point to public resources; useful</li>
+</ul>
+<p>  community contribution with no pitch.</p>
+<p><strong>Out of scope:</strong> consumer scan-app questions, pure handwriting-OCR hobby</p>
+<p>threads, and any thread already banned, removed, locked, or archived.</p>
+<h2>Engagement criteria</h2>
+<p>Carried unchanged from <code>config/engagement.yaml</code> — a thread must clear <strong>all</strong></p>
+<p>hard thresholds, then is ranked by the weighted composite:</p>
+<ul>
+<li><strong>Hard gate:</strong> created in the last 24h, &gt;= 3 comments, &gt;= 5 net upvotes,</li>
+</ul>
+<p>  relevance &gt;= 0.30 against document-AI keywords/phrases.</p>
+<ul>
+<li><strong>Weighted rank:</strong> recency .25, comments .30, upvotes .20, relevance .25.</li>
+<li><strong>Caps:</strong> at most 5 drafts per area per day, 40 total in the review queue.</li>
+<li><strong>Engageable only:</strong> the thread must not be banned, removed, locked, or</li>
+</ul>
+<p>  archived, and must not sit in a vendor-unfriendly subreddit. Non-engageable</p>
+<p>  threads are surfaced for awareness and flagged <code>NO_POST_RECOMMENDED</code>.</p>
+<ul>
+<li><strong>Hyperbots mention gate:</strong> a Hyperbots reference is added only on a strong</li>
+</ul>
+<p>  topical match (relevance &gt;= 0.55) and <strong>always</strong> with a visible disclosure</p>
+<p>  line (&quot;I work on Hyperbots&quot;). In <code>vendor_naming_discouraged</code> subreddits the</p>
+<p>  draft keeps the helpful content and the Hyperbots mention is suppressed</p>
+<p>  (<code>HYPERBOTS_MENTION_SUPPRESSED</code>).</p>
+<h2>Binding ethics rules (from reddit-fa-listening ETHICS.md)</h2>
+<p>These are not negotiable and apply identically to the document-AI angle:</p>
+<ul>
+<li><strong>Never auto-post.</strong> The automation cannot and does not post to Reddit. It</li>
+</ul>
+<p>  drafts; a human reviews, edits, approves or rejects, and posts manually from a</p>
+<p>  real account.</p>
+<ul>
+<li><strong>Draft-and-human-review only.</strong> Every draft is <code>PENDING_REVIEW</code> in the queue;</li>
+</ul>
+<p>  the human reviewer is the final judge of whether anything is posted.</p>
+<ul>
+<li><strong>Disclose affiliation.</strong> Any reply that references Hyperbots carries a clear,</li>
+</ul>
+<p>  conspicuous disclosure — FTC endorsement guidance requires it.</p>
+<ul>
+<li><strong>No astroturfing.</strong> No sock-puppets, no vote manipulation, no undisclosed</li>
+</ul>
+<p>  covert marketing, no daily-cadence bot posting.</p>
+<ul>
+<li><strong>Engageable threads only.</strong> Banned/removed/locked threads and</li>
+</ul>
+<p>  vendor-unfriendly subreddits are never targets for a posted reply.</p>
+<ul>
+<li><strong>No named competitors</strong> — category labels only. Accuracy only &quot;per</li>
+</ul>
+<p>  apis.hyperbots.com&quot;. Models = open-source fine-tuned by Hyperbots (Hyperbots</p>
+<p>  IP). Pricing only the published $0.05/page. No HITL/manual-review framing.</p>
+<p>If anyone is tempted to add auto-posting, <code>ETHICS.md</code> is explicit: don&#x27;t —</p>
+<p>without sign-off from someone accountable for brand and legal, per-subreddit</p>
+<p>rule checks, disclosure baked into every post, and bot-safe rate limits. Even</p>
+<p>then, listening-only is usually the better call.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-reddit-fa-listening/README.md</code> — pipeline, coverage, run.</li>
+<li><code>~/Desktop/hyperapi-reddit-fa-listening/ETHICS.md</code> — binding posting rules.</li>
+<li><code>~/Desktop/hyperapi-reddit-fa-listening/config/subreddits.yaml</code> — subreddit</li>
+</ul>
+<p>  posture model (<code>vendor_unfriendly</code>, <code>vendor_naming_discouraged</code>).</p>
+<ul>
+<li><code>~/Desktop/hyperapi-reddit-fa-listening/config/engagement.yaml</code> — thresholds</li>
+</ul>
+<p>  and weighted-rank parameters.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-reddit-fa-listening/config/solution_areas.yaml</code> —</li>
+</ul>
+<p>  document-processing and IDP areas and keywords.</p>
+<ul>
+<li><code>hyperapi-gtm-hub/README.md</code> — brand guardrails and workstream conventions.</li>
+<li>Reddit Content Policy; FTC &quot;Disclosures 101 for Social Media Influencers&quot;.</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li>This is a DRAFT; external posting is human-gated and never automated.</li>
+<li>The document-AI subreddit list is a proposed starting set, validated by</li>
+</ul>
+<p>  reading each subreddit&#x27;s current rules before any thread is engaged; subreddit</p>
+<p>  rules and vendor-participation postures change and must be re-checked.</p>
+<ul>
+<li>Reddit access, where used, is read-only/script-type, consistent with</li>
+</ul>
+<p>  reddit-fa-listening; no separate posting credentials are introduced.</p>
+<ul>
+<li>The document-AI angle reuses reddit-fa-listening&#x27;s pipeline, scoring, queue,</li>
+</ul>
+<p>  and Slack digest; only the subreddit/keyword layer is new.</p>
+<ul>
+<li>A human reviewer who understands each target subreddit&#x27;s rules is the final</li>
+</ul>
+<p>  judge of whether any draft is posted.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

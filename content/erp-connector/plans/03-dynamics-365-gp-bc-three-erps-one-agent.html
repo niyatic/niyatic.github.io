@@ -1,0 +1,165 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>03-dynamics-365-gp-bc-three-erps-one-agent — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/content/erp-connector/">← back</a>
+<div class="fm">slug: 03-dynamics-365-gp-bc-three-erps-one-agent
+erp: Dynamics
+class: integration-time
+status: PLAN — methodology defined, polymorphic claim PLACEHOLDER
+caveat: only D365 BC has a compiled descriptor on disk today; GP / D365 F&amp;O are framework-extension claims</div>
+
+<h1>Dynamics 365 + GP + BC: three ERPs, one agent surface — plan</h1>
+
+<h2>1. Headline + hook</h2>
+
+<p>Hook: <strong>"A mid-market Microsoft shop usually has more than one Dynamics-shaped ERP in the building — D365 Business Central in one subsidiary, Dynamics GP at a legacy plant, occasionally D365 Finance & Operations in the new acquisition. Three back-ends, one agent surface."</strong></p>
+
+<p>Honest framing: as of today the connector framework ships a compiled <strong>D365 Business Central</strong> descriptor. The post pitches the <em>polymorphic descriptor</em> pattern — adding GP / F&O is descriptor work, not SDK work — not the claim that all three are already implemented.</p>
+
+<h2>2. Audience + intent</h2>
+
+<ul>
+<li>Primary: IT directors in mid-market Microsoft shops; secondary: M&A</li>
+</ul>
+<p>  integration leads.</p>
+<ul>
+<li>Reader takeaway: *"one connector contract spans three back-ends; the</li>
+</ul>
+<p>  agent picks the right descriptor; you don't run three integration   projects."*</p>
+<ul>
+<li>CTA: walk-through of the polymorphic-descriptor pattern.</li>
+</ul>
+
+<h2>3. The two-layer pitch (REQUIRED)</h2>
+
+<h3>3.1 Speed</h3>
+<ul>
+<li>For D365 BC (already on disk): agent picks <code>target=&quot;d365_bc&quot;</code>,</li>
+</ul>
+<p>  v2.0 API path, Azure AD client-credentials flow via <code>TokenStore</code>,   <code>BusinessKey([&quot;companyId&quot;, &quot;vendorId&quot;, &quot;invoiceNumber&quot;])</code>.   [PLACEHOLDER-time, ~hours] from descriptor pick to first mocked   end-to-end.</p>
+<ul>
+<li>For GP / F&O: descriptor authoring (~1 day each per descriptor; not</li>
+</ul>
+<p>  hours, name it honestly) plus agent config (~hours).</p>
+
+<h3>3.2 Depth — the polymorphic descriptor pattern</h3>
+<ul>
+<li>Three back-ends, three descriptors, <strong>one normalizer family</strong> (the</li>
+</ul>
+<p>  <code>purchaseInvoices</code> / <code>apInvoice</code> shape).</p>
+<ul>
+<li>Master-key resolution differs (BC's <code>vendorId</code> GUID vs GP's <code>VENDORID</code></li>
+</ul>
+<p>  string vs F&O's <code>dataAreaId+VendAccount</code>); the resolver lambda absorbs   the difference.</p>
+<ul>
+<li>Idempotency lined up to each back-end's own uniqueness: BC's</li>
+</ul>
+<p>  <code>invoiceNumber</code>, GP's <code>VCHRNMBR</code>, F&O's <code>Voucher+AccountingDate</code>.</p>
+<ul>
+<li>Secrets boundary common (Azure AD), with per-tenant <code>realmId</code> /</li>
+</ul>
+<p>  <code>companyId</code> salting the byte-hash.</p>
+
+<h2>4. Outline</h2>
+
+<ul>
+<li>P-1. The mid-market reality: three Dynamics-shaped ERPs in one</li>
+</ul>
+<p>  building.</p>
+<ul>
+<li>P-2. One descriptor per back-end; one normalizer family.</li>
+<li>P-3. What the agent does on the BC case (live today).</li>
+<li>P-4. What changes for GP and F&O (descriptor work, not SDK work).</li>
+<li>P-5. The honesty: D365 BC ships today; GP / F&O are descriptor-tier</li>
+</ul>
+<p>  extensions, not built yet.</p>
+<ul>
+<li>P-6. CTA.</li>
+</ul>
+
+<h2>5. Required evidence before publish</h2>
+
+<ul>
+<li>Working D365 BC descriptor with conformance-kit pass.</li>
+<li>A documented descriptor extension recipe for GP (paper-only is fine,</li>
+</ul>
+<p>  with the explicit "not built yet" tag).</p>
+<ul>
+<li>The customer-shape mid-market profile (consent-gated if named).</li>
+</ul>
+
+<h2>6. Placeholders to fill</h2>
+
+<ul>
+<li>[PLACEHOLDER-time-bc]</li>
+<li>[PLACEHOLDER-time-gp-projected]</li>
+<li>[PLACEHOLDER-time-fno-projected]</li>
+<li>[PLACEHOLDER-case-mid-market-Microsoft-shop]</li>
+</ul>
+
+<h2>7. Competitor positioning</h2>
+
+<ul>
+<li>Workato — NOT-FETCHED. Microsoft connectors strong; polymorphic story</li>
+</ul>
+<p>  weaker.</p>
+<ul>
+<li>MuleSoft — NOT-FETCHED.</li>
+<li>Boomi — NOT-FETCHED. Often deployed at this exact mid-market profile.</li>
+</ul>
+
+<h2>8. Sources / provenance</h2>
+
+<ul>
+<li><code>connectors/erp/__pycache__/d365_bc.cpython-311.pyc</code> (compiled</li>
+</ul>
+<p>  descriptor present)</p>
+<ul>
+<li>skill: <code>erp-d365-bc-connector</code></li>
+<li>Competitor URLs (must be fetched)</li>
+</ul>
+
+<h2>Z. Internal-only</h2>
+
+<ul>
+<li>Cost: ~5 hours to draft.</li>
+<li>Dependencies: a GP-descriptor sketch (paper-only) and an F&O sketch.</li>
+<li>Risk: the "three ERPs, one agent" headline implies parity when only one</li>
+</ul>
+<p>  is built — the post must say so in §P-5. Drop the headline if §P-5   weakens.</p>
+
+</body></html>

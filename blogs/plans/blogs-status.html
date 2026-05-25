@@ -1,0 +1,122 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Blogs &amp; Content Artifact Status Ledger — hyperapi-gtm-hub</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publish human-gated</div><div class="meta">blogs-status (hyperapi-gtm-hub — Content Ops) · 2026-05-22</div><h1>Blogs &amp; Content Artifact Status Ledger — hyperapi-gtm-hub</h1>
+<blockquote><strong>DRAFT — pending review; external publication is human-gated.</strong> This ledger</blockquote>
+<blockquote>reports only what is on disk as of 2026-05-22. It is a publication-readiness</blockquote>
+<blockquote>view, not a publish order. No artifact below is authorized for release.</blockquote>
+<p><strong>Scope:</strong> 13 artifacts across 4 content directories. All 13 carry a <code>DRAFT</code></p>
+<p>status marker — <strong>0 are published</strong>. 8 source documents have a matching</p>
+<p>light-theme HTML render; 5 (the three <code>.tex</code> PDFs, the strategy doc&#x27;s HTML pair</p>
+<p>counted under its source, and the viral blogs which are HTML-native) are</p>
+<p>discussed below. Two distinct <code>{{placeholder}}</code> tokens remain unresolved.</p>
+<h2>Status table</h2>
+<table><thead><tr><th>Title</th><th>Path</th><th>Format</th><th>DRAFT / Published</th><th>Light-theme HTML present?</th><th>Word count</th><th>One-line topic</th><th>Open <code>{{placeholder}}</code></th></tr></thead><tbody><tr><td>We Built Our Entire ABM Engine in Claude Code</td><td><code>~/Desktop/hyperapi-abm-team/content/blog/2026-05-22-abm-agent-with-claude-code.md</code></td><td>md</td><td>DRAFT (<code>status: DRAFT — pending review</code>)</td><td>Yes — <code>…abm-agent-with-claude-code.html</code> (light, <code>--bg:#FFFFFF</code>)</td><td>~1,773</td><td>How Hyperbots built a 14-agent ABM engine inside Claude Code, human-gated end to end</td><td>None</td></tr><tr><td>We Built Our Entire ABM Engine in Claude Code (HTML render)</td><td><code>~/Desktop/hyperapi-abm-team/content/blog/2026-05-22-abm-agent-with-claude-code.html</code></td><td>HTML</td><td>DRAFT (carries DRAFT banner)</td><td>Yes — light theme</td><td>~1,864</td><td>Light-theme HTML render of the ABM-engine blog</td><td>None</td></tr><tr><td>Hyperbots Content / Benchmark / Experience / Tech-Moat Virality Strategy</td><td><code>~/Desktop/hyperapi-abm-team/content/strategy/2026-05-22-content-virality-strategy.md</code></td><td>md</td><td>DRAFT (<code>status: DRAFT — pending review; external publish human-gated</code>)</td><td>Yes — <code>…content-virality-strategy.html</code> (light, <code>--bg:#FFFFFF</code>)</td><td>~3,294</td><td>Virality strategy and draft content calendar; honest non-obvious finding is the hook</td><td><code>{{COST_FIGURE — verify}}</code>, <code>{{COST_FIGURE}}</code></td></tr><tr><td>Content Virality Strategy (HTML render)</td><td><code>~/Desktop/hyperapi-abm-team/content/strategy/2026-05-22-content-virality-strategy.html</code></td><td>HTML</td><td>DRAFT (carries DRAFT banner)</td><td>Yes — light theme</td><td>~2,341</td><td>Light-theme HTML render of the virality strategy</td><td><code>{{COST_FIGURE}}</code></td></tr><tr><td>Our Agents train, benchmark and deploy all of that while we sleep, under $20</td><td><code>~/Desktop/hyperapi-documentapi-benchmark-factory/content/blog/2026-05-22-agents-train-benchmark-deploy.md</code></td><td>md</td><td>DRAFT (<code>status: DRAFT — pending review</code>)</td><td>Yes — <code>…agents-train-benchmark-deploy.html</code> (light, <code>--bg:#FFFFFF</code>)</td><td>~2,224</td><td>Overnight agent system that surveys, trains, benchmarks and writes up ML research on itself</td><td><code>{{COST_FIGURE — verify}}</code></td></tr><tr><td>Agents train/benchmark/deploy (HTML render)</td><td><code>~/Desktop/hyperapi-documentapi-benchmark-factory/content/blog/2026-05-22-agents-train-benchmark-deploy.html</code></td><td>HTML</td><td>DRAFT (carries DRAFT banner)</td><td>Yes — light theme</td><td>~2,351</td><td>Light-theme HTML render of the agents train/benchmark blog</td><td><code>{{COST_FIGURE — verify}}</code></td></tr><tr><td>The No-Faked-Cell Discipline</td><td><code>~/Desktop/hyperapi-documentapi-benchmark-factory/content/blog/2026-05-22-viral-blog-1-no-faked-cell.html</code></td><td>HTML</td><td>DRAFT (carries &quot;DRAFT — external publish human-gated&quot; banner)</td><td>Yes — light theme, HTML-native (no md source on disk)</td><td>~2,970</td><td>How SAVIOR-Bench v1 honestly reports reproducibility it has not yet earned</td><td>None</td></tr><tr><td>The Narrow, Honest Edge</td><td><code>~/Desktop/hyperapi-documentapi-benchmark-factory/content/blog/2026-05-22-viral-blog-2-narrow-honest-edge.html</code></td><td>HTML</td><td>DRAFT (carries DRAFT banner)</td><td>Yes — light theme, HTML-native (no md source on disk)</td><td>~2,784</td><td>What fine-tuning actually buys over zero-shot on financial documents</td><td>None</td></tr><tr><td>$0.19 per 1,000 Calls — Operational Economics</td><td><code>~/Desktop/hyperapi-documentapi-benchmark-factory/content/blog/2026-05-22-viral-blog-3-cost-economics.html</code></td><td>HTML</td><td>DRAFT (carries DRAFT banner)</td><td>Yes — light theme, HTML-native (no md source on disk)</td><td>~2,910</td><td>The operational economics of a fine-tuned document-AI path</td><td>None</td></tr><tr><td>Operational Economics of a Fine-Tuned Document-AI Path (PDF source)</td><td><code>~/Desktop/hyperapi-documentapi-benchmark-factory/content/pdf/2026-05-22-cost-economics.tex</code></td><td>.tex</td><td>DRAFT (in-body draft note)</td><td>No — <code>.tex</code> PDF source, no HTML render</td><td>~723</td><td>LaTeX paper: $0.19-per-1,000-calls operational economics</td><td>None</td></tr><tr><td>The Narrow, Honest Edge (PDF source)</td><td><code>~/Desktop/hyperapi-documentapi-benchmark-factory/content/pdf/2026-05-22-narrow-honest-edge.tex</code></td><td>.tex</td><td>DRAFT (in-body draft note)</td><td>No — <code>.tex</code> PDF source, no HTML render</td><td>~625</td><td>LaTeX paper: quantifying what in-domain fine-tuning buys</td><td>None</td></tr><tr><td>The No-Faked-Cell Discipline (PDF source)</td><td><code>~/Desktop/hyperapi-documentapi-benchmark-factory/content/pdf/2026-05-22-no-faked-cell.tex</code></td><td>.tex</td><td>DRAFT (<code>This is a draft; external publication is …</code>)</td><td>No — <code>.tex</code> PDF source, no HTML render</td><td>~695</td><td>LaTeX paper: reporting reproducibility, the W6 audit</td><td>None</td></tr></tbody></table>
+<h2>What&#x27;s blocking publication</h2>
+<p>Nothing in scope is publication-ready. Blockers, by class:</p>
+<ul>
+<li><strong>Unresolved placeholders (hard blocker).</strong> Two distinct tokens remain:</li>
+</ul>
+<p>  - <code>{{COST_FIGURE — verify}}</code> and <code>{{COST_FIGURE}}</code> in</p>
+<p>    <code>2026-05-22-content-virality-strategy.md</code> (lines 185, 275, 359) and its HTML</p>
+<p>    render — a consolidated end-to-end per-run cost figure not yet verified.</p>
+<p>  - <code>{{COST_FIGURE — verify}}</code> in <code>2026-05-22-agents-train-benchmark-deploy.md</code></p>
+<p>    (lines 184, 262) and its HTML render — the &quot;under $20 / while we sleep&quot; claim</p>
+<p>    depends on this number. Per the document&#x27;s own note it must be resolved or</p>
+<p>    cut before publication.</p>
+<p>  These four files cannot ship until the cost figure is verified or the claim</p>
+<p>  is removed.</p>
+<ul>
+<li><strong>Human gate not satisfied (hard blocker, all 13).</strong> Every artifact carries a</li>
+</ul>
+<p>  <code>DRAFT</code> marker and external publication is human-gated. None bears an</p>
+<p>  <code>approved-by · date · against-commit</code> stamp, so all 13 are DRAFT-only.</p>
+<ul>
+<li><strong>Missing light-theme HTML render (3).</strong> The three <code>.tex</code> PDF sources have no</li>
+</ul>
+<p>  HTML render on disk. Their viral-blog HTML counterparts exist and are</p>
+<p>  light-theme, but the <code>.tex</code> papers themselves are PDF-only artifacts; if an</p>
+<p>  HTML web version is required they must still be rendered.</p>
+<ul>
+<li><strong>No HTML-source pairing for the three viral blogs.</strong> <code>viral-blog-1/2/3</code> exist</li>
+</ul>
+<p>  only as light-theme HTML; no Markdown source is on disk. Not a publication</p>
+<p>  blocker, but a provenance/maintainability note — edits cannot round-trip</p>
+<p>  through the Markdown converter.</p>
+<p><strong>Summary:</strong> 0 of 13 artifacts are publishable today. The fastest unblock is</p>
+<p>resolving (or cutting) the single <code>COST_FIGURE</code> value, which clears 4 files; the</p>
+<p>remaining gate for all 13 is human review and the <code>approved-by</code> stamp.</p>
+<h2>Sources</h2>
+<ul>
+<li>On-disk content as of 2026-05-22:</li>
+</ul>
+<p>  <code>~/Desktop/hyperapi-abm-team/content/blog/</code> (1 md + 1 HTML),</p>
+<p>  <code>~/Desktop/hyperapi-abm-team/content/strategy/</code> (1 md + 1 HTML),</p>
+<p>  <code>~/Desktop/hyperapi-documentapi-benchmark-factory/content/blog/</code> (1 md + 4 HTML),</p>
+<p>  <code>~/Desktop/hyperapi-documentapi-benchmark-factory/content/pdf/</code> (3 <code>.tex</code>).</p>
+<ul>
+<li>Frontmatter <code>status:</code> fields, in-body <code>DRAFT</code> banners, and <code>{{…}}</code> tokens read</li>
+</ul>
+<p>  directly from each file.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-cto-org/.claude/agents/technical-content-strategist.md</code></li>
+</ul>
+<p>  (audit reference for guardrail checks).</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>Word counts are <code>wc -w</code> over the full file (HTML counts include markup tokens);</li>
+</ul>
+<p>  treat them as approximate prose volume, not exact body word counts.</p>
+<ul>
+<li>&quot;Published&quot; is inferred from the absence of a <code>DRAFT</code> marker; every artifact in</li>
+</ul>
+<p>  scope carries one, so all 13 are treated as DRAFT.</p>
+<ul>
+<li>The three <code>.tex</code> files are intended as PDF artifacts; &quot;light-theme HTML present&quot;</li>
+</ul>
+<p>  is marked No because no HTML render exists on disk, not because one is wrong.</p>
+<ul>
+<li>The four named directories are the complete artifact set; no other content</li>
+</ul>
+<p>  root was in scope for this ledger.</p>
+<ul>
+<li>This ledger is DRAFT; it does not authorize publication of any artifact.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8" />
+<title>Hyperbots Content / Benchmark / Experience / Tech-Moat Virality Strategy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+    --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-10:#748081;--grey-12:#211F26;
+    --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+    --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);--txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+  }
+  *{box-sizing:border-box;}
+  body{background:var(--bg);color:var(--txt);font:14px/1.6 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:0;padding:0;}
+  .wrap{max-width:1060px;margin:0 auto;padding:28px 28px 72px;}
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  h1{font-size:26px;font-weight:700;margin:8px 0 4px;}
+  h2{font-size:19px;font-weight:600;color:var(--brand-9);border-bottom:2px solid var(--line);padding-bottom:6px;margin-top:38px;}
+  h3{font-size:15px;font-weight:600;color:var(--brand-8);margin-top:24px;}
+  p,li{color:var(--txt);}
+  .muted{color:var(--muted);font-size:12.5px;}
+  .banner{background:#FEF3E0;border:1px solid var(--warn-fg);border-radius:10px;padding:14px 18px;margin-bottom:22px;color:#7a3d00;font-weight:500;}
+  .sub{color:var(--muted);font-size:13px;margin-bottom:18px;}
+  .lead{background:var(--brand-2);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:14px 18px;margin:18px 0;}
+  .claim{background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--brand-8);border-radius:0 8px 8px 0;padding:12px 16px;margin:12px 0;font-weight:500;}
+  table{border-collapse:collapse;width:100%;margin:16px 0;font-size:13px;}
+  th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top;}
+  th{background:var(--brand-3);color:var(--brand-9);font-weight:600;}
+  tr:nth-child(even) td{background:var(--grey-3);}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 20px;margin:14px 0;}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;font-weight:600;margin-right:4px;}
+  .pill.ok{background:#E6F6EE;color:var(--ok-fg);}
+  .pill.warn{background:#FEF3E0;color:var(--warn-fg);}
+  .pill.err{background:#FCE9E8;color:var(--err-fg);}
+  code{background:var(--grey-3);border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:12.5px;}
+  ol,ul{padding-left:22px;}
+  .footer{margin-top:40px;border-top:2px solid var(--line);padding-top:18px;font-size:12.5px;color:var(--muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="banner">DRAFT — pending review; external publish human-gated. This is a strategy and draft calendar, not a publish order. Every external artifact passes the W5 human gate (approved-by &middot; date &middot; against-commit) and the brand guardrails.</div>
+
+<h1>Hyperbots Content / Benchmark / Experience / Tech-Moat Virality Strategy</h1>
+<div class="sub">technical-content-strategist + launch-pr-strategist (CTO-org) &middot; 2026-05-22</div>
+
+<div class="lead"><strong>The premise, stated once:</strong> the honest, non-obvious finding is the hook — not a hype number. Hyperbots already has the rare thing most AI companies fake: real measured artifacts, and the discipline to say what they could <em>not</em> establish. That discipline is the virality lever — it is what makes a technical audience trust the post enough to share it. A post that converts once and erodes trust is a net loss.</div>
+
+<h2>1. Positioning — the through-line per brand</h2>
+<p>Three brands, one spine: <strong>"Document AI for finance, built and measured in the open — including the parts that don't work yet."</strong></p>
+
+<h3>Hyperbots (the company)</h3>
+<div class="claim">Hyperbots runs its own R&amp;D, benchmarking, and go-to-market as agent systems in version control — and publishes what the agents could not establish, not just what they could.</div>
+<p>Verifiable in the repos: ABM is 14 agents in one git repo; the benchmark factory is a 9-agent roster with a STOP-on-mismatch repro gate; the repo factory is a 13-agent pipeline behind 10,131 generated use-case repos. The proof point no competitor can cheaply copy is the <strong>negative finding shipped on purpose</strong> — the W6 audit that re-derived 0/23 attested cells and retracted nothing.</p>
+
+<h3>HyperAPI (the document-AI API product)</h3>
+<div class="claim">HyperAPI turns finance, bank, shipping, and custom documents into clean structured output — and the fine-tune edge that powers it is smaller than you'd assume, which is exactly why an API-native pipeline still wins in production.</div>
+<p>The hook is the under-claim: the fine-tuned model leads the best documented zero-shot system by <strong>+0.0276 F1</strong> on parse-intent and <strong>+0.0061 recall</strong> on OCR. A buyer sold "10x better" by every vendor stops scrolling at a vendor admitting the gap is small — then reads the real argument (latency, cost-per-correct at &asymp;$0.19/1,000 successful calls, the API surface, 10k+ use-case repos). Product accuracy only "per apis.hyperbots.com"; benchmark figures are model OCR/parse performance.</p>
+
+<h3>CFO-office AI expertise (the domain-authority play)</h3>
+<div class="claim">Hyperbots has mapped the finance back office — AP, AR, accruals, vendor management, collections, cash application, FP&amp;A, lease accounting, chargebacks — into thousands of concrete named tasks, and can show the work on any one.</div>
+<p>The repo factory's 10,131 repos, the Reddit listening agent's 13 solution areas, and the ICP's four document classes are a <em>taxonomy of the CFO office</em> nobody else has published. Content here teaches, not sells — it builds the audience that later converts on HyperAPI.</p>
+
+<h2>2. Tech-moat narrative — honest about what is and isn't defensible</h2>
+<h3>Genuinely defensible (the moat, today)</h3>
+<ol>
+<li><strong>The benchmark factory as a process, not a number.</strong> SAVIOR-Bench (509 docs, 5 corpora, IAA 0.761, 23-system parse-intent panel) is strong; the defensible asset is the factory: a pinned deterministic stdlib-only harness, a contamination audit per (model, dataset), a STOP-on-mismatch repro gate, per-cell rerun commands. Competitors can copy a screenshot; not the discipline of a roster that blocks its own release on a reproducibility mismatch.</li>
+<li><strong>The Hyperbots-IP fine-tuned models.</strong> Open-source backbones (Qwen2.5-VL-3B/7B) fine-tuned on SAVIOR-Train via LoRA — Hyperbots IP. The moat is the in-domain financial training corpus and the improvement loop, not the narrow per-task edge.</li>
+<li><strong>The 10k+ use-case repo corpus.</strong> 10,131 generated repos (2,341 tracked Tier-1 primitives) — a distribution surface, onboarding accelerator, and taxonomy moat at once.</li>
+<li><strong>The agent-built GTM and R&amp;D.</strong> ABM (14), benchmark factory (9), repo factory (13), Reddit listening, the autonomous ML research loop — operating leverage a contractor-and-SaaS competitor cannot match.</li>
+</ol>
+<h3>Honest about what is NOT yet a moat</h3>
+<ul>
+<li><span class="pill err">not a moat</span> SAVIOR-Bench is <strong>attested, not factory-reproduced</strong>. Headline numbers were run in-house, user-attested 2026-05-18; the W6 audit re-derived <strong>0/23</strong> DC-000 cells by structural design. Content must never claim the headline numbers are independently reproducible — only the 12-cell offline SEED leaderboard is.</li>
+<li><span class="pill err">not a moat</span> No third-party audit, no external validation, no CIs on the headline table.</li>
+<li><span class="pill err">not a moat</span> No customer-outcome data. The ABM engine has sent zero messages — no engagement, reply, or revenue metrics exist.</li>
+<li><span class="pill warn">disclosed</span> The fine-tune edge is narrow — stated as the hook, not hidden.</li>
+</ul>
+
+<h2>3. Content pillars</h2>
+<table>
+<tr><th>#</th><th>Pillar</th><th>Real asset</th><th>Recurring honest angle</th></tr>
+<tr><td>P1</td><td>Benchmarking in the open</td><td>SAVIOR-Bench paper, SEED leaderboard (12 cells), W6 audit, benchmark report HTML</td><td>"Here is the number — and what we could not establish."</td></tr>
+<tr><td>P2</td><td>The small-gap truth</td><td>+0.0276 F1; +0.0061 recall; &asymp;$0.19/1k calls</td><td>"The fine-tune edge is smaller than the market claims — why API-native still wins."</td></tr>
+<tr><td>P3</td><td>Agent-built company</td><td>ABM (14), benchmark factory (9), repo factory (13), ML research loop</td><td>"GTM and R&amp;D as software — version-controlled, QA-gated, human-merged."</td></tr>
+<tr><td>P4</td><td>The CFO-office task map</td><td>10,131 repo-factory repos; 13 Reddit solution areas; 4 ICP doc classes</td><td>"The real shape of finance-document work, task by task — teaching, not pitching."</td></tr>
+<tr><td>P5</td><td>Listening, disclosed</td><td>Reddit F&amp;A listening agent (ETHICS.md, queue, no auto-post)</td><td>"Social listening without astroturfing — and why we never auto-post."</td></tr>
+<tr><td>P6</td><td>Cost &amp; latency you can verify</td><td>SAVIOR-Bench &sect;5.4-5.5 (p50 2,548ms, p99 3,319ms, 3% fail, A100 cost)</td><td>"Document-AI economics from measured infrastructure — no marketing math."</td></tr>
+</table>
+
+<h2>4. Per-channel plan</h2>
+<p class="muted">Cadence is sustainable. "Virality pursued credibly" = honest finding leads, one truthful chart, distribution to the right technical communities rather than bought reach, no astroturf ever.</p>
+
+<div class="card"><h3>GitHub <span class="muted">— for the developer who will actually try it</span></h3>
+<p><strong>Cadence:</strong> continuous (source of truth); a tagged "drop" monthly. <strong>Format:</strong> public repos, honest READMEs, &le;6-line quickstarts, SEED leaderboard, every doc ends with <code>## Sources</code> + <code>## Open assumptions</code>.</p>
+<p><strong>First 3:</strong> (1) Publish the <strong>benchmark factory repo</strong> with the SEED leaderboard and W6 audit visible — the audit is a feature. (2) A curated <strong>25-repo "finance document AI cookbook"</strong> from the repo factory. (3) A <strong>"reproduce our SEED cells" README</strong> — the one place where "re-run on your laptop" is literally true.</p>
+<p class="muted"><strong>Credible virality:</strong> stars come from a repo that runs in one command and admits its limits; the W6 audit in-repo is the share-bait for a crowd tired of irreproducible leaderboards.</p></div>
+
+<div class="card"><h3>LinkedIn <span class="muted">— for founders, GTM leaders, finance operators</span></h3>
+<p><strong>Cadence:</strong> 3 posts/week (1 founder, 1 research, 1 CFO-office teach). <strong>Format:</strong> short narrative, one honest chart or number, ABM persona depth (CFO, VP Finance, Controller, Procurement, IT/CIO, ERP Lead).</p>
+<p><strong>First 3:</strong> (1) Founder post from <strong>"We Built Our Entire ABM Engine in Claude Code"</strong> — "zero messages sent" up front. (2) Research post: the <strong>+0.0276 F1 small-gap finding</strong>. (3) CFO-office teach: "We mapped the finance back office into [N] document tasks — here are 10 nobody automates."</p>
+<p class="muted"><strong>Credible virality:</strong> "we haven't sent a message yet" and "the gap is small" out-perform hype — they signal honesty to a skeptical feed.</p></div>
+
+<div class="card"><h3>Blog / website (owned) <span class="muted">— the durable canonical home</span></h3>
+<p><strong>Cadence:</strong> 2 long-form posts/month, the canonical source other channels link back to. <strong>Format:</strong> Tier-1 technical essays, one honest chart, explicit Sources/Open-assumptions, Hyperbots light theme.</p>
+<p><strong>First 3:</strong> (1) Polish + publish <strong>"Our Agents train, benchmark and deploy while we sleep"</strong> — resolve the <code>{{COST_FIGURE}}</code> placeholder or cut the "$20" framing first. (2) <strong>"SAVIOR-Bench: the honest version"</strong> — the small gap, attested-not-reproduced status, W6 audit, all in the lead. (3) <strong>"What 10,000 finance-document tasks taught us about the CFO office."</strong></p>
+<p class="muted"><strong>Credible virality:</strong> slow, compounding — these become the link every thread and HN comment points to; honesty makes them quotable by third parties.</p></div>
+
+<div class="card"><h3>Twitter / X <span class="muted">— for the document-AI + ML research crowd</span></h3>
+<p><strong>Cadence:</strong> 4-5 posts/week; one thread per major artifact. <strong>Format:</strong> the honest-hook thread (surprising-but-true line, one chart, link to canonical blog). Reuse the HN/X variants in <code>launch/POST.md</code>.</p>
+<p><strong>First 3:</strong> (1) The <strong>small-gap thread</strong> — "we fine-tuned an open model... the edge over the best zero-shot model was +0.0061 recall. The interesting result isn't the leaderboard." (2) The <strong>W6 audit thread</strong> — "we built a harness to reproduce our own benchmark. It reproduced 0 of 23 cells. Here's why that's the most useful thing it did." (3) A <strong>cost thread</strong> — measured A100 economics, &asymp;$0.19/1,000 successful calls.</p>
+<p class="muted"><strong>Credible virality:</strong> X rewards the contrarian-but-true take; "our benchmark failed to reproduce and we published it anyway" is genuinely novel. No engagement bought; no sock-puppets.</p></div>
+
+<div class="card"><h3>Webinars <span class="muted">— for the buying committee, mid-funnel</span></h3>
+<p><strong>Cadence:</strong> 1/month, ~30 min + Q&amp;A. <strong>Format:</strong> live walk-through of a real artifact, not slideware.</p>
+<p><strong>First 3:</strong> (1) <strong>"How we benchmark document AI — live"</strong> — run the SEED leaderboard, show the repro-gate STOP. (2) <strong>"The agent-built GTM"</strong> — walk the 14-agent ABM repo and the PR/QA loop. (3) <strong>"Finance-document AI, task by task"</strong> — 5 repo-factory tasks live.</p>
+<p class="muted"><strong>Credible virality:</strong> the recording is the asset; clipped honest moments ("watch the harness STOP its own release") seed other channels.</p></div>
+
+<div class="card"><h3>Podcasts <span class="muted">— reach into adjacent founder/finance audiences</span></h3>
+<p><strong>Cadence:</strong> 1-2 guest appearances/month; optionally a short owned series in Q2. <strong>Format:</strong> founder/research-lead as guest; the narrative is the three honest claims, never a feature dump.</p>
+<p><strong>First 3 (pitches):</strong> (1) AI-engineering podcast — "we ran a benchmark audit that failed and shipped it." (2) CFO/finance-ops podcast — "the CFO office as a task map." (3) Startup/GTM podcast — "we built our whole ABM motion as 14 agents in git."</p>
+<p class="muted"><strong>Credible virality:</strong> podcasts convert on story; the agent-built-company story is concrete and verifiable. Always disclose: drafts, gates, no metrics claimed.</p></div>
+
+<h2>5. Benchmark &amp; experience content engine</h2>
+<ul>
+<li><strong>Every leaderboard refresh = a content event</strong> — new model/task/re-run cell becomes a short post; the per-cell rerun command keeps each refresh checkable.</li>
+<li><strong>Every negative finding = a flagship post</strong> — the W6 0/23 audit is the template; the most differentiating content move available, costing nothing but honesty.</li>
+<li><strong>Experience content from real usage — once it exists.</strong> Today there is no customer-outcome data and the ABM engine has sent zero messages; the engine runs on internal build experience for now. Real product usage graduates into case studies — cited "per apis.hyperbots.com," never fabricated.</li>
+<li><strong>The repo factory as an evergreen mill</strong> — each Tier-1 primitive (parse/split/classify/detect/extract/validate/reconcile) is a micro-post.</li>
+<li><strong>Reddit listening as a content radar</strong> — the daily themed digest surfaces what the finance community actually asks; recurring questions become blog topics. The agent never posts; humans may reply manually with disclosure.</li>
+</ul>
+
+<h2>6. 90-day calendar (week-by-week, draft)</h2>
+<table>
+<tr><th>Week</th><th>Dates (2026)</th><th>Primary</th><th>Channels</th></tr>
+<tr><td>W1</td><td>May 26-Jun 1</td><td>Resolve/cut <code>{{COST_FIGURE}}</code>. Publish benchmark factory GitHub repo (SEED leaderboard + W6 audit visible).</td><td>GitHub</td></tr>
+<tr><td>W2</td><td>Jun 2-8</td><td>Publish blog "SAVIOR-Bench: the honest version." X small-gap thread. LinkedIn research post.</td><td>Blog, X, LinkedIn</td></tr>
+<tr><td>W3</td><td>Jun 9-15</td><td>LinkedIn founder post (ABM build story). X W6 audit thread. Pitch 3 podcasts.</td><td>LinkedIn, X, podcast</td></tr>
+<tr><td>W4</td><td>Jun 16-22</td><td>Publish blog "Agents train/benchmark/deploy" (cost figure resolved). Webinar #1 prep.</td><td>Blog, webinar prep</td></tr>
+<tr><td>W5</td><td>Jun 23-29</td><td>Webinar #1 (live SEED leaderboard + repro-gate STOP). GitHub: 25-repo cookbook.</td><td>Webinar, GitHub</td></tr>
+<tr><td>W6</td><td>Jun 30-Jul 6</td><td>LinkedIn CFO-office teach post. X cost thread (A100 economics).</td><td>LinkedIn, X</td></tr>
+<tr><td>W7</td><td>Jul 7-13</td><td>Blog "What 10,000 finance-document tasks taught us about the CFO office." Podcast #1 recording.</td><td>Blog, podcast</td></tr>
+<tr><td>W8</td><td>Jul 14-20</td><td>LinkedIn 3x. GitHub: "reproduce our SEED cells" README.</td><td>LinkedIn, GitHub</td></tr>
+<tr><td>W9</td><td>Jul 21-27</td><td>Webinar #2 "The agent-built GTM." X thread clipping webinar #1.</td><td>Webinar, X</td></tr>
+<tr><td>W10</td><td>Jul 28-Aug 3</td><td>Leaderboard refresh event &rarr; short posts.</td><td>Blog, X, LinkedIn</td></tr>
+<tr><td>W11</td><td>Aug 4-10</td><td>Podcast #2 recording. LinkedIn persona-targeted posts.</td><td>Podcast, LinkedIn</td></tr>
+<tr><td>W12</td><td>Aug 11-17</td><td>Blog #4 (best pillar, doubled down). X thread. Plan Q3.</td><td>Blog, X</td></tr>
+<tr><td>W13</td><td>Aug 18-22</td><td>Webinar #3 "Finance-document AI, task by task." 90-day measurement review.</td><td>Webinar, internal</td></tr>
+</table>
+<p class="muted">Steady-state from W2: LinkedIn 3x/week, X 4-5x/week, GitHub continuous, blog 2x/month, webinar 1x/month, podcast 1-2x/month.</p>
+
+<h2>7. Measurement — "viral but credible"</h2>
+<p><strong>Leading indicators (credibility-first):</strong></p>
+<ul>
+<li>GitHub: stars, forks, and external "I re-ran your SEED cells" confirmations — the credibility metric that matters most.</li>
+<li>Blog: time-on-page, scroll depth, inbound third-party citations.</li>
+<li>X/LinkedIn: saves and qualified replies &gt; raw likes; reshares by named practitioners &gt; anonymous reshares.</li>
+<li>Webinar: live attendance, Q&amp;A depth, recording completion. Podcast: referral traffic to the canonical blog.</li>
+</ul>
+<p><strong>What "viral but credible" looks like:</strong> the honest finding (small gap; 0/23 audit) is what gets quoted; reach from practitioner reshares and organic community pickup, not paid amplification or astroturf; <span class="pill ok">zero corrections forced after publish</span>; inbound interest references the method ("you publish your failures").</p>
+<p class="muted"><strong>Anti-goals:</strong> a one-time spike with no citations; engagement on a claim we cannot defend; growth attributable to undisclosed community activity.</p>
+
+<div class="footer">
+<h3 style="color:var(--brand-9);">Sources</h3>
+<p>technical-content-strategist agent spec (CTO-org); benchmark-factory <code>README.md</code>, <code>paper/SAVIOR-Bench.md</code> (509 docs, IAA 0.761, +0.0276 F1, +0.0061 recall, latency/cost &sect;5.4-5.5), <code>paper/W6-attestation-2026-05-21.md</code> (0/23 cells), <code>launch/POST.md</code> + <code>launch/FUNNEL.md</code>, <code>leaderboard/index.html</code>, <code>content/blog/2026-05-22-agents-train-benchmark-deploy.md</code>; abm-team <code>README.md</code> + <code>content/blog/2026-05-22-abm-agent-with-claude-code.md</code> (14-agent ABM, zero messages sent) + <code>accounts/</code>; repo-factory <code>README.md</code> + <code>generated/</code> (10,131 repos, 2,341 Tier-1 primitives); reddit-fa-listening <code>README.md</code> + <code>ETHICS.md</code> (13 solution areas, never auto-posts); <code>hyperapi-benchmark-report.html</code>.</p>
+<h3 style="color:var(--brand-9);">Open assumptions</h3>
+<p>DRAFT strategy + draft calendar, not a publish order; every external item passes the W5 human gate. SAVIOR-Bench headline numbers are in-house-run, user-attested 2026-05-18, not factory-reproduced — W6 re-derived 0/23 DC-000 cells; only the 12-cell offline SEED leaderboard is reproducible. Fine-tuned (Hyperbots-IP, open-source backbones via LoRA) vs. zero-shot disclosed inline; benchmark figures are model OCR/parse performance, product accuracy only "per apis.hyperbots.com"; no HITL framing. No named competitor in marketing/social copy (category labels only). No customer-outcome/engagement/revenue metrics exist; none claimed. The "$20" framing in the benchmark-factory blog is unsubstantiated and must be resolved or cut before publish (W1). Any community play is disclosed and human-reviewed; no astroturfing; the Reddit listening agent never auto-posts. Channel ownership, podcast targets, and paid-spend decisions need human assignment.</p>
+</div>
+
+</div>
+</body>
+</html>

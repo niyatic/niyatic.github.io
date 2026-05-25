@@ -1,0 +1,319 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FRAMEWORK-2026-05-25 — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/content/erp-connector/">← back</a>
+<div class="fm">title: &quot;ERP-Connector Deep-Blog Framework&quot;
+team: hyperapi-gtm-hub (gtm-content-team) + connector-framework
+date: 2026-05-25
+status: FRAMEWORK — plans only, no drafts
+ceo_directive: &quot;use deep connector expertise as a pitch but focus on the speed to integrate in the agent story&quot; (verbatim 2026-05-25)
+source_repo: /Users/niyati/Desktop/hyperapi-connector-framework/
+companion_index: ./INDEX.md</div>
+
+<h1>ERP-connector deep-blog framework</h1>
+
+<p>This is the editorial-and-evidence framework that governs the 12 ERP-connector blogs. It is <strong>plans only</strong>. No blog drafts are written here, and no number quoted in any plan becomes external until the publish gate in §6 is satisfied.</p>
+
+<p>It mirrors the §A-anchored / §B-non-anchored discipline of <code>viral-blog-titles-2026-05-25-v3.md</code>: numbers that exist on disk today are green; everything else is <strong>[PLACEHOLDER]</strong> with a documented path to measurement.</p>
+
+<hr/>
+
+<h2>1. The two-layer thesis (the CEO directive, decoded)</h2>
+
+<p>The CEO directive is verbatim:</p>
+
+<p>> "erp-connector: for this agent also create the blogs by gtm-content-team, > use <strong>deep connector expertise as a pitch but focus on the speed to integrate > in the agent story</strong>."</p>
+
+<p>That sentence is two layers stacked. Every blog in the set must hold both:</p>
+
+<h3>Layer 1 — Depth (the credibility floor)</h3>
+<p>The connector expertise that earns the right to make the speed claim. Drawn straight from <code>hyperapi-connector-framework/</code> and its docs.</p>
+
+<ul>
+<li><strong>Connector contract</strong> — Source → Extract → Normalize → Idempotent Sink.</li>
+</ul>
+<p>  Source <code>src/hyperapi_connector/connector.py</code>.</p>
+<ul>
+<li><strong>Descriptor policy</strong> — master-key resolution, sign convention, FX policy,</li>
+</ul>
+<p>  grain, schema_version, ToS/rate posture. Source   <code>src/hyperapi_connector/descriptor.py</code>.</p>
+<ul>
+<li><strong>Idempotency contract</strong> — byte-hash default (<code>SourceBytesKey</code> = SHA-256</li>
+</ul>
+<p>  over source bytes, optionally salted by target scope); <code>BusinessKey</code>   override for cross-file economic-event dedup. Source <code>docs/IDEMPOTENCY.md</code>.</p>
+<ul>
+<li><strong>Replay-safety formal statement</strong> — "replaying any subset of</li>
+</ul>
+<p>  already-processed sources produces zero net change in the target and a   byte-identical emit artifact." Verified by <code>check_replay_safety</code> in the   conformance kit. Source <code>docs/IDEMPOTENCY.md</code>.</p>
+<ul>
+<li><strong>Six typed sinks</strong> — <code>posted</code>, <code>dead_letter</code>, <code>unresolved</code>, <code>skipped_dup</code>,</li>
+</ul>
+<p>  <code>failed</code>, <code>audit</code>. The count invariant <code>count(sources) == sum(counts(sinks))</code>   is gated as a non-zero exit on drift. Source   <code>src/hyperapi_connector/result.py</code>.</p>
+<ul>
+<li><strong>Secrets / token boundary</strong> — OAuth2 rotate-and-persist on every refresh</li>
+</ul>
+<p>  with a cross-worker write lock; <code>invalid_grant</code> hard-stop; env/realm   assertion at process start; redacted <code>repr</code>. Source   <code>src/hyperapi_connector/secrets.py</code>.</p>
+<ul>
+<li><strong>Conformance kit</strong> — replay-safety, count invariant, confidence gate,</li>
+</ul>
+<p>  determinism, secrets hygiene, ToS posture, lineage. Source   <code>src/hyperapi_connector/conformance/kit.py</code>.</p>
+<ul>
+<li><strong>No HITL, ever</strong> — low-confidence records dead-letter with the raw response</li>
+</ul>
+<p>  attached. No human review queue. (<code>docs/LIMITS.md</code>.)</p>
+
+<h3>Layer 2 — Speed (the agent wedge)</h3>
+<p>The headline framing the CEO asked for: with HyperAPI agents driving configuration through the connector framework, integration that used to take weeks of bespoke SI engineering compresses to <strong>hours</strong> of agent-driven configuration. This is the wedge. The depth above is what makes the claim survivable.</p>
+
+<p>The agent's job is <strong>not</strong> to write a connector from scratch; it is to drive the configuration surface the framework exposes:</p>
+
+<ul>
+<li>Pick the descriptor (target ERP, doc_type) from the registry</li>
+</ul>
+<p>  (<code>src/hyperapi_connector/connectors/erp/registry.py</code>).</p>
+<ul>
+<li>Resolve the master-key lookup against the tenant's data.</li>
+<li>Choose the idempotency strategy (byte-hash default; <code>BusinessKey</code> if the</li>
+</ul>
+<p>  target enforces uniqueness on business fields).</p>
+<ul>
+<li>Wire credentials through the inert <code>TokenStore</code> boundary.</li>
+<li>Run the conformance kit; ship only when all checks pass.</li>
+</ul>
+
+<p>That is hours of work for an agent against a framework whose contract is already proven. The same work, bespoke, against SAP IDoc handlers or NetSuite SuiteTalk envelopes, has historically been <strong>weeks</strong>. The blogs land that comparison — with measured numbers, never invented ones.</p>
+
+<hr/>
+
+<h2>2. The integration-time tier table (PLACEHOLDER CELLS)</h2>
+
+<p>Every cell is <strong>[PLACEHOLDER]</strong> until measured. Two columns required before external publish:</p>
+
+<ul>
+<li><strong>Bespoke baseline</strong> — engineer-weeks from public SI quotes, named-customer</li>
+</ul>
+<p>  retrospectives, or competitor-published benchmarks. The number ships only if   a citable source is attached.</p>
+<ul>
+<li><strong>HyperAPI-agent time</strong> — agent-hours measured on either a real customer</li>
+</ul>
+<p>  rollout (consent-gated; see §6) or a documented internal benchmark run.</p>
+
+<p>The four integration classes are deliberately distinct because the speed claim sharpens or softens depending on which class is being landed.</p>
+
+<table>
+<tr><th>ERP</th><th>Read-only (extract → CSV/Sheets)</th><th>Read-write (post AP bills / GL entries)</th><th>Full-cycle (post + reconcile + ack)</th><th>Event-driven (webhook + replay)</th></tr>
+<tr><td><strong>SAP S/4HANA</strong></td><td>[PLACEHOLDER bespoke] vs [PLACEHOLDER agent]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td></tr>
+<tr><td><strong>NetSuite (SuiteTalk REST)</strong></td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td></tr>
+<tr><td><strong>D365 Business Central</strong></td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td></tr>
+<tr><td><strong>Sage Intacct</strong></td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td></tr>
+<tr><td><strong>Sage 300</strong></td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td></tr>
+<tr><td><strong>Epicor Kinetic</strong></td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td></tr>
+<tr><td><strong>Deltek Costpoint</strong></td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td></tr>
+<tr><td><strong>QuickBooks Online</strong></td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td><td>[PLACEHOLDER] vs [PLACEHOLDER]</td></tr>
+</table>
+
+<p><strong>Note — what is implemented vs what is named.</strong> As of 2026-05-25 the <code>connectors/erp/</code> module ships compiled bytecode for the 8 ERPs above (<code>__pycache__/</code> carries <code>sap_s4hana</code>, <code>netsuite</code>, <code>d365_bc</code>, <code>sage_intacct</code>, <code>sage_300</code>, <code>epicor</code>, <code>costpoint</code>, <code>quickbooks</code>). The two <strong>reference runnables</strong> in source are still <code>invoices_to_csv</code> (FileSink) and <code>bank_txns_to_kyriba_json</code> (ApiSink). Blogs that pitch a full-cycle ERP implementation must check the source state on the day they ship; never imply more than the repo carries.</p>
+
+<hr/>
+
+<h2>3. The depth-vs-speed matrix (9 cells)</h2>
+
+<p>Each cell is a sample blog angle. Depth rises down the rows; speed-wedge sharpness rises across the columns.</p>
+
+<table>
+<tr><th></th><th><strong>Speed-low</strong> (depth-led, integration-class footnote)</th><th><strong>Speed-mid</strong> (depth-led, speed in the conclusion)</th><th><strong>Speed-high</strong> ("hours, not weeks" headline)</th></tr>
+<tr><td><strong>Depth-low</strong> (single concept, no edge cases)</td><td>Glossary post — "What is an idempotency key in an ERP connector?"</td><td>Listicle — "5 questions to ask any ERP-connector vendor"</td><td>Headline post — "Hours, not weeks: the SAP connector that builds itself" <em>(blog #1)</em></td></tr>
+<tr><td><strong>Depth-mid</strong> (single ERP, real protocol, named edge cases)</td><td>Single-ERP deep-dive — Oracle EBS-to-Fusion migration concerns <em>(blog #4)</em></td><td>Multi-module post — Workday HCM + Financials <em>(blog #9)</em>; SMB upgrade path <em>(blog #10)</em></td><td>Single-ERP "the connector already knows" — NetSuite REST vs SuiteTalk <em>(blog #2)</em>; D365 polymorphic <em>(blog #3)</em>; SAP 9 failure modes <em>(blog #8)</em></td></tr>
+<tr><td><strong>Depth-high</strong> (cross-ERP invariants, framework-level guarantees)</td><td>SRE post — observability for connectors <em>(blog #12)</em></td><td>Engineering post — schema drift in production <em>(blog #6)</em>; idempotency for invoices <em>(blog #5)</em></td><td>GTM-leaning provocations — "the integration QBR is dead" <em>(blog #11)</em>; "CSV to event-driven in 4 stages" <em>(blog #7)</em></td></tr>
+</table>
+
+<p>Blogs 1, 2, 3, 8 sit on the speed-high column on purpose: they are the wedge. Blogs 5, 6, 12 sit on the depth-high row: they are the credibility floor. Blogs 7 and 11 are the GTM-leaning cells — they punch hardest but also carry the most placeholder risk.</p>
+
+<hr/>
+
+<h2>4. Competitor depth map</h2>
+
+<p><strong>Status: NOT-FETCHED.</strong> WebFetch was denied in the current session for <code>workato.com</code>, <code>tray.ai</code>, <code>mulesoft.com</code>, <code>boomi.com</code>. Every cell below is a <strong>hypothesis</strong> until an editor fetches the URL and a real summary lands in this table. The hypothesis is what we <em>expect</em> to find based on category knowledge; do not cite it externally.</p>
+
+<table>
+<tr><th>Competitor</th><th>Likely ERP coverage (hypothesis)</th><th>Likely depth (hypothesis)</th><th>Likely speed claim (hypothesis)</th><th>Where Hyperbots' agent angle is differentiated (hypothesis)</th><th>URL to fetch</th></tr>
+<tr><td><strong>Workato</strong></td><td>SAP, NetSuite, D365, Oracle, Workday, QBO; recipe library</td><td>Recipe-as-config; OAuth boilerplate; pre-built error patterns</td><td>"Recipes in minutes" — usually frames <em>small workflows</em>, not full ERP postings</td><td>Agent drives the <em>connector contract</em> (idempotency, master-key resolution), not a recipe orchestration</td><td>https://www.workato.com/the-connector/erp-integration/</td></tr>
+<tr><td><strong>Tray.io</strong></td><td>Mid-market emphasis: NetSuite, D365 BC, QBO, Xero</td><td>Workflow primitives; some idempotency via dedup steps</td><td>"Build in days" — workflow-level</td><td>Agent does the doc-AI extraction + the ERP write <em>under one descriptor</em>; tray needs two systems</td><td>https://tray.ai/blog/erp-integration</td></tr>
+<tr><td><strong>MuleSoft</strong></td><td>SAP, Oracle EBS / Fusion, NetSuite, Workday — enterprise heavy</td><td>DataWeave transforms, deep schema handling, certified connectors</td><td>Time-to-value framed as <em>months</em> in their own case studies</td><td>Hours vs months is the headline; depth parity needed in conformance kit story</td><td>https://www.mulesoft.com/resources/esb/erp-integration</td></tr>
+<tr><td><strong>Boomi</strong></td><td>SAP, Oracle, NetSuite, D365, Workday</td><td>AtomSphere visual; pre-built ERP processes</td><td>"Speed of deployment" rhetoric without per-class numbers</td><td>Idempotency is implicit in Boomi; explicit + tested in HyperAPI conformance</td><td>https://boomi.com/solutions/erp-integration/</td></tr>
+<tr><td><strong>n8n</strong></td><td>Community connectors: QBO, Xero, some NetSuite</td><td>Self-hosted workflow; community-maintained nodes</td><td>"Self-host fast" — implementation depth varies per node</td><td>Hyperbots is a typed contract, not community-curated; agent is one surface</td><td>https://n8n.io/integrations/categories/erp/</td></tr>
+<tr><td><strong>Make.com (ex-Integromat)</strong></td><td>QBO, Xero, NetSuite, some D365</td><td>Scenario builder; visual paradigm</td><td>"No-code, fast" — SMB framing</td><td>Same as n8n — HyperAPI is contract-typed, not scenario-typed</td><td>https://www.make.com/en/integrations/category/erp</td></tr>
+</table>
+
+<p><strong>Action before any blog publishes</strong>: an editor must <code>curl</code> each URL, capture the actual depth/speed claims, and rewrite this table before any blog that names a competitor ships. Until that happens, <strong>no blog may name a competitor externally</strong> — the framework allows it in the plan (this doc), not in shipped copy.</p>
+
+<hr/>
+
+<h2>5. The Hyperbots bar (what differentiates each blog)</h2>
+
+<p>Every plan must answer: <em>what does the connector framework hold that a hand-rolled SAP/NetSuite/etc. integration usually does not</em>?</p>
+
+<p>The shipped framework answers (paths cited):</p>
+
+<ol>
+<li><strong>Replay is a contract, not a hope.</strong> Re-running on the same source bytes</li>
+</ol>
+<p>   posts 0, skips all, and emits a <strong>byte-identical</strong> artifact. Verified by    <code>check_replay_safety</code> in <code>conformance/kit.py</code>. The default key is byte-hash    because that is the safe default — never silently skipping a legitimate    re-issue, never silently double-posting the same file.</p>
+<ol>
+<li><strong>The count invariant is the gate.</strong> <code>count(sources) == sum(counts(sinks))</code></li>
+</ol>
+<p>   or the process exits non-zero. Bespoke connectors typically log; the    framework gates.</p>
+<ol>
+<li>**Six typed sinks (<code>posted</code>, <code>dead_letter</code>, <code>unresolved</code>, <code>skipped_dup</code>,</li>
+</ol>
+<p>   <code>failed</code>, <code>audit</code>).** "Failed" is the smallest of the six. The most common    bespoke-connector failure mode (silent partial posting) is not reachable in    the framework.</p>
+<ol>
+<li><strong>No HITL.</strong> Low-confidence records dead-letter with the raw response</li>
+</ol>
+<p>   attached, never a human queue. Mentioned in every blog that touches    confidence behavior; never softened.</p>
+<ol>
+<li><strong>Secrets boundary is inert by default.</strong> No fabricated credentials, no</li>
+</ol>
+<p>   logged token, no payload-embedded secret. OAuth2 rotation honors a    cross-worker write lock; <code>invalid_grant</code> is a hard stop, not a retry.</p>
+<ol>
+<li>**A new connector = a <code>ConnectorDescriptor</code> + a <code>Normalizer.map</code> + a sink</li>
+</ol>
+<p>   choice.** No SDK edit. This is the <em>agent-time-compression</em> mechanism; the    blogs explain why this is true at the contract level, not just the demo    level.</p>
+
+<p>These six bullets are <strong>on-disk-backed</strong>. Any blog claim outside this set needs either a new on-disk artifact or a [PLACEHOLDER — depth claim needs source] tag.</p>
+
+<hr/>
+
+<h2>6. The honesty discipline (publish gate)</h2>
+
+<p>Before any blog in this set publishes externally:</p>
+
+<ol>
+<li><strong>Speed numbers are placeholders until measured.</strong> Every "X hours vs Y</li>
+</ol>
+<p>   weeks" headline needs <strong>either</strong> a named customer rollout (with consent;    see [[agent10-no-broadcast]] — internal-only stack-fit testing must not    leak) <strong>or</strong> a documented internal benchmark on a clean repo clone.</p>
+<ol>
+<li><strong>Customer names are consent-gated.</strong> ERP product names ("SAP S/4HANA",</li>
+</ol>
+<p>   "NetSuite", "QuickBooks Online") are fine — they are products. Customer    names are not, ever, without explicit written consent.</p>
+<ol>
+<li><strong>Competitor mentions need a real fetched source.</strong> Until §4 is rebuilt</li>
+</ol>
+<p>   from real fetches, no shipped blog names Workato / MuleSoft / Boomi / Tray    / n8n / Make in body copy. They may be referenced in the plans for    positioning.</p>
+<ol>
+<li><strong>Depth claims need on-disk backing.</strong> Anything not in §5 needs either an</li>
+</ol>
+<p>   added artifact in <code>hyperapi-connector-framework/</code> or a [PLACEHOLDER —    depth claim needs source] tag and a measurement task.</p>
+<ol>
+<li><strong>Don't promise completeness Hyperbots doesn't have.</strong> The 8 ERPs above</li>
+</ol>
+<p>   ship as compiled descriptors; the two runnable references are    <code>invoices_to_csv</code> and <code>bank_txns_to_kyriba_json</code>. Any "full-cycle ERP"    plan must check source state at publish time, not assume parity.</p>
+<ol>
+<li><strong>The flap rule applies.</strong> Per [[dont-die-on-flap-close]] — a blocked</li>
+</ol>
+<p>   measurement or a denied URL fetch is logged honestly, not silently    skipped. This framework already records the WebFetch denial in §4.</p>
+<ol>
+<li><strong>No cross-channel leakage.</strong> Per [[cfo-nanoclaw-channel-only]] — any</li>
+</ol>
+<p>   cfo-touchpoint snippet posts only to <code>cfo-nanoclaw-channel</code>, never to    general Teams/Slack or other product channels.</p>
+<ol>
+<li><strong>Hyperbots framing on the model.</strong> "Open-source model fine-tuned by</li>
+</ol>
+<p>   Hyperbots; fine-tune corpus, labeling, eval set, and weights are    Hyperbots IP." Never claim closed-source ownership of open weights.</p>
+
+<hr/>
+
+<h2>7. The 12-blog set at a glance</h2>
+
+<table>
+<tr><th>#</th><th>Slug</th><th>Layer-1 (depth)</th><th>Layer-2 (speed)</th><th>Class</th></tr>
+<tr><td>1</td><td><code>01-hours-not-weeks-sap-connector</code></td><td>S/4HANA OData v4 + ECC BAPI shapes; BusinessPartner, CompanyCode, FiscalYear; idempotency on <code>BUKRS+BELNR+GJAHR</code></td><td>Hours-vs-weeks SAP setup via agent</td><td>integration-time</td></tr>
+<tr><td>2</td><td><code>02-netsuite-rest-vs-suitetalk-17-edge-cases</code></td><td>SuiteTalk REST vs SOAP; subsidiary, internal-id, TBA auth</td><td>Agent already knows the 17 edge cases</td><td>depth</td></tr>
+<tr><td>3</td><td><code>03-dynamics-365-gp-bc-three-erps-one-agent</code></td><td>Three Microsoft AP shapes under one descriptor; Azure AD client creds</td><td>One agent surface across three back-ends</td><td>integration-time</td></tr>
+<tr><td>4</td><td><code>04-oracle-ebs-to-fusion-migration-aware</code></td><td>EBS REST + Fusion FBDI; vendor-id continuity</td><td>Migration-aware connector — agent spans both</td><td>migration</td></tr>
+<tr><td>5</td><td><code>05-idempotency-for-invoices</code></td><td><code>SourceBytesKey</code> default; <code>BusinessKey</code> opt-in; the formal replay contract</td><td>Why this lets the agent ship in hours, not days</td><td>depth</td></tr>
+<tr><td>6</td><td><code>06-schema-drift-in-production-custom-field</code></td><td><code>schema_version</code> header; additive-field handling; <code>dead_letter</code> on shape mismatch</td><td>The agent reconfigures; bespoke connectors require a re-deploy</td><td>depth</td></tr>
+<tr><td>7</td><td><code>07-csv-to-event-driven-4-stages</code></td><td>Stage 1 FileSink → Stage 2 ApiSink → Stage 3 batched → Stage 4 webhook-driven</td><td>Each stage = hours of agent work, not weeks</td><td>integration-time</td></tr>
+<tr><td>8</td><td><code>08-9-reasons-sap-integrations-fail</code></td><td>9 SAP failure modes from <code>connector-framework/</code> + <code>architect-finance-microservices</code> knowledge</td><td>Each failure pre-handled in the descriptor</td><td>listicle</td></tr>
+<tr><td>9</td><td><code>09-workday-hcm-financials-payroll-docs</code></td><td>Workday HCM extract + Financials post under one descriptor</td><td>Multi-module surface from one agent</td><td>depth</td></tr>
+<tr><td>10</td><td><code>10-quickbooks-online-vs-desktop-smb-upgrade</code></td><td>QBO realm + minorversion vs QBD; vendor / vendor-credit shape</td><td>Agent handles the upgrade path; no SI engagement</td><td>migration</td></tr>
+<tr><td>11</td><td><code>11-integration-qbr-is-dead</code></td><td>Connector conformance kit replaces the SI QBR ritual</td><td>One agent does the 4-week SI engagement</td><td>integration-time</td></tr>
+<tr><td>12</td><td><code>12-observability-for-connectors-what-sre-needs</code></td><td>The six typed sinks as the observability surface; lineage stamps</td><td>Agent ships with observability; bespoke connectors add it later</td><td>depth</td></tr>
+</table>
+
+<p>Each plan is at <code>./plans/&lt;slug&gt;.md</code>.</p>
+
+<hr/>
+
+<h2>8. Sources / provenance</h2>
+
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/README.md</code></li>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/docs/IDEMPOTENCY.md</code></li>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/docs/USAGE.md</code></li>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/docs/LIMITS.md</code></li>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/docs/MODEL.md</code></li>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/plan/PLAN-next-steps.md</code></li>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/src/hyperapi_connector/connectors/README-v0.4.md</code></li>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/src/hyperapi_connector/connectors/erp/</code> (compiled descriptors for 8 ERPs)</li>
+<li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/content/linkedin-500-line-invoice-2026-05-25.md</code> (voice reference)</li>
+<li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/content/linkedin-500-line-invoice-2026-05-25.AUDIT.md</code> (attestation pattern)</li>
+<li><code>/Users/niyati/Desktop/hyperapi-content-strategy/viral-blog-titles-2026-05-25-v3.md</code> (§A anchored / §B non-anchored discipline)</li>
+<li><code>/Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/comparative/azure-di/azure-di-invoice-study.html</code> (depth template)</li>
+<li>CEO directive 2026-05-25 verbatim (cited in §1)</li>
+</ul>
+
+<h2>9. Open assumptions / known gaps</h2>
+
+<ul>
+<li><strong>No measured customer integration-time anywhere on disk.</strong> Every speed cell</li>
+</ul>
+<p>  in §2 is <code>[PLACEHOLDER]</code>. This is the single largest gap; closing it   unblocks blog #1, #3, #7, #11.</p>
+<ul>
+<li><strong>Competitor depth map is hypothesized.</strong> §4 is NOT-FETCHED; an editor</li>
+</ul>
+<p>  must <code>curl</code> the URLs before any blog ships with competitor body copy.</p>
+<ul>
+<li><strong>Two reference runnables only.</strong> <code>connectors/erp/</code> carries compiled</li>
+</ul>
+<p>  descriptors for 8 ERPs but the two runnable examples in source are   <code>invoices_to_csv</code> and <code>bank_txns_to_kyriba_json</code>. Blogs that imply more   than two ERPs have <em>fully runnable, byte-exact examples</em> are over-claiming   until a runnable lands per ERP.</p>
+<ul>
+<li><strong>HyperAPI accuracy/performance numbers</strong> are referenced **only as</li>
+</ul>
+<p>  published at apis.hyperbots.com** — never invented and never below the   published bar.</p>
+
+</body></html>

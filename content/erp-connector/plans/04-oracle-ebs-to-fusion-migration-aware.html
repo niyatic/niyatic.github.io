@@ -1,0 +1,177 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>04-oracle-ebs-to-fusion-migration-aware — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/content/erp-connector/">← back</a>
+<div class="fm">slug: 04-oracle-ebs-to-fusion-migration-aware
+erp: Oracle
+class: migration
+status: PLAN — methodology defined, no Oracle descriptor on disk yet
+caveat: connector-framework does NOT ship an Oracle EBS or Fusion descriptor; this post pitches the migration-aware connector pattern and signals descriptor work</div>
+
+<h1>Oracle EBS to Fusion: the migration-aware connector — plan</h1>
+
+<h2>1. Headline + hook</h2>
+
+<p>Hook: **"Oracle customers don't live in EBS or Fusion — they live in <em>both</em>, often for years. The connector contract spans the cutover; the agent posts AP bills to whichever back-end owns the vendor today, and the business-key dedup carries across the migration."**</p>
+
+<p>Honest framing up front: as of 2026-05-25 the connector framework does <strong>not</strong> ship a compiled Oracle descriptor. This post is a <em>framework-extension pitch</em> — what the migration-aware pattern would look like — and it explicitly tags itself as such. It can ship as a thought-leadership piece; it cannot ship as a "we have this today" piece without an Oracle descriptor landing first.</p>
+
+<h2>2. Audience + intent</h2>
+
+<ul>
+<li>Primary: Oracle ERP customers mid-cutover or planning one; secondary:</li>
+</ul>
+<p>  Oracle SI partners.</p>
+<ul>
+<li>Reader takeaway: *"the agent abstracts which back-end owns the vendor</li>
+</ul>
+<p>  today; the integration survives the cutover."*</p>
+<ul>
+<li>CTA: scoping conversation on an Oracle case (gated by Hyperbots having</li>
+</ul>
+<p>  Oracle as a target on the roadmap; confirm with product before CTA   ships).</p>
+
+<h2>3. The two-layer pitch (REQUIRED)</h2>
+
+<h3>3.1 Speed (claim deferred)</h3>
+<p>The speed claim is <strong>deferred</strong> until an Oracle descriptor exists. The post can still pitch the <em>migration-aware</em> speed angle — "one connector spans both back-ends, the cutover is configuration not re-integration" — without naming a wall-clock number.</p>
+
+<h3>3.2 Depth — the migration-aware pattern</h3>
+<ul>
+<li><strong>One descriptor family, two targets</strong> (<code>oracle_ebs</code>, <code>oracle_fusion</code>).</li>
+<li><strong>Vendor-id continuity</strong> — <code>master_key_resolver</code> maps EBS <code>vendor_id</code></li>
+</ul>
+<p>  → Fusion <code>Supplier.SupplierId</code>, with a per-tenant lookup table during   cutover.</p>
+<ul>
+<li><strong>Idempotency across the cutover</strong> — <code>BusinessKey</code> with the *business</li>
+</ul>
+<p>  invoice number*, salted by tenant + posting calendar, so a bill posted   in EBS pre-cutover and replayed post-cutover is a <code>skipped_dup</code>, not a   double-post.</p>
+<ul>
+<li><strong>Sign / FX policy aligned across back-ends</strong> — Fusion's CreditMemo</li>
+</ul>
+<p>  sign vs EBS's.</p>
+<ul>
+<li><strong>Two-line dedup</strong> — the framework's first line + each Oracle</li>
+</ul>
+<p>  back-end's second line (the database's unique constraint on   <code>invoice_num</code>).</p>
+
+<h2>4. Outline</h2>
+
+<ul>
+<li>P-1. The Oracle reality — EBS + Fusion in parallel, sometimes for 18+</li>
+</ul>
+<p>  months.</p>
+<ul>
+<li>P-2. The bespoke pain — two integration projects, two test plans, one</li>
+</ul>
+<p>  cutover risk.</p>
+<ul>
+<li>P-3. The migration-aware pattern — one descriptor family, two targets,</li>
+</ul>
+<p>  one normalizer.</p>
+<ul>
+<li>P-4. The continuity guarantee — vendor-id resolver + business-key</li>
+</ul>
+<p>  dedup spanning both back-ends.</p>
+<ul>
+<li>P-5. The honesty — descriptor not built yet; this is a pattern + a</li>
+</ul>
+<p>  signal of where the framework grows.</p>
+<ul>
+<li>P-6. CTA — scoping.</li>
+</ul>
+
+<h2>5. Required evidence before publish</h2>
+
+<ul>
+<li>Confirm Oracle is on the connector-framework roadmap (with product).</li>
+<li>A descriptor sketch (paper-only) for EBS and for Fusion that fits the</li>
+</ul>
+<p>  framework's <code>ConnectorDescriptor</code> shape.</p>
+<ul>
+<li>A drawn example of the cutover continuity (sequence diagram).</li>
+<li>Optional: a customer named-or-anonymized cutover case.</li>
+</ul>
+
+<h2>6. Placeholders to fill</h2>
+
+<ul>
+<li>[PLACEHOLDER-roadmap-confirm]: product sign-off that Oracle is on the</li>
+</ul>
+<p>  near-term descriptor list</p>
+<ul>
+<li>[PLACEHOLDER-descriptor-sketch-EBS]</li>
+<li>[PLACEHOLDER-descriptor-sketch-Fusion]</li>
+<li>[PLACEHOLDER-customer-cutover-case]</li>
+</ul>
+
+<h2>7. Competitor positioning</h2>
+
+<ul>
+<li>Workato Oracle connectors — NOT-FETCHED.</li>
+<li>MuleSoft Oracle EBS adapters — NOT-FETCHED. MuleSoft's Oracle story is</li>
+</ul>
+<p>  the strongest competitive surface; depth parity matters here.</p>
+<ul>
+<li>Boomi — NOT-FETCHED.</li>
+</ul>
+
+<h2>8. Sources / provenance</h2>
+
+<ul>
+<li>skill: <code>migration-architect</code> (strangler/expand-contract authority for</li>
+</ul>
+<p>  the migration framing)</p>
+<ul>
+<li>skill: <code>architect-finance-microservices</code> (cross-back-end invariants)</li>
+<li>No on-disk Oracle descriptor as of 2026-05-25 (recorded honestly)</li>
+<li>Competitor URLs (must be fetched)</li>
+</ul>
+
+<h2>Z. Internal-only</h2>
+
+<ul>
+<li>Cost: ~6 hours to draft (heavier than a single-ERP post; the migration</li>
+</ul>
+<p>  framing carries more research).</p>
+<ul>
+<li>Dependencies: product roadmap confirmation; descriptor sketches.</li>
+<li>Risk: this post is thought-leadership, not "we have it today." If the</li>
+</ul>
+<p>  framing slips into the latter, do not publish. The honesty discipline   (FRAMEWORK §6.5) is the controlling rule.</p>
+
+</body></html>

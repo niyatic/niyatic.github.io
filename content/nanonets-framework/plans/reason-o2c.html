@@ -1,0 +1,212 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>reason-o2c — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/content/nanonets-framework/">← back</a>
+<div class="fm">primitive: reason
+domain: o2c
+status: PLAN — methodology defined, numbers placeholder
+date: 2026-05-25
+depth_template: /Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/comparative/azure-di/azure-di-invoice-study.html
+parent_framework: ../FRAMEWORK-2026-05-25.md
+dimensions_in_scope: D6, D9, D12, D13, D1*, D2*, D8*
+dimensions_out_of_scope: D3, D4, D5, D7, D10, D11, D14</div>
+
+<h1>Reason (O2C) — deep-study plan</h1>
+
+<h2>1. Executive summary (TEMPLATE — numbers placeholder)</h2>
+
+<p><strong>Reason</strong> for O2C decides exceptions from validate-O2C / match-O2C: unidentified-receipt, partial-pay-with-no-deduction-code, duplicate- remit suspect, customer-over-credit-limit, dispute-eligibility, deduction-code-authority excursion, multi-currency-residual, and cross-tenant tranche reconciliation. Output = decision + justification trace. Ground truth is distributional. Numbers <code>[PENDING-MEASUREMENT]</code>.</p>
+
+<h2>2. Scope & coverage</h2>
+
+<ul>
+<li><strong>Workload.</strong> Exception payments / statements / remittances from</li>
+</ul>
+<p>  validate-O2C and match-O2C upstream.</p>
+<ul>
+<li><strong>Platforms.</strong> Hyperbots <code>reason</code> + ≥1 competitor.</li>
+<li><strong>Coverage dims.</strong> 7 of 14.</li>
+<li><strong>Test surface.</strong></li>
+<li><code>n = [PLACEHOLDER]</code> exception cases per dim.</li>
+<li>Stratification: exception type, dollar tier, customer-credit-tier.</li>
+<li><strong>Three reviewers per case;</strong> distribution recorded; Fleiss κ.</li>
+</ul>
+
+<h2>3. Methodology</h2>
+
+<h3>3.1 Data-status representation</h3>
+<p>Eight-row legend + <code>Off-distribution</code> per reason-P2P §3.1.</p>
+
+<h3>3.2 Sample design</h3>
+<p><code>n = [PLACEHOLDER]</code> per dim; three-reviewer GT pool; distribution reported.</p>
+
+<h3>3.3 Metrics</h3>
+<ul>
+<li>Decision agreement vs modal human (primary).</li>
+<li>Decision agreement vs any human (secondary).</li>
+<li>Off-distribution rate.</li>
+<li>Justification-trace correctness.</li>
+<li>Hallucination rate.</li>
+<li>D9 calibration.</li>
+<li>D12 STP — share of cases the system auto-resolves correctly per modal</li>
+</ul>
+<p>  human.</p>
+<ul>
+<li>95% bootstrap CI + n; distribution publication required.</li>
+</ul>
+
+<h3>3.4 Scoring rubric</h3>
+<ul>
+<li>Decision options pinned in PINS.txt: `{apply-as-on-account, apply-</li>
+</ul>
+<p>  with-deduction-code-X, route-to-{credit, collections, dispute},   request-info-{customer, AR}, reject-suspect-duplicate}`.</p>
+<ul>
+<li>Hallucination = trace cites non-existent customer / invoice / code.</li>
+<li>Off-distribution = decision option no reviewer picked.</li>
+</ul>
+
+<h3>3.5 Evaluation controls</h3>
+<p>Frozen sha256. Rerunnable command:</p>
+<pre><code class="lang-">
+run --study reason-o2c-v0 \
+    --dimension D&lt;id&gt; \
+    --system hyperbots-idp@&lt;model-revision&gt; \
+    --system &lt;competitor&gt;@&lt;api-version&gt; \
+    --dataset o2c-reason-bench-v1@&lt;snapshot-sha256&gt; \
+    --reviewer-pool &lt;pool-sha256&gt; \
+    --split test --seed &lt;pinned&gt; \
+    --metric decision_agreement_vs_modal --bootstrap 1000
+</code></pre>
+
+<h3>3.6 Independence and disclosure</h3>
+<p>Hyperbots-published; affiliation declared. realqa-doc-ai-quality applies: distributions published alongside agreement %.</p>
+
+<h3>3.7 Limitations</h3>
+<ul>
+<li>Three-reviewer pool is expensive; tail strata may have lower n.</li>
+<li>Dispute-eligibility decisions are deeply customer-policy-bound; the</li>
+</ul>
+<p>  bench uses a pinned canonical policy.</p>
+
+<h3>3.8 Where this primitive sits in the IDP pipeline</h3>
+<p><strong>reason</strong> stage; end of O2C pipeline.</p>
+
+<h2>4. Dimension analysis (7 of 14)</h2>
+
+<table>
+<tr><th>ID</th><th>Dimension for reason(O2C)</th><th>Hyperbots</th><th>Competitor</th><th>Δ</th></tr>
+<tr><td>D1*</td><td>Exception complexity tier.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D2*</td><td>Field-citation coverage.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D6</td><td><strong>Dominant.</strong> Cross-doc reasoning (payment + invoices + customer master + credit-tier + policy).</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D8*</td><td>Arithmetic-trace fidelity.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D9</td><td>Calibration on decision confidence.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D12</td><td><strong>STP</strong> = share of held cases auto-resolved correctly per modal human.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D13</td><td>p50/p95 per-case decision latency.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+</table>
+
+<h2>5. Document × failure-mode matrix (reason-O2C)</h2>
+
+<table>
+<tr><th>#</th><th>Exception type</th><th>Modal human decision tendency</th><th>Dimensions</th></tr>
+<tr><td>1</td><td>Unidentified receipt (no remit, no inv ref)</td><td>Apply-as-on-account</td><td>D6, D9</td></tr>
+<tr><td>2</td><td>Partial-pay with deduction code outside authority</td><td>Route-to credit</td><td>D6</td></tr>
+<tr><td>3</td><td>Duplicate-remit suspect, high confidence</td><td>Reject-suspect-duplicate</td><td>D9</td></tr>
+<tr><td>4</td><td>Duplicate-remit suspect, low confidence</td><td>Route-to AR</td><td>D9</td></tr>
+<tr><td>5</td><td>Customer over credit-limit</td><td>Route-to credit</td><td>D6, D2*</td></tr>
+<tr><td>6</td><td>Dispute eligibility (per pinned policy)</td><td>Route-to dispute</td><td>D2*</td></tr>
+<tr><td>7</td><td>Cross-FX residual rounding</td><td>Apply-as-on-account</td><td>D6</td></tr>
+<tr><td>8</td><td>Multi-tranche pay across 3 payments</td><td>Apply-with-tranche-flag</td><td>D6</td></tr>
+<tr><td>9</td><td>Statement with aging arithmetic mismatch</td><td>Request-info-from-customer</td><td>D6, D2*</td></tr>
+<tr><td>10</td><td>Sanctions on the remitter side (rare)</td><td>Route-to compliance</td><td>D6</td></tr>
+<tr><td>11</td><td>Multi-rule excursion (sanity + authority + tier)</td><td>Distribution split</td><td>D1*, D9</td></tr>
+<tr><td>12</td><td>Legitimate over-pay on retention release</td><td>Apply-with-on-account-flag</td><td>D9</td></tr>
+</table>
+
+<p><code>[PLACEHOLDER — expand to 30–55 strata.]</code></p>
+
+<h2>6. Metric-taxonomy crosswalk (reason-O2C)</h2>
+<p>Same structure as reason-P2P §6. O2C-specific: dispute-eligibility + on-account residual decisions roll under taxonomy D items 121-135.</p>
+
+<h2>7. HyperAPI capability coverage (reason-O2C)</h2>
+
+<ul>
+<li><code>reason</code> — primary</li>
+<li><code>parse-intent</code> — coarse intent annotation</li>
+<li><code>detect</code> — exception detection</li>
+<li><code>validate</code> + <code>reconcile</code> + <code>match</code> — upstream signals</li>
+</ul>
+
+<p>Capability counts: <code>[PLACEHOLDER]</code>.</p>
+
+<h2>8. Competitor offerings inventory (reason-O2C)</h2>
+
+<table>
+<tr><th>Vendor</th><th>SKU / API</th><th>Marketing source</th><th>Status</th></tr>
+<tr><td>HighRadius</td><td>Cash-app exception routing + Credit Cloud</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Billtrust</td><td>Quantum exception routing</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>BlackLine</td><td>Exception routing</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Esker</td><td>O2C exception co-pilot</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Versapay</td><td>Collaborative AR + exception</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+</table>
+
+<h2>9. Findings & outlook</h2>
+
+<p><code>[PLACEHOLDER]</code>.</p>
+
+<p>Falsifiable hypotheses:</p>
+<ol>
+<li>Hyperbots STP (D12) on unidentified-receipt strata ≥ competitor at</li>
+</ol>
+<p>   equal off-distribution rate.</p>
+<ol>
+<li>Hyperbots dispute-eligibility decision agreement ≥ competitor.</li>
+<li>Hyperbots hallucination rate < competitor on credit-tier</li>
+</ol>
+<p>   justification traces.</p>
+
+<h2>Z. Internal-only notes</h2>
+<ul>
+<li>Three-reviewer pool is the highest-cost ingredient.</li>
+<li>Dispute-eligibility canonical policy must be reviewed by an</li>
+</ul>
+<p>  ar-domain SME before publish.</p>
+<ul>
+<li>The headline-publish candidate for the whole library is reason-O2C</li>
+</ul>
+<p>  STP — it ties the deepest methodology (distributional GT) to the   most business-relevant outcome (cash auto-applied).</p>
+
+</body></html>

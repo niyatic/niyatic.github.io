@@ -1,0 +1,314 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HyperAPI on Product Hunt — Launch Playbook</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — human-gated; not submitted to Product Hunt</div><div class="meta">Hyperbots GTM Hub — product-hunt-strategy · 2026-05-22</div><h1>HyperAPI on Product Hunt — Launch Playbook</h1>
+<p>A DRAFT, human-gated launch plan for putting <strong>HyperAPI by Hyperbots</strong> —</p>
+<p>a document-processing API that turns finance, bank, shipping, and custom</p>
+<p>documents into clean structured output for AI/ML pipelines and finance</p>
+<p>automation — in front of the Product Hunt audience.</p>
+<p>The launch thesis is the same one that governs every Hyperbots artifact: the</p>
+<p><strong>honest, non-obvious finding is the asset</strong>, not a hype claim. A launch that</p>
+<p>spikes the ranking once and erodes trust is a net loss. We optimize for the</p>
+<p>credible, compounding kind — within Product Hunt&#x27;s community rules, with no</p>
+<p>vote manipulation and no bought engagement.</p>
+<h2>Who this is for</h2>
+<p>Grounded in the HyperAPI ICP: developers and finance-automation teams who feed</p>
+<p>documents into AI/ML pipelines. The four document classes HyperAPI converts to</p>
+<p>structured output:</p>
+<ul>
+<li><strong>Finance documents</strong> — invoices, AP/AR, statements, expense and tax docs.</li>
+<li><strong>Bank documents</strong> — bank statements and banking/financial records.</li>
+<li><strong>Shipping documents</strong> — bills of lading, customs and logistics paperwork.</li>
+<li><strong>Custom documents</strong> — a customer-defined schema for any document class.</li>
+</ul>
+<p>The Product Hunt reader we are writing for is the developer who will paste a</p>
+<p>PDF into the playground and check the JSON, and the finance-ops lead who will</p>
+<p>forward it to that developer. Both reward specificity and punish hype.</p>
+<h2>Tagline + description</h2>
+<p><strong>Tagline (≤60 chars):</strong></p>
+<blockquote>Turn finance documents into clean JSON — one API.</blockquote>
+<p><strong>One-line description (the PH &quot;tagline&quot; field, ≤260 chars):</strong></p>
+<blockquote>HyperAPI turns finance, bank, shipping, and custom documents into</blockquote>
+<blockquote>structured JSON for your AI/ML and finance-automation pipelines. One</blockquote>
+<blockquote>endpoint, four document classes, usage pricing at $0.05/page.</blockquote>
+<p><strong>Full description (the PH &quot;description&quot; field):</strong></p>
+<blockquote>Most document pipelines still glue OCR to brittle rules and break on the</blockquote>
+<blockquote>next layout. HyperAPI is a single document-processing API: send a finance,</blockquote>
+<blockquote>bank, shipping, or custom document, get clean structured output your code</blockquote>
+<blockquote>can use directly — no template per vendor, no rules to hand-maintain.</blockquote>
+<p>&gt;</p>
+<blockquote>Under the hood are open-source models fine-tuned by Hyperbots (Hyperbots</blockquote>
+<blockquote>IP) for finance document understanding. Accuracy and SLA details are</blockquote>
+<blockquote>published per apis.hyperbots.com. Pricing is straightforward usage —</blockquote>
+<blockquote>$0.05/page — so you can estimate cost before you write a line of code.</blockquote>
+<p>&gt;</p>
+<blockquote>We also run a benchmark factory: a measured, pinned, rerunnable evaluation</blockquote>
+<blockquote>harness for finance document AI, so model-performance numbers are</blockquote>
+<blockquote>reproducible rather than asserted. Launch day, we publish how it is</blockquote>
+<blockquote>measured — not just what we&#x27;d like you to believe.</blockquote>
+<p>&gt;</p>
+<blockquote>Try it on your own worst document.</blockquote>
+<p>Copy discipline: one idea per field, no buzzword filler, no competitor named,</p>
+<p>accuracy only &quot;per apis.hyperbots.com&quot;, pricing only the published $0.05/page.</p>
+<h2>Gallery / asset list</h2>
+<p>The gallery is the launch&#x27;s honest-evidence surface. Eight assets, in order:</p>
+<p>1. <strong>Hero card</strong> — the tagline over a split visual: a messy multi-vendor</p>
+<p>   invoice on the left, clean JSON on the right. One idea, instantly legible.</p>
+<p>2. <strong>The four document classes</strong> — one panel naming finance, bank, shipping,</p>
+<p>   and custom documents, each with a representative input and its structured</p>
+<p>   output shape.</p>
+<p>3. <strong>30-second quickstart</strong> — a real code snippet: one request, one structured</p>
+<p>   response. The developer should see the whole loop without scrolling.</p>
+<p>4. <strong>Custom-schema panel</strong> — show a customer-defined schema and the matching</p>
+<p>   output, so the &quot;custom documents&quot; class is concrete, not a slogan.</p>
+<p>5. <strong>The benchmark-factory panel</strong> — a screenshot of the measured, pinned,</p>
+<p>   rerunnable leaderboard view, labelled clearly as **model OCR/parse</p>
+<p>   performance**, not product accuracy. Caption links to how it is run.</p>
+<p>6. <strong>Pricing panel</strong> — the single published number, $0.05/page usage; &quot;volume</p>
+<p>   and enterprise sized on a call.&quot; No invented tiers.</p>
+<p>7. <strong>&quot;Per apis.hyperbots.com&quot; accuracy card</strong> — accuracy and SLA stated only as</p>
+<p>   referenced to the published source, with the link.</p>
+<p>8. <strong>Short demo video (≤60s)</strong> — paste a document, get JSON, done. No</p>
+<p>   voiceover hype; the product does the talking.</p>
+<p>Asset guardrails: no customer logos or testimonials (none are approved); any</p>
+<p>quote shown is a labelled placeholder; benchmark figures are model-performance,</p>
+<p>never restated as product accuracy; no named competitor in any frame.</p>
+<h2>Launch-day timeline (all times Pacific; PH day starts 12:01 AM PT)</h2>
+<ul>
+<li><strong>12:01 AM PT — Go live.</strong> Submission published by the human owner. Maker</li>
+</ul>
+<p>  first-comment posted within minutes (full text below).</p>
+<ul>
+<li><strong>12:15 AM PT — Internal notify.</strong> Team and makers told the listing is live,</li>
+</ul>
+<p>  via a neutral &quot;we launched&quot; message — *no upvote ask, no vote-for-us script*.</p>
+<p>  People may visit and form their own view; that is the only instruction.</p>
+<ul>
+<li><strong>6:00–9:00 AM PT — US morning.</strong> Makers actively answering every comment</li>
+</ul>
+<p>  and question in-thread. This is the real engagement lever: fast, substantive,</p>
+<p>  honest replies. Cross-post a genuine &quot;we&#x27;re live, here&#x27;s what we built and</p>
+<p>  how it&#x27;s measured&quot; note to owned channels (LinkedIn, relevant dev/finance</p>
+<p>  communities) — sharing the launch, not soliciting votes.</p>
+<ul>
+<li><strong>9:00 AM–12:00 PM PT — Sustained Q&amp;A.</strong> Maker rotation so the thread never</li>
+</ul>
+<p>  goes quiet; technical questions routed to whoever can answer most precisely.</p>
+<ul>
+<li><strong>12:00–4:00 PM PT — Depth window.</strong> Publish the &quot;how the benchmark factory</li>
+</ul>
+<p>  measures this&quot; follow-up comment; respond to skeptics with specifics and</p>
+<p>  links, never defensiveness.</p>
+<ul>
+<li><strong>4:00–8:00 PM PT — EU/India overlap and wind-down.</strong> Continue replies;</li>
+</ul>
+<p>  thank substantive commenters; log every product question for the roadmap.</p>
+<ul>
+<li><strong>Next day — Honest recap.</strong> Internal recap of what was asked and learned.</li>
+</ul>
+<p>  Any public recap reports only real, verifiable numbers.</p>
+<h2>Hunter / maker plan</h2>
+<ul>
+<li><strong>Hunter:</strong> a credible hunter from the developer-tools / AI space whose</li>
+</ul>
+<p>  audience overlaps the ICP. Selection and outreach are a <strong>human decision</strong> —</p>
+<p>  this playbook drafts the brief, not the booking. The hunter is given the</p>
+<p>  honest framing and the benchmark-factory link; they are never asked to</p>
+<p>  overclaim. Self-launch by a maker is an acceptable fallback.</p>
+<ul>
+<li><strong>Makers:</strong> 2–3 Hyperbots makers with real involvement in HyperAPI — listed</li>
+</ul>
+<p>  as makers because they built it, not for reach. At least one engineer who</p>
+<p>  can answer parsing/schema questions precisely, and one GTM maker for</p>
+<p>  positioning questions.</p>
+<ul>
+<li><strong>Maker conduct:</strong> disclose Hyperbots affiliation everywhere; answer fast and</li>
+</ul>
+<p>  honestly; concede limitations openly; never argue, never astroturf, never</p>
+<p>  ask anyone to upvote.</p>
+<h2>First comment — maker story</h2>
+<blockquote>Hi Product Hunt — maker here, Hyperbots team.</blockquote>
+<p>&gt;</p>
+<blockquote>We kept watching document pipelines break the same way: OCR bolted to a pile</blockquote>
+<blockquote>of per-vendor rules that fall over on the next layout. So we built HyperAPI —</blockquote>
+<blockquote>one API that takes a finance, bank, shipping, or custom document and returns</blockquote>
+<blockquote>clean structured JSON your code can use directly.</blockquote>
+<p>&gt;</p>
+<blockquote>Two honest things up front. First, the models are open-source backbones</blockquote>
+<blockquote>we fine-tuned for finance document understanding (Hyperbots IP) — fine-tuning</blockquote>
+<blockquote>helps, but we publish how it is measured rather than asking you to take a</blockquote>
+<blockquote>number on faith. We run a benchmark factory: a measured, pinned, rerunnable</blockquote>
+<blockquote>evaluation harness, and the leaderboard figures are model OCR/parse</blockquote>
+<blockquote>performance, not a product-accuracy slogan. Product accuracy and SLA are</blockquote>
+<blockquote>stated only as published, per apis.hyperbots.com.</blockquote>
+<p>&gt;</p>
+<blockquote>Second, pricing is just usage — $0.05/page — so you can estimate cost before</blockquote>
+<blockquote>you write code. Volume and enterprise are sized on a call.</blockquote>
+<p>&gt;</p>
+<blockquote>Best way to judge it: try it on your own worst document — the one that breaks</blockquote>
+<blockquote>everything else — and tell us where it falls short. We&#x27;re in the thread all</blockquote>
+<blockquote>day and we&#x27;d rather hear the hard questions. Thanks for taking a look.</blockquote>
+<h2>FAQ — pre-empts (drafted answers, posted as makers reply)</h2>
+<ul>
+<li><strong>&quot;How accurate is it?&quot;</strong> — Accuracy and SLA are published; we reference them</li>
+</ul>
+<p>  only per apis.hyperbots.com rather than quoting a figure here. Separately,</p>
+<p>  our benchmark factory publishes measured, rerunnable model OCR/parse</p>
+<p>  performance — that is model performance, distinct from product accuracy.</p>
+<ul>
+<li><strong>&quot;How is this different from OCR-plus-rules / legacy IDP?&quot;</strong> — Category</li>
+</ul>
+<p>  framing only: instead of a template and rule set per vendor, HyperAPI uses</p>
+<p>  finance-tuned models, so a new layout does not mean new rules. We do not name</p>
+<p>  or rank specific products in this thread; the governed benchmark artifact is</p>
+<p>  where named comparisons live.</p>
+<ul>
+<li><strong>&quot;What models is this?&quot;</strong> — Open-source backbones fine-tuned by Hyperbots</li>
+</ul>
+<p>  for finance documents (Hyperbots IP). We disclose that it is fine-tuned, not</p>
+<p>  zero-shot, in any public claim.</p>
+<ul>
+<li><strong>&quot;What does it cost?&quot;</strong> — Usage at $0.05/page. Volume and enterprise pricing</li>
+</ul>
+<p>  are sized on a call; we are not publishing other tiers here.</p>
+<ul>
+<li><strong>&quot;Is there a human in the loop?&quot;</strong> — HyperAPI returns structured output</li>
+</ul>
+<p>  directly; this is an API, and we describe it as one.</p>
+<ul>
+<li><strong>&quot;Can it handle my document type?&quot;</strong> — Four classes: finance, bank,</li>
+</ul>
+<p>  shipping, and custom. Custom means a schema you define. If your worst</p>
+<p>  document breaks it, that is exactly the feedback we want today.</p>
+<ul>
+<li><strong>&quot;Can I see the benchmark?&quot;</strong> — Yes — it is measured, pinned, and</li>
+</ul>
+<p>  rerunnable; the launch links to how it is run, not just the result.</p>
+<h2>Credible virality plan (within Product Hunt rules)</h2>
+<p>The lever is <strong>earned attention</strong>, never gamed ranking. What we do — and do not</p>
+<p>— do:</p>
+<ul>
+<li><strong>The honest finding is the hook.</strong> The shareable line is not &quot;best accuracy</li>
+</ul>
+<p>  ever.&quot; It is &quot;fine-tuned finance models *with the measurement published* —</p>
+<p>  here is the rerunnable benchmark.&quot; Credibility is the thing that travels.</p>
+<ul>
+<li><strong>Make trying it the call to action.</strong> &quot;Try it on your own worst document&quot;</li>
+</ul>
+<p>  converts curiosity into a real test. Hands-on users write the substantive</p>
+<p>  comments that genuinely lift a launch.</p>
+<ul>
+<li><strong>Win the thread with substance.</strong> Fast, precise, honest maker replies are</li>
+</ul>
+<p>  the single biggest legitimate signal. We staff the thread all day.</p>
+<ul>
+<li><strong>Share, don&#x27;t solicit.</strong> We announce the launch to our real audience on</li>
+</ul>
+<p>  owned channels and let people decide. We never post a &quot;vote for us&quot; script,</p>
+<p>  never run an upvote ring, never incentivise or buy votes, never use</p>
+<p>  sock-puppets — all of which violate Product Hunt&#x27;s rules and erode trust.</p>
+<ul>
+<li><strong>Let the benchmark factory do the heavy lifting.</strong> Publishing *how* numbers</li>
+</ul>
+<p>  are measured is itself the differentiated, screenshot-worthy story for a</p>
+<p>  developer audience that is tired of unverifiable claims.</p>
+<ul>
+<li><strong>Pre-stage honest assets</strong> so anyone who wants to share has something</li>
+</ul>
+<p>  truthful and well-made to share — no fabricated metrics, no fake urgency.</p>
+<ul>
+<li><strong>Measure honestly.</strong> Any post-launch recap reports only real, verifiable</li>
+</ul>
+<p>  numbers; no inflated upvote, reach, or signup figure is claimed.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-abm-team/README.md</code> — HyperAPI ICP, the four document</li>
+</ul>
+<p>  classes (finance / bank / shipping / custom), GTM Bundle scope, brand</p>
+<p>  guardrails (competitors category-only, accuracy per apis.hyperbots.com,</p>
+<p>  Hyperbots-IP framing, no HITL).</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/README.md</code> — the benchmark</li>
+</ul>
+<p>  factory: measured, pinned, rerunnable evaluation cells; no fabricated</p>
+<p>  datasets or numbers.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-cto-org/.claude/agents/technical-content-strategist.md</code> —</li>
+</ul>
+<p>  inherited launch-content mandate and hard guardrails.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-abm-team/.claude/agents/abm-content-marketing.md</code> —</li>
+</ul>
+<p>  content-craft certification bar applied as the launch-copy audit.</p>
+<ul>
+<li>HyperAPI capabilities, accuracy, and SLA: https://apis.hyperbots.com/ — the</li>
+</ul>
+<p>  only accuracy reference.</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>This is a DRAFT launch playbook, not a launch order. The Product Hunt</li>
+</ul>
+<p>  submission and every asset pass a human approval gate before going live.</p>
+<ul>
+<li>The launch date, the hunter, and the maker accounts require human assignment;</li>
+</ul>
+<p>  this document drafts the briefs, not the bookings.</p>
+<ul>
+<li>No customer logos, testimonials, or outcome metrics are claimed — none exist.</li>
+</ul>
+<p>  Any quote in an asset is a labelled placeholder pending real, attributable</p>
+<p>  approval.</p>
+<ul>
+<li>Accuracy and SLA are referenced only per apis.hyperbots.com; benchmark</li>
+</ul>
+<p>  figures are model OCR/parse performance, not product accuracy.</p>
+<ul>
+<li>Pricing is only the published $0.05/page usage model; volume and enterprise</li>
+</ul>
+<p>  are sized on a call. No other tier is invented.</p>
+<ul>
+<li>All virality tactics stay strictly within Product Hunt&#x27;s community rules; no</li>
+</ul>
+<p>  vote solicitation, incentive, ring, or fake engagement is drafted or implied.</p>
+<ul>
+<li>Gallery copy/visual specs are direction for a designer; final assets are</li>
+</ul>
+<p>  produced and human-reviewed before submission.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

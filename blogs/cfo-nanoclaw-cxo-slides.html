@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<title>cfo-nanoclaw v0.3.0 — CXO Brief — Hyperbots</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --bg:#fafbfc; --card:#fff; --ink:#0f1419; --muted:#5e6470;
+  --line:#e6e8ec; --accent:#5b3aff; --good:#0a7d27; --warn:#a66100; --hot:#b3261e;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.55}
+.deck{max-width:1150px;margin:0 auto;padding:32px 28px}
+.brand{display:inline-block;background:#0f1419;color:#fff;font-weight:800;padding:5px 13px;border-radius:6px;letter-spacing:.04em;font-size:13px}
+.subbrand{display:inline-block;color:var(--muted);margin-left:12px;font-size:14px}
+.slide{background:var(--card);border:1px solid var(--line);border-radius:16px;
+  padding:44px 48px;margin:22px 0;page-break-inside:avoid;min-height:640px;
+  box-shadow:0 1px 0 rgba(0,0,0,.02);position:relative}
+.slide-num{position:absolute;top:18px;right:24px;color:var(--muted);font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+h1{margin:0 0 6px;font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1.1}
+.eyebrow{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px}
+.tag{display:inline-block;background:rgba(91,58,255,.1);color:var(--accent);font-weight:700;font-size:11px;padding:3px 10px;border-radius:11px;letter-spacing:.06em;text-transform:uppercase;margin-right:6px}
+h2{margin:28px 0 12px;font-size:13px;font-weight:700;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.08em}
+h3{margin:18px 0 8px;font-size:18px;font-weight:600}
+p{margin:8px 0}
+.lede{font-size:19px;line-height:1.45;color:var(--ink);margin:6px 0 18px;max-width:880px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:18px 0 24px}
+.kpi{padding:18px 18px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.kpi .v{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1.05}
+.kpi .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-top:4px}
+.cols2{display:grid;grid-template-columns:1.1fr .9fr;gap:24px}
+.cols3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+.note{background:#fff8e6;border:1px solid #ffe2a8;color:#5a3a00;border-radius:9px;padding:14px 18px;font-size:14px;margin:18px 0}
+.note b{color:#8a5a00}
+.callout{background:#f6f3ff;border:1px solid #d9d0ff;color:#1f0f5c;border-radius:9px;padding:14px 18px;font-size:14px;margin:14px 0}
+ul{margin:8px 0 8px 20px;padding:0} li{margin:6px 0;font-size:14.5px}
+.bigq{font-size:21px;font-weight:600;color:var(--ink);margin:8px 0 12px;line-height:1.3}
+table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:8px}
+th,td{border-bottom:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+th{font-weight:600;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.good{color:var(--good)} .warn{color:var(--warn)} .hot{color:var(--hot)}
+.muted{color:var(--muted)}
+.foot{color:var(--muted);font-size:12px;margin-top:32px;padding-top:14px;border-top:1px solid var(--line)}
+.divider{height:1px;background:var(--line);margin:18px 0}
+.pic{display:inline-block;width:38px;height:38px;border-radius:9px;background:#0f1419;color:#fff;text-align:center;line-height:38px;font-weight:800;font-size:18px;margin-right:10px;vertical-align:middle}
+@media print{
+  body{background:#fff}
+  .slide{box-shadow:none;page-break-after:always;min-height:auto;border-color:#ddd}
+  .kpi,.note,.callout,.col-card{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="deck">
+
+<div style="margin:6px 0 18px">
+  <span class="brand">Hyperbots</span><span class="subbrand">cfo-nanoclaw v0.3.0 · CXO brief · 2026-05-24</span>
+</div>
+
+<!-- =================== SLIDE 1 — THE PITCH =================== -->
+<section class="slide">
+<div class="slide-num">1 / 3</div>
+<div class="eyebrow">The pitch · 60-second read</div>
+<h1>A senior CFO that ships with your Claude Code</h1>
+<p class="lede"><b>cfo-nanoclaw</b> is the finance-domain skill stack that turns a generic LLM into a credible CFO co-pilot — one that knows ASC 330 from ASC 842, distinguishes stale-standard variance from real margin loss, and reads a PE term-loan-B covenant the way a sponsor lawyer would.</p>
+
+<div class="cols2">
+  <div>
+    <h3>Who it's for</h3>
+    <ul>
+      <li><b>Mid-market &amp; PE-owned CFOs</b> ($500M–$5B revenue) running monthly close, covenant reporting, board packs without enough analyst headcount</li>
+      <li><b>Controllers</b> shipping variance commentary that survives the auditor</li>
+      <li><b>Finance teams at NanoClaw-adjacent customers</b> who already use Claude Code for non-finance workflows</li>
+    </ul>
+
+    <h3>What we replace</h3>
+    <ul>
+      <li><b>Outsourced FP&amp;A hours</b> — close prep, variance bridges, covenant compliance memos that today cost $200–$500/hr</li>
+      <li><b>Generic AI finance bots</b> that flag the right red flag but never show the methodology — leaving the CFO to redo the math</li>
+      <li><b>Internal "playbook PDFs"</b> that nobody reads and that drift away from current GAAP / IFRS</li>
+    </ul>
+  </div>
+  <div>
+    <div class="kpis" style="grid-template-columns:1fr 1fr;gap:12px">
+      <div class="kpi"><div class="v">16</div><div class="l">CFO skills shipped</div></div>
+      <div class="kpi"><div class="v">2 / 2</div><div class="l">CFO personas validated · STACK-FIT-OK</div></div>
+      <div class="kpi"><div class="v">606</div><div class="l">Lines of new methodology in v0.3.0</div></div>
+      <div class="kpi"><div class="v">0</div><div class="l">Fabricated GAAP claims · every cite real</div></div>
+    </div>
+    <div class="callout">
+      <b>Why now.</b> Anthropic just shipped Claude Code as a skill-stack runtime. Three months ago, this couldn't run. Today, every CFO using Claude Code can pull our stack and have a working senior-FP&amp;A overnight. The platform race is on; the finance vertical is open.
+    </div>
+  </div>
+</div>
+
+<h2>The honest one-liner</h2>
+<p class="bigq"><span class="tag">Differentiator</span> Most "AI for finance" stops at flagging issues. We ship the <em>methodology</em>: a step-by-step recipe a senior controller would actually defend in audit. Six hundred lines of it in v0.3.0 alone.</p>
+
+<div class="foot">
+  Position: not a model · not a tool · a <b>credentialed skill stack</b> that drops into any Claude SDK runner. Vertical-honest (we cite SAP MM, QuickBooks Desktop, Sage, Oracle EBS by name) and standards-honest (ASC 330 / 842 / 606 / 740 / IAS 2 / AICPA AAG-INV) — no fabricated authorities.
+</div>
+</section>
+
+
+<!-- =================== SLIDE 2 — WHAT WE'VE BUILT + VALIDATION =================== -->
+<section class="slide">
+<div class="slide-num">2 / 3</div>
+<div class="eyebrow">What we shipped · what we proved</div>
+<h1>Built, gated, stack-fit-tested against two real CFO workloads</h1>
+<p class="lede">v0.2.0 shipped the catalogue. v0.3.0 shipped the methodology. Both gated through Hyperbots' full CTO-org review chain — architect → senior engineer → eng manager → QA lead → VP — with every finding documented, every fix evidenced, and every claim auditable.</p>
+
+<div class="kpis">
+  <div class="kpi"><div class="v">3</div><div class="l">Personas tested (mfr · fashion · pharma) · 2 with full 3-task suite</div></div>
+  <div class="kpi"><div class="v">6 / 6</div><div class="l">CFO tasks run end-to-end against synthesized portfolios</div></div>
+  <div class="kpi"><div class="v">3 / 3</div><div class="l">Critical-path methodology gaps closed in v0.3.0</div></div>
+  <div class="kpi"><div class="v">12 / 12</div><div class="l">Deferred gaps inventoried (not silently dropped)</div></div>
+</div>
+
+<div class="cols2">
+  <div>
+    <h3>Customer-workload validation</h3>
+    <table>
+      <thead><tr><th>Persona</th><th>Tasks tested</th><th>Verdict</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><b>$500M public manufacturer</b><br><span class="muted">3 plants · steel/Al hedging · 41% customer concentration</span></td>
+          <td>Monthly close · lender covenant · board pack</td>
+          <td><span class="good">STACK-FIT-OK</span></td>
+        </tr>
+        <tr>
+          <td><b>$2B PE-owned fashion retail</b><br><span class="muted">340 stores · SOFR+525bp TLB · 4.5× leverage · $1.1B ROU</span></td>
+          <td>Peak-Oct close · PE-LP covenant · PE board pack</td>
+          <td><span class="good">STACK-FIT-OK</span></td>
+        </tr>
+        <tr>
+          <td><b>$1B specialty pharma</b><br><span class="muted">multi-state · 340B / GTN complexity</span></td>
+          <td>scheduled next</td>
+          <td><span class="muted">queued</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <h3>v0.3.0 methodology added</h3>
+    <ul>
+      <li><b>Manufacturing</b> — stale-standard vs economic-MPV decomposition recipe (the persona-critical #1 flag turned into a procedure)</li>
+      <li><b>Fashion retail</b> — ASC 330 NRV markdown reserve + ASC 842 lease modification-vs-termination decision tree + PE-LP covenant mechanics (add-back caps, builder basket, equity cure, sponsor distribution cushion)</li>
+      <li><b>Cross-cutting</b> — vertical-conditional overlays promoted into the base variance bridge so retail markdown never gets buried in Price; mfr stale-standard never gets buried in operational variance</li>
+    </ul>
+    <div class="note">
+      <b>Honest non-claims.</b> No measured Hyperbots performance numbers in the release. "Time-to-report" figures are aspirational targets cross-cited to Anthropic's MFR case study. PE-LP covenant content disclaimed as "typical sponsor-style convention" not law. <b>Zero fabricated GAAP citations.</b>
+    </div>
+  </div>
+</div>
+
+<h2>Engineering discipline that's the real moat</h2>
+<div class="cols3">
+  <div>
+    <h3 style="font-size:14px">5-stage CTO review chain</h3>
+    <p style="font-size:13px;color:var(--muted)">Architect ratifies design · senior engineer implements · eng-manager re-runs every claim · QA lead caught 7 real bugs across 4 iterations · VP signs the binary GO/NO-GO.</p>
+  </div>
+  <div>
+    <h3 style="font-size:14px">"No fabricated cell"</h3>
+    <p style="font-size:13px;color:var(--muted)">If we can't cite an authority, we say so. If a vendor name appears, it appears as a category not a competitor. The integrity test runs on every PR.</p>
+  </div>
+  <div>
+    <h3 style="font-size:14px">Public on GitHub + HF Hub</h3>
+    <p style="font-size:13px;color:var(--muted)">v0.3.0 lives at <code>hyprbots/cfo-nanoclaw-fork</code> + <code>huggingface.co/niyatichhaya/cfo-nanoclaw-fork</code> — both currently private, ready to flip on the CEO's call.</p>
+  </div>
+</div>
+
+<div class="foot">
+  Chain artefacts (auditable): DESIGN.md → ARCHITECT-REVIEW.md → SENIOR-ENG-REPORT.md → MANAGER-APPROVAL.md → QA-REPORT.md → VP-GO-NOGO.md. Every commit hash, every test count, every finding evidenced. No "trust us."
+</div>
+</section>
+
+
+<!-- =================== SLIDE 3 — ROADMAP + CEO ASKS =================== -->
+<section class="slide">
+<div class="slide-num">3 / 3</div>
+<div class="eyebrow">Roadmap · the asks</div>
+<h1>Where we go next — and what we need from you</h1>
+<p class="lede">v0.3.0 is buildable, gated, and credible. The next moves are commercial, not technical.</p>
+
+<h2>Roadmap (next 3 months)</h2>
+<table>
+  <thead><tr><th style="width:14%">Quarter</th><th>Release</th><th>What ships</th><th>Commercial signal</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><b>Now (v0.3.0)</b></td>
+      <td>Released to GitHub + HF (private)</td>
+      <td>16 skills · 3 stack-fit-tested methodology companions · full CTO chain audit</td>
+      <td>Internal pilot candidates can clone TODAY</td>
+    </tr>
+    <tr>
+      <td><b>v0.4 · ~3 weeks</b></td>
+      <td>Methodology breadth</td>
+      <td>HGB → IFRS conversion · hedge accounting (80–125% effectiveness · OCI/P&amp;L split) · gift-card breakage (ASC 606-32-11) · transfer pricing · stock-comp ASC 718 · valuation-allowance walk (ASC 740)</td>
+      <td>Closes the deferred-12 backlog · widens addressable-CFO from 2 personas to 5+</td>
+    </tr>
+    <tr>
+      <td><b>v0.5 · ~6 weeks</b></td>
+      <td>Adoption surface</td>
+      <td>Connector-framework integration (8 ERP MCP servers already shipped in <code>hyperapi-connector-framework</code>) · <code>/qa-full</code> as a CI gate · public HF readme + quickstart</td>
+      <td>"Drop a Hyperbots extraction into NetSuite / SAP / D365 / QBO directly" demo · public-facing dev story</td>
+    </tr>
+    <tr>
+      <td><b>v1.0 · ~10 weeks</b></td>
+      <td>Real-customer benchmark</td>
+      <td>3-persona × 3-task on REAL anonymized customer ledgers · measured numbers replace synthetic-pack stack-fit-OK</td>
+      <td>Defensible quality claim on customer data · case-study-ready</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>What I need from you (CEO)</h2>
+<div class="cols3">
+  <div class="callout" style="background:#e9f5ee;border-color:#bce5cc;color:#0a4a1a">
+    <h3 style="margin-top:0;font-size:15px;color:#0a4a1a">1. Customer pilots</h3>
+    <p style="font-size:13.5px;color:#163925">Three named design partners with real ledgers (mfr · retail · pharma) for v1.0 benchmarking. Existing Hyperbots customers? Warm intros via your network?</p>
+  </div>
+  <div class="callout" style="background:#fdeee1;border-color:#f5c39a;color:#5a3a00">
+    <h3 style="margin-top:0;font-size:15px;color:#5a3a00">2. Repo-flip decision</h3>
+    <p style="font-size:13.5px;color:#3a2400">Currently private on both GitHub + HF Hub. On what release tag (v0.4? v0.5? v1.0?) do we flip public? Earlier = adoption flywheel. Later = competitive insulation.</p>
+  </div>
+  <div class="callout" style="background:#f0eaff;border-color:#cfbcff;color:#1f0f5c">
+    <h3 style="margin-top:0;font-size:15px;color:#1f0f5c">3. Trunk-rebase cadence</h3>
+    <p style="font-size:13.5px;color:#1f0f5c">NanoClaw upstream moves. We pin or rebase on every upstream change? Pinning = stability; rebasing = first-mover compatibility with new NanoClaw features.</p>
+  </div>
+</div>
+
+<h2>Investment shape</h2>
+<table>
+  <thead><tr><th>Bet</th><th>Cost</th><th>Outcome if right</th><th>Outcome if wrong</th></tr></thead>
+  <tbody>
+    <tr>
+      <td>Ship v0.4 with 6 backlog methodology items</td>
+      <td>~3 weeks senior-eng + chief-research-scientist time</td>
+      <td>Addressable CFO population widens 2.5×; customer pilots usable immediately</td>
+      <td>v0.4 lacks methodology; we stay "OK for mfr/retail only"</td>
+    </tr>
+    <tr>
+      <td>v1.0 real-customer benchmark</td>
+      <td>~6 weeks · needs 3 named design partners</td>
+      <td>Measured quality numbers (not synthetic) — defensible against any competitor's claim</td>
+      <td>No benchmarked numbers; competitors out-claim us on quality narrative</td>
+    </tr>
+    <tr>
+      <td>Public flip + HF Hub launch post</td>
+      <td>~1 week launch-pr-strategist + docs-techwriter</td>
+      <td>Inbound from finance teams; HF/AnthropicChannelPartner-style validation</td>
+      <td>Competitors fork our methodology before our customers do</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="foot">
+  The chain is closed. The product is real. The asks are commercial. Tonight v1.0 of the BoL → GRN sibling pipeline tags as our second production-gated Claude-Code skill release — same chain, same discipline. We can ship a cadence.
+</div>
+</section>
+
+</div>
+</body>
+</html>

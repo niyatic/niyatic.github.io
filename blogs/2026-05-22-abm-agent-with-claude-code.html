@@ -1,0 +1,301 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>We Built Our Entire ABM Engine in Claude Code — Here&#x27;s What That Actually Looks Like</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review</div><div class="meta">Cofounder, Hyperbots · 2026-05-22</div><h1>We Built Our Entire ABM Engine in Claude Code — Here&#x27;s What That Actually Looks Like</h1>
+<p>A few years ago, standing up an account-based marketing motion meant a contractor,</p>
+<p>a stack of point tools, and six weeks before the first email went out.</p>
+<p>We did it differently. Our entire ABM engine — account selection, research,</p>
+<p>committee mapping, per-account decks, outreach sequences, a deploy pipeline — was</p>
+<p>built inside Claude Code as a team of <strong>14 agents</strong>. No ABM SaaS subscription. No</p>
+<p>agency. The whole thing lives in one git repository, and every artifact it</p>
+<p>produces is reviewed and merged by a human before anything reaches a prospect.</p>
+<p>I want to walk through it honestly, because the interesting part is not &quot;AI did</p>
+<p>our marketing.&quot; It didn&#x27;t. The interesting part is what it actually looks like</p>
+<p>when you treat a go-to-market function as software — version-controlled,</p>
+<p>test-gated, and built by agents with explicit, narrow jobs.</p>
+<p>One thing up front, because it matters: **we have not sent a single message</p>
+<p>yet.** Every deck and every sequence in this system is a draft sitting behind a</p>
+<p>human-approval gate. So this is a build story, not a results story. I&#x27;m not going</p>
+<p>to quote you open rates we haven&#x27;t measured.</p>
+<h2>What we built</h2>
+<p>Fourteen agents, each with one job, coordinating through git branches and pull</p>
+<p>requests instead of a shared inbox.</p>
+<p>Five of them are the core line: <strong>abm-sales</strong> defines the ideal customer profile,</p>
+<p>scores and tiers accounts, and maps buying committees. <strong>abm-marketing</strong> turns</p>
+<p>that into per-account messaging and channel plans. <strong>abm-dev-manager</strong> tracks</p>
+<p>status and enforces the workflow. <strong>abm-qa</strong> reviews *every* pull request against</p>
+<p>a brand-guardrail checklist. <strong>abm-manager-approver</strong> gives the final GO / NO-GO.</p>
+<p>Five more handle execution depth: an <strong>account-executive</strong> agent that writes the</p>
+<p>decision-grade deck narrative, a <strong>solution-architect</strong> that fills in the</p>
+<p>technical pitch, a <strong>gtm-lead</strong> that engineers the outreach sequence, a</p>
+<p><strong>content-marketing</strong> agent that certifies copy against a conversion bar, and a</p>
+<p><strong>VP</strong> agent that issues an APPROVED-or-REWORK verdict on each deck.</p>
+<p>The last four are specialists: a <strong>deploy-engineer</strong> for the static site and</p>
+<p>Slack/Teams notifications, a <strong>clay-engineer</strong> for enrichment and CRM handoff, an</p>
+<p><strong>events-discovery</strong> agent, and a <strong>b2c-virality</strong> agent for community-led growth.</p>
+<p>They run as a sequential pipeline — sales → marketing → account-executive →</p>
+<p>solution-architect → gtm-lead → content-marketing → VP → QA → human merge. The</p>
+<p>baton between stages is a pull request on a feature branch. Nothing is &quot;done&quot;</p>
+<p>until QA passes it and a human merges it.</p>
+<figure style="margin:1.8em 0;">
+<svg viewBox="0 0 760 470" role="img" aria-label="ABM agent architecture: a sequential pipeline of agents passing pull requests through QA, VP, and human-approval gates" style="width:100%;height:auto;display:block;font-family:'Rubik',-apple-system,sans-serif;">
+  <defs>
+    <marker id="ar1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#748081"/></marker>
+  </defs>
+  <!-- pipeline stages -->
+  <text x="20" y="28" font-size="12" font-weight="600" fill="#748081" letter-spacing=".05em">SEQUENTIAL PIPELINE — baton = a pull request on a feature branch</text>
+  <!-- row of 6 pipeline agents -->
+  <g font-size="12" font-weight="500">
+    <rect x="20"  y="44" width="113" height="46" rx="8" fill="#EDFAFF" stroke="#BDDFEE"/>
+    <text x="76"  y="65" text-anchor="middle" fill="#07658D">abm-sales</text>
+    <text x="76"  y="80" text-anchor="middle" fill="#748081" font-size="10">ICP · scoring · tiers</text>
+    <rect x="149" y="44" width="113" height="46" rx="8" fill="#EDFAFF" stroke="#BDDFEE"/>
+    <text x="205" y="65" text-anchor="middle" fill="#07658D">abm-marketing</text>
+    <text x="205" y="80" text-anchor="middle" fill="#748081" font-size="10">messaging · channels</text>
+    <rect x="278" y="44" width="113" height="46" rx="8" fill="#EDFAFF" stroke="#BDDFEE"/>
+    <text x="334" y="65" text-anchor="middle" fill="#07658D">account-exec</text>
+    <text x="334" y="80" text-anchor="middle" fill="#748081" font-size="10">deck narrative</text>
+    <rect x="407" y="44" width="113" height="46" rx="8" fill="#EDFAFF" stroke="#BDDFEE"/>
+    <text x="463" y="65" text-anchor="middle" fill="#07658D">solution-arch</text>
+    <text x="463" y="80" text-anchor="middle" fill="#748081" font-size="10">technical pitch</text>
+    <rect x="536" y="44" width="113" height="46" rx="8" fill="#EDFAFF" stroke="#BDDFEE"/>
+    <text x="592" y="65" text-anchor="middle" fill="#07658D">gtm-lead</text>
+    <text x="592" y="80" text-anchor="middle" fill="#748081" font-size="10">outreach sequence</text>
+    <rect x="665" y="44" width="75"  height="46" rx="8" fill="#EDFAFF" stroke="#BDDFEE"/>
+    <text x="702" y="65" text-anchor="middle" fill="#07658D" font-size="11">content-</text>
+    <text x="702" y="79" text-anchor="middle" fill="#07658D" font-size="11">marketing</text>
+  </g>
+  <!-- arrows between pipeline agents -->
+  <g stroke="#748081" stroke-width="1.5" marker-end="url(#ar1)" fill="none">
+    <line x1="133" y1="67" x2="147" y2="67"/>
+    <line x1="262" y1="67" x2="276" y2="67"/>
+    <line x1="391" y1="67" x2="405" y2="67"/>
+    <line x1="520" y1="67" x2="534" y2="67"/>
+    <line x1="649" y1="67" x2="663" y2="67"/>
+  </g>
+  <!-- down into VP gate -->
+  <line x1="702" y1="90" x2="702" y2="118" stroke="#748081" stroke-width="1.5" marker-end="url(#ar1)" fill="none"/>
+  <!-- VP gate -->
+  <rect x="536" y="122" width="204" height="52" rx="8" fill="#DEEEF5" stroke="#1B7DA7"/>
+  <text x="638" y="144" text-anchor="middle" font-size="12.5" font-weight="600" fill="#07658D">VP agent — deck verdict</text>
+  <text x="638" y="161" text-anchor="middle" font-size="10.5" fill="#596263">issues APPROVED or REWORK</text>
+  <!-- VP -> QA -->
+  <line x1="536" y1="148" x2="424" y2="148" stroke="#748081" stroke-width="1.5" marker-end="url(#ar1)" fill="none"/>
+  <!-- QA gate (adversary) -->
+  <rect x="218" y="122" width="206" height="52" rx="8" fill="#DEEEF5" stroke="#1B7DA7" stroke-width="2"/>
+  <text x="321" y="142" text-anchor="middle" font-size="12.5" font-weight="600" fill="#07658D">abm-qa — independent gate</text>
+  <text x="321" y="158" text-anchor="middle" font-size="10.5" fill="#596263">reviews every PR vs brand guardrails</text>
+  <text x="321" y="170" text-anchor="middle" font-size="10" fill="#748081">job: try to fail every pull request</text>
+  <!-- QA verdict split -->
+  <line x1="321" y1="174" x2="321" y2="200" stroke="#748081" stroke-width="1.5" fill="none"/>
+  <!-- CHANGES REQUESTED loop back -->
+  <path d="M321,200 L130,200 L130,90" stroke="#DC6803" stroke-width="1.6" fill="none" marker-end="url(#ar1)"/>
+  <rect x="60" y="208" width="170" height="34" rx="7" fill="#FFF6ED" stroke="#F4D9B5"/>
+  <text x="145" y="229" text-anchor="middle" font-size="11" font-weight="600" fill="#DC6803">CHANGES REQUESTED → rework</text>
+  <text x="145" y="258" text-anchor="middle" font-size="10" fill="#748081">a single guardrail violation, never waived</text>
+  <!-- PASS down to manager-approver -->
+  <line x1="430" y1="200" x2="430" y2="226" stroke="#039855" stroke-width="1.6" fill="none" marker-end="url(#ar1)"/>
+  <text x="445" y="216" font-size="11" font-weight="600" fill="#039855">QA PASS</text>
+  <rect x="300" y="230" width="260" height="46" rx="8" fill="#DEEEF5" stroke="#1B7DA7"/>
+  <text x="430" y="251" text-anchor="middle" font-size="12.5" font-weight="600" fill="#07658D">abm-manager-approver</text>
+  <text x="430" y="267" text-anchor="middle" font-size="10.5" fill="#596263">final GO / NO-GO</text>
+  <!-- down to human gate -->
+  <line x1="430" y1="276" x2="430" y2="302" stroke="#748081" stroke-width="1.5" marker-end="url(#ar1)" fill="none"/>
+  <!-- HUMAN GATE -->
+  <rect x="250" y="306" width="360" height="56" rx="10" fill="#07658D" stroke="#07658D"/>
+  <text x="430" y="330" text-anchor="middle" font-size="13.5" font-weight="600" fill="#fff">HUMAN MERGE GATE</text>
+  <text x="430" y="349" text-anchor="middle" font-size="10.5" fill="#BDDFEE">a person reviews &amp; merges the PR — nothing reaches a prospect first</text>
+  <!-- supporting agents row -->
+  <text x="20" y="394" font-size="12" font-weight="600" fill="#748081" letter-spacing=".05em">SUPPORTING AGENTS (off the deck pipeline)</text>
+  <g font-size="10.5" font-weight="500">
+    <rect x="20"  y="404" width="138" height="34" rx="7" fill="#F6F9F9" stroke="#E2ECEE"/>
+    <text x="89"  y="425" text-anchor="middle" fill="#596263">abm-dev-manager</text>
+    <rect x="166" y="404" width="118" height="34" rx="7" fill="#F6F9F9" stroke="#E2ECEE"/>
+    <text x="225" y="425" text-anchor="middle" fill="#596263">deploy-engineer</text>
+    <rect x="292" y="404" width="108" height="34" rx="7" fill="#F6F9F9" stroke="#E2ECEE"/>
+    <text x="346" y="425" text-anchor="middle" fill="#596263">clay-engineer</text>
+    <rect x="408" y="404" width="128" height="34" rx="7" fill="#F6F9F9" stroke="#E2ECEE"/>
+    <text x="472" y="425" text-anchor="middle" fill="#596263">events-discovery</text>
+    <rect x="544" y="404" width="118" height="34" rx="7" fill="#F6F9F9" stroke="#E2ECEE"/>
+    <text x="603" y="425" text-anchor="middle" fill="#596263">b2c-virality</text>
+  </g>
+  <text x="20" y="458" font-size="10.5" fill="#8A9799">14 agents total — 5 core line · 5 execution-depth · 4 specialists. Coordination = git branches and pull requests.</text>
+</svg>
+<figcaption style="font-size:13px;color:var(--muted);margin-top:8px;">The 14-agent ABM engine: a sequential agent pipeline whose baton is a pull request, an independent <code>abm-qa</code> gate whose only job is to fail PRs (a single guardrail violation is CHANGES REQUESTED, never waived), the VP and <code>abm-manager-approver</code> verdicts, and a final human merge gate. Entities and roles per the post text.</figcaption>
+</figure>
+<h2>How it was built</h2>
+<p>I opened Claude Code and described the system at a high level: a small ABM team,</p>
+<p>each role its own agent, work moving through pull requests, a human gate at the</p>
+<p>end.</p>
+<p>What came back was not just code. It was a decomposition. Claude Code proposed</p>
+<p>the role split, suggested the branch-and-PR workflow as the coordination</p>
+<p>mechanism, and — the part that changed how I thought about it — proposed a</p>
+<p>*separate, independent QA agent* whose only job is to try to fail every pull</p>
+<p>request. I had described a sales-and-marketing team. It told me I also needed an</p>
+<p>adversary in the loop. It was right.</p>
+<p>The build was phased, and the git history shows it cleanly across <strong>194 commits</strong>,</p>
+<p>all from this month. First the agent-and-workflow scaffold. Then the deploy</p>
+<p>infrastructure — a static-site build, basic-auth, and a Slack/Teams notifier.</p>
+<p>Then the long stretch: account enrichment at scale, batch after batch. Then the</p>
+<p>extended agent team. Then dashboards and an events charter.</p>
+<p>I wrote no application logic for the marketing itself. The longest thing I typed</p>
+<p>was the description of our ideal customer and the guardrails the copy must never</p>
+<p>cross.</p>
+<h2>The inputs</h2>
+<p>The system starts from a tightly-defined ICP: four document classes Hyperbots</p>
+<p>turns into structured data — finance documents, bank documents, logistics and</p>
+<p>shipping documents, and custom types — and a set of buyer personas across</p>
+<p>fintech, banking, insurance, logistics, and healthcare.</p>
+<p>From that, <strong>abm-sales</strong> built the target list. Every candidate is scored on</p>
+<p>three axes — Fit weighted ×3, Intent ×2, Deal size ×1, each on a 1–5 scale, for a</p>
+<p>maximum of 30. Tier-1 is a score of 24 or above, Tier-2 is 16–23.</p>
+<p>The curated primary list is <strong>50 accounts</strong>: 18 Tier-1, 32 Tier-2. An expansion</p>
+<p>pass took it to <strong>288 more</strong>, for <strong>338 verified prospects</strong> in total — 70-plus of</p>
+<p>them India-headquartered. Alongside the buyer list sit <strong>10 partnership targets</strong></p>
+<p>and <strong>12 ERP integration targets</strong>.</p>
+<p>There is one rule on the target list I want to call out, because it&#x27;s a guardrail,</p>
+<p>not a preference. We call it Goal G0: **zero invoice-processing-automation</p>
+<p>competitors anywhere on the list.** When the expansion pass surfaced five</p>
+<p>competitor-adjacent companies, they didn&#x27;t get quietly dropped — they were moved</p>
+<p>into a labelled cohort with a mandatory build-versus-buy gate before anyone is</p>
+<p>allowed to touch them. The system doesn&#x27;t hide its edge cases. It flags them.</p>
+<h2>How the data is enriched</h2>
+<p>Enrichment is where most &quot;AI GTM&quot; tools quietly fabricate. Ours is built so it</p>
+<p>can&#x27;t.</p>
+<p>For the top accounts, the system produces <strong>committee maps</strong> — 12 Tier-1 accounts</p>
+<p>mapped to economic buyer, technical champion, and likely blockers, all by *role*,</p>
+<p>never by named individual. The <strong>clay-engineer</strong> agent runs a Clay-style</p>
+<p>enrichment layer: firmographic and contact-by-role waterfalls, signal triggers to</p>
+<p>watch (funding, hiring, technology installs, leadership news), and a CRM-handoff</p>
+<p>field mapping.</p>
+<p>The hard rule on that agent: no fabricated contacts, emails, titles, headcounts,</p>
+<p>funding figures, or metrics. Anything not verifiable against a public source</p>
+<p>becomes an explicit waterfall placeholder instead of an invented value. Every</p>
+<p>account claim in a deck cites a working public URL. If a fact can&#x27;t be sourced,</p>
+<p>it doesn&#x27;t ship.</p>
+<h2>What the system produces</h2>
+<p>The output is concrete and countable.</p>
+<p><strong>72 account decks</strong>, each generated in three formats — markdown, PDF, and</p>
+<p>PowerPoint — for <strong>216 deck files</strong> in total. Every deck follows the same spine:</p>
+<p>the account&#x27;s world, the cost of the status quo, what changes, the proof, the</p>
+<p>ask, a solution architecture, an outreach sequence, a content certification, and</p>
+<p>a VP review — closing, like every artifact in this repo, with a <code>## Sources</code> and</p>
+<p><code>## Open assumptions</code> section.</p>
+<p>For LinkedIn, the system drafted <strong>8 buyer-persona DM templates</strong> — CFO, VP</p>
+<p>Finance, Controller, Procurement, IT/CIO, ERP Lead, AI/Data Strategy, and</p>
+<p>Partnership/BD — plus <strong>3 follow-up sequences</strong> timed to day +3, +7, and +14.</p>
+<p>And it produces the operational layer: a static GTM site with role-specific</p>
+<p>dashboards, a shareable bundle with the full account CSV, and Slack/Teams</p>
+<p>digests — an account digest, a warm-path digest, and an internal-only signal</p>
+<p>digest that is explicitly flagged &quot;do not share with customers.&quot;</p>
+<h2>The real product is the loop</h2>
+<p>The agents are useful on their own. But the actual product is the review loop.</p>
+<p>Here is a real example from this month. The QA agent looked at the <code>execution-v1</code></p>
+<p>delivery and returned a verdict: <strong>CHANGES REQUESTED</strong>, two defects. One of them</p>
+<p>was those five competitor-adjacent accounts sitting in the main target list — a</p>
+<p>Goal G0 violation.</p>
+<p>In a normal workflow, that&#x27;s a meeting and a week. Here, the verdict *is* the</p>
+<p>instruction. The sales agent picked up the QA finding, moved the five accounts</p>
+<p>into a labelled cohort with a pre-touch build-versus-buy gate, and put the work</p>
+<p>back up for review. The approval state is, honestly and visibly, &quot;GO WITH FIXES&quot;</p>
+<p>— blocked until QA passes it again.</p>
+<p>That&#x27;s the loop. A guardrail is written once. The QA agent enforces it on every</p>
+<p>pull request, and a single violation is CHANGES REQUESTED — never waived. The</p>
+<p>guardrails themselves are not soft suggestions: no competitor is ever named (only</p>
+<p>category labels like &quot;legacy IDP&quot;), accuracy is only ever stated as &quot;per</p>
+<p>apis.hyperbots.com&quot; and never invented, the models are described as open-source</p>
+<p>fine-tuned by Hyperbots — Hyperbots IP — and pricing is only ever the published</p>
+<p>$0.05-per-page model. No invented quotes. No manual-review framing.</p>
+<p>The system is fast at the *cycle*, not just the task. That&#x27;s the difference that</p>
+<p>matters.</p>
+<h2>The pattern adapts</h2>
+<p>We built this for ABM. But the architecture — narrow agents, a PR pipeline, an</p>
+<p>independent QA gate, a human merge — is not specific to marketing.</p>
+<p>The same shape already spun off an events-discovery agent that builds a</p>
+<p>conference charter across three regions, a community-growth agent, and — in a</p>
+<p>sibling repository — a Reddit social-listening agent for our finance-and-</p>
+<p>accounting solution areas. Same skeleton. Different job. The agents are defined</p>
+<p>in plain English, so the cost of a new function is a description and a review</p>
+<p>gate, not a new tool contract.</p>
+<h2>Where this actually stands</h2>
+<p>I&#x27;ll end where I started, honestly. As of today the plan is approved *as a</p>
+<p>method*. The decks are drafted and not sent. The LinkedIn sequences are written</p>
+<p>and not posted. The notifiers are built and not yet wired to live execution.</p>
+<p>Every external action still waits on an explicit human authorization, and the</p>
+<p>current QA verdict is CHANGES REQUESTED.</p>
+<p>That is not the system being incomplete. That is the system working as designed.</p>
+<p>The win here isn&#x27;t &quot;we automated outbound.&quot; It&#x27;s that a go-to-market function now</p>
+<p>behaves like software: every claim is sourced, every guardrail is enforced by an</p>
+<p>agent whose only job is to enforce it, and a human signs off before anything</p>
+<p>ships. Built by 14 agents, in one repository, this month.</p>
+<p>The expensive part of GTM used to be the building. We moved the expensive part to</p>
+<p>where it belongs — the judgment about what&#x27;s good enough to send.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>hyperapi-abm-team</code> repository: <code>.claude/agents/</code> (14 agent definitions),</li>
+</ul>
+<p>  <code>README.md</code>, <code>WORKFLOW.md</code>.</p>
+<ul>
+<li><code>accounts/target-accounts.md</code> (50 primary; 18 Tier-1 / 32 Tier-2),</li>
+</ul>
+<p>  <code>accounts/target-accounts-expansion.md</code> (288 expansion),</p>
+<p>  <code>accounts/target-partners.md</code> (10), <code>accounts/target-erps.md</code> (12),</p>
+<p>  <code>accounts/committee-maps.md</code> (12 Tier-1 mapped).</p>
+<ul>
+<li><code>accounts/decks/</code> (72 decks × 3 formats = 216 files),</li>
+</ul>
+<p>  <code>linkedin/drafts/2026-05-21-gtm-push-drafts.md</code> (8 persona templates + 3</p>
+<p>  follow-ups), <code>deploy/notify/notify.py</code> (digest functions).</p>
+<ul>
+<li><code>plan/ABM-PLAN.md</code>, <code>plan/STATUS.md</code> (QA = CHANGES REQUESTED, 2026-05-15),</li>
+</ul>
+<p>  <code>.claude/agents/abm-qa.md</code> (guardrail checklist), git log (194 commits, May 2026).</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>All figures are counts of artifacts present in the repository as of</li>
+</ul>
+<p>  2026-05-22. No outreach has been executed, so no engagement, reply, or</p>
+<p>  revenue metrics exist or are claimed.</p>
+<ul>
+<li>&quot;Built by 14 agents&quot; describes the agent definitions that authored the</li>
+</ul>
+<p>  artifacts under human direction in Claude Code; a human approves and merges</p>
+<p>  every pull request.</p>
+<ul>
+<li>This post is a DRAFT pending review against the same brand guardrails the</li>
+</ul>
+<p>  ABM QA agent enforces.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

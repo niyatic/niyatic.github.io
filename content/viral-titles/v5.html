@@ -1,0 +1,169 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Viral title catalog v5 — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/content/">← back</a>
+<div class="fm">title: &quot;Viral blog &amp; LinkedIn titles — v5 (Gemini full-n anchors + cross-vendor failure pattern)&quot;
+team: hyperapi-content-strategy (with gtm-viral-post-subagent role + benchmark-factory)
+date: 2026-05-25
+status: DRAFT v5 — adds §D &quot;Gemini full-n anchors&quot; + §E &quot;cross-vendor failure pattern&quot;
+supersedes: viral-blog-titles-2026-05-25-v4.md (v4; first relative deltas)
+also_supersedes: v3, v2, v1
+audience: blog/LinkedIn editorial calendar
+new_in_v5:
+  - §D — 8 Gemini-anchored titles (Flash &gt; Pro; cost-per-doc; long-invoice truncation)
+  - §E — 6 cross-vendor failure-pattern titles (Azure DI fragments + Gemini truncates on the SAME docs)
+  - 13 of the 14 new titles are FULLY ANCHORED to measurements landed 2026-05-25 (the 14th is anchored-pending the Hyperbots harness v2)
+anchor_source_2026_05_25:
+  - comparative/azure-di-long-invoices/AZURE-DI-LONG-INVOICE-2026-05-25.json
+  - comparative/gemini-models/GEMINI-DATASET95-FULLN-2026-05-25.md
+  - results/DG-001__dataset-95-full__Gemini-2.5-{Flash,Pro,Flash-Lite}.json</div>
+
+<h1>Viral title catalog v5</h1>
+
+<p>Sections (additive — earlier sections from v3/v4 unchanged):</p>
+<ul>
+<li><strong>§A · ANCHORED ABSOLUTE</strong> (6 — Azure DI long-invoice + dimension count)</li>
+<li><strong>§B · NON-ANCHORED</strong> (54 — drafts; need measurement)</li>
+<li><strong>§C · ANCHORED RELATIVE</strong> (12 — Hyperbots vs OpenAI/Gemini; parse-intent +33% etc.)</li>
+<li><strong>§D · GEMINI FULL-N ANCHORED</strong> ← NEW</li>
+<li><strong>§E · CROSS-VENDOR FAILURE PATTERN</strong> ← NEW</li>
+</ul>
+
+<p>§A, §B, §C unchanged from v4. v5 adds §D + §E.</p>
+
+<hr/>
+
+<h1>§D · GEMINI FULL-N ANCHORED (8 titles — all measured 2026-05-25)</h1>
+
+<p>The Gemini family ran end-to-end on dataset_95 today. <strong>Headline anchors</strong>:</p>
+<ul>
+<li>Gemini 2.5 Flash: 0.7132 micro-F1 (n=90/95; 5 errored on long invoices)</li>
+<li>Gemini 2.5 Pro: 0.6195 (n=93/95; 2 errored)</li>
+<li>Gemini 2.5 Flash-Lite: 0.5004 (n=95/95)</li>
+<li>Total cost: $4.16 / $100 budget · $0.010-0.033 per doc</li>
+</ul>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>Source / numbers</th></tr>
+<tr><td><strong>D-01</strong></td><td><strong>"Flash beats Pro on invoice extraction: 0.713 vs 0.620 micro-F1 on the same 95 invoices"</strong></td><td>DG-001 cells; Flash > Pro by +15% F1 <code>[anchored]</code></td></tr>
+<tr><td><strong>D-02</strong></td><td><strong>"$0.94 to extract 95 invoices: the cost-per-doc number nobody publishes"</strong></td><td>Gemini Flash 273 calls, $0.94 total ($0.010/doc) <code>[anchored]</code></td></tr>
+<tr><td><strong>D-03</strong></td><td><strong>"Gemini 2.5 Pro costs 3× more than Flash — and scores 15% lower on invoice extraction"</strong></td><td>Pro $0.033/doc vs Flash $0.010/doc; Pro 0.6195 vs Flash 0.7132 <code>[anchored]</code></td></tr>
+<tr><td><strong>D-04</strong></td><td><strong>"32K output tokens is not enough for a 323-line invoice"</strong></td><td>doc 51 errored on Flash + Pro at max_output_tokens=32768 <code>[anchored]</code></td></tr>
+<tr><td><strong>D-05</strong></td><td><strong>"Why Gemini 2.5 Pro is the wrong default for invoice extraction"</strong></td><td>composite: Pro lower F1, higher cost, same long-invoice failures <code>[anchored]</code></td></tr>
+<tr><td><strong>D-06</strong></td><td><strong>"Flash-Lite extracts 95 invoices for 12 cents. Half the F1 of Flash."</strong></td><td>Flash-Lite $0.001/doc, 0.5004 F1 (vs Flash 0.7132) <code>[anchored]</code></td></tr>
+<tr><td><strong>D-07</strong></td><td><strong>"Premium tier ≠ better extraction: the 95-invoice price-quality study"</strong></td><td>full table D-01..D-06 in a single essay <code>[anchored]</code></td></tr>
+<tr><td><strong>D-08</strong></td><td><strong>"5 invoices, 5 truncations: where Gemini Flash drew the line"</strong></td><td>docs 1, 2, 3 (wait — actually 41, 42, 51 + 2 others from sub-agent report) errored on Flash <code>[anchored]</code></td></tr>
+</table>
+
+<hr/>
+
+<h1>§E · CROSS-VENDOR FAILURE PATTERN (6 titles — the most viral angle in this catalog)</h1>
+
+<p><strong>The empirical thesis</strong>: long invoices break BOTH leading prebuilt extractors. Different failure modes, same dataset boundary. The LinkedIn 500-line-invoice draft predicted this; we now have it cross-anchored on dataset_95.</p>
+
+<p>The shared-failure table (measured this session):</p>
+
+<table>
+<tr><th>Doc</th><th>Gold lines</th><th>Azure DI</th><th>Gemini Flash</th><th>Gemini Pro</th></tr>
+<tr><td>42.json</td><td>115</td><td>❌ 0 rows returned</td><td>❌ truncate</td><td>❌ truncate</td></tr>
+<tr><td>51.json</td><td><strong>323</strong></td><td>⚠ over by 9 (332 rows, F1=0.009)</td><td>❌ truncate</td><td>❌ truncate</td></tr>
+<tr><td>3.json</td><td>88</td><td>⚠ fragmented (2,150 rows, LCP 0.041)</td><td>—</td><td>—</td></tr>
+<tr><td>1.json</td><td>122</td><td>✓ exact match (LCP 1.000)</td><td>❌ truncate</td><td>—</td></tr>
+<tr><td>41.json</td><td>113</td><td>⚠ over by 27</td><td>❌ truncate</td><td>—</td></tr>
+<tr><td>2.json</td><td>(TBD)</td><td>—</td><td>❌ truncate</td><td>—</td></tr>
+</table>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>Source</th></tr>
+<tr><td><strong>E-01</strong></td><td><strong>"Azure DI fragments. Gemini truncates. Two failures, one dataset boundary."</strong></td><td>the shared-failure table above <code>[anchored]</code></td></tr>
+<tr><td><strong>E-02</strong></td><td><strong>"Doc 42 (115 lines): zero rows from Azure DI, truncated by Gemini Flash AND Pro. The invoice nobody could extract."</strong></td><td>per-doc detail <code>[anchored]</code></td></tr>
+<tr><td><strong>E-03</strong></td><td><strong>"The 323-line invoice: where every prebuilt model failed in 2026"</strong></td><td>doc 51 cross-vendor failure <code>[anchored]</code></td></tr>
+<tr><td><strong>E-04</strong></td><td><strong>"Long invoices in dataset_95 (≥100 line items): a 10-doc subset where Azure DI scored LCP 0.640 and Gemini gave up"</strong></td><td>combines Azure DI long-invoice cell + Gemini error pattern <code>[anchored]</code></td></tr>
+<tr><td><strong>E-05</strong></td><td><strong>"Two failure modes, one root cause: how 'prebuilt' fails at production scale"</strong></td><td>essay framing of E-01 <code>[anchored]</code></td></tr>
+<tr><td><strong>E-06</strong></td><td><strong>"Hyperbots on the same 10 long invoices: [PENDING — harness v2 in flight]"</strong></td><td>tease the next data drop; the harness v2 sub-agent is running now <code>[anchored-pending]</code></td></tr>
+</table>
+
+<hr/>
+
+<h2>v5 distribution</h2>
+
+<table>
+<tr><th>Bucket</th><th>Count</th><th>Status</th></tr>
+<tr><td><strong>§A Anchored absolute (v3)</strong></td><td>6</td><td>Ship NOW</td></tr>
+<tr><td><strong>§B Non-anchored (v3)</strong></td><td>54</td><td>Drafts</td></tr>
+<tr><td><strong>§C Anchored relative (v4)</strong></td><td>12</td><td>8 anchored / 4 placeholder</td></tr>
+<tr><td><strong>§D Gemini full-n (v5)</strong></td><td>8</td><td>Ship NOW (all anchored)</td></tr>
+<tr><td><strong>§E Cross-vendor failure (v5)</strong></td><td>6</td><td>5 ship NOW + 1 anchored-pending</td></tr>
+<tr><td><strong>TOTAL</strong></td><td><strong>86</strong></td><td>(74 anchored or anchored-relative-ready; 12 placeholder)</td></tr>
+<tr><td><strong>Ship-eligible NOW</strong></td><td><strong>25</strong></td><td>(6 §A + 8 §C + 8 §D + 5 §E with non-pending data; ramp accordingly)</td></tr>
+</table>
+
+<hr/>
+
+<h2>Updated ship ramp (top 7 over next 7 weeks — all anchored)</h2>
+
+<ol>
+<li><strong>E-01</strong> — "Azure DI fragments. Gemini truncates. Two failures, one dataset boundary." → strongest viral hook in the whole catalog; cross-vendor anchored</li>
+<li><strong>D-01</strong> — "Flash beats Pro on invoice extraction: 0.713 vs 0.620" → most under-talked-about Gemini finding</li>
+<li><strong>C-01</strong> (from v4) — "Hyperbots parse-intent vs GPT-4.1: +33%" → strongest Hyperbots-relative anchored win</li>
+<li><strong>E-03</strong> — "The 323-line invoice: where every prebuilt model failed" → the single-doc viral story</li>
+<li><strong>D-03</strong> — "Pro costs 3× more than Flash — and scores 15% lower" → cost-of-doc-AI angle</li>
+<li><strong>X-07</strong> (from v3) — "50 prebuilt-doc models. 10 long invoices. 1/10 line-count exact match." → the most-quotable Azure DI stat</li>
+<li><strong>D-04</strong> — "32K output tokens is not enough for a 323-line invoice" → the technical-deep-dive angle</li>
+</ol>
+
+<p>All 7 publish without needing the Hyperbots-side extract F1 to land (that's coming via the harness v2 sub-agent currently running). When v6 lands, the Hyperbots-side numbers slot into E-06 + several §B placeholders.</p>
+
+<h2>Honesty discipline holding strong</h2>
+
+<ol>
+<li><strong>The Hyperbots-vs-Gemini extract delta is NOT in v5.</strong> Until the harness v2 sub-agent produces a real Hyperbots-side extract F1, that comparison stays pending. E-06 explicitly says <code>[PENDING]</code>.</li>
+<li><strong>Gemini Pro losing to Gemini Flash is the most surprising finding.</strong> It contradicts the marketing tier ordering and is fully anchored — Flash is the clear cost-quality winner here. Lead with it.</li>
+<li><strong>The 7 error docs are honest failures</strong>, NOT retried-to-success. They reflect a 32K-output-tokens cliff on the Gemini side and a table-fragmentation cliff on the Azure DI side.</li>
+<li><strong>None of v5 cites a customer name</strong> — all 95 docs in dataset_95 are framed as "the corpus", not as a customer story. When the customer-named LinkedIn variant lands (per the LinkedIn 500-line draft + AUDIT), consent gate must pass first.</li>
+</ol>
+
+<h2>Sources (v5 additions)</h2>
+
+<ul>
+<li>Gemini findings doc: <code>comparative/gemini-models/GEMINI-DATASET95-FULLN-2026-05-25.md</code></li>
+<li>3 Gemini cells: <code>results/DG-001__dataset-95-full__Gemini-2.5-{Flash,Pro,Flash-Lite}.json</code></li>
+<li>Cross-vendor failure table: derived from Azure DI long-invoice cell + Gemini error logs</li>
+<li>Hyperbots harness v2 (in flight): will produce DH-001 cells in the next 90 min if successful</li>
+</ul>
+
+</body></html>

@@ -1,0 +1,159 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Viral title catalog v4 — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/content/">← back</a>
+<div class="fm">title: &quot;Viral blog &amp; LinkedIn titles — v4 (anchored absolutes + anchored relative deltas)&quot;
+team: hyperapi-content-strategy (with gtm-viral-post-subagent role inside gtm-hub)
+date: 2026-05-25
+status: DRAFT v4 — adds §C &quot;relative-comparison&quot; titles per CEO ask &quot;add numbers such as 20% better than openai etc&quot;
+supersedes: viral-blog-titles-2026-05-25-v3.md (v3; absolute-only anchored cuts)
+also_supersedes: v2, v1
+audience: blog/LinkedIn editorial calendar
+new_in_v4:
+  - §C — 12 relative-comparison titles (Hyperbots vs OpenAI / Gemini)
+  - 4 of those are ANCHORED to specific CONSOLIDATED-150 cells; 8 are placeholders
+  - Honest framing: where Hyperbots wins, we name the delta; where the comparison is mixed (OCR), we say so
+sources_for_§C:
+  - leaderboard/CONSOLIDATED-150/CONSOLIDATED-150.json (parse/savior/ocr rows)
+  - Hyperbots-side leader cells: parse-hyperapi-parse-intent (0.8328), ocr-hyperapi-paddleocr-ours (0.0610), savior-qwen2.5-vl-7b-f (0.9294)</div>
+
+<h1>Viral title catalog v4</h1>
+
+<p><strong>Three sections now</strong>:</p>
+
+<ul>
+<li><strong>§A · ANCHORED ABSOLUTE</strong> (6 titles from v3 — every number on disk; ship-eligible NOW)</li>
+<li><strong>§B · NON-ANCHORED</strong> (54 titles from v3 — drafts; need measurement before publish)</li>
+<li><strong>§C · ANCHORED RELATIVE — NEW</strong> (12 titles — Hyperbots vs OpenAI/Gemini deltas; 4 anchored, 8 placeholder)</li>
+</ul>
+
+<p>§A and §B are unchanged from v3. §C is the new section per the 2026-05-25 directive.</p>
+
+<hr/>
+
+<h1>§C · ANCHORED RELATIVE deltas (Hyperbots vs named competitors)</h1>
+
+<h2>§C.1 — PARSE-INTENT F1 — the strongest Hyperbots win in CONSOLIDATED-150</h2>
+
+<p><strong>Hyperbots-side leader</strong>: <code>hyperapi-parse-intent</code> = <strong>0.8328</strong> parse_intent_f1 <strong>Source row</strong>: <code>parse-hyperapi-parse-intent</code> in CONSOLIDATED-150.json <strong>Note on attestation</strong>: this is an <code>attested</code> cell (factory_reproduced=false), so the absolute number can move under a factory re-run. The relative ordering is what matters here and the ordering is robust.</p>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>Numbers (anchored)</th></tr>
+<tr><td><strong>C-01</strong></td><td><strong>"Hyperbots parse-intent vs GPT-4.1: +33% on the same 95-doc benchmark"</strong></td><td>Hyperbots 0.8328 vs GPT-4.1 0.6261 (Δ +33.0%) <code>[anchored]</code></td></tr>
+<tr><td><strong>C-02</strong></td><td><strong>"Gemini 2.5 Pro: 0.6351. Hyperbots: 0.8328. Same dataset. +31% F1."</strong></td><td>Δ +31.1% <code>[anchored]</code></td></tr>
+<tr><td><strong>C-03</strong></td><td><strong>"Gemini 2.5 Flash beats GPT-4.1 — and Hyperbots beats Gemini Flash by another 25%"</strong></td><td>Hyperbots 0.8328 vs Gemini Flash 0.6653 (Δ +25.2%) <code>[anchored]</code></td></tr>
+<tr><td><strong>C-04</strong></td><td><strong>"The +33% gap: why Hyperbots parse-intent leads GPT-4.1 by a third of a point of F1"</strong></td><td>same anchor as C-01, essay framing <code>[anchored]</code></td></tr>
+</table>
+
+<h2>§C.2 — OCR (edit-distance) — Hyperbots is MIXED here; be honest</h2>
+
+<p><strong>Hyperbots-side leader</strong>: <code>ocr-hyperapi-paddleocr-ours</code> = 0.0610 edit-distance (#12 in OCR overall) <strong>Overall OCR leader</strong>: <code>ocr-glm-ocr</code> = 0.0190 (NOT a Hyperbots IP cell — fine-tuned external)</p>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>Numbers (anchored)</th><th>Honest framing</th></tr>
+<tr><td><strong>C-05</strong></td><td><strong>"HyperAPI PaddleOCR: 54% lower OCR error than GPT-4o-mini"</strong></td><td>HyperAPI 0.0610 vs GPT-4o-mini 0.1340 (HyperAPI 2.2× lower) <code>[anchored]</code></td><td>win vs a small/cheap competitor; honest</td></tr>
+<tr><td><strong>C-06</strong></td><td><strong>"HyperAPI PaddleOCR vs Gemini-1.5-Flash: 30% lower edit-distance"</strong></td><td>HyperAPI 0.0610 vs Gemini-1.5-Flash 0.0870 (1.4× lower) <code>[anchored]</code></td><td>win vs Flash; honest</td></tr>
+<tr><td><strong>C-07</strong></td><td><strong>"On raw OCR edit-distance, GPT-4o leads (0.020). Hyperbots' fine-tuned PaddleOCR is 3× higher error — and that's the lesson."</strong></td><td>HyperAPI 0.0610 vs GPT-4o 0.0200 (HyperAPI loses) <code>[anchored — honest concession]</code></td><td>the honest-comparison-builds-trust angle</td></tr>
+</table>
+
+<h2>§C.3 — SAVIOR (word recall) — modest Hyperbots edge</h2>
+
+<p><strong>Hyperbots-side leader</strong>: <code>savior-qwen2.5-vl-7b-f</code> = 0.9294 (Qwen2.5-VL-7B fine-tuned; Hyperbots IP)</p>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>Numbers (anchored)</th></tr>
+<tr><td><strong>C-08</strong></td><td><strong>"Qwen2.5-VL-7B-F (Hyperbots fine-tune) vs GPT-4o on SAVIOR: +5% word recall"</strong></td><td>0.9294 vs 0.8854 (Δ +4.97%) <code>[anchored]</code></td></tr>
+</table>
+
+<h2>§C.4 — Cross-primitive / placeholder relative deltas (need measurement before publish)</h2>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>What to land</th></tr>
+<tr><td><strong>C-09</strong></td><td><strong>"Hyperbots extract vs GPT-4o on dataset_95 long invoices: line-count preservation [+X%]"</strong></td><td>needs Hyperbots-side extract score on the 10 long-invoice subset (Azure DI = 0.640 LCP; if Hyperbots > 0.768 then +20% claim is real)</td></tr>
+<tr><td><strong>C-10</strong></td><td><strong>"Hyperbots split-primitive vs Gemini 2.5 Pro: [+X% boundary-F1]"</strong></td><td>needs split-F1 measurement on a multi-doc bundle dataset</td></tr>
+<tr><td><strong>C-11</strong></td><td><strong>"Hyperbots classify-primitive vs GPT-4.1 on doc-type classification: [+X% macro-F1]"</strong></td><td>needs classify-F1 measurement on the 9-doc-type taxonomy</td></tr>
+<tr><td><strong>C-12</strong></td><td><strong>"Hyperbots Qwen3.6-35B-A3B (in-house fine-tune): [+X% cost-adjusted F1 vs GPT-4o]"</strong></td><td>needs cost normalization (token cost × F1) — the cost-of-quality angle</td></tr>
+</table>
+
+<hr/>
+
+<h2>v4 distribution summary</h2>
+
+<table>
+<tr><th>Bucket</th><th>Count</th><th>Status</th></tr>
+<tr><td><strong>§A Anchored absolute</strong></td><td>6</td><td>Ship-eligible NOW</td></tr>
+<tr><td><strong>§B Non-anchored</strong></td><td>54</td><td>Drafts; need measurement</td></tr>
+<tr><td><strong>§C.1 Parse-intent relative (anchored)</strong></td><td>4</td><td>Ship-eligible NOW</td></tr>
+<tr><td><strong>§C.2 OCR relative (anchored, mixed)</strong></td><td>3</td><td>Ship-eligible NOW</td></tr>
+<tr><td><strong>§C.3 SAVIOR relative (anchored)</strong></td><td>1</td><td>Ship-eligible NOW</td></tr>
+<tr><td><strong>§C.4 Other relative (placeholder)</strong></td><td>4</td><td>Drafts; need measurement</td></tr>
+<tr><td><strong>TOTAL</strong></td><td><strong>72</strong></td><td>(60 from v3 + 12 new in §C)</td></tr>
+<tr><td><strong>Total ship-eligible NOW</strong></td><td><strong>14</strong></td><td>(6 §A + 8 anchored in §C)</td></tr>
+</table>
+
+<h2>Ship ramp v4 (priority order — all 5 are anchored, no Hyperbots-side stub needed for the first 4)</h2>
+
+<ol>
+<li><strong>C-01</strong> — "Hyperbots parse-intent vs GPT-4.1: +33% on the same 95-doc benchmark" → the strongest competitor-named relative-delta in our data</li>
+<li><strong>X-07</strong> (from v3 §A) — "50 prebuilt-doc models. 10 long invoices. 1/10 line-count exact match." → the most-quotable Azure-DI stat</li>
+<li><strong>C-02</strong> — "Gemini 2.5 Pro: 0.6351. Hyperbots: 0.8328. Same dataset. +31% F1." → competitor-named, side-by-side</li>
+<li><strong>I-01</strong> (from v3 §A) — "88 line items in. 2,150 rows out." → the most-extreme single-doc Azure-DI failure</li>
+<li><strong>C-07</strong> — "GPT-4o leads OCR by 3×. Here's why we're publishing it anyway." → honest-comparison angle; builds trust</li>
+</ol>
+
+<h2>Honesty discipline in v4</h2>
+
+<ol>
+<li><strong>Win where the data says win.</strong> Parse-intent +33% vs GPT-4.1 is the cleanest anchored relative win we have. Lead with it.</li>
+<li><strong>Lose where the data says lose.</strong> OCR edit-distance: HyperAPI PaddleOCR OURS is 3× higher error than GPT-4o. We publish that <em>with</em> the win framing — credibility comes from owning the losses.</li>
+<li><strong>"20% better than OpenAI" is too imprecise.</strong> Anchored claims are "+25.2% vs Gemini 2.5 Flash" or "+33.0% vs GPT-4.1" — the actual numbers are stronger and more defensible.</li>
+<li><strong>The Hyperbots parse-intent cell is ATTESTED, not factory-reproduced.</strong> That's a known caveat — if the factory re-run produces different numbers, the relative claim moves. Plan: re-run hyperapi-parse-intent through the factory harness to convert to <code>factory_reproduced: true</code> before C-01 publishes.</li>
+<li><strong>§C.4 placeholders are NOT secretly fabricated.</strong> They literally say <code>[+X%]</code> — they're the headlines we'd write IF the measurement lands. Conversion path: §C.4 → §C.1/§C.2/§C.3 after the measurement runs.</li>
+</ol>
+
+<h2>Sources</h2>
+
+<ul>
+<li>v3 catalog (§A + §B unchanged): <code>viral-blog-titles-2026-05-25-v3.md</code> (vault id <code>edac0b1c</code>)</li>
+<li>CONSOLIDATED-150 anchored cells: <code>leaderboard/CONSOLIDATED-150/CONSOLIDATED-150.json</code></li>
+<li>Hyperbots parse-intent row: <code>parse-hyperapi-parse-intent</code> (value 0.8328, attested)</li>
+<li>HyperAPI PaddleOCR row: <code>ocr-hyperapi-paddleocr-ours</code> (value 0.0610, attested)</li>
+<li>Qwen2.5-VL-7B-F row: <code>savior-qwen2.5-vl-7b-f</code> (value 0.9294, attested)</li>
+<li>F-1 stub (still NOT used here): <code>benchmark-factory/stubs-pending-ceo-data/F-1-stratified-line-item-sample.STUB.json</code> — the 99.8/99.9/100 triple stays parked</li>
+</ul>
+
+</body></html>

@@ -1,0 +1,236 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>parse-o2c — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/content/nanonets-framework/">← back</a>
+<div class="fm">primitive: parse
+domain: o2c
+status: PLAN — methodology defined, numbers placeholder
+date: 2026-05-25
+depth_template: /Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/comparative/azure-di/azure-di-invoice-study.html
+parent_framework: ../FRAMEWORK-2026-05-25.md
+dimensions_in_scope: D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D13, D14
+dimensions_out_of_scope: D12 (STP is a pipeline outcome)</div>
+
+<h1>Parse (O2C) — deep-study plan</h1>
+
+<h2>1. Executive summary (TEMPLATE — numbers placeholder)</h2>
+
+<p>How well does an IDP system parse O2C document bytes — sales order, sales invoice, advance shipping notice (ASN), customer credit memo, dunning notice, statement of account, remittance advice, dispute correspondence — into the canonical parse schema? Distinct from the P2P side: O2C documents carry <strong>inbound payment artefacts</strong>, with cash-application semantics (open invoice → applied amount → short-pay → reason code) and statement-level totals/aging buckets rather than PO/GRN matching. Numbers <code>[PENDING-MEASUREMENT]</code>.</p>
+
+<h2>2. Scope & coverage</h2>
+
+<ul>
+<li><strong>Workload in scope.</strong> Eight O2C doc families.</li>
+<li><strong>Platforms assessed.</strong> Hyperbots IDP <code>parse</code> + at least one competitor</li>
+</ul>
+<p>  parse offering (§8).</p>
+<ul>
+<li><strong>Coverage dimensions.</strong> 13 of 14 (D12 dropped — pipeline outcome).</li>
+<li><strong>Test surface.</strong></li>
+<li><code>n = [PLACEHOLDER]</code> per dimension.</li>
+<li>Stratification: doc family × aging-bucket complexity × currency ×</li>
+</ul>
+<p>    script × layout × scan condition × file format.</p>
+<ul>
+<li>Remittance advice and statement-of-account are particularly</li>
+</ul>
+<p>    table-heavy → stratified separately for D8.</p>
+<ul>
+<li>Gold double-annotated + adjudicated; κ reported per stratum.</li>
+<li><strong>Boundaries.</strong> Numbers <code>[PENDING-MEASUREMENT]</code>.</li>
+</ul>
+
+<h2>3. Methodology</h2>
+
+<h3>3.1 Data-status representation</h3>
+<p>Eight-row legend per framework §0.4.</p>
+
+<h3>3.2 Sample design</h3>
+<ul>
+<li><code>n = [PLACEHOLDER]</code> per dimension; stratified per §5.</li>
+<li>Macro-averaged across strata; remittance advice line-item nuances</li>
+</ul>
+<p>  (open-invoice references, deduction codes) are over-represented in   D8 strata.</p>
+<ul>
+<li>κ per stratum.</li>
+</ul>
+
+<h3>3.3 Metrics</h3>
+<ul>
+<li>Field-level P/R/F1 for the O2C-schema header (invoice no., sales-order</li>
+</ul>
+<p>  ref, customer block, totals, aging-bucket headers).</p>
+<ul>
+<li>Open-invoice-application line-level P/R/F1 for remittance:</li>
+</ul>
+<p>  <code>open_invoice_id</code>, <code>applied_amount</code>, <code>deduction_code</code>, <code>deduction_amount</code>.</p>
+<ul>
+<li>Statement aging-bucket extraction P/R/F1 (current / 30 / 60 / 90 / 120+).</li>
+<li>Table-structure fidelity: cell-P/R + TEDS.</li>
+<li>Bounding-box quality (IoU distribution).</li>
+<li>Point + 95% bootstrap CI + n; overlapping CIs → tie-band.</li>
+</ul>
+
+<h3>3.4 Scoring rubric</h3>
+<ul>
+<li>Exact-match (casefold + whitespace-collapsed) for identifiers.</li>
+<li>Numeric-tolerance <code>max(1% rel, 0.01 abs)</code> for monetary fields.</li>
+<li><strong>Deduction-code normalisation:</strong> mapped through a pinned dictionary</li>
+</ul>
+<p>  (e.g. <code>D-001</code> → <code>short-shipment</code>) before exact-match scoring.</p>
+<ul>
+<li>Wrong value = FP AND FN.</li>
+<li>Table structure scored independently of cell content.</li>
+</ul>
+
+<h3>3.5 Evaluation controls</h3>
+<ul>
+<li>Frozen snapshot sha256.</li>
+<li>Rerunnable command:</li>
+</ul>
+<p>  ``<code>   run --study parse-o2c-v0 \       --dimension D&lt;id&gt; \       --system hyperbots-idp@&lt;model-revision&gt; \       --system &lt;competitor&gt;@&lt;api-version&gt; \       --dataset o2c-parse-bench-v1@&lt;snapshot-sha256&gt; \       --split test --seed &lt;pinned&gt; \       --metric field_f1 --bootstrap 1000   </code>``</p>
+<ul>
+<li>Contamination review per document.</li>
+</ul>
+
+<h3>3.6 Independence and disclosure</h3>
+<p>Hyperbots-published; affiliation declared; GA competitor offerings.</p>
+
+<h3>3.7 Limitations</h3>
+<ul>
+<li>Remittance advice formats vary wildly across customer ERPs;</li>
+</ul>
+<p>  representativeness depends on §5 stratification.</p>
+<ul>
+<li>Statement-of-account aging-bucket headers are often customer-specific</li>
+</ul>
+<p>  (<code>&gt;120</code> vs <code>120+</code>) — pinned dictionary tolerates synonyms.</p>
+<ul>
+<li>Dispute correspondence is free-form prose; parse F1 will be lower-</li>
+</ul>
+<p>  bounded by GT ambiguity, not by extractor quality.</p>
+
+<h3>3.8 Where this primitive sits in the IDP pipeline</h3>
+<p><strong>parse</strong> stage only. Cash-application (<code>match</code>) and exception-routing (<code>reason</code>) are scoped separately.</p>
+
+<h2>4. Dimension analysis (13 of 14)</h2>
+
+<table>
+<tr><th>ID</th><th>Dimension applicability for parse(O2C)</th><th>Hyperbots</th><th>Competitor</th><th>Δ</th></tr>
+<tr><td>D1</td><td>Complexity tier; statements + remittance advice trend more complex than sales orders.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D2</td><td>O2C-schema breadth: open-invoice list, applied amount, deduction codes, aging buckets.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D3</td><td>Layout variance — customer-ERP-specific statement templates.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D4</td><td>Currency coverage including cross-currency remittances.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D5</td><td>Language — multilingual dunning correspondence.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D6</td><td>Context — applied-amount ≤ open-invoice-balance check; aging-bucket sum = total.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D7</td><td>OCR/scan degradation — faxed remittance advice, low-DPI lockbox scans.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D8</td><td>Table fidelity — statement aging tables, remittance line tables.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D9</td><td>Confidence calibration per O2C field family.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D10</td><td>Throughput — bursty month-end batches.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D11</td><td>Visual grounding — aging-bucket box attribution on statements.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D13</td><td>p50/p95 latency, page-count stratified.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D14</td><td>File-format coverage — TIFF (lockbox), email-attached PDF, EDI 820 wrappers.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+</table>
+
+<h2>5. Document × failure-mode matrix (parse-O2C)</h2>
+
+<table>
+<tr><th>#</th><th>Doc family</th><th>Line-item characteristic</th><th>Layout family</th><th>Dimensions</th></tr>
+<tr><td>1</td><td>Sales order</td><td>Multi-line + ship-to/bill-to differ</td><td>ERP template</td><td>D2, D8</td></tr>
+<tr><td>2</td><td>Sales invoice</td><td>Mixed taxes, multi-currency cross-border</td><td>Free-form</td><td>D4, D6, D8</td></tr>
+<tr><td>3</td><td>ASN</td><td>Carton-level + serial numbers</td><td>Table-dominant</td><td>D8</td></tr>
+<tr><td>4</td><td>Customer credit memo</td><td>References original sales invoice w/ partial credit</td><td>Free-form</td><td>D6</td></tr>
+<tr><td>5</td><td>Dunning notice</td><td>Multilingual + aging-bucket roll-up</td><td>Letter + table</td><td>D5, D8</td></tr>
+<tr><td>6</td><td>Statement of account</td><td>5-bucket aging table, 50+ open invoices</td><td>Table-dominant</td><td>D8, D6</td></tr>
+<tr><td>7</td><td>Statement of account</td><td>Multi-currency consolidated</td><td>Table-dominant</td><td>D4, D8</td></tr>
+<tr><td>8</td><td>Remittance advice</td><td>One-to-many applied amounts with deduction codes</td><td>Mixed</td><td>D2, D6</td></tr>
+<tr><td>9</td><td>Remittance advice</td><td>EDI 820 PDF render</td><td>Form-grid</td><td>D14, D8</td></tr>
+<tr><td>10</td><td>Remittance advice</td><td>Faxed scan, skew/blur</td><td>Photographed</td><td>D7, D11</td></tr>
+<tr><td>11</td><td>Dispute correspondence</td><td>Free-form email body referencing inv# + reason</td><td>Free-form text</td><td>D1, D2</td></tr>
+<tr><td>12</td><td>Multi-doc bundle</td><td>Statement + remittance scanned together</td><td>Mixed</td><td>D1, D8</td></tr>
+</table>
+
+<p><code>[PLACEHOLDER — expand to 30–55 strata.]</code></p>
+
+<h2>6. Metric-taxonomy crosswalk (parse-O2C)</h2>
+<p>Same column structure as parse-P2P §6 (D1 → A/B/C/D; D2 → A/B/C/D/H; D3 → B; D4 → A/C/D; D5 → A/E; D6 → C/D/H; D7 → F; D8 → B/D/H; D9 → framework-introduced; D10 → G framework-introduced; D11 → B/H framework-introduced; D13 → G framework-introduced; D14 → G/H). O2C-specific roll-ups: aging-bucket parsing rolls under D6 + D8; deduction-code normalisation rolls under D2.</p>
+
+<h2>7. HyperAPI capability coverage (parse-O2C)</h2>
+<ul>
+<li><code>parse</code> — primary</li>
+<li><code>parse-x</code> — extended O2C schema (open-invoice list, aging buckets)</li>
+<li><code>extract-omni</code> — for mixed bundles (statement + remittance together)</li>
+</ul>
+
+<p>Capability assessment counts (Fully / Partially / Not yet) per cluster: <code>[PLACEHOLDER]</code>. HyperAPI scope claim, not measurement.</p>
+
+<h2>8. Competitor offerings inventory (parse-O2C)</h2>
+
+<table>
+<tr><th>Vendor</th><th>SKU / API</th><th>Marketing source</th><th>Status</th></tr>
+<tr><td>Azure DI</td><td><code>prebuilt-invoice</code> + custom for statements</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>AWS Textract</td><td>AnalyzeDocument + Queries</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Google Document AI</td><td>Custom Extractor / Procurement DocAI</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Nanonets</td><td>Statement / remittance OCR templates</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>HighRadius</td><td>Cash Application Cloud (closest analog)</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Billtrust</td><td>Quantum Cash Application</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+</table>
+
+<h2>9. Findings & outlook</h2>
+
+<p><code>[PLACEHOLDER]</code> — closed once a Δ has non-overlapping CIs.</p>
+
+<p>Falsifiable hypotheses:</p>
+<ol>
+<li>Hyperbots open-invoice-list extraction on remittance advice ≥</li>
+</ol>
+<p>   competitor F1.</p>
+<ol>
+<li>Hyperbots aging-bucket statement parsing TEDS ≥ competitor.</li>
+<li>D9 ECE on <code>applied_amount</code> is lower for Hyperbots on faxed remittance.</li>
+</ol>
+
+<h2>Z. Internal-only notes</h2>
+<ul>
+<li>Dataset acquisition: O2C public corpora are scarcer than P2P;</li>
+</ul>
+<p>  partnership data + synthetic-generation may be needed (synthetic data   flagged in §3.7).</p>
+<ul>
+<li>Bench-100 → bench-1000 → 5,000/dim escalation.</li>
+</ul>
+
+</body></html>

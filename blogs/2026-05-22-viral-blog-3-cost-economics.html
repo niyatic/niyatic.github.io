@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8" />
+<title>$0.19 per 1,000 calls — the operational economics of SAVIOR-Bench v1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;--brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+    --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;--grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+    --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+    --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);--txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+  }
+  *{box-sizing:border-box;}
+  body{background:var(--bg);color:var(--txt);font:14px/1.55 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:0;padding:0;}
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  code,pre{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.6px;}
+  pre{background:var(--brand-1);border:1px solid var(--line);padding:12px 14px;border-radius:8px;overflow-x:auto;}
+  code{background:var(--brand-2);padding:1px 5px;border-radius:4px;}
+  pre code{background:none;padding:0;}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 22px 72px;}
+  .draft{background:var(--warn-fg);color:#fff;font-weight:600;text-align:center;padding:9px 14px;border-radius:8px;font-size:12.5px;letter-spacing:.02em;margin-bottom:20px;}
+  header.hd{background:linear-gradient(160deg,var(--brand-3),var(--brand-1));border:1px solid var(--line);border-radius:14px;padding:26px 28px;margin-bottom:8px;}
+  header.hd h1{margin:0 0 8px;font-size:25px;font-weight:700;color:var(--brand-9);line-height:1.25;}
+  header.hd .sub{color:var(--grey-11);font-size:13.5px;}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;border:1px solid var(--brand-4);color:var(--brand-8);background:var(--brand-2);margin:3px 4px 0 0;}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 0;}
+  .tab{padding:9px 15px;border:1px solid var(--line);border-bottom:none;border-radius:9px 9px 0 0;background:var(--grey-3);color:var(--grey-11);cursor:pointer;font-weight:500;font-size:13px;}
+  .tab.active{background:var(--panel);color:var(--brand-8);font-weight:600;box-shadow:0 -2px 0 var(--brand-6) inset;}
+  .panel{display:none;background:var(--panel);border:1px solid var(--line);border-radius:0 12px 12px 12px;padding:26px 30px;}
+  .panel.active{display:block;}
+  h2{color:var(--brand-8);font-size:19px;margin-top:30px;border-bottom:1px solid var(--line);padding-bottom:6px;}
+  h3{color:var(--brand-9);font-size:15.5px;margin-top:24px;}
+  .post{border:1px solid var(--line);border-left:3px solid var(--brand-6);border-radius:8px;padding:12px 15px;margin:11px 0;background:var(--brand-1);}
+  .post .n{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.05em;}
+  .post p{margin:5px 0 0;}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12.8px;}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;}
+  th{background:var(--brand-2);color:var(--brand-8);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;}
+  .lead{color:var(--ok-fg);font-weight:600;}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0;}
+  @media (max-width:640px){.kpis{grid-template-columns:repeat(2,1fr);}}
+  .kpi{background:var(--brand-1);border:1px solid var(--line);border-radius:9px;padding:12px 13px;}
+  .kpi .lbl{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+  .kpi .v{font-size:20px;font-weight:700;color:var(--brand-9);line-height:1.15;margin-top:5px;}
+  .kpi .s{font-size:10.5px;color:var(--muted);margin-top:3px;}
+  .callout{background:var(--brand-2);border:1px solid var(--brand-4);border-left:3px solid var(--brand-7);border-radius:8px;padding:12px 16px;margin:14px 0;font-size:13px;}
+  .warnbox{background:#FFF6ED;border:1px solid #F4D9B5;border-left:3px solid var(--warn-fg);border-radius:8px;padding:12px 16px;margin:14px 0;font-size:13px;}
+  .muted{color:var(--muted);font-size:12px;}
+  .acl{background:#fff;border:1px solid var(--grey-7);border-radius:6px;padding:30px 38px;margin-top:14px;font-family:"Times New Roman",Times,serif;color:#111;}
+  .acl h1.t{font-size:19px;text-align:center;margin:0 0 4px;font-weight:700;}
+  .acl .auth{text-align:center;font-size:12.5px;color:#333;margin-bottom:14px;}
+  .acl .cols{column-count:2;column-gap:22px;font-size:11.7px;line-height:1.5;text-align:justify;}
+  .acl .cols h2{color:#111;font-size:12.5px;border:none;text-transform:uppercase;letter-spacing:.03em;margin:12px 0 3px;padding:0;}
+  .acl .abs{border:1px solid #bbb;padding:8px 14px;margin:0 18px 14px;font-size:11px;font-style:italic;}
+  .acl table{font-size:10.3px;}
+  .acl th{background:#eee;color:#111;}
+  @media (max-width:680px){.acl .cols{column-count:1;}}
+  footer{margin-top:34px;color:var(--muted);font-size:11.5px;text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="draft">DRAFT — pending review; external publish human-gated. Drafts only — no commit, no push, no external publication.</div>
+
+<header class="hd">
+  <h1>$0.19 per 1,000 Calls: The Operational Economics of a Fine-Tuned Document-AI Path</h1>
+  <div class="sub">Blog 3 of 3 &middot; Angle: cost / latency / throughput economics &middot; snapshot 2026-05-20</div>
+  <div style="margin-top:9px;">
+    <span class="pill">SAVIOR-Bench v1</span>
+    <span class="pill">p50 2,548 ms / p99 3,319 ms</span>
+    <span class="pill">3% failure rate</span>
+    <span class="pill">cost/correct $0.000191</span>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="show(0)">Twitter / X thread</div>
+  <div class="tab" onclick="show(1)">LinkedIn post</div>
+  <div class="tab" onclick="show(2)">Deep blog</div>
+  <div class="tab" onclick="show(3)">ACL-style paper</div>
+</div>
+
+<!-- TAB 0: TWITTER -->
+<div class="panel active" id="p0">
+  <h2>Twitter / X thread — 8 posts</h2>
+  <p class="muted">Each post &le;280 characters. Category labels only; cost is infra-derived, not a price quote.</p>
+
+  <div class="post"><span class="n">1 / 8</span>
+    <p>Accuracy benchmarks are everywhere. Operational benchmarks — latency tails, failure rate, cost per <em>correct</em> answer — are rare, and they're the ones that decide whether a document-AI system survives production. Here are the SAVIOR-Bench v1 numbers. 🧵</p></div>
+
+  <div class="post"><span class="n">2 / 8</span>
+    <p>The path measured: an open model LoRA fine-tuned by Hyperbots on in-domain financial docs, served on a single A100 40GB at ~$2/hr. The numbers below are this fine-tuned inference path — disclosed, not generalized to other settings.</p></div>
+
+  <div class="post"><span class="n">3 / 8</span>
+    <p>Latency: p50 2,548 ms, p99 3,319 ms. The tail is tight — p99 is only ~30% above the median. A document-AI path with a controlled tail is rarer than it sounds; most degrade badly under the 99th percentile.</p></div>
+
+  <div class="post"><span class="n">4 / 8</span>
+    <p>Failure rate: 3%, and we name the cause — KV-cache bound. A 2-GPU serving path is noted as the mitigation. A failure rate without a named cause is a number you can't act on. This one you can.</p></div>
+
+  <div class="post"><span class="n">5 / 8</span>
+    <p>Cost per attempted call: $0.000186. Cost per SUCCESSFUL call: $0.000191. The gap is small — exactly because the 3% failure rate is small. Cost-per-correct is the metric that survives contact with reality; cost-per-call alone hides the failures.</p></div>
+
+  <div class="post"><span class="n">6 / 8</span>
+    <p>That's ~$0.19 per 1,000 successful calls — infrastructure-derived from A100 hourly rate and throughput. It is NOT a price quote and not a list price. It's what the compute costs at this operating point.</p></div>
+
+  <div class="post"><span class="n">7 / 8</span>
+    <p>What we don't claim: no p90, no p999, no full latency histogram — the source gives three points, so we report three. No fabricated tail. Honesty about what isn't measured is part of the operational picture.</p></div>
+
+  <div class="post"><span class="n">8 / 8</span>
+    <p>Takeaway: when you evaluate document AI, ask for p99 not just p50, the failure rate AND its cause, and cost-per-correct not cost-per-call. SAVIOR-Bench v1 reports all four. Figures are model/infra perf, not product pricing (that's per apis.hyperbots.com).</p></div>
+</div>
+
+<!-- TAB 1: LINKEDIN -->
+<div class="panel" id="p1">
+  <h2>LinkedIn post</h2>
+  <div class="callout">
+  <p><strong>Everyone benchmarks document-AI accuracy. Almost nobody benchmarks the number that decides production survival: cost per <em>correct</em> answer.</strong></p>
+
+  <p>SAVIOR-Bench v1 reports the operational properties of one specific path — an open model LoRA fine-tuned by Hyperbots on in-domain financial documents, served on a single A100 40GB at roughly $2/hr. Four numbers, all disclosed for that path, not generalized:</p>
+
+  <p>&bull; <strong>Latency p50: 2,548 ms. p99: 3,319 ms.</strong> The tail is tight — the 99th percentile sits only about 30% above the median. Many document-AI systems degrade sharply at the tail; a controlled one is worth noticing.<br>
+  &bull; <strong>Failure rate: 3%</strong> — and the cause is named: KV-cache bound, with a 2-GPU serving path noted as mitigation. A failure rate without a cause is not actionable. This one is.<br>
+  &bull; <strong>Cost per attempted call: $0.000186. Cost per successful call: $0.000191.</strong> The gap between the two is small precisely because the failure rate is small — roughly $0.19 per 1,000 successful calls.</p>
+
+  <p>That last pair is the point. Cost-per-call quietly bills you for failures. Cost-per-correct does not. The honest comparison between them is what tells you whether an operating point is real.</p>
+
+  <p>What the report does not do is invent the rest of the distribution. There is no p90, no p999, no full histogram — the source provides three latency points, so three are reported. No fabricated tail.</p>
+
+  <p>If you are evaluating document-AI systems, ask three questions: what is p99 (not just p50), what is the failure rate <em>and its cause</em>, and what is cost-per-correct (not cost-per-call). The full SAVIOR-Bench v1 methodology is available for review.</p>
+  <p class="muted">Cost figures are infrastructure-derived from A100 hourly rate and throughput — not a price quote or list price. Benchmark figures are model/infra performance, not product accuracy or pricing (product figures are cited only per apis.hyperbots.com). Cells attested 2026-05-18, not yet factory-reproduced. Draft — pending review.</p>
+  </div>
+</div>
+
+<!-- TAB 2: DEEP BLOG -->
+<div class="panel" id="p2">
+  <h2>$0.19 per 1,000 Calls</h2>
+  <p class="muted">Deep technical blog &middot; ~1,850 words &middot; angle: cost / latency / throughput economics.</p>
+
+  <h3>1. The benchmark nobody runs</h3>
+  <p>Accuracy leaderboards are a saturated genre. Every document-AI vendor has a recall number, an F1 number, a layout score. What almost nobody publishes — and what actually decides whether a system survives a production rollout — is the operational profile: how long the slow requests take, how often calls fail and why, and how much a <em>correct</em> answer costs once you account for the ones that didn't work.</p>
+  <p>SAVIOR-Bench v1, a 509-document expert-annotated financial-document benchmark, reports these alongside the accuracy tables. This post is about the four operational numbers, what they mean, and — just as importantly — what the report deliberately refuses to claim about them.</p>
+
+  <div class="kpis">
+    <div class="kpi"><div class="lbl">Latency p50</div><div class="v">2,548 ms</div><div class="s">median</div></div>
+    <div class="kpi"><div class="lbl">Latency p99</div><div class="v">3,319 ms</div><div class="s">99th percentile</div></div>
+    <div class="kpi"><div class="lbl">Failure rate</div><div class="v">3%</div><div class="s">KV-cache bound</div></div>
+    <div class="kpi"><div class="lbl">Cost / correct</div><div class="v">$0.000191</div><div class="s">&asymp; $0.19 / 1,000</div></div>
+  </div>
+
+  <h3>2. What was measured — and what path it describes</h3>
+  <p>Disclosure before numbers. The operational figures describe one specific path: the SAVIOR-Train fine-tuned inference path — an open-source model LoRA fine-tuned by Hyperbots on in-domain financial-document data (Hyperbots IP) — served on a single NVIDIA A100 40GB at an assumed rate of roughly $2/hr. These are not generalized claims about every model in the panel, and they are not the operational profile of the zero-shot vendor systems. They are this path, on this hardware, at this operating point. Read them that way.</p>
+
+  <h3>3. Latency: the tail is the product</h3>
+  <p>The median request completes in 2,548 ms. That is a usable interactive latency for a document-extraction call. But the median is not where production pain lives — the tail is. The 99th-percentile latency is <strong>3,319 ms</strong>.</p>
+  <p>The ratio matters more than either number alone. p99 / p50 here is about 1.30 — the slowest one-in-a-hundred request takes only ~30% longer than the typical one. For document AI, that is a notably tight tail. Many systems, especially those that fan out to OCR plus a rules layer plus a re-ranking step, exhibit p99/p50 ratios of 3x, 5x, or worse, because each stage adds its own tail and the tails compound. A path whose p99 is within a third of its median has a predictable worst case — and a predictable worst case is what lets you set an SLA you can actually keep.</p>
+  <p>What the report explicitly does <em>not</em> provide: p90, p999, or a full latency histogram. The source-of-record gives exactly three latency points, so exactly three are reported. No intermediate percentile is interpolated and no tail beyond p99 is asserted. If you need p999 for a stringent SLA, that is a measurement still to be taken — and the report says so rather than inventing it.</p>
+
+  <h3>4. Failure rate: 3%, with a named cause</h3>
+  <p>The path has a 3% failure rate. A bare failure-rate number is nearly useless — you cannot engineer against "3% of things break." What makes this one actionable is that the report names the mechanism: the failures are <strong>KV-cache bound</strong>. Under concurrency, the key/value attention cache on a single 40GB A100 is the binding resource; when it saturates, requests fail rather than silently degrade.</p>
+  <p>Because the cause is named, the mitigation is concrete: the report notes a 2-GPU serving path. More KV-cache headroom across two devices relieves the exact bottleneck identified. This is the difference between a failure rate as a complaint and a failure rate as an engineering ticket. A vendor who can tell you <em>why</em> calls fail can tell you what it costs to make them stop failing.</p>
+
+  <h3>5. Cost per call vs cost per correct — and why the gap is the story</h3>
+  <p>Now the economics. Two figures, infrastructure-derived from the A100 hourly rate and the measured throughput:</p>
+  <table>
+    <thead><tr><th>Metric</th><th class="num">Value</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>Cost per attempted call</td><td class="num">$0.000186</td><td>every call, including the ones that failed</td></tr>
+      <tr><td>Cost per successful call</td><td class="num lead">$0.000191</td><td>cost amortized only over calls that worked</td></tr>
+    </tbody>
+  </table>
+  <figure style="margin:18px 0;">
+  <svg viewBox="0 0 880 360" role="img" aria-label="Per-call economics: cost per attempted call $0.000186 versus cost per successful call $0.000191, the small gap a consequence of the 3 percent failure rate" style="width:100%;height:auto;display:block;font-family:'Rubik',-apple-system,sans-serif;">
+    <text x="20" y="26" font-size="13" font-weight="600" fill="#07658D">Per-call economics — the gap between attempted and successful is the story</text>
+    <!-- LEFT: cost bars. scale: $0 at y=290, $0.00021 at y=70 -> px per $ = 220/0.00021 = 1047619 -->
+    <line x1="150" y1="290" x2="150" y2="60" stroke="#CAD5D6" stroke-width="1.2"/>
+    <line x1="150" y1="290" x2="500" y2="290" stroke="#CAD5D6" stroke-width="1.2"/>
+    <g stroke="#E2ECEE" stroke-width="1">
+      <line x1="150" y1="237.6" x2="500" y2="237.6"/>
+      <line x1="150" y1="185.2" x2="500" y2="185.2"/>
+      <line x1="150" y1="132.9" x2="500" y2="132.9"/>
+      <line x1="150" y1="80.5" x2="500" y2="80.5"/>
+    </g>
+    <g font-size="9.5" fill="#8A9799" text-anchor="end">
+      <text x="144" y="293">$0</text>
+      <text x="144" y="241">$0.00005</text>
+      <text x="144" y="189">$0.00010</text>
+      <text x="144" y="136">$0.00015</text>
+      <text x="144" y="84">$0.00020</text>
+    </g>
+    <!-- attempted bar: $0.000186 -> height 194.9, y=95.1 -->
+    <rect x="195" y="95.1" width="92" height="194.9" rx="4" fill="#77CDF2"/>
+    <text x="241" y="87" text-anchor="middle" font-size="12" font-weight="700" fill="#07658D">$0.000186</text>
+    <text x="241" y="308" text-anchor="middle" font-size="11" font-weight="500" fill="#211F26">per attempted</text>
+    <text x="241" y="322" text-anchor="middle" font-size="9.5" fill="#748081">includes failed calls</text>
+    <!-- successful bar: $0.000191 -> height 200.1, y=89.9 -->
+    <rect x="335" y="89.9" width="92" height="200.1" rx="4" fill="#1B7DA7"/>
+    <text x="381" y="82" text-anchor="middle" font-size="12" font-weight="700" fill="#039855">$0.000191</text>
+    <text x="381" y="308" text-anchor="middle" font-size="11" font-weight="500" fill="#211F26">per successful</text>
+    <text x="381" y="322" text-anchor="middle" font-size="9.5" fill="#748081">true unit cost of an answer</text>
+    <!-- gap bracket -->
+    <path d="M287,89.9 L300,89.9 L300,95.1 L287,95.1" fill="none" stroke="#DC6803" stroke-width="1.3"/>
+    <text x="306" y="95" font-size="10" font-weight="600" fill="#DC6803">~3% gap</text>
+    <!-- RIGHT: explainer panel -->
+    <rect x="540" y="60" width="320" height="230" rx="10" fill="#EDFAFF" stroke="#BDDFEE"/>
+    <text x="560" y="86" font-size="12" font-weight="600" fill="#07658D">Why the gap is small</text>
+    <text x="560" y="108" font-size="11" fill="#596263">3% failure rate — KV-cache bound</text>
+    <text x="560" y="124" font-size="10" fill="#748081">(2-GPU serving path noted as mitigation)</text>
+    <line x1="560" y1="136" x2="840" y2="136" stroke="#BDDFEE" stroke-width="1"/>
+    <text x="560" y="158" font-size="11" fill="#596263">Failed calls still consume compute, so</text>
+    <text x="560" y="173" font-size="11" fill="#596263">spend re-amortizes over the 97% that</text>
+    <text x="560" y="188" font-size="11" fill="#596263">worked — a near-flat curve.</text>
+    <text x="560" y="212" font-size="11" fill="#596263">A 30% failure rate would balloon</text>
+    <text x="560" y="227" font-size="11" fill="#596263">cost-per-correct far above cost-per-call.</text>
+    <line x1="560" y1="240" x2="840" y2="240" stroke="#BDDFEE" stroke-width="1"/>
+    <text x="560" y="262" font-size="13.5" font-weight="700" fill="#07658D">&asymp; $0.19 per 1,000 successful calls</text>
+    <text x="560" y="280" font-size="9.5" fill="#8A9799">infrastructure-derived from A100 ~$2/hr + throughput</text>
+    <text x="20" y="346" font-size="10.5" fill="#8A9799">One specific path: an open model LoRA fine-tuned by Hyperbots, served on a single A100 40GB. Infrastructure-derived — not a price quote or list price.</text>
+  </svg>
+  <figcaption class="muted" style="margin-top:6px;">Per-call economics for the disclosed fine-tuned inference path: cost per attempted call $0.000186 vs cost per successful call $0.000191 — a ~3% gap, a direct consequence of the 3% KV-cache-bound failure rate — or roughly $0.19 per 1,000 successful calls. All figures transcribed verbatim from this post; infrastructure-derived, not a price quote.</figcaption>
+  </figure>
+  <p>Cost-per-attempt bills you for compute spent on failures. Cost-per-correct re-amortizes that same spend over only the successful calls — it is the true unit cost of a usable answer. The honest version of an economics claim always reports the second number, because the second number is the one that survives contact with a real failure rate.</p>
+  <p>Here is the subtle, favorable detail: the two numbers are <strong>almost identical</strong> — $0.000186 versus $0.000191, a gap of roughly 3%. That gap is small <em>because the failure rate is small</em>. If the path failed 30% of the time, cost-per-correct would balloon far above cost-per-attempt and the headline cost would be a fiction. A near-flat curve between attempted and successful cost is the signature of a path whose failures are rare enough that they barely move the unit economics. The 3% failure rate and the tight cost gap are the same fact told twice.</p>
+  <p>In round terms: roughly <strong>$0.19 per 1,000 successful calls</strong>. One important boundary — this is an infrastructure-derived figure, computed from the A100 hourly rate and throughput. It is <em>not</em> a price quote, not a list price, and not a product-pricing claim. It is what the compute costs at this operating point. Any actual product pricing would be cited only per apis.hyperbots.com.</p>
+
+  <h3>6. Why a small model makes the economics work</h3>
+  <p>The operating point is not an accident of generous hardware — it is a consequence of model size. The fine-tuned path runs models in the 3B–7B range. On SAVIOR-Bench v1 the 3B fine-tune still clears 0.91 OCR recall and the 7B fine-tune tops the recall table at 0.9294. A small model that holds in-domain accuracy is what makes a single A100 sufficient, the KV-cache pressure manageable, and the per-call cost land in fractions of a cent. The accuracy result and the economics result are linked: fine-tuning a small open model on in-domain data is what produces both a competitive recall number and a sub-$0.0002 cost-per-correct. Neither figure is impressive alone; together they describe a path that is cheap because it is small and viable because the fine-tune kept it accurate.</p>
+
+  <h3>7. The operational checklist for buyers</h3>
+  <p>The transferable practice, if you are evaluating any document-AI system: do not accept a median latency without the p99 — the tail is the SLA. Do not accept a failure rate without its named cause and a mitigation — an unexplained failure rate cannot be engineered against. Do not accept cost-per-call when cost-per-correct exists — the two diverge exactly when it matters most. And treat any cost figure as infrastructure-derived unless it is explicitly a quoted price.</p>
+  <p>SAVIOR-Bench v1 reports p50 and p99, the failure rate and its cause, and both cost figures — and it stops exactly where the source data stops, declining to invent p999 or a histogram. That combination, the favorable operating point reported <em>with</em> the boundaries of what was measured, is what makes the favorable operating point worth believing.</p>
+
+  <h2>Sources</h2>
+  <ul>
+    <li>Hyperbots Benchmark Report — SAVIOR-Bench v1 (snapshot 2026-05-20): Headline KPIs (Operational properties), pillar 4 (latency distributions), pillar 5 (cost-per-call and cost-per-correct).</li>
+    <li><code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code> §3 (latency, failure rate), §4 (cost) — verbatim in-repo extract of the Hyperbots source-of-record.</li>
+    <li><code>paper/SAVIOR-Bench.md</code> §4, §5.1.2 — panel composition and OCR recall results.</li>
+  </ul>
+  <h2>Open assumptions</h2>
+  <ol>
+    <li>Operational figures describe the SAVIOR-Train fine-tuned inference path only — an open model LoRA fine-tuned by Hyperbots on in-domain data (Hyperbots IP) — served on a single A100 40GB at ~$2/hr. They are not generalized to the zero-shot panel.</li>
+    <li>Cost figures are infrastructure-derived from A100 hourly rate and throughput — not a price quote or list price. Product pricing, if any, is cited only per apis.hyperbots.com.</li>
+    <li>Only p50, p99, and a 3% failure rate are reported; no p90/p999/histogram is asserted because the source provides only three latency points.</li>
+    <li>Every number is transcribed verbatim from the SAVIOR-Bench v1 report; none synthesized or interpolated.</li>
+    <li>Cells are attested 2026-05-18, not factory-reproduced; ci95 = null. This is a draft; external publication is human-gated.</li>
+  </ol>
+</div>
+
+<!-- TAB 3: ACL PAPER -->
+<div class="panel" id="p3">
+  <h2>ACL-style paper rendition</h2>
+  <div class="warnbox"><strong>Compilation note.</strong> <code>pdflatex</code> is not installed on this machine. The LaTeX source below (also at <code>content/pdf/2026-05-22-cost-economics.tex</code>) requires <code>pdflatex</code> plus the ACL 2023 style files (<code>acl.sty</code>, <code>acl_natbib.bst</code>) to compile to PDF. The print-CSS rendition below is the usable fallback.</div>
+
+  <div class="acl">
+    <h1 class="t">$0.19 per 1,000 Calls: Operational Economics of a Fine-Tuned Document-AI Inference Path</h1>
+    <div class="auth">Hyperbots Research &middot; SAVIOR-Bench Working Group &middot; snapshot 2026-05-20</div>
+    <div class="abs"><strong>Abstract.</strong> Accuracy benchmarks rarely report the operational properties that govern production viability. We present the latency, failure-rate, and cost profile of the SAVIOR-Train fine-tuned inference path on SAVIOR-Bench v1 — an open model LoRA fine-tuned on in-domain financial-document data, served on a single A100 40GB. Latency is p50 2,548 ms and p99 3,319 ms (p99/p50 &asymp; 1.30, a tight tail); the failure rate is 3%, KV-cache bound, with a 2-GPU mitigation noted. Cost per attempted call is $0.000186 and cost per successful call $0.000191 (&asymp; $0.19 per 1,000 successful calls); the small gap reflects the low failure rate. We report only the three latency points the source provides and assert no p90/p999/histogram. Cost figures are infrastructure-derived, not price quotes.</div>
+    <div class="cols">
+      <h2>1. Introduction</h2>
+      <p>Document-AI evaluation over-indexes on accuracy and under-reports operational behavior. We characterize latency tails, failure rate with cause, and cost-per-correct for one disclosed inference path.</p>
+      <h2>2. Method</h2>
+      <p>Path: an open-source model LoRA fine-tuned by Hyperbots on in-domain SAVIOR-Train data (Hyperbots IP), served on a single A100 40GB at ~$2/hr. Cost figures are infrastructure-derived from hourly rate and measured throughput. Latency reported at the three points the source-of-record provides (p50, p99) plus the failure rate.</p>
+      <h2>3. Results</h2>
+      <table>
+        <thead><tr><th>Property</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Latency p50</td><td>2,548 ms</td></tr>
+          <tr><td>Latency p99</td><td>3,319 ms</td></tr>
+          <tr><td>p99 / p50</td><td>&asymp; 1.30</td></tr>
+          <tr><td>Failure rate</td><td>3% (KV-cache bound)</td></tr>
+          <tr><td>Cost / attempted call</td><td>$0.000186</td></tr>
+          <tr><td>Cost / successful call</td><td>$0.000191</td></tr>
+        </tbody>
+      </table>
+      <p>The tight cost gap between attempted and successful calls is a direct consequence of the low 3% failure rate. The 3B fine-tune clears 0.91 OCR recall, enabling single-GPU serving.</p>
+      <h2>4. Limitations</h2>
+      <p>Figures describe one fine-tuned path only, not the zero-shot panel. Only p50/p99 and a 3% failure rate are reported; no p90/p999/histogram is asserted. Cost figures are infrastructure-derived, not price quotes. Cells attested 2026-05-18, not factory-reproduced; ci95 = null. Benchmark figures are model/infra performance, not product accuracy or pricing.</p>
+      <h2>5. Conclusion</h2>
+      <p>A tight latency tail, a named-cause failure rate, and a near-flat cost-per-call vs cost-per-correct curve together describe a viable operating point — reported with explicit boundaries on what was not measured.</p>
+      <h2>References</h2>
+      <p>SAVIOR-Bench v1 report (snapshot 2026-05-20). paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md §3, §4. paper/SAVIOR-Bench.md §4, §5.1.2.</p>
+      <h2>Sources</h2>
+      <p>As References; all numbers transcribed verbatim from the SAVIOR-Bench v1 report.</p>
+      <h2>Open Assumptions</h2>
+      <p>Operational figures = fine-tuned path only; cost infrastructure-derived not a price quote; only p50/p99/3% reported; FT path = open model LoRA fine-tuned on in-domain data (Hyperbots IP); attested-not-reproduced; benchmark = model/infra performance not product pricing; draft, external publish human-gated.</p>
+    </div>
+  </div>
+
+  <h3>LaTeX source — <code>content/pdf/2026-05-22-cost-economics.tex</code></h3>
+  <p class="muted">Standard ACL 2-column article. Needs <code>pdflatex</code> + ACL style files to compile.</p>
+  <pre><code>% Compile: pdflatex (requires acl.sty, acl_natbib.bst — ACL 2023 style)
+\documentclass[11pt]{article}
+\usepackage[]{acl}
+\usepackage{times,booktabs,latexsym}
+\title{\$0.19 per 1,000 Calls: Operational Economics of a
+       Fine-Tuned Document-AI Inference Path}
+\author{Hyperbots Research \\ SAVIOR-Bench Working Group}
+\begin{document}\maketitle
+\begin{abstract}
+Accuracy benchmarks rarely report the operational properties
+that govern production viability ...
+\end{abstract}
+\section{Introduction} ...
+\section{Method} ...
+\section{Results} ...   % booktabs table: p50/p99/failure/cost
+\section{Limitations} ...
+\section{Conclusion} ...
+\bibliographystyle{acl_natbib}\bibliography{anthology}
+\end{document}</code></pre>
+  <p class="muted">Full .tex written to <code>content/pdf/</code>.</p>
+</div>
+
+<footer>Hyperbots Research &middot; SAVIOR-Bench v1 &middot; DRAFT — external publish human-gated &middot; light theme, Rubik</footer>
+</div>
+<script>
+function show(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('active',i===j));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

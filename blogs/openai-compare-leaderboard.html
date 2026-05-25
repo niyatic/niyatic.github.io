@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>openai-compare &mdash; Invoice-Extraction Leaderboard &middot; Hyperbots Benchmark Factory</title>
+<style>
+  *{box-sizing:border-box;}
+  body{font-family:'Helvetica Neue',Arial,sans-serif;color:#20262e;background:#eef1f4;margin:0;line-height:1.55;}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 24px 60px;}
+  header{background:#14202e;color:#fff;padding:30px 24px;}
+  header .hwrap{max-width:1080px;margin:0 auto;}
+  .brand{font-size:11pt;letter-spacing:.5px;color:#7fb2dd;font-weight:600;text-transform:uppercase;}
+  h1{font-size:25pt;margin:6px 0 4px;letter-spacing:-.4px;}
+  .sub{font-size:12pt;color:#b8c4d0;margin:0;}
+  h2{font-size:14pt;color:#14202e;border-bottom:2px solid #1d4e7a;padding-bottom:5px;margin:30px 0 12px;}
+  h3{font-size:11.5pt;color:#1d4e7a;margin:18px 0 6px;}
+  p{margin:8px 0;}
+  table{border-collapse:collapse;width:100%;margin:10px 0;font-size:9.6pt;background:#fff;}
+  th,td{border:1px solid #c4d0dc;padding:6px 9px;text-align:left;}
+  th{background:#14202e;color:#fff;font-weight:600;}
+  tr:nth-child(even) td{background:#f4f6f9;}
+  .fam{color:#69757f;font-size:8.6pt;}
+  .fld{font-weight:600;}
+  .px{color:#69757f;font-size:8.6pt;white-space:nowrap;}
+  .b{display:inline-block;padding:1px 7px;border-radius:3px;font-size:8pt;font-weight:700;color:#fff;}
+  .bo{background:#1d4e7a;} .bp{background:#69757f;}
+  .cards{display:flex;gap:16px;flex-wrap:wrap;margin:14px 0;}
+  .card{flex:1;min-width:180px;background:#fff;border:1px solid #c4d0dc;border-top:4px solid #1d4e7a;padding:16px 18px;}
+  .card .name{font-size:12pt;font-weight:700;color:#14202e;}
+  .card .big{font-size:26pt;font-weight:700;color:#b9c2cc;margin:4px 0 0;letter-spacing:-1px;}
+  .card .ci{font-size:8.8pt;color:#69757f;}
+  .caveat{background:#fff6e5;border:1px solid #e5c87a;border-left:4px solid #c79214;padding:12px 16px;margin:14px 0;font-size:9.4pt;}
+  .blocked{background:#fbe6e3;border:1px solid #e09a8e;border-left:4px solid #c0392b;padding:14px 18px;margin:16px 0;font-size:9.6pt;}
+  .blocked strong{color:#c0392b;}
+  .label{background:#14202e;color:#cfe0ee;padding:12px 16px;font-size:9.2pt;margin:14px 0;border-radius:3px;}
+  code{background:#e4e9ee;padding:1px 5px;border-radius:3px;font-size:8.8pt;}
+  .cmd{background:#1b2733;color:#cfe0ee;padding:10px 14px;border-radius:3px;font-size:8.4pt;overflow-x:auto;font-family:Menlo,monospace;white-space:pre;}
+  .pend{display:inline-block;padding:2px 9px;border-radius:3px;font-size:8.4pt;font-weight:700;color:#fff;background:#c0392b;letter-spacing:.4px;}
+  footer{color:#69757f;font-size:8.6pt;margin-top:36px;border-top:1px solid #c4d0dc;padding-top:12px;}
+</style>
+</head>
+<body>
+<header><div class="hwrap">
+  <div class="brand">Hyperbots &middot; DocumentAI Benchmark Factory</div>
+  <h1>openai-compare &mdash; Invoice-Extraction Leaderboard</h1>
+  <p class="sub">OpenAI GPT vision models &middot; granular invoice field extraction &middot; n=95 dataset</p>
+</div></header>
+<div class="wrap">
+
+<div class="label">
+<strong>Honest labelling.</strong> OpenAI models via the OpenAI API, n=95, temperature&nbsp;0.
+Gemini deferred &mdash; no API key. Cross-family comparison with HyperAPI/Claude is
+indicative &mdash; different n's and harnesses.
+</div>
+
+<div class="blocked">
+<span class="pend">RUN BLOCKED</span><br/><br/>
+<strong>The OpenAI run did not produce metrics.</strong> The supplied API key authenticates
+for metadata (<code>GET /v1/models</code> succeeded &mdash; 130 models listed) but
+<strong>every inference call is rejected</strong> with HTTP&nbsp;429
+<code>billing_not_active</code>: <em>&ldquo;Your account is not active, please check your
+billing details on our website.&rdquo;</em><br/><br/>
+Verified, not transient &mdash; 2026-05-22:
+<ul style="margin:6px 0 6px 18px;">
+  <li>All 5 target models probed (<code>gpt-4o</code>, <code>gpt-4o-mini</code>,
+      <code>gpt-4.1</code>, <code>gpt-4.1-mini</code>, <code>gpt-4.1-nano</code>)
+      &mdash; all 429 <code>billing_not_active</code>.</li>
+  <li>3 retries on <code>gpt-4o-mini</code> text-only &mdash; all 429.</li>
+  <li>Both endpoints (Responses API and Chat Completions) &mdash; both 429.</li>
+</ul>
+Per Benchmark-Factory integrity rules: <strong>no placeholder outputs, no fabricated
+extractions, no fabricated scores.</strong> 0 of 95 documents were extracted by any
+model; this page therefore ships <strong>no numbers</strong> &mdash; an empty cell is
+honest, a faked cell is not.
+</div>
+
+<h2>Models in scope</h2>
+<p>The run targets the current vision-capable GPT chat models the key exposes &mdash;
+the five named in the workstream brief. All accept image input; PDFs are rendered to
+PNG (PyMuPDF, 200&nbsp;DPI) and sent as image input, PNG/JPG sent directly.</p>
+<table>
+<tr><th>#</th><th>Model</th><th>Vision</th><th>Status</th><th>Overall micro-F1</th><th>Docs scored</th></tr>
+<tr><td>1</td><td><code>gpt-4.1</code></td><td>yes</td><td><span class="pend">PENDING</span></td><td class="px">&mdash;</td><td class="px">0 / 95</td></tr>
+<tr><td>2</td><td><code>gpt-4o</code></td><td>yes</td><td><span class="pend">PENDING</span></td><td class="px">&mdash;</td><td class="px">0 / 95</td></tr>
+<tr><td>3</td><td><code>gpt-4.1-mini</code></td><td>yes</td><td><span class="pend">PENDING</span></td><td class="px">&mdash;</td><td class="px">0 / 95</td></tr>
+<tr><td>4</td><td><code>gpt-4o-mini</code></td><td>yes</td><td><span class="pend">PENDING</span></td><td class="px">&mdash;</td><td class="px">0 / 95</td></tr>
+<tr><td>5</td><td><code>gpt-4.1-nano</code></td><td>yes</td><td><span class="pend">PENDING</span></td><td class="px">&mdash;</td><td class="px">0 / 95</td></tr>
+</table>
+<p class="px">Ranking order above is alphabetical / by tier &mdash; <strong>not</strong> a result.
+No model has been scored. Rows fill in once billing is active and the run completes.</p>
+
+<div class="cards">
+  <div class="card"><div class="name">gpt-4.1</div><div class="big">&mdash;</div><div class="ci">pending &middot; n=95 &middot; temp 0</div></div>
+  <div class="card"><div class="name">gpt-4o</div><div class="big">&mdash;</div><div class="ci">pending &middot; n=95 &middot; temp 0</div></div>
+  <div class="card"><div class="name">gpt-4.1-mini</div><div class="big">&mdash;</div><div class="ci">pending &middot; n=95 &middot; temp 0</div></div>
+  <div class="card"><div class="name">gpt-4o-mini</div><div class="big">&mdash;</div><div class="ci">pending &middot; n=95 &middot; temp 0</div></div>
+  <div class="card"><div class="name">gpt-4.1-nano</div><div class="big">&mdash;</div><div class="ci">pending &middot; n=95 &middot; temp 0</div></div>
+</div>
+
+<h2>Method (pinned &mdash; identical to claude-compare)</h2>
+<ul>
+  <li><strong>Dataset:</strong> <code>dataset_95_granular</code> &mdash; 95 documents
+      (82 PDF + 10 PNG + 3 JPG), each with reviewed gold JSON.</li>
+  <li><strong>Prompt:</strong> the single fixed extraction query + output schema from
+      <code>/tmp/claude-compare/EXTRACTION-SPEC.md</code>, identical across every model.</li>
+  <li><strong>Decoding (pinned):</strong> <code>temperature=0</code>,
+      <code>max_output_tokens=8000</code>.</li>
+  <li><strong>Input:</strong> PDF &rarr; PNG via PyMuPDF @200&nbsp;DPI &rarr; image input;
+      PNG/JPG sent directly. One JSON output per doc in the gold
+      <code>{"parse":{"summary":...,"line_items":...}}</code> schema.</li>
+  <li><strong>Scorer:</strong> <code>/tmp/dataset_95/harness/score.py</code> &mdash;
+      per-field P/R/F1, overall micro-F1, line-item-count exact accuracy,
+      95% bootstrap CI (2000 resamples, seed 20260522), n.</li>
+</ul>
+
+<h2>Reproduce (rerunnable command)</h2>
+<p>The runner is written and verified &mdash; it executes the moment the account has
+active billing:</p>
+<div class="cmd"># 1. extract (all 5 models, 95 docs)
+python3.11 /tmp/openai-gemini-compare/run_openai_extract.py
+
+# 2. score each model vs gold
+for m in gpt-4o gpt-4o-mini gpt-4.1 gpt-4.1-mini gpt-4.1-nano; do
+  python3.11 /tmp/dataset_95/harness/score.py \
+    --system-dir /tmp/openai-gemini-compare/$m/outputs \
+    --gold-dir   /tmp/dataset_95/dataset_95_granular \
+    --out        /tmp/openai-gemini-compare/$m/score.json
+done</div>
+
+<div class="caveat">
+<strong>To unblock:</strong> activate billing on the OpenAI account that owns the key
+(<code>platform.openai.com/account/billing</code>), or supply a key from an account with
+active billing and a positive balance. No code change is needed &mdash; re-running the
+two commands above produces the leaderboard numbers.
+</div>
+
+<h2>Gemini half &mdash; deferred</h2>
+<p>The Gemini side of the <em>openai-gemini-compare</em> workstream is <strong>deferred:
+no Google AI / Gemini API key is available.</strong> To run it, supply a
+<code>GEMINI_API_KEY</code> (or Vertex AI credentials); the same fixed prompt, schema,
+pinned decoding, 95-doc dataset and <code>score.py</code> harness then apply, producing a
+matching Gemini leaderboard for a within-page OpenAI-vs-Gemini comparison.</p>
+
+<footer>
+Hyperbots DocumentAI Benchmark Factory &middot; openai-compare workstream &middot;
+generated 2026-05-22 &middot; status: RUN BLOCKED (OpenAI billing inactive),
+Gemini deferred (no key). This page contains no measured numbers by design &mdash;
+the Benchmark Factory does not ship a faked cell.
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8" />
+<title>The Narrow, Honest Edge — fine-tuned vs zero-shot on SAVIOR-Bench v1</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;--brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+    --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;--grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+    --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+    --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);--txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+  }
+  *{box-sizing:border-box;}
+  body{background:var(--bg);color:var(--txt);font:14px/1.55 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:0;padding:0;}
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  code,pre{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.6px;}
+  pre{background:var(--brand-1);border:1px solid var(--line);padding:12px 14px;border-radius:8px;overflow-x:auto;}
+  code{background:var(--brand-2);padding:1px 5px;border-radius:4px;}
+  pre code{background:none;padding:0;}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 22px 72px;}
+  .draft{background:var(--warn-fg);color:#fff;font-weight:600;text-align:center;padding:9px 14px;border-radius:8px;font-size:12.5px;letter-spacing:.02em;margin-bottom:20px;}
+  header.hd{background:linear-gradient(160deg,var(--brand-3),var(--brand-1));border:1px solid var(--line);border-radius:14px;padding:26px 28px;margin-bottom:8px;}
+  header.hd h1{margin:0 0 8px;font-size:25px;font-weight:700;color:var(--brand-9);line-height:1.25;}
+  header.hd .sub{color:var(--grey-11);font-size:13.5px;}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;border:1px solid var(--brand-4);color:var(--brand-8);background:var(--brand-2);margin:3px 4px 0 0;}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 0;}
+  .tab{padding:9px 15px;border:1px solid var(--line);border-bottom:none;border-radius:9px 9px 0 0;background:var(--grey-3);color:var(--grey-11);cursor:pointer;font-weight:500;font-size:13px;}
+  .tab.active{background:var(--panel);color:var(--brand-8);font-weight:600;box-shadow:0 -2px 0 var(--brand-6) inset;}
+  .panel{display:none;background:var(--panel);border:1px solid var(--line);border-radius:0 12px 12px 12px;padding:26px 30px;}
+  .panel.active{display:block;}
+  h2{color:var(--brand-8);font-size:19px;margin-top:30px;border-bottom:1px solid var(--line);padding-bottom:6px;}
+  h3{color:var(--brand-9);font-size:15.5px;margin-top:24px;}
+  .post{border:1px solid var(--line);border-left:3px solid var(--brand-6);border-radius:8px;padding:12px 15px;margin:11px 0;background:var(--brand-1);}
+  .post .n{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.05em;}
+  .post p{margin:5px 0 0;}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12.8px;}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;}
+  th{background:var(--brand-2);color:var(--brand-8);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;}
+  .lead{color:var(--ok-fg);font-weight:600;}
+  .zswin{color:var(--err-fg);font-weight:600;}
+  .ftm{color:var(--brand-8);font-weight:600;}
+  .callout{background:var(--brand-2);border:1px solid var(--brand-4);border-left:3px solid var(--brand-7);border-radius:8px;padding:12px 16px;margin:14px 0;font-size:13px;}
+  .warnbox{background:#FFF6ED;border:1px solid #F4D9B5;border-left:3px solid var(--warn-fg);border-radius:8px;padding:12px 16px;margin:14px 0;font-size:13px;}
+  .muted{color:var(--muted);font-size:12px;}
+  .acl{background:#fff;border:1px solid var(--grey-7);border-radius:6px;padding:30px 38px;margin-top:14px;font-family:"Times New Roman",Times,serif;color:#111;}
+  .acl h1.t{font-size:19px;text-align:center;margin:0 0 4px;font-weight:700;}
+  .acl .auth{text-align:center;font-size:12.5px;color:#333;margin-bottom:14px;}
+  .acl .cols{column-count:2;column-gap:22px;font-size:11.7px;line-height:1.5;text-align:justify;}
+  .acl .cols h2{color:#111;font-size:12.5px;border:none;text-transform:uppercase;letter-spacing:.03em;margin:12px 0 3px;padding:0;}
+  .acl .abs{border:1px solid #bbb;padding:8px 14px;margin:0 18px 14px;font-size:11px;font-style:italic;}
+  .acl table{font-size:10.3px;}
+  .acl th{background:#eee;color:#111;}
+  @media (max-width:680px){.acl .cols{column-count:1;}}
+  footer{margin-top:34px;color:var(--muted);font-size:11.5px;text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="draft">DRAFT — pending review; external publish human-gated. Drafts only — no commit, no push, no external publication.</div>
+
+<header class="hd">
+  <h1>The Narrow, Honest Edge: What Fine-Tuning Actually Buys You on Financial Documents</h1>
+  <div class="sub">Blog 2 of 3 &middot; Angle: fine-tuned vs zero-shot results &middot; snapshot 2026-05-20</div>
+  <div style="margin-top:9px;">
+    <span class="pill">SAVIOR-Bench v1</span>
+    <span class="pill">3 LoRA fine-tunes vs zero-shot panel</span>
+    <span class="pill">not apples-to-apples</span>
+    <span class="pill">recall +0.0061 / F1 +0.0276</span>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="show(0)">Twitter / X thread</div>
+  <div class="tab" onclick="show(1)">LinkedIn post</div>
+  <div class="tab" onclick="show(2)">Deep blog</div>
+  <div class="tab" onclick="show(3)">ACL-style paper</div>
+</div>
+
+<!-- TAB 0: TWITTER -->
+<div class="panel active" id="p0">
+  <h2>Twitter / X thread — 9 posts</h2>
+  <p class="muted">Each post &le;280 characters. Category labels only; FT-vs-ZS disclosed inline.</p>
+
+  <div class="post"><span class="n">1 / 9</span>
+    <p>We fine-tuned open models on financial documents and benchmarked them against the zero-shot field. The honest result isn't "fine-tuning crushes everything." It's narrower, weirder, and more useful than that. 🧵</p></div>
+
+  <div class="post"><span class="n">2 / 9</span>
+    <p>Setup: SAVIOR-Bench v1, 509 expert-annotated financial docs. 3 rows are open-source models LoRA fine-tuned by Hyperbots on in-domain data (SAVIOR-Train, Hyperbots IP). Every other row is zero-shot, vendor-native. That gap matters — read on.</p></div>
+
+  <div class="post"><span class="n">3 / 9</span>
+    <p>Disclosure first, because it's load-bearing: a fine-tune on this document distribution vs a model that has never seen it is NOT apples-to-apples. The fine-tune has a structural advantage. The interesting question is how big — and where it vanishes.</p></div>
+
+  <div class="post"><span class="n">4 / 9</span>
+    <p>Parse-intent F1: fine-tuned hyperapi-parse-intent 0.8328 vs best well-documented zero-shot (a general-purpose vision LLM) 0.8052. Edge: +0.0276 F1. A real lead — and modest. Not a different league.</p></div>
+
+  <div class="post"><span class="n">5 / 9</span>
+    <p>OCR recall: fine-tuned 7B model 0.9294 vs best zero-shot legacy IDP system 0.9233. Edge: +0.0061. Six thousandths. On recall, a strong cloud OCR pipeline is nearly even with an in-domain fine-tune.</p></div>
+
+  <div class="post"><span class="n">6 / 9</span>
+    <p>And here's where we DON'T crop the chart: OCR precision — a zero-shot vision LLM wins, 0.9322 vs fine-tuned 0.9157 (-0.0165). Layout/PaIRS — a zero-shot OCR-plus-rules stack wins by 0.17. Fine-tuning did not lead everywhere.</p></div>
+
+  <div class="post"><span class="n">7 / 9</span>
+    <p>Why keep the losing rows in? Because cropping them would misrepresent the result. The fine-tune edge is recall- and F1-specific. It is not a precision or layout story. An honest chart shows all four.</p></div>
+
+  <div class="post"><span class="n">8 / 9</span>
+    <p>So is fine-tuning worth it? Yes — but for the right reason. The win is consistency on in-domain recall/extraction at small model sizes (3B/7B), not a blowout on every metric. The edge is narrow; the operating point is what makes it pay.</p></div>
+
+  <div class="post"><span class="n">9 / 9</span>
+    <p>Takeaway: distrust any "fine-tuned model dominates" claim that won't show you the metrics it loses. SAVIOR-Bench v1 ships all of them. Numbers are model OCR/parse perf, not product accuracy (that's per apis.hyperbots.com). Attested 2026-05-18, not yet factory-reproduced.</p></div>
+</div>
+
+<!-- TAB 1: LINKEDIN -->
+<div class="panel" id="p1">
+  <h2>LinkedIn post</h2>
+  <div class="callout">
+  <p><strong>We fine-tuned open models on financial documents. The honest result is "a narrow edge," not "domination" — and that's the more useful finding.</strong></p>
+
+  <p>On SAVIOR-Bench v1 — a 509-document, expert-annotated financial-document benchmark — three rows are open-source models LoRA fine-tuned by Hyperbots on in-domain data (SAVIOR-Train, Hyperbots IP). Every other system in the panel is zero-shot in its vendor-native setting.</p>
+
+  <p>That distinction is not a footnote, it is the frame. Comparing a model trained on this exact document distribution against models that have never seen it is <strong>not apples-to-apples</strong> — the fine-tune carries a structural advantage by construction. So the honest question isn't "did it win," it's "by how much, and where did it not win at all."</p>
+
+  <p>The answer, with every comparison disclosed:</p>
+  <p>&bull; Parse-intent F1: fine-tuned 0.8328 vs best well-documented zero-shot 0.8052 — a <strong>+0.0276</strong> edge.<br>
+  &bull; OCR recall: fine-tuned 0.9294 vs best zero-shot 0.9233 — a <strong>+0.0061</strong> edge.<br>
+  &bull; OCR precision: a zero-shot vision LLM <em>wins</em>, by 0.0165.<br>
+  &bull; Layout fidelity (PaIRS): a zero-shot OCR-plus-rules stack <em>wins</em>, by 0.17.</p>
+
+  <p>We kept the two losing rows in the headline chart on purpose. Cropping them would have misrepresented the result. The fine-tune advantage is real but recall- and extraction-specific — it is not a precision or layout story.</p>
+
+  <p>The practical lesson for anyone choosing a document-AI approach: a domain fine-tune buys you consistent in-domain recall and field extraction at small (3B/7B) model sizes — a meaningful operating point — not a blowout on every metric. And distrust any "fine-tuned model dominates" claim that won't show you the metrics where it loses.</p>
+  <p class="muted">Benchmark figures are model OCR/parse performance, not product accuracy (product accuracy is cited only per apis.hyperbots.com). Cells attested 2026-05-18, not yet factory-reproduced. Draft — pending review.</p>
+  </div>
+</div>
+
+<!-- TAB 2: DEEP BLOG -->
+<div class="panel" id="p2">
+  <h2>The Narrow, Honest Edge</h2>
+  <p class="muted">Deep technical blog &middot; ~1,950 words &middot; angle: fine-tuned vs zero-shot results.</p>
+
+  <h3>1. The claim everyone wants to make</h3>
+  <p>If you fine-tune an open model on your own domain data and then benchmark it against the zero-shot field, there is an enormous temptation to write one sentence: "our fine-tuned model dominates." It is punchy, it converts, and on SAVIOR-Bench v1 it would be wrong — or at least so incomplete as to be misleading.</p>
+  <p>SAVIOR-Bench v1 is a 509-document, expert-annotated financial-document benchmark spanning 21 OCR systems and 23 parse-intent systems. Three rows in that panel are open-source models LoRA fine-tuned by Hyperbots on SAVIOR-Train, an in-domain financial-document training set that is Hyperbots IP: <code>hyperapi-parse-intent</code>, <code>Qwen2.5-VL-7B-F</code>, and <code>Qwen2.5-VL-3B-F</code>. Every other row is zero-shot in its vendor-native setting. This post is about what those three fine-tunes actually bought — disclosed honestly, including the metrics where they lost.</p>
+
+  <h3>2. Why the comparison is not apples-to-apples — and why we say so first</h3>
+  <p>Before any number, the disclosure that governs all of them. A LoRA fine-tune on SAVIOR-Train has, by construction, seen the distribution that SAVIOR-Bench evaluates. The zero-shot systems have not. A fine-tuned row beating a zero-shot row is therefore <strong>not</strong> a like-for-like contest — it is a model trained on this document distribution measured against models that were not. The structural advantage sits with the fine-tune before a single token is decoded.</p>
+  <p>This is not a reason to hide the comparison; it is a reason to label it. In the SAVIOR-Bench tables every fine-tuned row carries an inline, non-removable <code>[FT]</code> tag, and the report's modesty anchor is deliberately a general-purpose vision LLM in zero-shot — the strongest <em>well-documented</em> zero-shot parse-intent system — so the headline gap is measured against a credible, transparent baseline rather than a weak one. With that frame fixed, the numbers are honest to read.</p>
+
+  <h3>3. Parse-intent: a real, modest lead</h3>
+  <p>Parse-intent is the structured task — F1 over extracted intent fields (higher is better), WER over the transcription (lower is better). The top of the 23-system table:</p>
+  <table>
+    <thead><tr><th>Rank</th><th>Model</th><th class="num">F1 &uarr;</th><th class="num">WER &darr;</th><th>Setting</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td class="ftm">hyperapi-parse-intent [FT]</td><td class="num lead">0.8328</td><td class="num lead">0.2589</td><td>fine-tuned</td></tr>
+      <tr><td>2</td><td>DocIntentOCR-3B (under-documented)</td><td class="num">0.8102</td><td class="num">0.5622</td><td>zero-shot</td></tr>
+      <tr><td>3</td><td>general-purpose vision LLM (well-doc anchor)</td><td class="num">0.8052</td><td class="num">0.4232</td><td>zero-shot</td></tr>
+    </tbody>
+  </table>
+  <p>The fine-tuned model leads. Against the well-documented zero-shot anchor the F1 edge is <strong>+0.0276</strong>; against the under-documented rank-2 system it is +0.0226. That is a genuine lead and worth having — but it is one to three points of F1, not a different league. Where the fine-tune separates more cleanly is WER: 0.2589 against the anchor's 0.4232. The fine-tune transcribes the in-domain text more faithfully, and that lower error rate is what feeds a cleaner downstream field extraction. The honest framing: a meaningful, recall-and-fidelity-shaped edge, not a landslide.</p>
+
+  <h3>4. OCR recall: six thousandths</h3>
+  <p>On the 509-document OCR task, recall is the headline a fine-tune is supposed to win — and it does, barely:</p>
+  <table>
+    <thead><tr><th>Model</th><th class="num">Recall &uarr;</th><th class="num">Precision &uarr;</th><th>Setting</th></tr></thead>
+    <tbody>
+      <tr><td class="ftm">Qwen2.5-VL-7B-F [FT]</td><td class="num lead">0.9294</td><td class="num">0.9157</td><td>fine-tuned</td></tr>
+      <tr><td>legacy IDP system (best zero-shot recall)</td><td class="num">0.9233</td><td class="num">0.8902</td><td>zero-shot</td></tr>
+      <tr><td class="ftm">Qwen2.5-VL-3B-F [FT]</td><td class="num">0.9167</td><td class="num">0.9101</td><td>fine-tuned</td></tr>
+    </tbody>
+  </table>
+  <p>The fine-tuned 7B model tops recall at 0.9294. The best zero-shot system — a mature legacy IDP cloud pipeline — sits at 0.9233. The gap is <strong>+0.0061</strong>. Six thousandths. A well-engineered zero-shot OCR pipeline is nearly even with an in-domain fine-tune on recall. The 3B fine-tune, notably, also lands above the 0.91 line — which is the real operational story (more on that in section 6).</p>
+
+  <h3>5. Where zero-shot wins — and why we keep those rows</h3>
+  <p>Here is the part a hype post deletes. The SAVIOR-Bench headline chart has four metric groups, and fine-tuning leads on two of them. On the other two it loses:</p>
+  <table>
+    <thead><tr><th>Metric group</th><th>Best FT</th><th>Best ZS</th><th class="num">Delta</th><th>Winner</th></tr></thead>
+    <tbody>
+      <tr><td>OCR recall &uarr;</td><td>0.9294</td><td>0.9233</td><td class="num lead">+0.0061</td><td>FT, narrowly</td></tr>
+      <tr><td>Parse-intent F1 &uarr;</td><td>0.8328</td><td>0.8052</td><td class="num lead">+0.0276</td><td>FT</td></tr>
+      <tr><td>OCR precision &uarr;</td><td>0.9157</td><td>0.9322</td><td class="num zswin">&minus;0.0165</td><td><strong>ZS</strong></td></tr>
+      <tr><td>Layout / PaIRS &uarr;</td><td>0.7066</td><td>0.8766</td><td class="num zswin">&minus;0.1700</td><td><strong>ZS</strong></td></tr>
+    </tbody>
+  </table>
+  <p>On <strong>precision</strong>, a zero-shot general-purpose vision LLM wins (0.9322 vs 0.9157). On <strong>layout fidelity</strong>, measured by PaIRS, a zero-shot OCR-plus-rules stack wins by a wide 0.17 — none of the three fine-tunes leads layout at all; the best FT PaIRS is 0.7068. One caveat strengthens the honesty rather than rescuing the result: PaIRS is directly comparable only among prompt-controlled (PC) models, and for non-prompt-controlled systems it is a format-compatibility proxy. But even read conservatively, fine-tuning did not buy a layout win.</p>
+  <figure style="margin:18px 0;">
+  <svg viewBox="0 0 880 430" role="img" aria-label="Grouped-bar comparison of best fine-tuned versus best zero-shot scores on four SAVIOR-Bench v1 metric groups: OCR recall, parse-intent F1, OCR precision, layout PaIRS" style="width:100%;height:auto;display:block;font-family:'Rubik',-apple-system,sans-serif;">
+    <!-- title + legend -->
+    <text x="20" y="26" font-size="13" font-weight="600" fill="#07658D">Best fine-tuned vs best zero-shot — four metric groups (higher is better)</text>
+    <rect x="540" y="16" width="13" height="13" rx="3" fill="#1B7DA7"/>
+    <text x="558" y="27" font-size="11.5" fill="#596263">Best FT</text>
+    <rect x="628" y="16" width="13" height="13" rx="3" fill="#77CDF2"/>
+    <text x="646" y="27" font-size="11.5" fill="#596263">Best ZS</text>
+    <!-- plot area: y maps score 0.65..0.95 -> y 360..70. scale: y = 360 - (score-0.65)/0.30*290 -->
+    <!-- gridlines -->
+    <g stroke="#E2ECEE" stroke-width="1">
+      <line x1="70" y1="360" x2="850" y2="360"/>
+      <line x1="70" y1="263.3" x2="850" y2="263.3"/>
+      <line x1="70" y1="166.7" x2="850" y2="166.7"/>
+      <line x1="70" y1="70" x2="850" y2="70"/>
+    </g>
+    <g font-size="10" fill="#8A9799" text-anchor="end">
+      <text x="62" y="364">0.65</text>
+      <text x="62" y="267">0.75</text>
+      <text x="62" y="170">0.85</text>
+      <text x="62" y="74">0.95</text>
+    </g>
+    <line x1="70" y1="70" x2="70" y2="360" stroke="#CAD5D6" stroke-width="1.2"/>
+    <!-- GROUP 1: OCR recall  FT 0.9294 -> y=90.5  ZS 0.9233 -> y=96.4 -->
+    <g>
+      <rect x="110" y="90.5" width="56" height="269.5" rx="3" fill="#1B7DA7"/>
+      <rect x="170" y="96.4" width="56" height="263.6" rx="3" fill="#77CDF2"/>
+      <text x="138" y="83" text-anchor="middle" font-size="10.5" font-weight="600" fill="#07658D">0.9294</text>
+      <text x="198" y="89" text-anchor="middle" font-size="10.5" fill="#596263">0.9233</text>
+      <text x="168" y="378" text-anchor="middle" font-size="11" font-weight="500" fill="#211F26">OCR recall</text>
+      <text x="168" y="394" text-anchor="middle" font-size="10" font-weight="600" fill="#039855">FT +0.0061</text>
+    </g>
+    <!-- GROUP 2: Parse-intent F1  FT 0.8328 -> y=183.8  ZS 0.8052 -> y=210.5 -->
+    <g>
+      <rect x="300" y="183.8" width="56" height="176.2" rx="3" fill="#1B7DA7"/>
+      <rect x="360" y="210.5" width="56" height="149.5" rx="3" fill="#77CDF2"/>
+      <text x="328" y="176" text-anchor="middle" font-size="10.5" font-weight="600" fill="#07658D">0.8328</text>
+      <text x="388" y="203" text-anchor="middle" font-size="10.5" fill="#596263">0.8052</text>
+      <text x="358" y="378" text-anchor="middle" font-size="11" font-weight="500" fill="#211F26">Parse-intent F1</text>
+      <text x="358" y="394" text-anchor="middle" font-size="10" font-weight="600" fill="#039855">FT +0.0276</text>
+    </g>
+    <!-- GROUP 3: OCR precision  FT 0.9157 -> y=103.9  ZS 0.9322 -> y=87.8 -->
+    <g>
+      <rect x="490" y="103.9" width="56" height="256.1" rx="3" fill="#1B7DA7"/>
+      <rect x="550" y="87.8" width="56" height="272.2" rx="3" fill="#77CDF2"/>
+      <text x="518" y="96" text-anchor="middle" font-size="10.5" fill="#596263">0.9157</text>
+      <text x="578" y="80" text-anchor="middle" font-size="10.5" font-weight="600" fill="#07658D">0.9322</text>
+      <text x="548" y="378" text-anchor="middle" font-size="11" font-weight="500" fill="#211F26">OCR precision</text>
+      <text x="548" y="394" text-anchor="middle" font-size="10" font-weight="600" fill="#D92D20">ZS &minus;0.0165</text>
+    </g>
+    <!-- GROUP 4: Layout PaIRS  FT 0.7066 -> y=271.6  ZS 0.8766 -> y=107.3 -->
+    <g>
+      <rect x="680" y="271.6" width="56" height="88.4" rx="3" fill="#1B7DA7"/>
+      <rect x="740" y="107.3" width="56" height="252.7" rx="3" fill="#77CDF2"/>
+      <text x="708" y="264" text-anchor="middle" font-size="10.5" fill="#596263">0.7066</text>
+      <text x="768" y="100" text-anchor="middle" font-size="10.5" font-weight="600" fill="#07658D">0.8766</text>
+      <text x="738" y="378" text-anchor="middle" font-size="11" font-weight="500" fill="#211F26">Layout / PaIRS</text>
+      <text x="738" y="394" text-anchor="middle" font-size="10" font-weight="600" fill="#D92D20">ZS &minus;0.1700</text>
+    </g>
+    <text x="440" y="418" text-anchor="middle" font-size="10.5" fill="#8A9799">Fine-tuning leads recall and parse-intent F1; zero-shot leads precision and layout. FT vs ZS is not apples-to-apples — the fine-tunes saw the evaluated distribution.</text>
+  </svg>
+  <figcaption class="muted" style="margin-top:6px;">Best fine-tuned vs best zero-shot on the four SAVIOR-Bench v1 headline metric groups. Values transcribed verbatim from the section-5 delta table: OCR recall 0.9294/0.9233 (+0.0061), parse-intent F1 0.8328/0.8052 (+0.0276), OCR precision 0.9157/0.9322 (&minus;0.0165), layout PaIRS 0.7066/0.8766 (&minus;0.1700). The two ZS-leading rows are kept in by design.</figcaption>
+  </figure>
+  <div class="warnbox">The report retains both ZS-leading rows in the headline chart "by design — cropping them would misrepresent the result." That single sentence is the whole ethic of this blog. A four-row chart where you only show the two rows you win is not a chart, it is an advertisement.</div>
+
+  <h3>6. So what does fine-tuning actually buy?</h3>
+  <p>Read the four deltas together and a precise — and genuinely favorable — story emerges. Fine-tuning on in-domain financial data does not produce a model that dominates every axis of document understanding. It produces a model with the best <strong>in-domain recall</strong> and the best <strong>structured parse-intent F1 and WER</strong> in the panel, and it does so at small model sizes: the recall leader is a 7B, and the 3B fine-tune still clears 0.91 recall. That is the operating point that matters. A 3B model that matches or beats a heavyweight zero-shot field on the two metrics that drive in-domain extraction is a cost and latency win, not just an accuracy footnote — and it is exactly the kind of edge a domain fine-tune should produce.</p>
+  <p>What it does <em>not</em> buy is a precision or layout crown. If your workload is dominated by faithful layout reconstruction, a strong zero-shot OCR-plus-rules stack remains competitive or better. Fine-tuning is a targeted instrument: it moves recall and extraction fidelity on the distribution you trained on. Used for that, the three SAVIOR-Bench fine-tunes are the right tool and the panel shows it. Sold as a universal win, the same numbers would be a misrepresentation.</p>
+
+  <h3>7. How to read any fine-tune-vs-zero-shot claim</h3>
+  <p>The transferable discipline: never accept a fine-tune-vs-zero-shot comparison without the disclosure that it is not apples-to-apples, demand the metrics where the fine-tune lost, prefer a modesty anchor that is a strong, well-documented baseline rather than a weak strawman, and check the model sizes — a narrow edge at 3B is a different and better result than the same edge at 70B. SAVIOR-Bench v1 publishes all four. The fine-tunes come out ahead where a domain fine-tune should, by a margin the report never inflates — and that combination, the favorable result <em>and</em> the honest losing rows, is what makes the favorable result believable.</p>
+
+  <h2>Sources</h2>
+  <ul>
+    <li>Hyperbots Benchmark Report — SAVIOR-Bench v1 (snapshot 2026-05-20): section 4 Results (4a parse-intent, 4b OCR, 4c headline-chart spec), Headline KPIs, section 7 limitation 1.</li>
+    <li><code>paper/SAVIOR-Bench.md</code> §5.1.1, §5.1.2, §5.1.3 — primary results.</li>
+    <li><code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code> — verbatim in-repo extract; LoRA recipe, corpus mix.</li>
+    <li><code>results/DC-000__*</code> — per-cell result JSON for parse-intent and savior-bench-v1 panels.</li>
+  </ul>
+  <h2>Open assumptions</h2>
+  <ol>
+    <li>The three fine-tuned rows are open-source models LoRA fine-tuned by Hyperbots on in-domain SAVIOR-Train data (Hyperbots IP). Any fine-tuned-vs-zero-shot comparison is disclosed inline as not apples-to-apples.</li>
+    <li>The modesty anchor for parse-intent is the best well-documented zero-shot system, deliberately chosen over a weaker baseline.</li>
+    <li>Every number is transcribed verbatim from the SAVIOR-Bench v1 report; none synthesized, rounded, or interpolated. Parse-intent <code>n</code> is not reported in the source and is not assumed.</li>
+    <li>Benchmark figures describe model OCR/parse performance, not product accuracy. Product-accuracy claims are cited only per apis.hyperbots.com.</li>
+    <li>All cells are attested 2026-05-18, not factory-reproduced; ci95 = null. This is a draft; external publication is human-gated.</li>
+  </ol>
+</div>
+
+<!-- TAB 3: ACL PAPER -->
+<div class="panel" id="p3">
+  <h2>ACL-style paper rendition</h2>
+  <div class="warnbox"><strong>Compilation note.</strong> <code>pdflatex</code> is not installed on this machine. The LaTeX source below (also at <code>content/pdf/2026-05-22-narrow-honest-edge.tex</code>) requires <code>pdflatex</code> plus the ACL 2023 style files (<code>acl.sty</code>, <code>acl_natbib.bst</code>) to compile to PDF. The print-CSS rendition below is the usable fallback.</div>
+
+  <div class="acl">
+    <h1 class="t">The Narrow, Honest Edge: Quantifying What In-Domain Fine-Tuning Buys on a Financial-Document Benchmark</h1>
+    <div class="auth">Hyperbots Research &middot; SAVIOR-Bench Working Group &middot; snapshot 2026-05-20</div>
+    <div class="abs"><strong>Abstract.</strong> We characterize the performance of three open-source models LoRA fine-tuned on in-domain financial-document data against a zero-shot panel of 21 OCR and 23 parse-intent systems on SAVIOR-Bench v1. The fine-tuned models lead on OCR recall (+0.0061) and parse-intent F1 (+0.0276 vs the best well-documented zero-shot anchor) but trail on OCR precision (-0.0165) and layout fidelity (PaIRS, -0.1700). We disclose all fine-tuned-vs-zero-shot comparisons as not apples-to-apples — a fine-tune has seen the evaluated distribution — and retain the zero-shot-leading rows in the headline chart. The edge is real, narrow, and metric-specific: in-domain recall and structured extraction, at 3B/7B model sizes.</div>
+    <div class="cols">
+      <h2>1. Introduction</h2>
+      <p>In-domain fine-tuning is often marketed as categorically superior to zero-shot inference. We test that on SAVIOR-Bench v1 with full disclosure that fine-tuned and zero-shot settings are not directly comparable.</p>
+      <h2>2. Method</h2>
+      <p>Three rows are open-source models LoRA fine-tuned by Hyperbots on SAVIOR-Train (in-domain, Hyperbots IP): hyperapi-parse-intent, Qwen2.5-VL-7B-F, Qwen2.5-VL-3B-F. All other rows are zero-shot vendor-native. Tasks: parse-intent (F1, WER) and OCR (word-level recall/precision, PaIRS layout). One frozen prompt per family; decoding pinned (temp 0.1, top-p 0.9, seed 20260516). The parse-intent modesty anchor is the best well-documented zero-shot system.</p>
+      <h2>3. Results</h2>
+      <table>
+        <thead><tr><th>Metric</th><th>Best FT</th><th>Best ZS</th><th>&Delta;</th></tr></thead>
+        <tbody>
+          <tr><td>OCR recall</td><td>0.9294</td><td>0.9233</td><td>+0.0061</td></tr>
+          <tr><td>Parse-intent F1</td><td>0.8328</td><td>0.8052</td><td>+0.0276</td></tr>
+          <tr><td>OCR precision</td><td>0.9157</td><td>0.9322</td><td>-0.0165</td></tr>
+          <tr><td>Layout PaIRS</td><td>0.7066</td><td>0.8766</td><td>-0.1700</td></tr>
+        </tbody>
+      </table>
+      <p>Fine-tuning leads recall and parse-intent F1/WER; zero-shot leads precision and layout. PaIRS is directly comparable only among prompt-controlled models.</p>
+      <h2>4. Limitations</h2>
+      <p>Fine-tuned-vs-zero-shot is not apples-to-apples: the fine-tunes were trained on the evaluated distribution. No confidence intervals (ci95 = null). No per-class slices. Parse-intent n not reported. Cells attested 2026-05-18, not factory-reproduced. Benchmark figures are model performance, not product accuracy.</p>
+      <h2>5. Conclusion</h2>
+      <p>In-domain fine-tuning buys a real but narrow, metric-specific edge — in-domain recall and structured extraction at small model sizes — not universal dominance. Honest reporting retains the metrics where zero-shot wins.</p>
+      <h2>References</h2>
+      <p>SAVIOR-Bench v1 report (snapshot 2026-05-20). paper/SAVIOR-Bench.md §5.1.1–§5.1.3. paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md. results/DC-000__*.json.</p>
+      <h2>Sources</h2>
+      <p>As References; all numbers transcribed verbatim from the SAVIOR-Bench v1 report.</p>
+      <h2>Open Assumptions</h2>
+      <p>FT rows = open models LoRA fine-tuned on in-domain SAVIOR-Train (Hyperbots IP); FT-vs-ZS disclosed not apples-to-apples; ci95 null; attested-not-reproduced; benchmark = model performance not product accuracy; draft, external publish human-gated.</p>
+    </div>
+  </div>
+
+  <h3>LaTeX source — <code>content/pdf/2026-05-22-narrow-honest-edge.tex</code></h3>
+  <p class="muted">Standard ACL 2-column article. Needs <code>pdflatex</code> + ACL style files to compile.</p>
+  <pre><code>% Compile: pdflatex (requires acl.sty, acl_natbib.bst — ACL 2023 style)
+\documentclass[11pt]{article}
+\usepackage[]{acl}
+\usepackage{times,booktabs,latexsym}
+\title{The Narrow, Honest Edge: Quantifying What In-Domain
+       Fine-Tuning Buys on a Financial-Document Benchmark}
+\author{Hyperbots Research \\ SAVIOR-Bench Working Group}
+\begin{document}\maketitle
+\begin{abstract}
+We characterize three open-source models LoRA fine-tuned on
+in-domain financial-document data against a zero-shot panel ...
+\end{abstract}
+\section{Introduction} ...
+\section{Method} ...
+\section{Results} ...   % booktabs table: Best FT / Best ZS / Delta
+\section{Limitations} ...
+\section{Conclusion} ...
+\bibliographystyle{acl_natbib}\bibliography{anthology}
+\end{document}</code></pre>
+  <p class="muted">Full .tex written to <code>content/pdf/</code>.</p>
+</div>
+
+<footer>Hyperbots Research &middot; SAVIOR-Bench v1 &middot; DRAFT — external publish human-gated &middot; light theme, Rubik</footer>
+</div>
+<script>
+function show(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('active',i===j));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

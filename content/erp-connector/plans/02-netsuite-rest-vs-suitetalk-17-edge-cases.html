@@ -1,0 +1,188 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>02-netsuite-rest-vs-suitetalk-17-edge-cases — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/content/erp-connector/">← back</a>
+<div class="fm">slug: 02-netsuite-rest-vs-suitetalk-17-edge-cases
+erp: NetSuite
+class: depth
+status: PLAN — methodology defined, edge-case count PLACEHOLDER pending audit</div>
+
+<h1>NetSuite REST vs SuiteTalk: a 17-edge-case integration the agent already knows — plan</h1>
+
+<h2>1. Headline + hook (TEMPLATE — numbers placeholder)</h2>
+
+<p>Hook: <strong>"There are at least [PLACEHOLDER, ~17] places a NetSuite AP-bill post can quietly do the wrong thing — subsidiary scoping, internal-id collisions, TBA token rotation, vendor-credit handling. Bespoke integrations discover these one production outage at a time. The connector knows them up front; the agent picks the descriptor and the work is done in [PLACEHOLDER-time, ~hours]."</strong></p>
+
+<p>The "17" is illustrative until an audit lands a real count. The plan calls out the audit task explicitly.</p>
+
+<h2>2. Audience + intent</h2>
+
+<ul>
+<li>Primary: NetSuite admins + finance-systems engineers; secondary:</li>
+</ul>
+<p>  controllers who have lived through one botched vendor-bill batch.</p>
+<ul>
+<li>Reader takeaway: *"the edge cases are not the unknown; they are</li>
+</ul>
+<p>  encoded in the descriptor."*</p>
+<ul>
+<li>CTA: try the conformance kit on your own NetSuite sandbox.</li>
+</ul>
+
+<h2>3. The two-layer pitch (REQUIRED)</h2>
+
+<h3>3.1 Speed</h3>
+<ul>
+<li>Agent picks <code>connectors/erp/netsuite</code> descriptor (compiled exists).</li>
+<li>TBA auth wired through <code>secrets.TokenStore</code>; rotation contract honored.</li>
+<li><code>BusinessKey([&quot;subsidiary_internalId&quot;, &quot;vendor_internalId&quot;, &quot;tranId&quot;])</code></li>
+</ul>
+<p>  for cross-file dedup that lines up with NetSuite's own uniqueness.</p>
+<ul>
+<li>Conformance kit run; ship.</li>
+<li><em>[PLACEHOLDER, ~3-5 agent-hours] vs bespoke baseline [PLACEHOLDER].</em></li>
+</ul>
+
+<h3>3.2 Depth — the 17 edge cases (PLACEHOLDER — audit required)</h3>
+<p>The plan names the <em>categories</em> up front; the specific 17 must be audit-derived from the netsuite descriptor + skill body. Categories:</p>
+
+<ol>
+<li><strong>Subsidiary scoping</strong> — OneWorld multi-subsidiary; cross-subsidiary</li>
+</ol>
+<p>   refusal vs allowed.</p>
+<ol>
+<li><strong>Internal-id collisions</strong> — vendor-id reused across subsidiaries.</li>
+<li><strong>TBA token rotation</strong> — <code>invalid_grant</code> hard stop, not a silent retry.</li>
+<li><strong>Vendor vs vendor-credit</strong> — <code>transactionType</code> distinction.</li>
+<li><strong>Currency & subsidiary base currency</strong> — FX policy on the descriptor.</li>
+<li><strong>Tax-code resolution</strong> — NetSuite's TaxCode list, per-subsidiary.</li>
+<li><strong>Custom-segment fields</strong> — the <code>cseg_*</code> namespace; additive handling.</li>
+<li><strong>Item vs expense lines</strong> — line-type distinction.</li>
+<li><strong>Memo-vs-description truncation</strong> — the 999-char limit.</li>
+<li><strong>Posting period closed</strong> — the period-locked error class.</li>
+<li><strong>Approval routing state</strong> — <code>approvalstatus</code> field's enum.</li>
+<li><strong>Reverse charge VAT</strong> — EU posting on a US-base subsidiary.</li>
+<li><strong>PO-bill matching</strong> — three-way match plumbing.</li>
+<li><strong>Concurrency limits</strong> — SuiteTalk RPS limit; the framework's RPM</li>
+</ol>
+<p>    budget aligns.</p>
+<ol>
+<li><strong>Batch boundary</strong> — REST's request-size limit.</li>
+<li><strong>Idempotency on retry</strong> — <code>externalId</code> deduplication.</li>
+<li><strong>Soft-delete vs hard-delete</strong> — <code>isinactive</code> handling.</li>
+</ol>
+
+<p>Each of the above will be either confirmed in the descriptor source or tagged [PLACEHOLDER — depth claim needs source].</p>
+
+<h2>4. Outline</h2>
+
+<ul>
+<li>P-1. Cold open — a controller who lost a closing window to a botched</li>
+</ul>
+<p>  bill batch.</p>
+<ul>
+<li>P-2. The 17 edge cases in a table, with status per case (encoded in</li>
+</ul>
+<p>  descriptor / handled in normalizer / explicit dead-letter).</p>
+<ul>
+<li>P-3. The agent's job: pick the descriptor; the 17 are pre-encoded.</li>
+<li>P-4. Code excerpts — descriptor + a normalizer mapping.</li>
+<li>P-5. The conformance-kit run as the proof.</li>
+<li>P-6. CTA — sandbox try.</li>
+</ul>
+
+<h2>5. Required evidence before publish</h2>
+
+<ul>
+<li>An audit of <code>connectors/erp/netsuite.py</code> source against the 17-case list</li>
+</ul>
+<p>  (or the actual N if the audit lands a different number — never invent N).</p>
+<ul>
+<li>Conformance-kit output on a NetSuite descriptor.</li>
+<li>Optional: a customer named-or-anonymized case where the 17-case coverage</li>
+</ul>
+<p>  caught something pre-deploy.</p>
+
+<h2>6. Placeholders to fill</h2>
+
+<ul>
+<li>[PLACEHOLDER-N]: real edge-case count from the audit</li>
+<li>[PLACEHOLDER-time-bespoke]</li>
+<li>[PLACEHOLDER-time-hyperapi]</li>
+<li>[PLACEHOLDER-conformance-output]</li>
+<li>[PLACEHOLDER-case-pre-deploy-catch]</li>
+</ul>
+
+<h2>7. Competitor positioning</h2>
+
+<ul>
+<li>Workato NetSuite recipe library — NOT-FETCHED hypothesis: recipes</li>
+</ul>
+<p>  cover top edge cases; coverage breadth not advertised as a numbered   list. Hyperbots can credibly own <em>the numbered list</em>.</p>
+<ul>
+<li>MuleSoft NetSuite connector — NOT-FETCHED. Likely strong on protocol;</li>
+</ul>
+<p>  less explicit on idempotency story.</p>
+<ul>
+<li>Tray.io — NOT-FETCHED.</li>
+</ul>
+
+<h2>8. Sources / provenance</h2>
+
+<ul>
+<li><code>connectors/erp/__pycache__/netsuite.cpython-311.pyc</code> (compiled</li>
+</ul>
+<p>  descriptor present; source state to be confirmed)</p>
+<ul>
+<li>skill: <code>erp-netsuite-connector</code> (SuiteTalk REST authority)</li>
+<li><code>docs/IDEMPOTENCY.md</code> (the BusinessKey opt-in pattern)</li>
+<li>Competitor URLs (must be fetched)</li>
+</ul>
+
+<h2>Z. Internal-only</h2>
+
+<ul>
+<li>Cost: ~5 hours to draft + the 17-case audit (~3 hours) before publish.</li>
+<li>Dependencies: the audit; one customer pre-deploy-catch story (optional</li>
+</ul>
+<p>  but it sharpens the wedge).</p>
+<ul>
+<li>Risk: the count N might be 14 or 22, not 17 — the plan accepts that;</li>
+</ul>
+<p>  the title updates to match.</p>
+
+</body></html>

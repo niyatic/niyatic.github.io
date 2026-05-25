@@ -1,0 +1,240 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>validate-p2p — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/content/nanonets-framework/">← back</a>
+<div class="fm">primitive: validate
+domain: p2p
+status: PLAN — methodology defined, numbers placeholder
+date: 2026-05-25
+depth_template: /Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/comparative/azure-di/azure-di-invoice-study.html
+parent_framework: ../FRAMEWORK-2026-05-25.md
+dimensions_in_scope: D2, D6, D9, D12, D13, D1*, D8*
+dimensions_out_of_scope: D3, D4, D5, D7, D10, D11, D14</div>
+
+<h1>Validate (P2P) — deep-study plan</h1>
+
+<h2>1. Executive summary (TEMPLATE — numbers placeholder)</h2>
+
+<p>Given a matched / extracted P2P document set, <strong>validate</strong> applies business rules: arithmetic reconciliation (line × qty × price = line total; Σ lines = subtotal; subtotal + tax + freight = total), tax-rate correctness, duplicate-invoice detection, vendor allow-list / sanctions check, date sanity (invoice date ≤ due date), PO open-balance check, GRN existence for goods, and customer-policy rules (spend-limit / category-exclusions). The output is a verdict (<code>pass</code>/<code>hold</code>/<code>reject</code>) + rule-citation trace. Numbers <code>[PENDING-MEASUREMENT]</code>.</p>
+
+<h2>2. Scope & coverage</h2>
+
+<ul>
+<li><strong>Workload.</strong> P2P documents post-extract: supplier invoices + their</li>
+</ul>
+<p>  matched PO/GRN context.</p>
+<ul>
+<li><strong>Platforms.</strong> Hyperbots <code>validate</code> + ≥1 competitor.</li>
+<li><strong>Coverage dims.</strong> 7 of 14.</li>
+<li><strong>Test surface.</strong></li>
+<li><code>n = [PLACEHOLDER]</code> invoices per dim.</li>
+<li>Stratification: rule-family (arithmetic / tax / duplicate / sanctions</li>
+</ul>
+<p>    / date / policy), excursion severity (clean / minor / material),     invoice complexity tier.</p>
+<ul>
+<li>Gold: AP-rule-book validated verdicts with rule-citation trace.</li>
+</ul>
+
+<h2>3. Methodology</h2>
+
+<h3>3.1 Data-status representation</h3>
+<p>Eight-row legend. <strong>Per-rule</strong> scoring: each rule fires Correct / Incorrect / Missed / Spurious independently.</p>
+
+<h3>3.2 Sample design</h3>
+<p><code>n = [PLACEHOLDER]</code> per dim. Two annotators per invoice; adjudicator; κ reported. <strong>Rule-coverage stratification</strong>: every rule family receives a minimum stratum quota so rare rules (sanctions hits) are not drowned out.</p>
+
+<h3>3.3 Metrics</h3>
+<ul>
+<li><strong>Per-rule P/R/F1.</strong> Each rule has its own confusion matrix.</li>
+<li><strong>Rule-coverage F1</strong> = how completely the system applies the rule</li>
+</ul>
+<p>  set when the rule applies.</p>
+<ul>
+<li><strong>False-block rate</strong> = invoices the system holds that humans</li>
+</ul>
+<p>  release.</p>
+<ul>
+<li><strong>Verdict agreement</strong> = top-level pass/hold/reject agreement vs</li>
+</ul>
+<p>  human, weighted by dollar.</p>
+<ul>
+<li><strong>Rule-citation accuracy</strong> = when the system holds, does it cite</li>
+</ul>
+<p>  the right rule(s)?</p>
+<ul>
+<li><strong>Calibration vs human override</strong> (D9) = if the system says "hold</li>
+</ul>
+<p>  with confidence c", how often is hold the right answer at confidence   band c?</p>
+<ul>
+<li>95% bootstrap CI + n.</li>
+</ul>
+
+<h3>3.4 Scoring rubric</h3>
+<ul>
+<li>Arithmetic tolerance: <code>max([PLACEHOLDER]% rel, [PLACEHOLDER] abs)</code></li>
+</ul>
+<p>  pinned.</p>
+<ul>
+<li>Tax-rate tolerance: pinned (jurisdiction-specific rate tables in</li>
+</ul>
+<p>  PINS.txt with snapshot date).</p>
+<ul>
+<li>Duplicate detection: pinned similarity threshold (key tuple +</li>
+</ul>
+<p>  fuzzy-amount).</p>
+<ul>
+<li>A correct hold with the wrong rule cited is half-credit on rule-</li>
+</ul>
+<p>  citation; verdict is still Correct.</p>
+
+<h3>3.5 Evaluation controls</h3>
+<p>Frozen sha256. Rerunnable command:</p>
+<pre><code class="lang-">
+run --study validate-p2p-v0 \
+    --dimension D&lt;id&gt; \
+    --system hyperbots-idp@&lt;model-revision&gt; \
+    --system &lt;competitor&gt;@&lt;api-version&gt; \
+    --dataset p2p-validate-bench-v1@&lt;snapshot-sha256&gt; \
+    --split test --seed &lt;pinned&gt; \
+    --metric verdict_agreement --bootstrap 1000
+</code></pre>
+
+<h3>3.6 Independence and disclosure</h3>
+<p>Hyperbots-published; affiliation declared. <strong>Special note:</strong> the rule set applied to a competitor must be the <em>same</em> canonical rule set (pinned). A competitor that does not enumerate a rule is recorded as "not covered" rather than scored zero.</p>
+
+<h3>3.7 Limitations</h3>
+<ul>
+<li>Sanctions-list cadence is real-time in production; the bench uses a</li>
+</ul>
+<p>  pinned snapshot date.</p>
+<ul>
+<li>Customer-policy rules vary; the bench uses a pinned canonical 20-rule</li>
+</ul>
+<p>  set.</p>
+<ul>
+<li>Layout / OCR / language dimensions are pushed back to parse and</li>
+</ul>
+<p>  classify cells; not measured here.</p>
+
+<h3>3.8 Where this primitive sits in the IDP pipeline</h3>
+<p>The <strong>validate</strong> stage, downstream of extract + augment, upstream of match (or co-resident with it depending on architecture). Output feeds GL-post and reason (for exceptions).</p>
+
+<h2>4. Dimension analysis (7 of 14)</h2>
+
+<table>
+<tr><th>ID</th><th>Dimension for validate(P2P)</th><th>Hyperbots</th><th>Competitor</th><th>Δ</th></tr>
+<tr><td>D1*</td><td>Rule complexity — single-rule vs multi-rule excursions per invoice.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D2</td><td>Rule coverage — which rules from the canonical set the system applies.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D6</td><td><strong>Dominant.</strong> Arithmetic reconciliation + cross-doc consistency.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D8*</td><td>Line-level arithmetic across line items.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D9</td><td>Calibration on hold-decision confidence.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D12</td><td>STP = share of invoices the system passes without human touch.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D13</td><td>p50/p95 per-invoice validation latency.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+</table>
+
+<h2>5. Document × failure-mode matrix (validate-P2P)</h2>
+
+<table>
+<tr><th>#</th><th>Invoice composition</th><th>Rule excursion</th><th>Dimensions</th></tr>
+<tr><td>1</td><td>Clean — all arithmetic balances, no policy breach</td><td>None</td><td>D6</td></tr>
+<tr><td>2</td><td>Line total ≠ qty × price (rounding)</td><td>Arithmetic minor</td><td>D6</td></tr>
+<tr><td>3</td><td>Σ lines ≠ subtotal (off by hundreds)</td><td>Arithmetic material</td><td>D6, D8*</td></tr>
+<tr><td>4</td><td>Tax rate mis-applied for jurisdiction</td><td>Tax</td><td>D6</td></tr>
+<tr><td>5</td><td>Duplicate-invoice (same vendor+inv#)</td><td>Duplicate</td><td>D9</td></tr>
+<tr><td>6</td><td>Duplicate-invoice (same vendor+amount+date, diff#)</td><td>Fuzzy duplicate</td><td>D9</td></tr>
+<tr><td>7</td><td>Vendor on sanctions list</td><td>Sanctions</td><td>D2</td></tr>
+<tr><td>8</td><td>Invoice date > due date</td><td>Date sanity</td><td>D6</td></tr>
+<tr><td>9</td><td>Invoice over the PO open balance</td><td>PO-balance breach</td><td>D6</td></tr>
+<tr><td>10</td><td>Goods invoice without a GRN</td><td>GRN-required policy</td><td>D2</td></tr>
+<tr><td>11</td><td>Multi-excursion (arithmetic + tax + date)</td><td>Multi-rule</td><td>D1*</td></tr>
+<tr><td>12</td><td>Edge: legitimate negative line (credit-on-invoice)</td><td>False-positive risk</td><td>D9</td></tr>
+</table>
+
+<p><code>[PLACEHOLDER — expand to 30–55 strata.]</code></p>
+
+<h2>6. Metric-taxonomy crosswalk (validate-P2P)</h2>
+
+<table>
+<tr><th>Dim</th><th>200-item roll-up</th><th>204-row cluster</th><th>Note</th></tr>
+<tr><td>D1*</td><td>B. 26-31; D. 94-95</td><td>C, O</td><td>Rule complexity per invoice.</td></tr>
+<tr><td>D2</td><td>D. 93,101-103,107-109,111-120</td><td>D, E</td><td>Rule coverage.</td></tr>
+<tr><td>D6</td><td>C. 53-56,58-73; D. 83-90,121-135</td><td>G</td><td>Reconciliation.</td></tr>
+<tr><td>D8*</td><td>B. 33-34,42-47; D. 105</td><td>F</td><td>Line arithmetic.</td></tr>
+<tr><td>D9</td><td>framework-introduced</td><td>—</td><td>Calibration.</td></tr>
+<tr><td>D12</td><td>D. 97-98,133</td><td>—</td><td>STP.</td></tr>
+<tr><td>D13</td><td>G. 181-188</td><td>—</td><td>Latency.</td></tr>
+</table>
+
+<h2>7. HyperAPI capability coverage (validate-P2P)</h2>
+
+<ul>
+<li><code>validate</code> — primary</li>
+<li><code>reconcile</code> — arithmetic engine</li>
+<li><code>detect</code> — duplicate-invoice / sanctions detection</li>
+</ul>
+
+<p>Capability counts: <code>[PLACEHOLDER]</code>.</p>
+
+<h2>8. Competitor offerings inventory (validate-P2P)</h2>
+
+<table>
+<tr><th>Vendor</th><th>SKU / API</th><th>Marketing source</th><th>Status</th></tr>
+<tr><td>SAP Ariba</td><td>Invoice validation</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Coupa</td><td>Invoice rule engine</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>AppZen</td><td>Autonomous AP audit</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Tipalti</td><td>Validation engine</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Stampli</td><td>Invoice rules</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+</table>
+
+<h2>9. Findings & outlook</h2>
+
+<p><code>[PLACEHOLDER]</code>.</p>
+
+<p>Falsifiable hypotheses:</p>
+<ol>
+<li>Hyperbots fuzzy-duplicate per-rule F1 ≥ competitor.</li>
+<li>Hyperbots rule-citation accuracy ≥ competitor.</li>
+<li>Hyperbots D12 STP ≥ competitor at equal false-block rate.</li>
+</ol>
+
+<h2>Z. Internal-only notes</h2>
+<ul>
+<li>Sanctions-list snapshot date drives time-sensitive results; flag.</li>
+<li>Canonical 20-rule set in PINS.txt is the reproducibility gate.</li>
+</ul>
+
+</body></html>

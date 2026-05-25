@@ -1,0 +1,316 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>parse-p2p — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/content/nanonets-framework/">← back</a>
+<div class="fm">primitive: parse
+domain: p2p
+status: PLAN — methodology defined, numbers placeholder
+date: 2026-05-25
+depth_template: /Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/comparative/azure-di/azure-di-invoice-study.html
+parent_framework: ../FRAMEWORK-2026-05-25.md
+dimensions_in_scope: D1, D2, D3, D4, D5, D6, D7, D8, D9, D10, D11, D13, D14
+dimensions_out_of_scope: D12 (STP is a pipeline outcome, not a parse outcome)</div>
+
+<h1>Parse (P2P) — deep-study plan</h1>
+
+<h2>1. Executive summary (TEMPLATE — numbers placeholder)</h2>
+
+<p>How well does an IDP system convert raw P2P document bytes — purchase orders, goods-receipt notes, supplier invoices, bills of lading, packing slips, credit notes, debit notes, freight invoices — into the canonical parse schema (header summary + line items + table cells + bounding boxes)? This study isolates the <strong>parse</strong> primitive (NOT downstream extract / match / validate) and measures it against Hyperbots IDP and <strong>[PLACEHOLDER — at least one competitor; candidates: Azure DI prebuilt-invoice, AWS Textract AnalyzeExpense, Google Document AI Invoice Parser, Nanonets invoice OCR, Rossum invoice extractor]</strong> under the di-study's 14-dimension framework, with all results currently <code>[PENDING-MEASUREMENT]</code>.</p>
+
+<p>What this study answers: per-field P/R/F1 + per-table cell P/R + TEDS, across the eight P2P doc families, stratified by complexity tier, currency, language, layout, scan condition, page count and file format.</p>
+
+<h2>2. Scope & coverage</h2>
+
+<ul>
+<li><strong>Workload in scope.</strong> Eight P2P doc families: PO, GRN, supplier</li>
+</ul>
+<p>  invoice, BoL, packing slip, credit note, debit note, freight invoice.</p>
+<ul>
+<li><strong>Platforms assessed.</strong> Hyperbots IDP (<code>parse</code> endpoint) + at least</li>
+</ul>
+<p>  one competitor parse offering (named in §8).</p>
+<ul>
+<li><strong>Coverage dimensions.</strong> 13 of 14 D-dimensions (D12 dropped — STP is a</li>
+</ul>
+<p>  downstream pipeline outcome, scored in the <code>reason</code> cell-plan).</p>
+<ul>
+<li><strong>Test surface.</strong></li>
+<li>Design target `n = [PLACEHOLDER — anchor 5,000 docs/dimension per</li>
+</ul>
+<p>    di-study §3.2]` per dimension.</p>
+<ul>
+<li>Stratification axes: doc family × complexity tier × currency × script</li>
+</ul>
+<p>    × layout family × scan condition × file format.</p>
+<ul>
+<li>Gold-source provenance: double-annotated, third-reviewer</li>
+</ul>
+<p>    adjudicated, with κ reported per stratum.</p>
+<ul>
+<li>Frozen dev/test split at dataset registration; test split never used</li>
+</ul>
+<p>    for prompt or model tuning.</p>
+<ul>
+<li><strong>Boundaries of this edition.</strong> Numbers are <code>[PENDING-MEASUREMENT]</code>;</li>
+</ul>
+<p>  this is the measurement plan, not a result.</p>
+
+<h2>3. Methodology</h2>
+
+<h3>3.1 Data-status representation</h3>
+<p>Eight-row legend (Correct / Incorrect / Missed / Spurious / Structure / Assessment in progress / Vendor-reported / Not yet measured) per framework §0.4.</p>
+
+<h3>3.2 Sample design</h3>
+<ul>
+<li>Design parameter: <code>n = [PLACEHOLDER]</code> per dimension.</li>
+<li>Stratified across the 55+ strata of the doc × failure-mode matrix in §5;</li>
+</ul>
+<p>  per-dimension target allocated across strata that exercise that   dimension.</p>
+<ul>
+<li>Macro-averaged across strata; rare-but-important strata (e.g.</li>
+</ul>
+<p>  hand-written GRN, Devanagari-script supplier invoice) are not outweighed   by common ones (USD digital-PDF invoice).</p>
+<ul>
+<li>Inter-annotator agreement: Cohen's κ per stratum, reported alongside</li>
+</ul>
+<p>  result.</p>
+
+<h3>3.3 Metrics</h3>
+<ul>
+<li><strong>Field-level P/R/F1</strong> for the parse-schema header (invoice/PO no.,</li>
+</ul>
+<p>  dates, party blocks, totals); macro-averaged across the field schema.</p>
+<ul>
+<li><strong>Line-item-level P/R/F1</strong> for description, qty, UoM, unit price,</li>
+</ul>
+<p>  line total, line tax, line discount; after deterministic greedy   alignment (description Jaccard + amount match) per the di-study   scorer pattern.</p>
+<ul>
+<li><strong>Line-item count accuracy</strong> (exact match on <code>len(line_items)</code>).</li>
+<li><strong>Table-structure fidelity</strong>: cell-P/R against a structured GT grid +</li>
+</ul>
+<p>  TEDS (tree-edit-distance similarity) per the di-study §3.3.</p>
+<ul>
+<li><strong>Bounding-box quality</strong>: per-field IoU, reported as distribution +</li>
+</ul>
+<p>  median + p25/p75.</p>
+<ul>
+<li><strong>Reporting convention.</strong> Point estimate + 95% bootstrap CI</li>
+</ul>
+<p>  (≥1,000 resamples, seed pinned) + explicit n; overlapping CIs →   tie-band.</p>
+
+<h3>3.4 Scoring rubric</h3>
+<ul>
+<li>Exact-match (casefold + whitespace-collapsed) for identifiers and</li>
+</ul>
+<p>  free-text fields.</p>
+<ul>
+<li>Numeric-tolerance <code>max(1% relative, 0.01 absolute)</code> for monetary</li>
+</ul>
+<p>  fields, pinned in <code>PINS.txt</code>.</p>
+<ul>
+<li>Date-tolerance: same ISO-8601 date after locale-normalisation</li>
+</ul>
+<p>  (e.g. <code>12/05/2026</code> → <code>[PLACEHOLDER — pin locale rule]</code>).</p>
+<ul>
+<li>Wrong value = FP AND FN (silence is not a free pass).</li>
+<li>Structure scored independently for tables (row segmentation, column</li>
+</ul>
+<p>  assignment, cell content).</p>
+
+<h3>3.5 Evaluation controls</h3>
+<ul>
+<li>Frozen dataset snapshot identified by sha256.</li>
+<li>Rerunnable command:</li>
+</ul>
+<p>  ``<code>   run --study parse-p2p-v0 \       --dimension D&lt;id&gt; \       --system hyperbots-idp@&lt;model-revision&gt; \       --system &lt;competitor&gt;@&lt;api-version&gt; \       --dataset p2p-parse-bench-v1@&lt;snapshot-sha256&gt; \       --split test --seed &lt;pinned&gt; \       --metric field_f1 --bootstrap 1000   </code>``</p>
+<ul>
+<li>Contamination review per document (source, license, public-availability</li>
+</ul>
+<p>  date, n-gram overlap) before any cell is reported.</p>
+
+<h3>3.6 Independence and disclosure</h3>
+<p>Hyperbots-published; affiliation declared. Protocol/metrics/scoring identical for all systems. Competitor assessed using GA offerings without deliberate misconfiguration. No measured comparative figure ships without independent methodology review.</p>
+
+<h3>3.7 Limitations</h3>
+<ul>
+<li>Affiliation (mitigated by §3.6 controls).</li>
+<li>Managed-service drift: competitor API frozen at a stated version + date.</li>
+<li>GRN ground-truth quality is workflow-dependent (hand-marked deltas);</li>
+</ul>
+<p>  expect wider per-field CIs on GRN strata.</p>
+<ul>
+<li>BoL multi-leg shipments may have ambiguous line-item boundaries — flagged</li>
+</ul>
+<p>  in §5 as a known-fuzzy stratum, not hidden.</p>
+
+<h3>3.8 Where this primitive sits in the IDP pipeline</h3>
+<p>This study scopes specifically to the <strong>parse</strong> stage of <code>parse → split → classify → extract → augment → validate → match → GL → reason</code>. Upstream stages (none) and downstream stages (split, classify, extract, …) are not measured here.</p>
+
+<h2>4. Dimension analysis (13 of 14)</h2>
+
+<table>
+<tr><th>ID</th><th>Dimension applicability for parse(P2P)</th><th>Hyperbots-side</th><th>Competitor-side</th><th>Δ</th></tr>
+<tr><td>D1</td><td>Document complexity tier (simple/moderate/complex) — assigned by two annotators with κ.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D2</td><td>Field coverage — P2P-schema-specific: PO header, GRN delta fields, BoL party/leg fields, freight surcharges.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D3</td><td>Layout variance — multi-column SAP/Oracle/NetSuite/Coupa templates; free-form vendor PDFs.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D4</td><td>Currency coverage — confusion matrix over ISO-4217 + symbol-ambiguous ($, kr, R$).</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D5</td><td>Language coverage — Latin/CJK/Arabic/Cyrillic/Devanagari; bilingual supplier invoices.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D6</td><td>Context coverage — line-total reconciliation, PO-ref-on-invoice, tax-rate-on-base.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D7</td><td>OCR/scan degradation — DPI/JPEG/blur/skew curves; photographed delivery dockets.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D8</td><td>Table fidelity — multi-line description cells, spanning headers, nested sub-items, page-break spillover.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D9</td><td>Field confidence calibration — reliability diagram + ECE per field family.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D10</td><td>Aggregate throughput — sustained docs/min and pages/min under pinned concurrency.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D11</td><td>Visual grounding — per-field IoU, field-to-region attribution accuracy.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D13</td><td>Time to process — p50/p95 per document, stratified by page count.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D14</td><td>File-format coverage — digital PDF, image PDF, PNG/JPG, multi-page TIFF, XLSX, EDI-attached.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+</table>
+
+<p><strong>Δ-rule:</strong> non-overlapping 95% CIs → significant; CIs that span zero → tie-band, no winner.</p>
+
+<h2>5. Document × failure-mode matrix (parse-P2P)</h2>
+
+<p>Each row defines a stratum. Tagged ground-truth documents are collected per stratum.</p>
+
+<table>
+<tr><th>#</th><th>Doc family</th><th>Line-item characteristic</th><th>Layout family</th><th>Dimensions exercised</th></tr>
+<tr><td>1</td><td>PO</td><td>Long-tail line items + per-line PO conditions</td><td>ERP-template (SAP)</td><td>D2, D8</td></tr>
+<tr><td>2</td><td>PO</td><td>Service-only PO (no line items)</td><td>Free-form</td><td>D1, D2</td></tr>
+<tr><td>3</td><td>GRN</td><td>Delta against PO with shortages</td><td>Form-grid</td><td>D6, D8</td></tr>
+<tr><td>4</td><td>GRN</td><td>Hand-annotated overstamps</td><td>Scanned form-grid</td><td>D7, D11</td></tr>
+<tr><td>5</td><td>Supplier invoice</td><td>Multi-currency, mixed tax rates</td><td>Vendor free-form</td><td>D4, D6, D8</td></tr>
+<tr><td>6</td><td>Supplier invoice</td><td>Spanning header rows, multi-line description cells</td><td>Table-dominant</td><td>D8</td></tr>
+<tr><td>7</td><td>Supplier invoice</td><td>Photographed on phone, skewed</td><td>Photographed</td><td>D7, D11</td></tr>
+<tr><td>8</td><td>BoL</td><td>Multi-leg shipment with hazmat codes</td><td>Form-grid</td><td>D2, D8</td></tr>
+<tr><td>9</td><td>BoL</td><td>Bilingual (en/zh) carrier doc</td><td>Multi-column</td><td>D5, D2</td></tr>
+<tr><td>10</td><td>Packing slip</td><td>Carton-level vs item-level rows</td><td>Table-dominant</td><td>D8, D1</td></tr>
+<tr><td>11</td><td>Credit note</td><td>References original invoice with adjustments</td><td>Vendor free-form</td><td>D6</td></tr>
+<tr><td>12</td><td>Debit note</td><td>Bank-charge debit, no line items</td><td>Free-form</td><td>D2</td></tr>
+<tr><td>13</td><td>Freight invoice</td><td>Fuel surcharge + accessorial breakdown</td><td>Vendor free-form</td><td>D2, D6</td></tr>
+<tr><td>14</td><td>Freight invoice</td><td>Air-waybill scan, low DPI</td><td>Scanned</td><td>D7, D11</td></tr>
+<tr><td>15</td><td>Multi-doc bundle</td><td>Invoice + packing list combined in one PDF</td><td>Mixed</td><td>D1, D8 (split-adjacent)</td></tr>
+</table>
+
+<p><code>[PLACEHOLDER — expand to 30–55 strata in edition 1 to mirror di-study §5 coverage.]</code></p>
+
+<h2>6. Metric-taxonomy crosswalk (parse-P2P)</h2>
+
+<table>
+<tr><th>Framework dim</th><th>200-item taxonomy roll-up</th><th>204-row inventory cluster</th><th>Categorization note</th></tr>
+<tr><td>D1</td><td>A. Lexical 1-2,5,15-16,20,24; B. Syntactic 26-31,35-36,39,48; D. Domain-financial 81,94-95,104,106; C. Semantic 80</td><td>C, O</td><td>Aggregate structural/semantic difficulty across P2P doc families.</td></tr>
+<tr><td>D2</td><td>A. Lexical 3-4,7-9,14,17-19,21-25; B. 37-38,40,49-50; C. 51-52,74,78; D. 93,101-103,107-109,111-120; H. 192,198</td><td>D, E, M</td><td>Breadth of P2P-schema fields.</td></tr>
+<tr><td>D3</td><td>B. 32,38,41,45</td><td>C, N</td><td>Layout family robustness.</td></tr>
+<tr><td>D4</td><td>A. 10-13; C. 57; D. 82,91-92</td><td>J, K</td><td>Currency normalisation.</td></tr>
+<tr><td>D5</td><td>A. 6; E. 136-155</td><td>I, L</td><td>Script / multilingual.</td></tr>
+<tr><td>D6</td><td>C. 53-56,58-73,75-77,79; D. 83-90,96-100,110,121-135; H. 199</td><td>G</td><td>Cross-field reconciliation.</td></tr>
+<tr><td>D7</td><td>F. 156-180</td><td>B, P</td><td>OCR / scan-quality.</td></tr>
+<tr><td>D8</td><td>B. 33-34,42-44,46-47; D. 81,105; H. 191,200</td><td>F</td><td>Line-item table structure.</td></tr>
+<tr><td>D9</td><td>_no direct item — framework-introduced_</td><td>_none_</td><td>Confidence calibration is a study gap in industry taxonomies.</td></tr>
+<tr><td>D10</td><td>G. 184,189</td><td>_none_</td><td>Throughput is a study gap.</td></tr>
+<tr><td>D11</td><td>B. 38,45; H. 194-198</td><td>_none_</td><td>Visual grounding is largely study-introduced.</td></tr>
+<tr><td>D13</td><td>G. 181-188,190</td><td>_none_</td><td>Per-doc latency is a study gap.</td></tr>
+<tr><td>D14</td><td>G. 187-188; H. 193,195</td><td>A, H</td><td>File-format breadth.</td></tr>
+</table>
+
+<h2>7. HyperAPI capability coverage (parse-P2P)</h2>
+
+<p>HyperAPI endpoints that exercise this primitive:</p>
+<ul>
+<li><code>parse</code> — primary</li>
+<li><code>parse-x</code> — extended schema (line items + structured tables)</li>
+<li><code>parse-intent</code> — primitive-intent annotation for downstream stages</li>
+</ul>
+
+<p>Capability assessment per cluster: <code>[PLACEHOLDER — sourced from Hyperbots invoice-extraction dimensions file, in the di-study §7 style: Fully / Partially / Not yet counts per cluster]</code>. This is a HyperAPI capability claim, NOT a measured benchmark.</p>
+
+<h2>8. Competitor offerings inventory (parse-P2P)</h2>
+
+<table>
+<tr><th>Vendor</th><th>SKU / API</th><th>Marketing source</th><th>Status</th></tr>
+<tr><td>Azure DI</td><td><code>prebuilt-invoice</code> (<code>api-version=...</code>)</td><td>[PLACEHOLDER — pin URL + date once fetched]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>AWS Textract</td><td>AnalyzeExpense</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Google Document AI</td><td>Invoice Parser / Procurement DocAI</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Nanonets</td><td>Invoice OCR</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Rossum</td><td>Cognitive Data Capture for invoices</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Klippa</td><td>OCR API</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Hyperscience</td><td>Document Understanding</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>ABBYY</td><td>FlexiCapture / Vantage Invoice</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+</table>
+
+<p>No competitor capability claim ships without the marketing-source cell populated.</p>
+
+<h2>9. Findings & outlook</h2>
+
+<p>Closed once at least one Δ has non-overlapping 95% CIs. Until then:</p>
+
+<ul>
+<li>Strongest dimension for Hyperbots: <code>[PLACEHOLDER]</code></li>
+<li>Weakest dimension for Hyperbots: <code>[PLACEHOLDER]</code></li>
+<li>Open assumptions: GRN κ may be lower than supplier-invoice κ (hand-mark</li>
+</ul>
+<p>  variance); BoL multi-leg ambiguity may bound D2 ceiling.</p>
+<ul>
+<li>Falsifiable hypotheses:</li>
+</ul>
+<ol>
+<li>Hyperbots <code>parse-x</code> line-item-count accuracy ≥ competitor on</li>
+</ol>
+<p>     long-tail invoices (<code>&gt;50</code> lines) at non-overlapping 95% CI.</p>
+<ol>
+<li>Hyperbots TEDS on spanning-header tables ≥ competitor at</li>
+</ol>
+<p>     non-overlapping 95% CI.</p>
+<ol>
+<li>D9 ECE for Hyperbots is lower (better calibrated) than competitor</li>
+</ol>
+<p>     on tax fields specifically.</p>
+
+<h2>Z. Internal-only notes (NOT for external blog)</h2>
+
+<ul>
+<li>Cost estimate: `[PLACEHOLDER — bench-100 first, then bench-1000 per</li>
+</ul>
+<p>  dimension, then full 5,000/dim]`.</p>
+<ul>
+<li>Dependencies: P2P dataset registration; HyperAPI SDK present; competitor</li>
+</ul>
+<p>  API key per platform; pinned API version per platform.</p>
+<ul>
+<li>Risks: managed-service version drift mid-run (mitigated by per-cell</li>
+</ul>
+<p>  version pin); contamination of P2P-public corpora (mitigated by §3.5   audit).</p>
+
+</body></html>

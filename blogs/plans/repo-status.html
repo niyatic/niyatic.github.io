@@ -1,0 +1,150 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hyperbots</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="meta"></div><h1>Repo Status Report — HyperAPI Portfolio</h1>
+<p><strong>Survey date:</strong> 2026-05-22 · <strong>Method:</strong> read-only <code>git</code> + <code>gh</code> · <strong>Scope:</strong> 8 repositories · <strong>Artifact status:</strong> DRAFT</p>
+<p>This report records verified git and GitHub state only. No repo was modified during the survey. Ahead/behind is measured against each branch&#x27;s configured upstream; uncommitted count is the line count of <code>git status --porcelain</code> (staged + unstaged + untracked).</p>
+<h2>Portfolio summary</h2>
+<table><thead><tr><th>Repo</th><th>Branch</th><th>Ahead/Behind</th><th>Uncommitted</th><th>Open PRs</th><th>Health</th></tr></thead><tbody><tr><td>finance-doc-agents-hyperapi</td><td><code>main</code></td><td>0 / 0</td><td>0</td><td>0</td><td>Clean — synced</td></tr><tr><td>hyperapi-repo-factory</td><td><code>factory/expansion-v2</code></td><td>0 / 0</td><td>3</td><td>0</td><td>Working — uncommitted local changes</td></tr><tr><td>hyperapi-cto-org</td><td><code>docs/automation-notify-ledger-2026-05-22</code></td><td>0 / 0</td><td>1</td><td>0</td><td>Clean — stray artifact only</td></tr><tr><td>hyperapi-abm-team</td><td><code>abm/accounts-expansion</code></td><td>0 / 0</td><td>0</td><td>0</td><td>Clean — synced</td></tr><tr><td>hyperapi-documentapi-benchmark-factory</td><td><code>content-and-notifications-2026-05-22</code></td><td>0 / 0</td><td>0</td><td>0</td><td>Clean — synced</td></tr><tr><td>hyperapi-reddit-fa-listening</td><td><code>main</code></td><td>0 / 0</td><td>0</td><td>0</td><td>Clean — synced</td></tr><tr><td>hyperapi-gtm-hub</td><td><code>main</code></td><td>0 / 0</td><td>0</td><td>0</td><td>Clean — synced</td></tr><tr><td>hyperapi-erp-abm</td><td><code>master</code></td><td>no upstream</td><td>0</td><td>0</td><td>Attention — branch has no upstream</td></tr></tbody></table>
+<h2>Per-repo detail</h2>
+<h3>finance-doc-agents-hyperapi</h3>
+<ul>
+<li><strong>Path:</strong> <code>~/Documents/finance-doc-agents-hyperapi</code></li>
+<li><strong>Origin:</strong> <code>github.com/hyprbots/hyperapi-framework-usecases-findoc-agents</code></li>
+<li><strong>Branch:</strong> <code>main</code> — 0 ahead, 0 behind upstream.</li>
+<li><strong>Uncommitted:</strong> 0 files.</li>
+<li><strong>Last commit:</strong> <code>d3a715d14</code> (2026-05-21) — <code>docs(framework): record Track C DE-004 verification + updated suite totals (#17)</code></li>
+<li><strong>Open PRs:</strong> none.</li>
+<li><strong>Health:</strong> Clean — working tree matches upstream <code>main</code>; nothing pending.</li>
+</ul>
+<h3>hyperapi-repo-factory</h3>
+<ul>
+<li><strong>Path:</strong> <code>~/Desktop/hyperapi-repo-factory</code></li>
+<li><strong>Origin:</strong> <code>github.com/hyprbots/hyperapi-repo-factory</code></li>
+<li><strong>Branch:</strong> <code>factory/expansion-v2</code> — 0 ahead, 0 behind upstream <code>origin/factory/expansion-v2</code>.</li>
+<li><strong>Uncommitted:</strong> 3 entries — modified <code>realqa/scale/PROGRESS.jsonl</code>; untracked <code>realqa/corpus/</code> and <code>scripts/run_bundle_batch.sh</code>.</li>
+<li><strong>Last commit:</strong> <code>128faa7cd9</code> (2026-05-22) — <code>realqa: resume 10k-repo sweep + harvest report + BUG-0012 triage</code></li>
+<li><strong>Open PRs:</strong> none.</li>
+<li><strong>Health:</strong> Working — active local changes from an in-progress sweep; branch itself is synced with upstream.</li>
+</ul>
+<h3>hyperapi-cto-org</h3>
+<ul>
+<li><strong>Path:</strong> <code>~/Desktop/hyperapi-cto-org</code></li>
+<li><strong>Origin:</strong> <code>github.com/niyatic/hyperapi-cto-org</code></li>
+<li><strong>Branch:</strong> <code>docs/automation-notify-ledger-2026-05-22</code> — 0 ahead, 0 behind upstream.</li>
+<li><strong>Uncommitted:</strong> 1 entry — untracked <code>.coverage</code> (test-run artifact).</li>
+<li><strong>Last commit:</strong> <code>6fb2905</code> (2026-05-22) — <code>plan: automation Teams+Slack + approvals setup; mirror BUG-0012</code></li>
+<li><strong>Open PRs:</strong> none.</li>
+<li><strong>Health:</strong> Clean — only a stray <code>.coverage</code> artifact; recommend gitignoring or removing it.</li>
+</ul>
+<h3>hyperapi-abm-team</h3>
+<ul>
+<li><strong>Path:</strong> <code>~/Desktop/hyperapi-abm-team</code></li>
+<li><strong>Origin:</strong> <code>github.com/hyprbots/hyperapi-abm-team</code></li>
+<li><strong>Branch:</strong> <code>abm/accounts-expansion</code> — 0 ahead, 0 behind upstream <code>origin/abm/accounts-expansion</code>.</li>
+<li><strong>Uncommitted:</strong> 0 files.</li>
+<li><strong>Last commit:</strong> <code>0d903b0</code> (2026-05-22) — <code>content: ABM-agent blog, content-virality strategy, LinkedIn GTM drafts</code></li>
+<li><strong>Open PRs:</strong> none.</li>
+<li><strong>Health:</strong> Clean — branch fully synced with upstream.</li>
+</ul>
+<h3>hyperapi-documentapi-benchmark-factory</h3>
+<ul>
+<li><strong>Path:</strong> <code>~/Desktop/hyperapi-documentapi-benchmark-factory</code></li>
+<li><strong>Origin:</strong> <code>github.com/niyatic/hyperapi-documentapi-benchmark-factory</code></li>
+<li><strong>Branch:</strong> <code>content-and-notifications-2026-05-22</code> — 0 ahead, 0 behind upstream.</li>
+<li><strong>Uncommitted:</strong> 0 files.</li>
+<li><strong>Last commit:</strong> <code>236286d</code> (2026-05-22) — <code>content + notifications: technical blogs, ACL drafts, Teams notifier</code></li>
+<li><strong>Open PRs:</strong> none.</li>
+<li><strong>Health:</strong> Clean — branch fully synced with upstream.</li>
+</ul>
+<h3>hyperapi-reddit-fa-listening</h3>
+<ul>
+<li><strong>Path:</strong> <code>~/Desktop/hyperapi-reddit-fa-listening</code></li>
+<li><strong>Origin:</strong> <code>github.com/hyprbots/hyperapi-reddit-fa-listening</code></li>
+<li><strong>Branch:</strong> <code>main</code> — 0 ahead, 0 behind upstream.</li>
+<li><strong>Uncommitted:</strong> 0 files.</li>
+<li><strong>Last commit:</strong> <code>de44090</code> (2026-05-22) — <code>test: drop semicolon statements in is_engageable test (ruff E702)</code></li>
+<li><strong>Open PRs:</strong> none.</li>
+<li><strong>Health:</strong> Clean — working tree matches upstream <code>main</code>.</li>
+</ul>
+<h3>hyperapi-gtm-hub</h3>
+<ul>
+<li><strong>Path:</strong> <code>~/Desktop/hyperapi-gtm-hub</code></li>
+<li><strong>Origin:</strong> <code>github.com/hyprbots/hyperapi-gtm-hub</code></li>
+<li><strong>Branch:</strong> <code>main</code> — 0 ahead, 0 behind upstream.</li>
+<li><strong>Uncommitted:</strong> 0 files.</li>
+<li><strong>Last commit:</strong> <code>d424fec</code> (2026-05-22) — <code>Scaffold hyperapi-gtm-hub: 8-agent GTM content program</code></li>
+<li><strong>Open PRs:</strong> none.</li>
+<li><strong>Health:</strong> Clean — freshly scaffolded; synced with upstream <code>main</code>.</li>
+</ul>
+<h3>hyperapi-erp-abm</h3>
+<ul>
+<li><strong>Path:</strong> <code>~/Desktop/hyperapi-erp-abm</code></li>
+<li><strong>Origin:</strong> <code>github.com/niyatic/hyperapi-erp-abm</code></li>
+<li><strong>Branch:</strong> <code>master</code> — <strong>no configured upstream</strong>, so ahead/behind cannot be measured. Remote <code>origin/master</code> exists.</li>
+<li><strong>Uncommitted:</strong> 0 files.</li>
+<li><strong>Last commit:</strong> <code>10fc4d6</code> (2026-05-16) — <code>Scaffold hyperapi-erp-abm: ERP-partnership program (agents/skills + tiered ERP list + decks/scripts + site) mirroring abm-bundle norms</code></li>
+<li><strong>Open PRs:</strong> none.</li>
+<li><strong>Health:</strong> Attention — local <code>master</code> tracks no upstream; cannot confirm sync with <code>origin/master</code>. Set upstream tracking to restore visibility. Oldest last-commit in the portfolio (2026-05-16).</li>
+</ul>
+<h2>Portfolio health read</h2>
+<ul>
+<li>6 of 8 repos are <strong>clean and synced</strong> with their upstreams; 0 of 8 are ahead or behind.</li>
+<li><strong>0 open PRs</strong> across the entire portfolio — no review or merge work is queued on GitHub.</li>
+<li>2 repos carry local-only work: <code>hyperapi-repo-factory</code> (3 uncommitted entries from an active sweep) and <code>hyperapi-cto-org</code> (1 stray <code>.coverage</code> artifact).</li>
+<li>1 repo needs <strong>attention</strong>: <code>hyperapi-erp-abm</code> <code>master</code> has no upstream tracking — sync state is unverifiable until tracking is set.</li>
+<li>Overall: portfolio is healthy and low-risk. The only follow-ups are housekeeping — set upstream on <code>hyperapi-erp-abm</code>, gitignore/remove <code>.coverage</code> in <code>hyperapi-cto-org</code>, and commit or discard the in-progress changes in <code>hyperapi-repo-factory</code>.</li>
+</ul>
+<h2>Sources</h2>
+<ul>
+<li>Read-only <code>git</code> per repo: <code>rev-parse --abbrev-ref HEAD</code>, <code>status --porcelain</code>, <code>rev-list --left-right --count @{upstream}...HEAD</code>, <code>log -1</code>, <code>remote get-url origin</code>, <code>branch -r</code>.</li>
+<li>Read-only <code>gh pr list --repo &lt;slug&gt; --state open</code> against each repo&#x27;s resolved <code>origin</code> slug; <code>gh auth status</code> confirmed authenticated as <code>niyatic</code>.</li>
+<li>The eight repository working trees on this machine, surveyed 2026-05-22.</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li>All figures are point-in-time for 2026-05-22; repo state changes continuously — re-survey before acting.</li>
+<li>Ahead/behind is measured against each branch&#x27;s configured <code>@{upstream}</code>; <code>hyperapi-erp-abm</code> <code>master</code> has none, so its sync state is reported as unknown rather than zero.</li>
+<li>Uncommitted count is the line count of <code>git status --porcelain</code> (staged + unstaged + untracked); it is not a diff size.</li>
+<li>Open-PR counts reflect <code>gh pr list</code> results at survey time for the authenticated account; PRs on forks or under other accounts are out of scope.</li>
+<li>No <code>git fetch</code> was run, so ahead/behind reflects each repo&#x27;s last-known upstream ref, not necessarily the live remote tip.</li>
+<li>This report is a DRAFT; nothing in it is acted on without explicit human approval.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

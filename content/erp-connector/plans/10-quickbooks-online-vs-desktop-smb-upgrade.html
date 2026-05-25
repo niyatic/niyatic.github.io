@@ -1,0 +1,159 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10-quickbooks-online-vs-desktop-smb-upgrade — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/content/erp-connector/">← back</a>
+<div class="fm">slug: 10-quickbooks-online-vs-desktop-smb-upgrade
+erp: QuickBooks
+class: migration
+status: PLAN — methodology defined; QBO descriptor compiled on disk, QBD is descriptor-extension claim</div>
+
+<h1>QuickBooks Online vs Desktop: the SMB-to-mid-market upgrade path — plan</h1>
+
+<h2>1. Headline + hook</h2>
+
+<p>Hook: <strong>"The SMB that started on QuickBooks Desktop and is moving to QuickBooks Online (or vice versa, more often than the marketing says) has the same problem as the SAP shop mid-cutover: two back-ends, one vendor list, one closing process. The connector framework's descriptor pattern spans both — and at this size, the agent compresses what used to be a weekend of accountant-driven file-export work into hours of configuration."</strong></p>
+
+<p>Honest framing: a QuickBooks Online descriptor is compiled on disk (<code>connectors/erp/__pycache__/quickbooks.cpython-311.pyc</code>). QuickBooks Desktop (QBD) is a descriptor-extension claim — same pattern, not built.</p>
+
+<h2>2. Audience + intent</h2>
+
+<ul>
+<li>Primary: SMB controllers + their accountants; secondary: mid-market</li>
+</ul>
+<p>  CFOs.</p>
+<ul>
+<li>Reader takeaway: *"the QBO/QBD divide is a descriptor diff, not a</li>
+</ul>
+<p>  re-integration."*</p>
+<ul>
+<li>CTA: try the framework on a QBO sandbox.</li>
+</ul>
+
+<h2>3. The two-layer pitch (REQUIRED)</h2>
+
+<h3>3.1 Speed</h3>
+<ul>
+<li>QBO descriptor live: agent picks <code>target=&quot;quickbooks_online&quot;</code>,</li>
+</ul>
+<p>  realm-scoped, minor-version pinned, OAuth via TokenStore.   <em>[PLACEHOLDER, ~hours from pick to first mocked end-to-end.]</em></p>
+<ul>
+<li>QBD descriptor (not built): the post pitches the pattern — same</li>
+</ul>
+<p>  normalizer, different transport.</p>
+
+<h3>3.2 Depth</h3>
+<ul>
+<li><strong>QBO realm + minor-version.</strong> Realm-id scopes the byte-hash salt;</li>
+</ul>
+<p>  minor-version pinning prevents silent API behavior changes from   drifting the schema.</p>
+<ul>
+<li><strong>Vendor + Bill + Vendor Credit</strong> shape via the QBO API; same</li>
+</ul>
+<p>  normalizer family across all three.</p>
+<ul>
+<li><strong>OAuth refresh.</strong> Intuit's refresh token rotation contract honored</li>
+</ul>
+<p>  via <code>secrets.TokenStore</code>; refresh-on-every-call vs lazy refresh is a   descriptor choice.</p>
+<ul>
+<li><strong>QBD migration continuity.</strong> `BusinessKey(["realm_or_company",</li>
+</ul>
+<p>  "vendor_id", "ref_number", "date"])` dedups across the QBO/QBD line   during migration.</p>
+
+<h2>4. Outline</h2>
+
+<ul>
+<li>P-1. The SMB reality — Desktop installations linger; the migration is</li>
+</ul>
+<p>  rarely clean.</p>
+<ul>
+<li>P-2. The QBO descriptor (live today) — what the agent does.</li>
+<li>P-3. The QBD-side pattern — what the descriptor would encode.</li>
+<li>P-4. The migration continuity guarantee.</li>
+<li>P-5. The honesty — QBO ships; QBD is descriptor-extension.</li>
+<li>P-6. CTA.</li>
+</ul>
+
+<h2>5. Required evidence before publish</h2>
+
+<ul>
+<li>Confirm <code>connectors/erp/quickbooks.py</code> source carries the QBO behavior</li>
+</ul>
+<p>  the post claims (realm, minor-version, OAuth rotation).</p>
+<ul>
+<li>A descriptor sketch for QBD (paper-only is fine).</li>
+<li>Confirm with product whether QBD is on the roadmap.</li>
+</ul>
+
+<h2>6. Placeholders to fill</h2>
+
+<ul>
+<li>[PLACEHOLDER-time-qbo]</li>
+<li>[PLACEHOLDER-qbd-roadmap-confirm]</li>
+<li>[PLACEHOLDER-smb-case] (consent-gated)</li>
+</ul>
+
+<h2>7. Competitor positioning</h2>
+
+<ul>
+<li>Workato QBO — NOT-FETCHED.</li>
+<li>Make.com QBO — NOT-FETCHED. Hypothesis: strong SMB framing; less depth</li>
+</ul>
+<p>  on idempotency.</p>
+<ul>
+<li>n8n QBO — NOT-FETCHED.</li>
+</ul>
+
+<p>The Hyperbots wedge at SMB: the framework is <em>the same</em> at SMB and enterprise. The agent's surface doesn't change as the customer scales.</p>
+
+<h2>8. Sources / provenance</h2>
+
+<ul>
+<li><code>connectors/erp/__pycache__/quickbooks.cpython-311.pyc</code> (compiled)</li>
+<li>skill: <code>erp-quickbooks-connector</code> (QBO authority)</li>
+<li>Competitor URLs (must be fetched)</li>
+</ul>
+
+<h2>Z. Internal-only</h2>
+
+<ul>
+<li>Cost: ~5 hours.</li>
+<li>Dependencies: QBD roadmap sign-off; the QBO source confirmation.</li>
+<li>Risk: the SMB vs mid-market positioning is subtle; the post must not</li>
+</ul>
+<p>  imply HyperAPI is an SMB tool. Frame as "same framework, both ends of   the curve."</p>
+
+</body></html>

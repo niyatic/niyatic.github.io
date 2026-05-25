@@ -1,0 +1,238 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>split-p2p — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/content/nanonets-framework/">← back</a>
+<div class="fm">primitive: split
+domain: p2p
+status: PLAN — methodology defined, numbers placeholder
+date: 2026-05-25
+depth_template: /Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/comparative/azure-di/azure-di-invoice-study.html
+parent_framework: ../FRAMEWORK-2026-05-25.md
+dimensions_in_scope: D1, D3, D7, D10, D11, D13, D14, D2*, D8*
+dimensions_out_of_scope: D4, D5, D6, D9 (orthogonal to a boundary decision)</div>
+
+<h1>Split (P2P) — deep-study plan</h1>
+
+<h2>1. Executive summary (TEMPLATE — numbers placeholder)</h2>
+
+<p>Given a multi-document P2P bundle (a single PDF containing e.g. PO + multiple GRNs + supplier_invoice + BoL + packing_slip), how correctly does an IDP system identify the page boundaries between logical sub-documents? Distinct from classify (which assigns a label once the boundary is set) and from parse (which extracts within a sub-document). Output = an ordered list of <code>(start_page, end_page)</code> spans + optionally a per-span label. Numbers <code>[PENDING-MEASUREMENT]</code>.</p>
+
+<h2>2. Scope & coverage</h2>
+
+<ul>
+<li><strong>Workload.</strong> Multi-doc bundles drawn from P2P workflows: AP intake</li>
+</ul>
+<p>  bundles (one supplier email = one PDF with cover-page + invoice +   GRN + BoL + packing slip), brokerage bundles (BoL + customs forms +   freight invoice).</p>
+<ul>
+<li><strong>Platforms.</strong> Hyperbots <code>split</code> + ≥1 competitor.</li>
+<li><strong>Coverage dims.</strong> 9 D-dimensions kept (D4, D5, D6, D9 dropped —</li>
+</ul>
+<p>  orthogonal to boundary detection; D11 reinterpreted as   page-attribution accuracy not field IoU).</p>
+<ul>
+<li><strong>Test surface.</strong></li>
+<li><code>n = [PLACEHOLDER]</code> bundles per dimension.</li>
+<li>Stratified by bundle page count (2–5 / 6–15 / 16–50 / 50+), by</li>
+</ul>
+<p>    sub-document count (2 / 3–5 / 5+), by inter-document layout     transition style (cover-page / no-cover-page / continuation-of-table-     across-boundary), and by file format.</p>
+
+<h2>3. Methodology</h2>
+
+<h3>3.1 Data-status representation</h3>
+<p>Eight-row legend per framework §0.4. <strong>Per-bundle</strong>: Correct = predicted spans set-equal to GT spans; Incorrect = predicted span overlaps GT but not exact; Missed = GT span absent from prediction; Spurious = predicted span absent from GT.</p>
+
+<h3>3.2 Sample design</h3>
+<p><code>n = [PLACEHOLDER]</code> bundles per dim, stratified per §5. κ on bundle-level boundary annotation (two annotators independently mark page boundaries; disagreements adjudicated).</p>
+
+<h3>3.3 Metrics</h3>
+<ul>
+<li><strong>Boundary-F1.</strong> Treat each page-N-to-page-N+1 transition as a binary</li>
+</ul>
+<p>  "is this a boundary?" prediction; report per-bundle precision/recall   and aggregate F1.</p>
+<ul>
+<li><strong>Span-F1.</strong> Predicted (start,end) span vs GT span — exact-match</li>
+</ul>
+<p>  precision/recall + IoU-based partial credit.</p>
+<ul>
+<li><strong>Page-attribution accuracy.</strong> Per-page: did this page land in the</li>
+</ul>
+<p>  right sub-document?</p>
+<ul>
+<li><strong>Full-bundle exact-match accuracy</strong> (strict): fraction of bundles</li>
+</ul>
+<p>  where the entire span list matches GT.</p>
+<ul>
+<li>Point + 95% bootstrap CI + n.</li>
+</ul>
+
+<h3>3.4 Scoring rubric</h3>
+<ul>
+<li>Boundary at position k is Correct iff GT also has a boundary at k.</li>
+<li>Page-attribution: page p is Correct iff predicted sub-doc for p ==</li>
+</ul>
+<p>  GT sub-doc.</p>
+<ul>
+<li>Off-by-one boundaries are NOT half-credit — they are Incorrect at the</li>
+</ul>
+<p>  boundary level; the page-attribution metric is what captures   "almost-right."</p>
+
+<h3>3.5 Evaluation controls</h3>
+<p>Frozen sha256. Rerunnable command:</p>
+<pre><code class="lang-">
+run --study split-p2p-v0 \
+    --dimension D&lt;id&gt; \
+    --system hyperbots-idp@&lt;model-revision&gt; \
+    --system &lt;competitor&gt;@&lt;api-version&gt; \
+    --dataset p2p-split-bench-v1@&lt;snapshot-sha256&gt; \
+    --split test --seed &lt;pinned&gt; \
+    --metric boundary_f1 --bootstrap 1000
+</code></pre>
+
+<h3>3.6 Independence and disclosure</h3>
+<p>Hyperbots-published; affiliation declared.</p>
+
+<h3>3.7 Limitations</h3>
+<ul>
+<li>D4 / D5 / D6 / D9 do not apply at the boundary level.</li>
+<li>Continuation-of-table-across-boundary strata are genuinely ambiguous</li>
+</ul>
+<p>  (is a continued table one logical doc or two?). The pinned policy is   documented in PINS.txt and may produce wider CIs in that stratum.</p>
+
+<h3>3.8 Where this primitive sits in the IDP pipeline</h3>
+<p>The <strong>split</strong> stage of <code>parse → split → classify → extract → augment → validate → match → GL → reason</code>. Upstream: parse (page-level OCR). Downstream: classify and extract operate on the spans this stage produces.</p>
+
+<h2>4. Dimension analysis (9 of 14)</h2>
+
+<table>
+<tr><th>ID</th><th>Dimension for split(P2P)</th><th>Hyperbots</th><th>Competitor</th><th>Δ</th></tr>
+<tr><td>D1</td><td>Bundle complexity — page count × sub-doc count tier.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D2*</td><td>Boundary coverage — does the system fire boundaries at every transition class (cover→inv, inv→GRN, GRN→BoL, …)?</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D3</td><td>Inter-doc layout transition style (cover-page / abrupt-template-switch / continuation-of-table).</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D7</td><td>Mixed scan-quality within a bundle (some pages clean, some blurry).</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D8*</td><td>Cross-page table continuity — does the system avoid splitting a continued line-item table?</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D10</td><td>Sustained pages/min throughput.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D11</td><td>Page-attribution accuracy reinterpreted — fraction of pages assigned to the correct sub-doc.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D13</td><td>p50/p95 per-bundle latency, stratified by bundle page count.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D14</td><td>File-format coverage — PDF, multi-page TIFF, email .eml with attached PDFs.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+</table>
+
+<h2>5. Document × failure-mode matrix (split-P2P)</h2>
+
+<table>
+<tr><th>#</th><th>Bundle composition</th><th>Transition style</th><th>Dimensions</th></tr>
+<tr><td>1</td><td>PO + supplier_invoice + GRN (3-doc)</td><td>Cover-page-each</td><td>D2*, D3</td></tr>
+<tr><td>2</td><td>Supplier_invoice (multi-page) + freight_invoice</td><td>Continuation-of-table-across-bdry</td><td>D8*</td></tr>
+<tr><td>3</td><td>Supplier_invoice + BoL + packing_slip</td><td>Abrupt template switch</td><td>D3</td></tr>
+<tr><td>4</td><td>10-doc consolidated supplier statement bundle</td><td>Repeated identical sub-docs</td><td>D1, D2*</td></tr>
+<tr><td>5</td><td>Mixed-scan bundle (clean + photographed pages)</td><td>Mixed quality</td><td>D7, D11</td></tr>
+<tr><td>6</td><td>Email with 4 attached PDFs (each one sub-doc)</td><td>File-format boundary, not page-boundary</td><td>D14</td></tr>
+<tr><td>7</td><td>Single-doc bundle (false-bundle test — should NOT split)</td><td>No transitions</td><td>D2*</td></tr>
+<tr><td>8</td><td>BoL + customs entry + freight_invoice (brokerage bundle)</td><td>Cover-page-each</td><td>D2*, D3</td></tr>
+<tr><td>9</td><td>Long invoice that <em>looks like</em> 2 docs (page 2 has new "Invoice" header for continuation)</td><td>Hard-negative</td><td>D8*, D11</td></tr>
+<tr><td>10</td><td>Same-vendor consecutive invoices (same template, just different numbers)</td><td>Same-template adjacency</td><td>D3, D2*</td></tr>
+<tr><td>11</td><td>Page-numbered table continuation across an embedded BoL</td><td>Hostile interleave</td><td>D8*</td></tr>
+<tr><td>12</td><td>50+ page bundle (stress)</td><td>Long-bundle stress</td><td>D1, D10</td></tr>
+</table>
+
+<p><code>[PLACEHOLDER — expand to 30–55 strata.]</code></p>
+
+<h2>6. Metric-taxonomy crosswalk (split-P2P)</h2>
+
+<table>
+<tr><th>Dim</th><th>200-item roll-up</th><th>204-row cluster</th><th>Note</th></tr>
+<tr><td>D1</td><td>B. 26-31; G. 181-188</td><td>C, O, G</td><td>Bundle complexity.</td></tr>
+<tr><td>D2*</td><td>_split-specific; rolls under H. 191,200 (embedded data) and cluster D_</td><td>D</td><td>Boundary coverage.</td></tr>
+<tr><td>D3</td><td>B. 32,38,41,45</td><td>C, N</td><td>Transition style.</td></tr>
+<tr><td>D7</td><td>F. 156-180</td><td>B, P</td><td>Mixed-scan.</td></tr>
+<tr><td>D8*</td><td>B. 33-34,42-47; H. 191,200</td><td>F</td><td>Cross-page table continuity.</td></tr>
+<tr><td>D10</td><td>G. 184,189</td><td>—</td><td>Throughput.</td></tr>
+<tr><td>D11</td><td>B. 38,45; H. 194-198</td><td>—</td><td>Page-attribution accuracy.</td></tr>
+<tr><td>D13</td><td>G. 181-188,190</td><td>—</td><td>Per-bundle latency.</td></tr>
+<tr><td>D14</td><td>G. 187-188; H. 193,195</td><td>A, H</td><td>File-format coverage.</td></tr>
+</table>
+
+<h2>7. HyperAPI capability coverage (split-P2P)</h2>
+
+<ul>
+<li><code>split</code> — primary</li>
+<li><code>bundle</code> — companion (bundle ingestion + per-span handoff)</li>
+<li><code>detect</code> — sub-doc detection signals</li>
+<li><code>parse</code> — page-level features that feed split</li>
+</ul>
+
+<p>Capability counts: <code>[PLACEHOLDER]</code>.</p>
+
+<h2>8. Competitor offerings inventory (split-P2P)</h2>
+
+<table>
+<tr><th>Vendor</th><th>SKU / API</th><th>Marketing source</th><th>Status</th></tr>
+<tr><td>Azure DI</td><td><code>prebuilt-read</code> + custom classifier-as-splitter pipeline</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>AWS Textract</td><td>StartDocumentAnalysis + page-level classifier</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Google Document AI</td><td>Splitter & Classifier processor</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Hyperscience</td><td>Submission auto-split</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>ABBYY</td><td>Vantage submission split</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Nanonets</td><td>Document classification + split</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+</table>
+
+<h2>9. Findings & outlook</h2>
+
+<p><code>[PLACEHOLDER]</code>.</p>
+
+<p>Falsifiable hypotheses:</p>
+<ol>
+<li>Hyperbots boundary-F1 on continuation-of-table-across-boundary</li>
+</ol>
+<p>   strata ≥ competitor.</p>
+<ol>
+<li>Hyperbots full-bundle exact-match accuracy on AP-intake-bundle stratum</li>
+</ol>
+<p>   ≥ competitor.</p>
+<ol>
+<li>Hyperbots page-attribution accuracy ≥ competitor on long bundles</li>
+</ol>
+<p>   (50+ pages).</p>
+
+<h2>Z. Internal-only notes</h2>
+<ul>
+<li>AP-intake bundle datasets are often partner-restricted; synthesise</li>
+</ul>
+<p>  controlled bundles for the public-bench tier.</p>
+<ul>
+<li>Boundary-level off-by-one is the dominant failure mode in early</li>
+</ul>
+<p>  pilots; tune the boundary-detector cost function in §3.4 if needed.</p>
+
+</body></html>

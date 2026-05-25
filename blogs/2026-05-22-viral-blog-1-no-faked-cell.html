@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8" />
+<title>The No-Faked-Cell Discipline — SAVIOR-Bench v1 reproducibility</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;--brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+    --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;--grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+    --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+    --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);--txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+  }
+  *{box-sizing:border-box;}
+  body{background:var(--bg);color:var(--txt);font:14px/1.55 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:0;padding:0;}
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  code,pre{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.6px;}
+  pre{background:var(--brand-1);border:1px solid var(--line);padding:12px 14px;border-radius:8px;overflow-x:auto;}
+  code{background:var(--brand-2);padding:1px 5px;border-radius:4px;}
+  pre code{background:none;padding:0;}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 22px 72px;}
+  .draft{background:var(--warn-fg);color:#fff;font-weight:600;text-align:center;padding:9px 14px;border-radius:8px;font-size:12.5px;letter-spacing:.02em;margin-bottom:20px;}
+  header.hd{background:linear-gradient(160deg,var(--brand-3),var(--brand-1));border:1px solid var(--line);border-radius:14px;padding:26px 28px;margin-bottom:8px;}
+  header.hd h1{margin:0 0 8px;font-size:25px;font-weight:700;color:var(--brand-9);line-height:1.25;}
+  header.hd .sub{color:var(--grey-11);font-size:13.5px;}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;border:1px solid var(--brand-4);color:var(--brand-8);background:var(--brand-2);margin:3px 4px 0 0;}
+  .tabs{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 0;}
+  .tab{padding:9px 15px;border:1px solid var(--line);border-bottom:none;border-radius:9px 9px 0 0;background:var(--grey-3);color:var(--grey-11);cursor:pointer;font-weight:500;font-size:13px;}
+  .tab.active{background:var(--panel);color:var(--brand-8);font-weight:600;box-shadow:0 -2px 0 var(--brand-6) inset;}
+  .panel{display:none;background:var(--panel);border:1px solid var(--line);border-radius:0 12px 12px 12px;padding:26px 30px;}
+  .panel.active{display:block;}
+  h2{color:var(--brand-8);font-size:19px;margin-top:30px;border-bottom:1px solid var(--line);padding-bottom:6px;}
+  h3{color:var(--brand-9);font-size:15.5px;margin-top:24px;}
+  .post{border:1px solid var(--line);border-left:3px solid var(--brand-6);border-radius:8px;padding:12px 15px;margin:11px 0;background:var(--brand-1);}
+  .post .n{font-size:11px;color:var(--muted);font-weight:600;letter-spacing:.05em;}
+  .post p{margin:5px 0 0;}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12.8px;}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;}
+  th{background:var(--brand-2);color:var(--brand-8);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;}
+  .lead{color:var(--ok-fg);font-weight:600;}
+  .ftm{color:var(--brand-8);font-weight:600;}
+  .callout{background:var(--brand-2);border:1px solid var(--brand-4);border-left:3px solid var(--brand-7);border-radius:8px;padding:12px 16px;margin:14px 0;font-size:13px;}
+  .warnbox{background:#FFF6ED;border:1px solid #F4D9B5;border-left:3px solid var(--warn-fg);border-radius:8px;padding:12px 16px;margin:14px 0;font-size:13px;}
+  .muted{color:var(--muted);font-size:12px;}
+  .acl{background:#fff;border:1px solid var(--grey-7);border-radius:6px;padding:30px 38px;margin-top:14px;font-family:"Times New Roman",Times,serif;color:#111;}
+  .acl h1.t{font-size:19px;text-align:center;margin:0 0 4px;font-weight:700;}
+  .acl .auth{text-align:center;font-size:12.5px;color:#333;margin-bottom:14px;}
+  .acl .cols{column-count:2;column-gap:22px;font-size:11.7px;line-height:1.5;text-align:justify;}
+  .acl .cols h2{color:#111;font-size:12.5px;border:none;text-transform:uppercase;letter-spacing:.03em;margin:12px 0 3px;padding:0;}
+  .acl .abs{border:1px solid #bbb;padding:8px 14px;margin:0 18px 14px;font-size:11px;font-style:italic;}
+  .acl table{font-size:10.3px;}
+  .acl th{background:#eee;color:#111;}
+  @media (max-width:680px){.acl .cols{column-count:1;}}
+  footer{margin-top:34px;color:var(--muted);font-size:11.5px;text-align:center;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="draft">DRAFT — pending review; external publish human-gated. Drafts only — no commit, no push, no external publication.</div>
+
+<header class="hd">
+  <h1>The No-Faked-Cell Discipline: How SAVIOR-Bench v1 Reports Reproducibility It Has Not Yet Earned</h1>
+  <div class="sub">Blog 1 of 3 &middot; Angle: benchmark methodology &amp; reproducibility rigor &middot; snapshot 2026-05-20</div>
+  <div style="margin-top:9px;">
+    <span class="pill">SAVIOR-Bench v1</span>
+    <span class="pill">attested, not factory-reproduced</span>
+    <span class="pill">W6 audit: 0/23 re-derived</span>
+    <span class="pill">no fabricated CI</span>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" onclick="show(0)">Twitter / X thread</div>
+  <div class="tab" onclick="show(1)">LinkedIn post</div>
+  <div class="tab" onclick="show(2)">Deep blog</div>
+  <div class="tab" onclick="show(3)">ACL-style paper</div>
+</div>
+
+<!-- TAB 0: TWITTER -->
+<div class="panel active" id="p0">
+  <h2>Twitter / X thread — 8 posts</h2>
+  <p class="muted">Each post &le;280 characters. Category labels only, no named competitors.</p>
+
+  <div class="post"><span class="n">1 / 8</span>
+    <p>Most benchmark papers quietly round, interpolate, or "estimate" the cells they can't run. We built SAVIOR-Bench v1 with the opposite rule: a cell that can't be computed honestly raises an error. Here's the no-faked-cell discipline. 🧵</p></div>
+
+  <div class="post"><span class="n">2 / 8</span>
+    <p>SAVIOR-Bench v1: 509 expert-annotated financial documents, 21 OCR + 23 parse-intent systems, one frozen prompt per task family, decoding pinned (temp 0.1, top-p 0.9, seed 20260516). IAA 0.761 over 187 double-annotated pairs.</p></div>
+
+  <div class="post"><span class="n">3 / 8</span>
+    <p>The honest part: every published cell is labelled ATTESTED — NOT FACTORY-REPRODUCED. In-house-run, signed 2026-05-18. The deterministic harness + pinned env exist — they just haven't been run against these numbers yet. We say so on every row.</p></div>
+
+  <div class="post"><span class="n">4 / 8</span>
+    <p>Then we tried to reproduce. W6 audit: re-ran all 23 parse-intent rows through the pinned factory harness. Result: 0/23 re-derived. 23/23 red. Zero retractions, zero CIs invented, zero true-flips. We published that table too.</p></div>
+
+  <div class="post"><span class="n">5 / 8</span>
+    <p>Why 0/23? Three structural causes, all named in the audit log: (1) the SEED harness has no adapters for hosted-API/VLM vendors, (2) the in-house corpus isn't redistributable, (3) no per-document scores exist. Not a defect of the numbers — a boundary of the open harness.</p></div>
+
+  <div class="post"><span class="n">6 / 8</span>
+    <p>The enforcement is in code, not in a promise. TR-000 (tabular reasoning) is REGISTERED-NOT-YET-RUN: <code>score_item("TR-000")</code> raises NotImplementedError by design. No table-reasoning number exists in the repo, so none can leak into a slide.</p></div>
+
+  <div class="post"><span class="n">7 / 8</span>
+    <p>Confidence intervals: <code>ci95 = null</code> everywhere — shown as "reported (no CI)". CIs need per-document scores we don't have. A null is honest. A fabricated &plusmn;0.01 is not. We chose null.</p></div>
+
+  <div class="post"><span class="n">8 / 8</span>
+    <p>The takeaway: reproducibility is a status, not an adjective. "Attested" and "reproduced" are different words and we keep them different. Read the methodology + the W6 audit — both ship with the report. Benchmark figures are model OCR/parse perf, not product accuracy.</p></div>
+</div>
+
+<!-- TAB 1: LINKEDIN -->
+<div class="panel" id="p1">
+  <h2>LinkedIn post</h2>
+  <div class="callout">
+  <p><strong>We published a benchmark — and the audit that says we haven't reproduced it yet. On purpose.</strong></p>
+
+  <p>SAVIOR-Bench v1 is a 509-document, expert-annotated financial-document benchmark: 21 OCR systems, 23 parse-intent systems, one frozen prompt per task family, decoding pinned to a seed. Inter-annotator agreement is 0.761 across 187 double-annotated pairs. Standard rigor, so far.</p>
+
+  <p>Here's the part most teams bury. Every cell in the report carries one label: <strong>ATTESTED — NOT FACTORY-REPRODUCED</strong>. The numbers were run in-house and signed on 2026-05-18. The deterministic factory harness, the pinned environment, and the repro-check script all exist — but they have not yet been run against these specific cells. We say that on every row, not in a footnote.</p>
+
+  <p>Then we tried. The W6 workstream re-ran all 23 parse-intent rows through the pinned harness. The outcome: <strong>0 of 23 re-derived</strong>. Twenty-three reds — because the open SEED harness has no adapters for hosted-API vendors, the in-house corpus isn't redistributable, and per-document scores don't exist yet. Zero rows retracted, zero confidence intervals invented, zero status flips. We published that table next to the results.</p>
+
+  <p>The discipline is enforced in code. The registered-but-unrun tabular stream raises <code>NotImplementedError</code> by design — no number can leak into a slide. Confidence intervals are <code>null</code>, not a fabricated interval.</p>
+
+  <p>Reproducibility is a status, not an adjective. If you're evaluating document-AI vendors, ask which of their numbers are <em>attested</em> and which are <em>reproduced</em> — and whether they'll show you the audit. The full SAVIOR-Bench methodology and the W6 audit are available for review.</p>
+  <p class="muted">Benchmark figures describe model OCR/parse performance, not product accuracy. Product-accuracy claims are cited only per apis.hyperbots.com. Draft — pending review.</p>
+  </div>
+</div>
+
+<!-- TAB 2: DEEP BLOG -->
+<div class="panel" id="p2">
+  <h2>The No-Faked-Cell Discipline</h2>
+  <p class="muted">Deep technical blog &middot; ~1,900 words &middot; angle: methodology &amp; reproducibility rigor.</p>
+
+  <h3>1. The problem with the word "reproducible"</h3>
+  <p>"Reproducible" is the most over-claimed word in applied ML. It appears in abstracts that ship no harness, in leaderboards whose numbers were transcribed from a spreadsheet nobody can re-run, and in vendor decks where a single favorable cell has been silently rounded up. The word has become a vibe rather than a verifiable state.</p>
+  <p>SAVIOR-Bench v1 — a 509-document, expert-annotated financial-document benchmark spanning 21 OCR systems and 23 parse-intent systems — was built around a refusal to use the word that way. The governing rule is blunt: <strong>a cell that cannot be computed honestly is not estimated, it raises an error.</strong> We call this the no-faked-cell discipline, and this post is about how it is enforced in code, what it cost us, and why a benchmark that openly admits it has <em>not</em> been factory-reproduced is more trustworthy than one that claims it has.</p>
+
+  <h3>2. The setup: ordinary rigor first</h3>
+  <p>Before the interesting part, the table stakes. SAVIOR-Bench v1 holds 509 financial documents drawn from five corpora — UCSF Industry Documents (46.95%), in-house synthetic (17.88%), miscellaneous public financial (17.49%), Inv3D (9.04%), and FUNSD (8.64%) — across six document classes: invoices, packing slips, forms, multilingual scans, low-quality PDFs, and complex tables.</p>
+  <p>Scoring is defined in code, not prose. OCR is word-level multiset recall and precision over whole tokens — character-level CER was deliberately rejected, because the downstream consumer is an LLM extraction step that ingests whole tokens, so <code>Totl</code> versus <code>Total</code> earns a full penalty, not a partial one. Layout fidelity uses PaIRS, a quadratic spatial penalty over pairwise token positions, and it is reported only for prompt-controlled (PC) models; for non-prompt-controlled (NPC) systems PaIRS is explicitly downgraded to a format-compatibility proxy, not a comparable ranking. Parse-intent uses F1 over extracted intent fields and WER over the transcription.</p>
+  <p>Decoding is pinned: temperature 0.1, top-p 0.9, max_tokens 2048, empty stop list, seed 20260516, recorded in <code>harness/tasks.json</code> under task DC-000. One frozen prompt template per task family is used across every model; model-specific chat formatting is confined to adapters so it cannot become an accidental tuning surface. Inter-annotator agreement is 0.761 over 187 double-annotated pairs. This is the floor — and most benchmarks stop here, then write "reproducible" in the abstract.</p>
+
+  <h3>3. The honest label: attested is not reproduced</h3>
+  <p>SAVIOR-Bench v1 does not stop there, because stopping there would require a claim it cannot back. Every cell in the report carries a verbatim reproduction-status block:</p>
+  <pre><code>REPRODUCTION STATUS: ATTESTED — NOT FACTORY-REPRODUCED
+  provenance            : in-house-run, user-attested 2026-05-18
+  reproduced_by_factory : false
+  ci95                  : null   (shown "reported (no CI)")
+  rerun_command         : "in-house run; user-attested 2026-05-18
+                           - not reproduced by the factory harness"</code></pre>
+  <p>Two words are kept rigorously separate. <strong>Attested</strong> means a named party ran the numbers and signed them on a date. <strong>Reproduced</strong> means the deterministic factory harness re-derived them from inputs under a pinned environment and a green repro-check. SAVIOR-Bench v1 is the first. It is not yet the second. The harness, the pinned environment (<code>harness/PINS.txt</code>), and the verifier (<code>harness/repro_check.py</code>) are all defined and in place — they simply have not been run against these specific cells. The report says this on every results row, not once in an appendix.</p>
+  <div class="callout">The discipline is not "we are reproducible." It is "here is exactly how reproduced these numbers are, and the answer today is: attested, not reproduced." That is a weaker marketing line and a stronger trust line. We took the trust line.</div>
+
+  <h3>4. W6: we tried to reproduce, and published the failure</h3>
+  <p>A claim of "the harness exists" is cheap until someone runs it. So we ran it. The W6 workstream (2026-05-21, branch <code>feat/W6-factory-rerun-DC-000</code>) re-derived all 23 parse-intent rows of section 5.1.1 through the pinned factory harness at commit <code>3382abb</code>. The headline result:</p>
+  <table>
+    <thead><tr><th>Quantity</th><th class="num">Value</th></tr></thead>
+    <tbody>
+      <tr><td>Cells attempted</td><td class="num">23 / 23</td></tr>
+      <tr><td>Green repro_check (factory re-derived)</td><td class="num" style="color:var(--err-fg);font-weight:600;">0 / 23</td></tr>
+      <tr><td>Red on structural impossibility</td><td class="num">23 / 23</td></tr>
+      <tr><td>Confidence intervals added</td><td class="num">0</td></tr>
+      <tr><td>Attested rows retracted</td><td class="num">0</td></tr>
+      <tr><td>reproduced_by_factory true-flips</td><td class="num">0</td></tr>
+    </tbody>
+  </table>
+  <figure style="margin:18px 0;">
+  <svg viewBox="0 0 880 400" role="img" aria-label="W6 reproducibility-audit flow: 23 attested parse-intent cells re-run through the pinned factory harness, all 23 fail the repro-check verdict gate on three structural causes" style="width:100%;height:auto;display:block;font-family:'Rubik',-apple-system,sans-serif;">
+    <defs>
+      <marker id="w6ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#748081"/></marker>
+    </defs>
+    <!-- STAGE 1: attested cells -->
+    <rect x="16" y="60" width="184" height="120" rx="10" fill="#EDFAFF" stroke="#BDDFEE"/>
+    <text x="108" y="44" text-anchor="middle" font-size="11.5" font-weight="600" fill="#748081" letter-spacing=".04em">INPUT</text>
+    <text x="108" y="92" text-anchor="middle" font-size="14" font-weight="700" fill="#07658D">23 attested cells</text>
+    <text x="108" y="110" text-anchor="middle" font-size="11" fill="#596263">parse-intent rows, §5.1.1</text>
+    <text x="108" y="129" text-anchor="middle" font-size="10.5" fill="#748081">ATTESTED — NOT</text>
+    <text x="108" y="143" text-anchor="middle" font-size="10.5" fill="#748081">FACTORY-REPRODUCED</text>
+    <text x="108" y="161" text-anchor="middle" font-size="10" fill="#8A9799">in-house-run, signed 2026-05-18</text>
+    <line x1="200" y1="120" x2="248" y2="120" stroke="#748081" stroke-width="1.6" marker-end="url(#w6ar)" fill="none"/>
+    <!-- STAGE 2: re-run -->
+    <rect x="250" y="60" width="184" height="120" rx="10" fill="#DEEEF5" stroke="#1B7DA7"/>
+    <text x="342" y="44" text-anchor="middle" font-size="11.5" font-weight="600" fill="#748081" letter-spacing=".04em">RE-RUN (W6)</text>
+    <text x="342" y="92" text-anchor="middle" font-size="13.5" font-weight="700" fill="#07658D">pinned factory harness</text>
+    <text x="342" y="110" text-anchor="middle" font-size="10.5" fill="#596263">commit 3382abb · pinned env</text>
+    <text x="342" y="128" text-anchor="middle" font-size="10.5" fill="#596263">repro_check.py</text>
+    <text x="342" y="150" text-anchor="middle" font-size="11" font-weight="600" fill="#1B7DA7">23 / 23 attempted</text>
+    <line x1="434" y1="120" x2="482" y2="120" stroke="#748081" stroke-width="1.6" marker-end="url(#w6ar)" fill="none"/>
+    <!-- STAGE 3: verdict gate -->
+    <rect x="484" y="60" width="184" height="120" rx="10" fill="#FFF6ED" stroke="#DC6803" stroke-width="2"/>
+    <text x="576" y="44" text-anchor="middle" font-size="11.5" font-weight="600" fill="#748081" letter-spacing=".04em">VERDICT GATE</text>
+    <text x="576" y="90" text-anchor="middle" font-size="11" fill="#039855">green repro_check</text>
+    <text x="576" y="110" text-anchor="middle" font-size="20" font-weight="700" fill="#D92D20">0 / 23</text>
+    <text x="576" y="130" text-anchor="middle" font-size="11" fill="#596263">red on structural</text>
+    <text x="576" y="146" text-anchor="middle" font-size="13" font-weight="700" fill="#D92D20">23 / 23 red</text>
+    <text x="576" y="165" text-anchor="middle" font-size="10" fill="#8A9799">0 retractions · 0 CIs · 0 true-flips</text>
+    <line x1="668" y1="120" x2="716" y2="120" stroke="#748081" stroke-width="1.6" marker-end="url(#w6ar)" fill="none"/>
+    <!-- STAGE 4: published -->
+    <rect x="718" y="60" width="146" height="120" rx="10" fill="#EDFAFF" stroke="#BDDFEE"/>
+    <text x="791" y="44" text-anchor="middle" font-size="11.5" font-weight="600" fill="#748081" letter-spacing=".04em">OUTCOME</text>
+    <text x="791" y="96" text-anchor="middle" font-size="12.5" font-weight="700" fill="#07658D">audit table</text>
+    <text x="791" y="113" text-anchor="middle" font-size="12.5" font-weight="700" fill="#07658D">published</text>
+    <text x="791" y="135" text-anchor="middle" font-size="10.5" fill="#596263">next to the results;</text>
+    <text x="791" y="150" text-anchor="middle" font-size="10.5" fill="#596263">attested F1/WER</text>
+    <text x="791" y="164" text-anchor="middle" font-size="10.5" fill="#596263">preserved exactly</text>
+    <!-- three structural causes feeding the gate -->
+    <text x="440" y="230" text-anchor="middle" font-size="11.5" font-weight="600" fill="#748081" letter-spacing=".04em">WHY 0/23 — THREE STRUCTURAL CAUSES (logged per-cell)</text>
+    <g font-size="10.5">
+      <rect x="40" y="244" width="256" height="68" rx="8" fill="#F6F9F9" stroke="#E2ECEE"/>
+      <text x="52" y="266" font-size="11.5" font-weight="600" fill="#07658D">1 · No vendor adapters</text>
+      <text x="52" y="284" fill="#596263">offline SEED harness — no API keys,</text>
+      <text x="52" y="299" fill="#596263">no egress; hosted-API/VLM rows unknown.</text>
+      <rect x="312" y="244" width="256" height="68" rx="8" fill="#F6F9F9" stroke="#E2ECEE"/>
+      <text x="324" y="266" font-size="11.5" font-weight="600" fill="#07658D">2 · No corpus loader</text>
+      <text x="324" y="284" fill="#596263">parse-intent-inhouse-v1 not licensed</text>
+      <text x="324" y="299" fill="#596263">for redistribution — not in the repo.</text>
+      <rect x="584" y="244" width="256" height="68" rx="8" fill="#F6F9F9" stroke="#E2ECEE"/>
+      <text x="596" y="266" font-size="11.5" font-weight="600" fill="#07658D">3 · No per-document scores</text>
+      <text x="596" y="284" fill="#596263">attested source is corpus-level aggregate;</text>
+      <text x="596" y="299" fill="#596263">bootstrap CIs need per-doc resamples.</text>
+    </g>
+    <g stroke="#DC6803" stroke-width="1.4" stroke-dasharray="4 3" fill="none">
+      <line x1="168" y1="244" x2="520" y2="184"/>
+      <line x1="440" y1="244" x2="560" y2="184"/>
+      <line x1="712" y1="244" x2="600" y2="184"/>
+    </g>
+    <text x="440" y="344" text-anchor="middle" font-size="11" fill="#596263">When the harness went red, nothing was patched green: no attested number adjusted, no <tspan font-family="monospace" font-size="10.5">ci95</tspan> filled, no flag flipped.</text>
+    <text x="440" y="364" text-anchor="middle" font-size="10.5" fill="#8A9799">A boundary of the open harness, named precisely — not a defect of the numbers.</text>
+  </svg>
+  <figcaption class="muted" style="margin-top:6px;">The W6 reproducibility audit: 23 attested parse-intent cells re-run through the pinned factory harness (commit <code>3382abb</code>) hit the repro-check verdict gate — 0/23 green, 23/23 red — for three structural causes logged per-cell. All figures from the W6 audit table and section 4 of this post.</figcaption>
+  </figure>
+  <p>Zero of twenty-three. That is not a typo, and it is not a scandal — it is a boundary, named precisely. The W6 attestation records three structural causes, all logged per-cell:</p>
+  <ol>
+    <li><strong>No adapters for vendor models in the SEED harness.</strong> The open SEED harness is offline by design: no API keys, no network egress, no vendor SDKs. Its adapter registry holds only stdlib-only seed adapters. The 23 hosted-API and third-party VLM rows have no adapter, so <code>--model GPT-4o</code> correctly exits with <code>unknown model</code>.</li>
+    <li><strong>No loader for the in-house corpus.</strong> The <code>parse-intent-inhouse-v1</code> dataset is not in the repository — it was not licensed for redistribution as part of the 2026-05-18 attestation. Without the corpus, no per-document score can be computed.</li>
+    <li><strong>No per-document scores.</strong> The attested source is corpus-level aggregate. Bootstrap CIs need per-document resamples that do not exist.</li>
+  </ol>
+  <p>The crucial detail: when the harness went red, <strong>nothing was patched to make it green</strong>. No attested number was quietly adjusted. No <code>ci95</code> was filled with a plausible-looking interval. No <code>reproduced_by_factory</code> flag was flipped. The 23 attested F1/WER pairs were preserved exactly, the audit table was published next to the results, and a footnote was added to section 5.1.1. A failed reproduction attempt that you publish in full is worth more than a successful one nobody can see.</p>
+
+  <h3>5. Enforcement lives in code, not in a promise</h3>
+  <p>Discipline that depends on author goodwill decays. SAVIOR-Bench v1 moves the enforcement into the type system and the harness. The clearest example is the tabular-reasoning stream, TR-000. It is <em>registered</em> — it has a task entry, a metric spec (TEDS primary; GRITS and cell-F1 secondary), pinned decoding — but it is <code>REGISTERED-NOT-YET-RUN</code>. And <code>harness/metrics.py</code> <code>score_item("TR-000")</code> raises <code>NotImplementedError</code> by design; <code>harness/tabular_metrics.py</code> is a typed scaffold with <code>NotImplementedError</code> bodies.</p>
+  <p>The consequence is structural: <strong>there is no TR-000 number anywhere in the repository</strong>, so there is no TR-000 number that can accidentally land in a slide, a tweet, or a sales deck. You cannot leak a result that the code refuses to produce. The honest corpus ceiling for TR-000 is stated as ~3.5k–6.8k documents; a rounder, nicer "10k" is explicitly <em>not</em> asserted anywhere in the program.</p>
+  <p>The same principle governs confidence intervals. Every <code>ci95</code> field is <code>null</code>, surfaced to readers as "reported (no CI)". A null interval is honest about uncertainty we have not measured. A fabricated &plusmn;0.01 would be a lie with a decimal point. The harness carries a per-cell <code>rerun_command</code> string on every published cell, so no reader can ever mistake an attested cell for a reproduced one.</p>
+
+  <h3>6. Why the weaker claim is the stronger asset</h3>
+  <p>It would have been easy to write "SAVIOR-Bench v1: a fully reproducible financial-document benchmark." It would also have been false the moment a reader tried <code>repro_check.py</code> against a vendor row. The no-faked-cell discipline accepts a less punchy sentence — "attested, with a named, audited path to reproduction" — because that sentence survives contact with a skeptic.</p>
+  <p>For anyone evaluating document-AI systems, the transferable practice is small and cheap: separate <em>attested</em> from <em>reproduced</em> in your own vocabulary, demand a per-cell provenance string, treat a <code>null</code> CI as more honest than a suspiciously tidy one, and ask any vendor to show you their failed reproduction attempts, not just their leaderboard. A benchmark that publishes its 0/23 is telling you something true. A benchmark with no audit at all is telling you nothing — confidently.</p>
+
+  <h2>Sources</h2>
+  <ul>
+    <li>Hyperbots Benchmark Report — SAVIOR-Bench v1 (snapshot 2026-05-20): Headline KPIs, the seven HuggingFace-grade pillars (esp. pillar 7), section 6 methodology &amp; reproducibility, section 7 honest limitations.</li>
+    <li><code>paper/SAVIOR-Bench.md</code> §2.2, §5.1, §5.7, §10, Appendix D.2 — primary paper artifact.</li>
+    <li><code>paper/W6-attestation-2026-05-21.md</code> — W6 factory re-reproduction attestation (23/23 attempted, 0/23 re-derived, three structural causes).</li>
+    <li><code>results/_w6_factory_rerun.json</code> — per-cell W6 audit log; harness commit <code>3382abb</code>.</li>
+    <li><code>harness/tasks.json</code>, <code>harness/PINS.txt</code>, <code>harness/repro_check.py</code>, <code>harness/metrics.py</code>, <code>harness/tabular_metrics.py</code> — pinned harness + NotImplementedError scaffold.</li>
+    <li><code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code> — verbatim in-repo extract; IAA, corpus mix.</li>
+  </ul>
+  <h2>Open assumptions</h2>
+  <ol>
+    <li>Every number is transcribed verbatim from the SAVIOR-Bench v1 report and its cited sources; none synthesized, rounded, or interpolated.</li>
+    <li>All cells are in-house-run, user-attested 2026-05-18 — not factory-harness-reproduced. The W6 audit confirms 0/23 parse-intent cells were factory re-derived.</li>
+    <li>Benchmark figures describe model OCR/parse performance, not product accuracy. Product-accuracy claims are cited only per apis.hyperbots.com.</li>
+    <li>Fine-tuned rows are LoRA fine-tunes of an open backbone on SAVIOR-Train (Hyperbots IP); they are not compared apples-to-apples with zero-shot rows.</li>
+    <li>This is a draft. External publication is human-gated.</li>
+  </ol>
+</div>
+
+<!-- TAB 3: ACL PAPER -->
+<div class="panel" id="p3">
+  <h2>ACL-style paper rendition</h2>
+  <div class="warnbox"><strong>Compilation note.</strong> <code>pdflatex</code> is not installed on this machine. The LaTeX source below (also at <code>content/pdf/2026-05-22-no-faked-cell.tex</code>) requires <code>pdflatex</code> plus the ACL 2023 style files (<code>acl.sty</code>, <code>acl_natbib.bst</code>) to compile to PDF. The print-CSS rendition immediately below is the usable fallback.</div>
+
+  <div class="acl">
+    <h1 class="t">The No-Faked-Cell Discipline: Reporting Reproducibility a Benchmark Has Not Yet Earned</h1>
+    <div class="auth">Hyperbots Research &middot; SAVIOR-Bench Working Group &middot; snapshot 2026-05-20</div>
+    <div class="abs"><strong>Abstract.</strong> We present the reproducibility methodology of SAVIOR-Bench v1, a 509-document expert-annotated financial-document benchmark over 21 OCR and 23 parse-intent systems. Rather than claiming reproducibility, the benchmark enforces a no-faked-cell discipline: cells that cannot be computed honestly raise errors, confidence intervals absent per-document scores are reported as null, and every published cell is labelled attested-not-reproduced with a per-cell rerun command. A factory re-reproduction audit (W6) of all 23 parse-intent cells re-derived 0/23 under the open harness, due to three named structural causes; the failure is published in full with zero retractions and zero fabricated intervals. We argue that an honest weaker claim is a stronger trust asset than an unverifiable stronger one.</div>
+    <div class="cols">
+      <h2>1. Introduction</h2>
+      <p>"Reproducible" is widely over-claimed in applied ML evaluation. SAVIOR-Bench v1 separates two states: <em>attested</em> (a named party ran and signed numbers on a date) and <em>reproduced</em> (a deterministic harness re-derived them under a pinned environment with a green check). The benchmark is currently the former and openly not the latter.</p>
+      <h2>2. Method</h2>
+      <p>Corpus: 509 financial documents over five corpora and six document classes; IAA 0.761 over 187 double-annotated pairs. Scoring: word-level multiset recall/precision (whole-token, CER rejected); PaIRS layout penalty (PC-only; NPC = format-compat proxy); parse-intent F1 and WER. Decoding pinned (temperature 0.1, top-p 0.9, max_tokens 2048, seed 20260516); one frozen prompt per task family. The tabular stream TR-000 is registered-not-yet-run: <code>score_item("TR-000")</code> raises NotImplementedError, so no tabular number exists in the repository. Confidence intervals are null where per-document scores are absent.</p>
+      <h2>3. Results: the W6 audit</h2>
+      <p>All 23 parse-intent cells were re-run through the pinned harness (commit 3382abb).</p>
+      <table>
+        <thead><tr><th>Quantity</th><th>Value</th></tr></thead>
+        <tbody>
+          <tr><td>Cells attempted</td><td>23/23</td></tr>
+          <tr><td>Green repro_check</td><td>0/23</td></tr>
+          <tr><td>Red (structural)</td><td>23/23</td></tr>
+          <tr><td>CIs added</td><td>0</td></tr>
+          <tr><td>Rows retracted</td><td>0</td></tr>
+          <tr><td>true-flips</td><td>0</td></tr>
+        </tbody>
+      </table>
+      <p>Three structural causes: (i) no vendor adapters in the offline SEED harness; (ii) the in-house corpus is not redistributable; (iii) no per-document scores exist. Attested F1/WER pairs were preserved unchanged.</p>
+      <h2>4. Limitations</h2>
+      <p>All cells are attested, not factory-reproduced. No confidence intervals (ci95 = null). No per-class/per-quality/per-field slices. PaIRS is comparable only among prompt-controlled models. Single benchmark version (v1, 2026-05-18). Fine-tuned rows are LoRA fine-tunes on in-domain SAVIOR-Train data and are not apples-to-apples with zero-shot rows. Benchmark figures are model performance, not product accuracy.</p>
+      <h2>5. Conclusion</h2>
+      <p>Reproducibility is a status, not an adjective. Publishing a 0/23 audit and a named path to reproduction is a stronger trust position than an unverifiable claim of full reproducibility.</p>
+      <h2>References</h2>
+      <p>SAVIOR-Bench v1 report (snapshot 2026-05-20). paper/SAVIOR-Bench.md §2.2, §5.7, §10, App. D. paper/W6-attestation-2026-05-21.md. results/_w6_factory_rerun.json. harness/{tasks.json,PINS.txt,repro_check.py,metrics.py}.</p>
+      <h2>Sources</h2>
+      <p>As section References; all numbers transcribed verbatim from the SAVIOR-Bench v1 report and cited repo files.</p>
+      <h2>Open Assumptions</h2>
+      <p>Attested-not-reproduced; ci95 null; FT rows disclosed as in-domain LoRA fine-tunes; benchmark = model performance not product accuracy; draft, external publish human-gated.</p>
+    </div>
+  </div>
+
+  <h3>LaTeX source — <code>content/pdf/2026-05-22-no-faked-cell.tex</code></h3>
+  <p class="muted">Standard ACL 2-column article. Needs <code>pdflatex</code> + ACL style files to compile.</p>
+  <pre><code>% Compile: pdflatex (requires acl.sty, acl_natbib.bst — ACL 2023 style)
+\documentclass[11pt]{article}
+\usepackage[]{acl}
+\usepackage{times,booktabs,latexsym}
+\title{The No-Faked-Cell Discipline: Reporting Reproducibility
+       a Benchmark Has Not Yet Earned}
+\author{Hyperbots Research \\ SAVIOR-Bench Working Group}
+\begin{document}\maketitle
+\begin{abstract}
+We present the reproducibility methodology of SAVIOR-Bench v1 ...
+\end{abstract}
+\section{Introduction} ...
+\section{Method} ...
+\section{Results: the W6 audit} ...
+\section{Limitations} ...
+\section{Conclusion} ...
+\bibliographystyle{acl_natbib}\bibliography{anthology}
+\end{document}</code></pre>
+  <p class="muted">Full .tex written to <code>content/pdf/</code>.</p>
+</div>
+
+<footer>Hyperbots Research &middot; SAVIOR-Bench v1 &middot; DRAFT — external publish human-gated &middot; light theme, Rubik</footer>
+</div>
+<script>
+function show(i){
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('active',i===j));
+  document.querySelectorAll('.panel').forEach((p,j)=>p.classList.toggle('active',i===j));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>

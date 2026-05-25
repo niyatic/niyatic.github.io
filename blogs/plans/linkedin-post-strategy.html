@@ -1,0 +1,262 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>LinkedIn Post Strategy — Hyperbots / HyperAPI (GTM Hub)</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publication is human-gated</div><div class="meta">linkedin-post-strategy (CTO-org / GTM Hub) · 2026-05-22</div><h1>LinkedIn Post Strategy — Hyperbots / HyperAPI (GTM Hub)</h1>
+<blockquote><strong>DRAFT — pending review; external publication is human-gated.</strong> This is a</blockquote>
+<blockquote>strategy and a draft calendar, not a publish order. Nothing here authorizes</blockquote>
+<blockquote>a post. Every post below still passes the human approval gate and the same</blockquote>
+<blockquote>brand guardrails the ABM <code>linkedin/generator.py</code> lints and the CTO-org</blockquote>
+<blockquote><code>technical-content-strategist</code> enforce. The 2026-05-20 LinkedIn-via-Slack</blockquote>
+<blockquote>pause remains in effect — these are drafts for a human to post.</blockquote>
+<p>This document <strong>extends, does not duplicate</strong>, two existing artifacts:</p>
+<p>the CTO-org <code>2026-05-22-content-virality-strategy.md</code> (the cross-channel</p>
+<p>spine and 90-day calendar) and the ABM team&#x27;s <code>linkedin/</code> generator (the</p>
+<p>revised daily cadence: POV 40 / Value 30 / Proof 30, with in-code guardrail</p>
+<p>lints). The virality strategy answers &quot;what is the LinkedIn channel for&quot;;</p>
+<p>the ABM generator answers &quot;what does a single day&#x27;s draft look like.&quot; This</p>
+<p>document fills the GTM-hub gap between them: a **6-week, post-by-post</p>
+<p>calendar with concrete titles, hooks, and persona targets**, the engagement</p>
+<p>tactics that compound it, and the credible-virality plan that keeps it</p>
+<p>honest. Where the two parents disagree, the conservative reading wins.</p>
+<hr>
+<h2>1. Positioning — the LinkedIn through-line</h2>
+<p>The cross-channel spine is set in the virality strategy: *&quot;Document AI for</p>
+<p>finance, built and measured in the open — including the parts that don&#x27;t</p>
+<p>work yet.&quot;* LinkedIn&#x27;s job is the <strong>founder + finance-operator</strong> slice of</p>
+<p>that spine. The platform-specific positioning:</p>
+<blockquote><strong>The honest claim for LinkedIn:</strong> *Hyperbots builds, benchmarks and runs</blockquote>
+<blockquote>its go-to-market as agent systems in version control — and on this feed we</blockquote>
+<blockquote>show the work, including the negative findings, because a skeptical</blockquote>
+<blockquote>professional audience shares what it trusts, not what it is sold.*</blockquote>
+<p>Three things make this work on LinkedIn specifically, and none of them is a</p>
+<p>metric we do not have:</p>
+<p>1. <strong>The honest finding is the scroll-stopper.</strong> A finance or ML</p>
+<p>   professional has been told &quot;10x&quot; by every vendor in their feed. A founder</p>
+<p>   saying &quot;the fine-tune edge over zero-shot was smaller than we expected —</p>
+<p>   here is the real number and why API-native still wins&quot; is genuinely</p>
+<p>   novel. Per the virality strategy, the parse-intent edge is +0.0276 F1 and</p>
+<p>   the OCR edge +0.0061 recall — disclosed as the hook, not buried.</p>
+<p>2. <strong>The build story is concrete and verifiable.</strong> The 14-agent ABM engine,</p>
+<p>   the 9-agent benchmark factory, the repo-factory corpus — these are</p>
+<p>   checkable in version control. Concreteness beats adjectives on this feed.</p>
+<p>3. <strong>The CFO-office teach line earns the audience before it sells.</strong> Mapping</p>
+<p>   finance-document work task by task is teaching content; it builds the</p>
+<p>   operator following that later evaluates HyperAPI.</p>
+<p>Guardrail recap, in force for every post in this document: no named</p>
+<p>competitor (category labels — &quot;OCR-plus-rules&quot;, &quot;legacy IDP&quot; — only);</p>
+<p>product accuracy only &quot;per apis.hyperbots.com&quot;; benchmark figures labelled</p>
+<p>model OCR/parse performance; models = open-source backbones fine-tuned by</p>
+<p>Hyperbots (&quot;Hyperbots IP&quot;); pricing only the published <strong>$0.05/page</strong>,</p>
+<p>volume sized on a call; no HITL/manual-review framing; no fabricated</p>
+<p>metrics or follower counts; no customer-outcome claim (the ABM engine has</p>
+<p>sent zero messages).</p>
+<hr>
+<h2>2. Content pillars — 5 recurring themes</h2>
+<p>These specialize the virality strategy&#x27;s six pillars to what LinkedIn</p>
+<p>rewards, and map cleanly onto the ABM generator&#x27;s POV / Value / Proof mix so</p>
+<p>the daily generator and this calendar stay one system.</p>
+<table><thead><tr><th>#</th><th>Pillar</th><th>Maps to ABM mix</th><th>Real asset it stands on</th><th>The recurring honest angle</th></tr></thead><tbody><tr><td>L1</td><td><strong>The honest benchmark</strong></td><td>Proof</td><td>SAVIOR-Bench paper, SEED leaderboard (12 cells), W6 audit</td><td>&quot;Here is the measured number — and here is what we could not establish.&quot;</td></tr><tr><td>L2</td><td><strong>The small-gap truth</strong></td><td>POV / Proof</td><td>Parse-intent +0.0276 F1; OCR +0.0061 recall</td><td>&quot;The fine-tune edge is narrower than the market claims — why API-native still wins.&quot;</td></tr><tr><td>L3</td><td><strong>The agent-built company</strong></td><td>POV</td><td>ABM (14 agents), benchmark factory (9), repo factory (13)</td><td>&quot;We treat GTM and R&amp;D as software — version-controlled, QA-gated, human-merged.&quot;</td></tr><tr><td>L4</td><td><strong>The CFO-office task map</strong></td><td>Value</td><td>Repo-factory corpus; ABM ICP&#x27;s four doc classes; persona work</td><td>&quot;The real shape of finance-document work, task by task — teaching, not pitching.&quot;</td></tr><tr><td>L5</td><td><strong>Document AI economics</strong></td><td>Value / Proof</td><td>SAVIOR-Bench §5.4-5.5 measured latency/cost; the $0.05/page model</td><td>&quot;What document AI actually costs — measured infrastructure numbers, published per-page pricing, no marketing math.&quot;</td></tr></tbody></table>
+<p>The ABM generator&#x27;s &quot;Listening, disclosed&quot; pillar (P5 in the virality</p>
+<p>strategy) is deliberately <strong>not</strong> a LinkedIn posting pillar — social</p>
+<p>listening informs topic selection but is not itself feed content here.</p>
+<hr>
+<h2>3. The 6-week post calendar</h2>
+<p>Cadence: <strong>3 posts/week</strong> (Mon / Wed / Fri), matching the ABM generator&#x27;s</p>
+<p>sustainable rhythm and the virality strategy&#x27;s LinkedIn line. One founder</p>
+<p>voice, one research/proof, one CFO-office teach per week. Personas use the</p>
+<p>ABM persona tiers: CFO/CAO (T1), VP Finance (T2), Controller/AP Director</p>
+<p>(T3), Procurement (T4), IT/CIO (T5), ERP Lead (T6), AI/Data Strategy (T7).</p>
+<p>All posts are DRAFT and pass the human gate. Weeks are 2026.</p>
+<h3>Week 1 — May 26-Jun 1 · establish the honest-by-default voice</h3>
+<table><thead><tr><th>#</th><th>Day</th><th>Title / hook</th><th>Pillar</th><th>Persona target</th></tr></thead><tbody><tr><td>1</td><td>Mon May 26</td><td><strong>&quot;We built our entire ABM engine in version control — and it has sent exactly zero messages.&quot;</strong> Hook: the build story, with &quot;zero sent&quot; stated in the first line so nobody can accuse us of inflating it.</td><td>L3</td><td>Founders, GTM leaders (T7)</td></tr><tr><td>2</td><td>Wed May 28</td><td><strong>&quot;We benchmarked our own model. The edge over the best zero-shot system was +0.0276 F1. Here&#x27;s why we published that sentence.&quot;</strong> Hook: a vendor admitting the gap is small.</td><td>L2</td><td>AI/Data Strategy (T7), ML practitioners</td></tr><tr><td>3</td><td>Fri May 29</td><td><strong>&quot;The CFO cost nobody lines out: documents that aren&#x27;t data yet.&quot;</strong> Hook: name the leak (close-cycle slip, duplicate pay, DSO drift) before naming a product. Adapted from the existing GTM-push feed template.</td><td>L4</td><td>CFO/CAO (T1), VP Finance (T2)</td></tr></tbody></table>
+<h3>Week 2 — Jun 2-8 · the benchmark, honestly</h3>
+<table><thead><tr><th>#</th><th>Day</th><th>Title / hook</th><th>Pillar</th><th>Persona target</th></tr></thead><tbody><tr><td>4</td><td>Mon Jun 1</td><td><strong>&quot;Most leaderboards you can&#x27;t reproduce. Here is ours — 12 cells that run on your laptop.&quot;</strong> Hook: the offline SEED leaderboard, deterministic, stdlib-only.</td><td>L1</td><td>ML practitioners, IT/CIO (T5)</td></tr><tr><td>5</td><td>Wed Jun 3</td><td><strong>&quot;We built a harness to reproduce our own benchmark. It reproduced 0 of 23 cells — and that was the most useful thing it did.&quot;</strong> Hook: the W6 audit as a feature.</td><td>L1</td><td>AI/Data Strategy (T7), founders</td></tr><tr><td>6</td><td>Fri Jun 5</td><td><strong>&quot;Ten finance-document tasks nobody automates — and why.&quot;</strong> Hook: teach the task map; pick the un-glamorous ten.</td><td>L4</td><td>Controller/AP Director (T3), CFO (T1)</td></tr></tbody></table>
+<h3>Week 3 — Jun 9-15 · economics and the operator</h3>
+<table><thead><tr><th>#</th><th>Day</th><th>Title / hook</th><th>Pillar</th><th>Persona target</th></tr></thead><tbody><tr><td>7</td><td>Mon Jun 8</td><td><strong>&quot;What document AI actually costs — from measured infrastructure numbers, not a pricing page fantasy.&quot;</strong> Hook: measured latency/cost, the published $0.05/page model.</td><td>L5</td><td>CFO (T1), IT/CIO (T5)</td></tr><tr><td>8</td><td>Wed Jun 10</td><td><strong>&quot;OCR-plus-rules isn&#x27;t getting an upgrade. The finance back office is being rebuilt API-first.&quot;</strong> Hook: POV on the category shift; positioning, not a benchmark claim. Extends the existing Mon <code>pov-1</code> draft.</td><td>L2</td><td>VP Finance (T2), ERP Lead (T6)</td></tr><tr><td>9</td><td>Fri Jun 12</td><td><strong>&quot;AP exception queues are not a staffing problem. They&#x27;re a document-to-data problem.&quot;</strong> Hook: reframe the controller&#x27;s daily pain. Extends the existing GTM-push T3 angle.</td><td>L4</td><td>Controller/AP Director (T3)</td></tr></tbody></table>
+<h3>Week 4 — Jun 16-22 · the agent-built company in depth</h3>
+<table><thead><tr><th>#</th><th>Day</th><th>Title / hook</th><th>Pillar</th><th>Persona target</th></tr></thead><tbody><tr><td>10</td><td>Mon Jun 15</td><td><strong>&quot;Our benchmark factory blocks its own release on a reproducibility mismatch. Here&#x27;s the STOP gate.&quot;</strong> Hook: the 9-agent factory&#x27;s discipline.</td><td>L3</td><td>ML practitioners, founders</td></tr><tr><td>11</td><td>Wed Jun 17</td><td><strong>&quot;We mapped the finance back office into thousands of named extraction tasks. Here&#x27;s the taxonomy.&quot;</strong> Hook: the repo-factory corpus as a published map of CFO-office work.</td><td>L4</td><td>AI/Data Strategy (T7), CFO (T1)</td></tr><tr><td>12</td><td>Fri Jun 19</td><td><strong>&quot;Procurement runs on documents that aren&#x27;t data — supplier onboarding, POs, packing slips, customs.&quot;</strong> Hook: the procurement-specific task slice.</td><td>L4</td><td>Procurement (T4), ERP Lead (T6)</td></tr></tbody></table>
+<h3>Week 5 — Jun 23-29 · proof and the ERP angle</h3>
+<table><thead><tr><th>#</th><th>Day</th><th>Title / hook</th><th>Pillar</th><th>Persona target</th></tr></thead><tbody><tr><td>13</td><td>Mon Jun 22</td><td><strong>&quot;We added a model to the leaderboard this week. Here&#x27;s exactly where it landed — and what surprised us.&quot;</strong> Hook: a leaderboard-refresh content event.</td><td>L1</td><td>ML practitioners, AI/Data Strategy (T7)</td></tr><tr><td>14</td><td>Wed Jun 24</td><td>**&quot;Document AI should land data *into* the ERP — not become another system your team operates.&quot;** Hook: the connector/embed framing, never a displacement story.</td><td>L5</td><td>ERP Lead (T6), IT/CIO (T5)</td></tr><tr><td>15</td><td>Fri Jun 26</td><td><strong>&quot;A controller&#x27;s FY plan has three lines we can read straight off a document workflow.&quot;</strong> Hook: close-cycle, duplicate-pay, DSO — teach the diagnostic.</td><td>L4</td><td>Controller (T3), VP Finance (T2)</td></tr></tbody></table>
+<h3>Week 6 — Jun 30-Jul 6 · synthesize and double down</h3>
+<table><thead><tr><th>#</th><th>Day</th><th>Title / hook</th><th>Pillar</th><th>Persona target</th></tr></thead><tbody><tr><td>16</td><td>Mon Jun 29</td><td><strong>&quot;Six weeks of posting our own failures: what a skeptical feed actually rewarded.&quot;</strong> Hook: honest retrospective — saves and qualified replies, not vanity numbers (no follower counts cited).</td><td>L3</td><td>Founders, GTM leaders</td></tr><tr><td>17</td><td>Wed Jul 1</td><td><strong>&quot;The fine-tune edge is small. The corpus and the loop are the moat. Here&#x27;s the difference.&quot;</strong> Hook: the durable-moat argument done plainly.</td><td>L2</td><td>AI/Data Strategy (T7), founders</td></tr><tr><td>18</td><td>Fri Jul 3</td><td><strong>&quot;Document AI for finance, task by task — start here.&quot;</strong> Hook: a teach round-up that points to the canonical blog and the runnable repos.</td><td>L4</td><td>CFO (T1), Controller (T3), all operators</td></tr></tbody></table>
+<p><strong>Steady state from Week 7:</strong> maintain 3 posts/week on the L1-L5 rotation;</p>
+<p>every leaderboard refresh and every negative finding becomes an unscheduled</p>
+<p>post slotted into the next open day.</p>
+<hr>
+<h2>4. Engagement tactics</h2>
+<p>Engagement is part of the strategy, not an afterthought — but every tactic</p>
+<p>below is organic and honest. No bought engagement, no pods, no star-for-star,</p>
+<p>no sock-puppets.</p>
+<ul>
+<li><strong>Per-post engagement action</strong>, mirroring the ABM generator&#x27;s pattern:</li>
+</ul>
+<p>  - *Founder/POV posts (Mon):* the author comments substantively on 3</p>
+<p>    finance-AI or CFO-office posts the same day — adding a real point, never</p>
+<p>    &quot;great post.&quot;</p>
+<p>  - *Research/proof posts (Wed):* reshare or quote-comment 1 credible</p>
+<p>    practitioner or partner artifact, with attribution.</p>
+<p>  - *Teach posts (Fri):* reply in-thread to every qualified question; route</p>
+<p>    deeper ones to the canonical blog or a runnable repo.</p>
+<ul>
+<li><strong>Comment, don&#x27;t broadcast.</strong> The author replies to every substantive</li>
+</ul>
+<p>  comment within the first 24 hours — LinkedIn&#x27;s ranking rewards early</p>
+<p>  author replies, and a real conversation is the honest version of &quot;boosting</p>
+<p>  reach.&quot;</p>
+<ul>
+<li><strong>Disclosure is mandatory.</strong> Any team member engaging with Hyperbots</li>
+</ul>
+<p>  content does so from their real identity and discloses the affiliation</p>
+<p>  (&quot;I work on Hyperbots&quot;) — never an anonymous assist.</p>
+<ul>
+<li><strong>Cross-link, don&#x27;t repost.</strong> A LinkedIn post links to the canonical blog</li>
+</ul>
+<p>  or repo; it does not paste the whole thing. The blog is the durable home;</p>
+<p>  LinkedIn is the doorway.</p>
+<ul>
+<li><strong>Persona-paced asks.</strong> The CTA matches persona tier: operators get a soft</li>
+</ul>
+<p>  &quot;where does this break for you?&quot;; an evaluator-leaning post may offer the</p>
+<p>  runnable repo. Pricing, if it ever appears, is only the published</p>
+<p>  $0.05/page with &quot;volume sized on a call&quot; — never an invented quote.</p>
+<ul>
+<li><strong>The break-even rule.</strong> If a post needs a hyped line to perform, the post</li>
+</ul>
+<p>  is wrong — rewrite the post, do not buy the reach.</p>
+<hr>
+<h2>5. Credible-virality plan</h2>
+<p>The premise, inherited verbatim from the virality strategy and the</p>
+<p><code>technical-content-strategist</code> mandate: **the honest, non-obvious finding is</p>
+<p>the hook.** On LinkedIn this is not a constraint we tolerate — it is the</p>
+<p>single highest-leverage move available, because a professional feed is</p>
+<p>saturated with hype and starved of candor.</p>
+<p>The three honest findings that lead this calendar:</p>
+<p>1. <strong>&quot;The fine-tune edge is smaller than you&#x27;d think.&quot;</strong> Parse-intent</p>
+<p>   +0.0276 F1; OCR +0.0061 recall. A vendor saying this stops the scroll of</p>
+<p>   a buyer who has been sold &quot;10x&quot; all week — and then earns the read of the</p>
+<p>   real argument (API-native pipeline, measured economics, the corpus moat).</p>
+<p>2. **&quot;Our benchmark harness reproduced 0 of 23 cells — and we published</p>
+<p>   it.&quot;** The W6 audit. This is genuinely novel: most companies bury a</p>
+<p>   negative finding; shipping it on purpose is the share-bait for a</p>
+<p>   skeptical technical crowd. It is shareable *because* it is true.</p>
+<p>3. **&quot;We built our GTM as 14 agents in git — and it has sent zero</p>
+<p>   messages.&quot;** The build story with the deflating fact stated up front.</p>
+<p>   Honesty about what has *not* happened yet is itself the credibility</p>
+<p>   signal.</p>
+<p>What &quot;viral but credible&quot; looks like here — and what it explicitly is not:</p>
+<ul>
+<li><strong>Working:</strong> saves and qualified replies outrank raw likes; reshares by</li>
+</ul>
+<p>  named practitioners outrank reshares by anonymous accounts; the honest</p>
+<p>  finding (small gap; 0/23 audit) is the line that gets quoted.</p>
+<ul>
+<li><strong>Not working / anti-goals:</strong> a one-time spike with no qualified</li>
+</ul>
+<p>  conversation; engagement on a claim we cannot defend; any reach</p>
+<p>  attributable to undisclosed activity. No follower-count or vanity-metric</p>
+<p>  target is set, because none would be honest to chase.</p>
+<ul>
+<li><strong>Zero forced corrections.</strong> Every claim shipped was attested or</li>
+</ul>
+<p>  reproduced first; nothing in this calendar requires a retraction later.</p>
+<p>The compounding asset is the *method* — &quot;they publish their failures.&quot; That</p>
+<p>reputation is what makes a third party quote a Hyperbots post, and a quoted</p>
+<p>post is worth more than a boosted one.</p>
+<hr>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-abm-team/content/strategy/2026-05-22-content-virality-strategy.md</code></li>
+</ul>
+<p>  — the cross-channel virality spine, six content pillars, per-channel plan,</p>
+<p>  90-day calendar; the LinkedIn line, the honest hooks (+0.0276 F1, W6 0/23</p>
+<p>  audit, &quot;zero messages sent&quot;), and measurement philosophy this document</p>
+<p>  specializes.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-abm-team/linkedin/README.md</code> and <code>linkedin/drafts/</code></li>
+</ul>
+<p>  — the revised daily cadence (POV 40 / Value 30 / Proof 30), the in-code</p>
+<p>  guardrail lints (<code>lint_no_competitor</code>, <code>lint_accuracy_claim</code>,</p>
+<p>  <code>lint_banned_framing</code>, artifact traceability), and the existing draft</p>
+<p>  posts and 2026-05-21 GTM-push feed/DM templates this calendar extends.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-abm-team/.claude/agents/abm-content-marketing.md</code></li>
+</ul>
+<p>  — the content-craft certification bar (hook strength, one-idea discipline,</p>
+<p>  conversion logic, guardrails) applied to every post above.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-cto-org/.claude/agents/technical-content-strategist.md</code></li>
+</ul>
+<p>  — the inherited mandate and hard guardrails (honest finding is the asset,</p>
+<p>  no named competitor, accuracy per apis.hyperbots.com, drafts only).</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>This is a <strong>DRAFT strategy + draft calendar</strong>, not a publish order. Every</li>
+</ul>
+<p>  post passes the human approval gate before posting; the 2026-05-20</p>
+<p>  LinkedIn-via-Slack pause remains in effect and is not resumed here.</p>
+<ul>
+<li>SAVIOR-Bench headline numbers are in-house-run and user-attested, not</li>
+</ul>
+<p>  factory-harness-reproduced; the W6 audit re-derived 0/23 DC-000 cells. No</p>
+<p>  post claims the headline numbers are independently reproducible — only the</p>
+<p>  12-cell offline SEED leaderboard is presented as reproducible.</p>
+<ul>
+<li>Fine-tuned (Hyperbots-IP, open-source backbones) vs. zero-shot is disclosed</li>
+</ul>
+<p>  inline in every public claim. Benchmark figures are model OCR/parse</p>
+<p>  performance, not product accuracy; product accuracy is referenced only</p>
+<p>  &quot;per apis.hyperbots.com.&quot; No HITL/manual-review framing.</p>
+<ul>
+<li>No named competitor appears in any post (category labels only).</li>
+<li>No customer-outcome, engagement, reply, revenue, or follower-count figure</li>
+</ul>
+<p>  is claimed — none exists; the ABM engine has sent zero messages.</p>
+<ul>
+<li>Pricing is referenced only as the published $0.05/page model, volume sized</li>
+</ul>
+<p>  on a call; no ACV, quote, or discount is invented.</p>
+<ul>
+<li>Posting account ownership, the exact author per post, and any paid-spend</li>
+</ul>
+<p>  decision are out of scope here and require human assignment.</p>
+<ul>
+<li>Calendar dates are indicative; the human gate may reslot any post.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

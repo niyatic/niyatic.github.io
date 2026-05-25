@@ -1,0 +1,308 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hyperbots fine-tuned models vs the document-AI category — an honest comparative study</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — internal only, human-gated. Not for external publication.</div><div class="meta">2026-05-22</div><h1>Hyperbots fine-tuned models vs the document-AI category</h1>
+<p>**DRAFT — internal only. External publication is human-gated. This study refers</p>
+<p>to category approaches by label only (&quot;legacy IDP&quot;, &quot;OCR-plus-rules&quot;,</p>
+<p>&quot;general-purpose vision LLM&quot;, &quot;zero-shot VLM&quot;) and names no vendor. The named,</p>
+<p>governed comparison lives in the SAVIOR-Bench benchmark artifact, linked below</p>
+<p>and not restated here.**</p>
+<h2>The honest headline finding</h2>
+<p>If you came expecting &quot;our fine-tune crushes the field,&quot; that is not what the</p>
+<p>data says — and saying so would not survive contact with a careful reader.</p>
+<p>**The honest, non-obvious finding: the fine-tune edge is real, but narrow — and</p>
+<p>narrowly scoped.** On SAVIOR-Bench, Hyperbots&#x27; fine-tuned models lead on exactly</p>
+<p>two metrics, by small margins, and *lose* on two others to strong zero-shot</p>
+<p>systems. Specifically:</p>
+<ul>
+<li>On <strong>parse-intent F1</strong>, the fine-tuned <code>hyperapi-parse-intent</code> leads the best</li>
+</ul>
+<p>  *well-documented* zero-shot system by <strong>+0.0276 F1</strong> (0.8328 vs 0.8052).</p>
+<ul>
+<li>On <strong>OCR recall</strong>, the fine-tuned <code>Qwen2.5-VL-7B-F</code> leads the best zero-shot</li>
+</ul>
+<p>  system by only <strong>+0.0061 recall</strong> (0.9294 vs 0.9233).</p>
+<ul>
+<li>On <strong>OCR precision</strong>, a zero-shot general-purpose vision LLM leads both</li>
+</ul>
+<p>  fine-tuned rows (0.9322 vs 0.9157).</p>
+<ul>
+<li>On <strong>layout fidelity (PaIRS)</strong>, zero-shot systems lead by a wide margin</li>
+</ul>
+<p>  (0.8766 vs 0.7066).</p>
+<p>That is the real shape of the result. The interesting part is not the size of</p>
+<p>the win — it is *why a narrow win is still the right approach*. Fine-tuning on</p>
+<p>financial-document data buys a consistent recall/F1 edge <strong>and</strong> a large word-</p>
+<p>error-rate reduction (parse-intent WER 0.2589 vs the zero-shot anchor&#x27;s 0.4232),</p>
+<p><strong>and</strong> it does so on small open backbones (3B / 7B parameters) at roughly</p>
+<p><strong>$0.19 per 1,000 successful calls</strong>. The category&#x27;s frontier zero-shot systems</p>
+<p>are far larger and far more expensive per call. So the question a buyer should</p>
+<p>ask is not &quot;who is +0.05 ahead on a leaderboard&quot; — it is &quot;which approach gives a</p>
+<p>predictable, ownable, cheap-to-serve transcription path for financial documents.&quot;</p>
+<p>On that question the fine-tune story holds up; on a raw-magnitude story it does</p>
+<p>not, and we will not tell the raw-magnitude story.</p>
+<h2>What this study compares — and what it deliberately does not</h2>
+<p>This study compares <strong>Hyperbots&#x27; open-source fine-tuned models</strong> (open backbones</p>
+<p>fine-tuned by Hyperbots via LoRA — Hyperbots IP) against the broad document-AI</p>
+<p>category. We refer to category approaches by label only:</p>
+<table><thead><tr><th>Category label</th><th>What it means</th></tr></thead><tbody><tr><td><strong>legacy IDP</strong></td><td>Template- or schema-driven intelligent document processing; fixed-schema extraction stacks.</td></tr><tr><td><strong>OCR-plus-rules</strong></td><td>A raw OCR engine followed by hand-written post-processing / regex / rule layers.</td></tr><tr><td><strong>general-purpose vision LLM</strong></td><td>A large frontier multimodal model used out of the box for document tasks.</td></tr><tr><td><strong>zero-shot VLM</strong></td><td>An open or hosted vision-language model run in its native settings with no task fine-tuning.</td></tr></tbody></table>
+<p>We deliberately do <strong>not</strong> name any vendor. Naming the measured systems is a</p>
+<p>legitimate scientific-benchmark norm and is done — once, governed — inside the</p>
+<p>SAVIOR-Bench paper. This GTM artifact is marketing-surface copy, so the</p>
+<p>no-named-competitors guardrail applies; the named rows stay in the linked</p>
+<p>benchmark artifact.</p>
+<h2>Methodology — read this before any number</h2>
+<p>Every number below is grounded in <strong>SAVIOR-Bench v1</strong>, a 509-document,</p>
+<p>expert-annotated financial-document benchmark spanning five corpora (UCSF</p>
+<p>Industry Documents, in-house synthetic, misc. public financial, Inv3D, FUNSD),</p>
+<p>with an inter-annotator agreement of <strong>0.761</strong> (fuzzy string similarity over 187</p>
+<p>double-annotated pairs).</p>
+<ul>
+<li><strong>Two task families, identical inputs.</strong> (a) OCR transcription + layout</li>
+</ul>
+<p>  fidelity, scored by word-level multiset <strong>recall</strong> and <strong>precision</strong> plus</p>
+<p>  <strong>PaIRS</strong> (a pairwise spatial-relationship layout score); (b) parse-intent</p>
+<p>  structured extraction, scored by <strong>F1</strong> (↑) and <strong>word error rate / WER</strong> (↓).</p>
+<ul>
+<li><strong>Frozen decoding.</strong> Temperature 0.1, top-p 0.9, max_tokens 2048, seed</li>
+</ul>
+<p>  20260516; one frozen prompt template per task family.</p>
+<ul>
+<li><strong>Panel.</strong> ~21 OCR systems and 23 parse-intent systems spanning the full</li>
+</ul>
+<p>  category — cloud document-AI APIs, frontier general-purpose vision LLMs, and</p>
+<p>  open-source OCR/VLM stacks. <strong>Three rows are Hyperbots fine-tunes</strong> on</p>
+<p>  SAVIOR-Train (LoRA, rank 32 / α 64, on Qwen2.5-VL-3B/7B open backbones);</p>
+<p>  <strong>every other row is zero-shot in its native settings.</strong></p>
+<ul>
+<li><strong>Provenance.</strong> Every cell is <strong>in-house-run, user-attested 2026-05-18</strong></li>
+</ul>
+<p>  (source: <code>benchmark.xlsx</code> + the in-repo verbatim extract of the</p>
+<p>  Hyperbots-provided source PDF). The numbers are <strong>not</strong> factory-harness-</p>
+<p>  reproduced. Confidence intervals are <strong>not reported</strong> (<code>ci95=null</code>); no</p>
+<p>  interval is fabricated. <code>n=509</code> for the OCR table; <code>n</code> is not reported in the</p>
+<p>  attested source for the parse-intent table, and we do not infer one.</p>
+<p><strong>These figures are model OCR/parse performance — not product accuracy.</strong> Any</p>
+<p>Hyperbots product-accuracy figure would be cited only &quot;per apis.hyperbots.com&quot;;</p>
+<p>this study makes no product-accuracy claim.</p>
+<h2>Not apples-to-apples — the fine-tune-vs-zero-shot disclosure</h2>
+<p>This is the single most important caveat in the study, and it is stated here,</p>
+<p>inline, before the leaderboard tables — exactly as the benchmark paper states it</p>
+<p>in its abstract.</p>
+<blockquote><strong>Three rows are fine-tuned <code>[FT]</code>; every other row is zero-shot.</strong> The two</blockquote>
+<blockquote>leading OCR rows in our favour (<code>Qwen2.5-VL-7B-F</code>, <code>Qwen2.5-VL-3B-F</code>) and the</blockquote>
+<blockquote>leading parse-intent system (<code>hyperapi-parse-intent</code>) are **fine-tuned by</blockquote>
+<blockquote>Hyperbots on SAVIOR-Train** (LoRA on open backbones — Hyperbots IP). Every</blockquote>
+<blockquote>other panel row is <strong>zero-shot in the vendor&#x27;s native settings</strong>. A fine-tuned</blockquote>
+<blockquote>model compared against a zero-shot model is **not an apples-to-apples</blockquote>
+<blockquote>comparison** — the fine-tuned model has seen task-matched financial-document</blockquote>
+<blockquote>training data and the zero-shot models have not. We mark fine-tuned rows</blockquote>
+<blockquote><code>[FT]</code> everywhere they appear. Every delta below is <strong>direction-only</strong> — with</blockquote>
+<blockquote><code>ci95=null</code>, no delta is an interval-significant claim, and the hedging words</blockquote>
+<blockquote>(&quot;narrow&quot;, &quot;modest&quot;, &quot;marginally&quot;) are the honest qualifier.</blockquote>
+<h2>The real SEED-leaderboard cells</h2>
+<p>These are the attested SAVIOR-Bench cells, presented unchanged from the</p>
+<p>benchmark paper. We retain the rows where fine-tuning *loses* — cropping them</p>
+<p>would misrepresent the result.</p>
+<h3>Parse-intent (DC-000, dataset <code>parse-intent-inhouse-v1</code>) — F1 ↑ / WER ↓</h3>
+<p><code>[FT]</code> = fine-tuned by Hyperbots (SAVIOR-Train); not apples-to-apples vs the</p>
+<p>zero-shot rows. <code>n</code> is not reported in the attested source for this table.</p>
+<table><thead><tr><th>Rank</th><th>Model</th><th>F1 ↑</th><th>WER ↓</th><th>Setting</th></tr></thead><tbody><tr><td>1</td><td>hyperapi-parse-intent <code>[FT]</code></td><td><strong>0.8328</strong></td><td><strong>0.2589</strong></td><td>fine-tuned</td></tr><tr><td>2</td><td>DocIntentOCR-3B</td><td>0.8102</td><td>0.5622</td><td>zero-shot (under-documented)</td></tr><tr><td>3</td><td>best well-documented zero-shot anchor</td><td>0.8052</td><td>0.4232</td><td>zero-shot</td></tr><tr><td>4</td><td>next zero-shot system</td><td>0.7686</td><td>0.4869</td><td>zero-shot</td></tr><tr><td>...</td><td>(19 further zero-shot systems)</td><td>0.7260 → 0.3430</td><td>2.96 → 12.35</td><td>zero-shot</td></tr></tbody></table>
+<p>Honest reading: the fine-tuned system leads. The row immediately below it</p>
+<p>(<code>DocIntentOCR-3B</code>, 0.8102) posts a marginally higher F1 than the</p>
+<p>*well-documented* zero-shot anchor (0.8052) — but <code>DocIntentOCR-3B</code> is an</p>
+<p><strong>under-documented panel row</strong> with no recorded vendor, checkpoint, or config in</p>
+<p>the attested source, so the benchmark paper anchors its modesty framing on the</p>
+<p>well-documented zero-shot system instead. Against that anchor the fine-tune gap</p>
+<p>is <strong>+0.0276 F1</strong>; against the under-documented row it is +0.0226 F1. The WER</p>
+<p>reduction (0.2589 vs 0.4232) is the more substantive part of the result.</p>
+<h3>SAVIOR-Bench OCR (DC-000, dataset <code>savior-bench-v1</code>, n=509) — Recall ↑ / Precision ↑ / PaIRS ↑</h3>
+<p><code>cat</code>: <strong>PC</strong> = prompt-controlled (PaIRS comparable); <strong>NPC</strong> = non-prompt-</p>
+<p>controlled (PaIRS is a format-compatibility proxy, not a directly comparable</p>
+<p>layout ranking).</p>
+<table><thead><tr><th>Rank (by Recall)</th><th>Model</th><th>Recall ↑</th><th>Precision ↑</th><th>PaIRS ↑</th><th>cat</th><th>Setting</th></tr></thead><tbody><tr><td>1</td><td>Qwen2.5-VL-7B-F <code>[FT]</code></td><td><strong>0.9294</strong></td><td>0.9157</td><td>0.7066</td><td>NPC</td><td>fine-tuned</td></tr><tr><td>2</td><td>best zero-shot cloud doc-AI API</td><td>0.9233</td><td>0.8902</td><td>0.5117</td><td>NPC</td><td>zero-shot</td></tr><tr><td>3</td><td>second zero-shot cloud doc-AI API</td><td>0.9202</td><td>0.8978</td><td>0.5025</td><td>NPC</td><td>zero-shot</td></tr><tr><td>4</td><td>Qwen2.5-VL-3B-F <code>[FT]</code></td><td>0.9167</td><td>0.9101</td><td>0.7068</td><td>NPC</td><td>fine-tuned</td></tr><tr><td>9</td><td>best-precision zero-shot vision LLM</td><td>0.8854</td><td><strong>0.9322</strong></td><td>0.5826</td><td>PC</td><td>zero-shot</td></tr><tr><td>17</td><td>best-PaIRS zero-shot OCR/VLM</td><td>0.7220</td><td>0.7120</td><td><strong>0.8766</strong></td><td>NPC</td><td>zero-shot</td></tr></tbody></table>
+<p>Honest reading: the recall leader is fine-tuned, but the best zero-shot recall</p>
+<p>(0.9233) sits within <strong>0.0061</strong> of it. On <strong>precision</strong>, a zero-shot</p>
+<p>general-purpose vision LLM leads both fine-tuned rows (0.9322 vs 0.9157). On</p>
+<p><strong>layout (PaIRS)</strong>, zero-shot systems lead by a wide margin (0.8766 vs 0.7066) —</p>
+<p>and PaIRS comparability is PC-only, so the layout column is direction-only, not a</p>
+<p>ranked claim. **Fine-tuning buys a recall/F1 edge; it does not buy precision or</p>
+<p>layout.**</p>
+<h3>The headline four-row chart (no new data)</h3>
+<table><thead><tr><th>Metric group</th><th>Best fine-tuned <code>[FT]</code></th><th>Best zero-shot</th><th>Delta</th><th>Who leads</th></tr></thead><tbody><tr><td>OCR recall ↑</td><td>0.9294</td><td>0.9233</td><td><strong>+0.0061</strong></td><td>fine-tune, narrowly</td></tr><tr><td>Parse-intent F1 ↑</td><td>0.8328</td><td>0.8102 / 0.8052 anchor</td><td><strong>+0.0226 / +0.0276</strong></td><td>fine-tune</td></tr><tr><td>OCR precision ↑</td><td>0.9157</td><td>0.9322</td><td><strong>−0.0165</strong></td><td>zero-shot</td></tr><tr><td>Layout / PaIRS ↑</td><td>0.7066</td><td>0.8766</td><td><strong>−0.1700</strong></td><td>zero-shot</td></tr></tbody></table>
+<p>A chart that showed only the first two rows would be the dishonest chart. Both</p>
+<p>losing rows are retained by design.</p>
+<h2>How Hyperbots fine-tunes compare to each category approach</h2>
+<ul>
+<li><strong>vs legacy IDP.</strong> Legacy IDP is template/schema-bound and brittle on</li>
+</ul>
+<p>  unseen layouts; SAVIOR-Bench&#x27;s value is precisely that it scores six document</p>
+<p>  classes and five corpora on identical inputs. A fine-tuned open model adapts</p>
+<p>  to the corpus distribution rather than to a fixed schema — but this study has</p>
+<p>  no head-to-head legacy-IDP cell, so this is a category-shape observation, not</p>
+<p>  a measured claim.</p>
+<ul>
+<li><strong>vs OCR-plus-rules.</strong> SAVIOR-Bench&#x27;s word-level (not char-level) scoring</li>
+</ul>
+<p>  exists because downstream extraction needs whole tokens — <code>Totl</code> ≠ <code>Total</code>.</p>
+<p>  OCR-plus-rules stacks tend to score moderate field-F1 while transcription WER</p>
+<p>  explodes (the benchmark shows zero-shot systems with F1 ~0.73 at WER ~3.0).</p>
+<p>  The fine-tuned parse-intent system&#x27;s WER of 0.2589 is its strongest result.</p>
+<ul>
+<li><strong>vs general-purpose vision LLM.</strong> A frontier general-purpose vision LLM is</li>
+</ul>
+<p>  the *best zero-shot* system on OCR precision (0.9322) and a strong parse-intent</p>
+<p>  baseline (0.8052 F1). It is genuinely competitive — and far larger and more</p>
+<p>  expensive to serve than a 3B/7B fine-tune. The fine-tune trades a small</p>
+<p>  precision deficit for recall, WER, ownership, and cost.</p>
+<ul>
+<li><strong>vs zero-shot VLM.</strong> Across the panel, zero-shot VLMs span the full range</li>
+</ul>
+<p>  (parse-intent F1 0.34–0.81). The fine-tune&#x27;s edge over the *best* zero-shot</p>
+<p>  VLM is narrow; its edge over the *median* is large. The honest claim is</p>
+<p>  &quot;fine-tuning lifts a small open backbone to the top of the panel,&quot; not</p>
+<p>  &quot;fine-tuning beats every approach by a wide margin.&quot;</p>
+<h2>Operational profile (model performance, not a price quote)</h2>
+<p>From the attested source, on the SAVIOR-Train fine-tuned inference path:</p>
+<ul>
+<li><strong>Latency:</strong> p50 2,548 ms · p99 3,319 ms.</li>
+<li><strong>Failure rate:</strong> 3% (KV-cache-bound; a 2-GPU path is the noted mitigation).</li>
+<li><strong>Cost:</strong> ~$0.000186 per attempted call, ~$0.000191 per successful call —</li>
+</ul>
+<p>  <strong>≈ $0.19 per 1,000 successful calls</strong> on an A100 40 GB at ~$2/hr.</p>
+<p>These are infrastructure-derived figures for the model, not a Hyperbots product</p>
+<p>price and not a product-accuracy claim.</p>
+<h2>Honesty note — the W6 0/23 factory-reproduction audit</h2>
+<p>We will not present these numbers as more verified than they are.</p>
+<p>On 2026-05-21, the pinned factory harness was run against <strong>all 23 rows</strong> of the</p>
+<p>parse-intent table under the W6 workstream. The outcome: **0/23 cells</p>
+<p>re-derived green; 23/23 red on structural impossibility; 0 confidence intervals</p>
+<p>added; 0 attested rows retracted; 0 silent metric flips.**</p>
+<p>The three structural reasons — all recorded in the audit log — are: (i) the SEED</p>
+<p>harness, by design, is offline / stdlib-only / no-API-key and has <strong>no adapters</strong></p>
+<p>for the 23 hosted-API vendor models; (ii) the in-house parse-intent corpus is</p>
+<p><strong>not in the benchmark repository</strong>, so its loader is not registered; (iii) the</p>
+<p>attested source carries only <strong>aggregate</strong> F1/WER per model — no per-document</p>
+<p>score vector exists, so a bootstrap confidence interval cannot be derived without</p>
+<p>fabricating per-document scores, which the team refused to do.</p>
+<p><strong>Why this does not retract the numbers, and what it does mean.</strong> The factory</p>
+<p>harness did not produce a *competing* measurement that disagrees with the</p>
+<p>attested one — it produced *no* measurement. Absence of an independent</p>
+<p>re-derivation is not evidence of error. The attested numbers stand at their</p>
+<p>documented provenance tier: *in-house-run, user-attested 2026-05-18; not</p>
+<p>factory-harness-reproduced; <code>ci95=null</code>.* What W6 contributes is evidence of due</p>
+<p>diligence — the harness was actually run, the blockers were named, nothing was</p>
+<p>silently flipped. A reader should treat every number in this study as</p>
+<p><strong>attested, not reproduced</strong>, and weight it accordingly. That is the honest tier,</p>
+<p>and we state it rather than imply more.</p>
+<h2>What this means for a document-AI buyer</h2>
+<p>The defensible takeaway is narrow and true:</p>
+<p>1. Fine-tuning a small open backbone on financial-document data <strong>does</strong> move it</p>
+<p>   to the top of a 23-system panel on parse-intent F1 and to the top of a</p>
+<p>   21-system panel on OCR recall.</p>
+<p>2. The margin over the *best* zero-shot system is <strong>small</strong> (+0.0061 recall,</p>
+<p>   +0.0276 F1) — this is not a blowout, and anyone who tells you it is has</p>
+<p>   cropped the chart.</p>
+<p>3. Fine-tuning <strong>does not</strong> buy precision or layout fidelity; strong zero-shot</p>
+<p>   systems lead there.</p>
+<p>4. The real advantage is the *package*: top-of-panel recall/F1, a large WER</p>
+<p>   reduction, on small open backbones (Hyperbots IP), at ~$0.19 / 1,000 calls.</p>
+<p>5. All of this is <strong>attested, not factory-reproduced</strong> — read it at that tier.</p>
+<p>That is the honest case for the fine-tune approach. It is a narrower case than a</p>
+<p>hype post would make, and it is the one that survives a careful reader.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/SAVIOR-Bench.md</code> —</li>
+</ul>
+<p>  SAVIOR-Bench v1 benchmark paper (methodology §2/§4, parse-intent table §5.1.1,</p>
+<p>  OCR table §5.1.2, headline chart §5.1.3, analysis §6, limitations §8, LoRA</p>
+<p>  recipe Appendix A, reproducibility status box Appendix D).</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/W6-attestation-2026-05-21.md</code></li>
+</ul>
+<p>  — W6 factory-reproduction audit (0/23 re-derived; three structural causes;</p>
+<p>  no retraction).</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/results/</code> — per-cell result</li>
+</ul>
+<p>  JSON with provenance, fine-tune flags, and <code>ci95</code> fields</p>
+<p>  (<code>DC-000__savior-bench-v1__*.json</code>, <code>DC-000__parse-intent-inhouse-v1__*.json</code>).</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/README.md</code> — SEED leaderboard</li>
+</ul>
+<p>  harness description (offline, stdlib-only, deterministic) and run procedure.</p>
+<ul>
+<li>CTO-org <code>.claude/agents/technical-content-strategist.md</code> — parent content</li>
+</ul>
+<p>  craft and guardrails.</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>This is a <strong>DRAFT</strong> — internal only; external publication is human-gated. No</li>
+</ul>
+<p>  commit or push is performed.</p>
+<ul>
+<li>Every benchmark number is **in-house-run, user-attested 2026-05-18, NOT</li>
+</ul>
+<p>  factory-harness-reproduced**; the W6 audit re-derived 0/23 parse-intent cells.</p>
+<p>  Numbers are read at the attested tier; none is invented or inflated.</p>
+<ul>
+<li>All figures are <strong>model OCR/parse performance, not product accuracy</strong>. Any</li>
+</ul>
+<p>  product-accuracy claim would be cited only &quot;per apis.hyperbots.com&quot;; this</p>
+<p>  study makes none.</p>
+<ul>
+<li>Models are <strong>open-source backbones fine-tuned by Hyperbots (&quot;Hyperbots IP&quot;)</strong>.</li>
+<li><code>ci95=null</code> everywhere — every delta is <strong>direction-only</strong>, not interval-</li>
+</ul>
+<p>  significant; no confidence interval is fabricated.</p>
+<ul>
+<li>The parse-intent table has <strong>no <code>n</code></strong> in the attested source — reported as</li>
+</ul>
+<p>  unknown, not inferred. <code>n=509</code> for the OCR table.</p>
+<ul>
+<li>Category approaches are named by <strong>label only</strong> (&quot;legacy IDP&quot;, &quot;OCR-plus-rules&quot;,</li>
+</ul>
+<p>  &quot;general-purpose vision LLM&quot;, &quot;zero-shot VLM&quot;); no vendor is named. The named</p>
+<p>  comparison lives in the linked SAVIOR-Bench artifact.</p>
+<ul>
+<li>The legacy-IDP and OCR-plus-rules comparisons are **category-shape</li>
+</ul>
+<p>  observations**, not measured head-to-head cells — flagged as such inline.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

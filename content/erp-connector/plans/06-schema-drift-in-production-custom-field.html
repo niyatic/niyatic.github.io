@@ -1,0 +1,176 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>06-schema-drift-in-production-custom-field — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/content/erp-connector/">← back</a>
+<div class="fm">slug: 06-schema-drift-in-production-custom-field
+erp: multi
+class: depth
+status: PLAN — methodology defined; some claims need on-disk audit</div>
+
+<h1>Schema drift in production: what happens when a customer adds a custom field — plan</h1>
+
+<h2>1. Headline + hook</h2>
+
+<p>Hook: <strong>"On Monday morning, the customer's NetSuite admin adds a custom segment field to vendor bills. The bespoke integration breaks silently. The connector framework's <code>schema_version</code> header catches it; the affected records dead-letter with the raw response attached; nothing is silently posted with a missing field. Here is how that contract works."</strong></p>
+
+<p>The post is the <em>operational reality</em> counterpart to blog #5 — drift is the failure mode the framework is shaped around.</p>
+
+<h2>2. Audience + intent</h2>
+
+<ul>
+<li>Primary: integration engineers + change-management owners.</li>
+<li>Reader takeaway: *"schema drift is a connector-framework first-class</li>
+</ul>
+<p>  concern, not a runtime surprise."*</p>
+<ul>
+<li>CTA: try a drift simulation on a sandbox.</li>
+</ul>
+
+<h2>3. The two-layer pitch (REQUIRED)</h2>
+
+<h3>3.1 Speed</h3>
+<ul>
+<li>Agent re-runs the connector after the new field lands; affected records</li>
+</ul>
+<p>  hit <code>dead_letter</code> with the raw response.</p>
+<ul>
+<li>Agent updates the normalizer to map the new field (one function); ships</li>
+</ul>
+<p>  the new descriptor with bumped <code>schema_version</code>.</p>
+<ul>
+<li>*[PLACEHOLDER, ~1-2 hours per drift event] vs bespoke baseline often</li>
+</ul>
+<p>  [PLACEHOLDER, days, because schema breakage is silent].*</p>
+
+<h3>3.2 Depth</h3>
+<ul>
+<li><strong><code>schema_version</code> is on the descriptor.</strong> It is stamped on every</li>
+</ul>
+<p>  record (<code>docs/USAGE.md</code> + descriptor code). The CSV emit carries a   <code># schema_version=2.3.0</code> header (see byte-exact sample in   <code>README.md</code>).</p>
+<ul>
+<li><strong>Additive fields don't break the contract.</strong> The normalizer's job is</li>
+</ul>
+<p>  to map; an unknown additive field is recorded in lineage, not posted   blind.</p>
+<ul>
+<li><strong>Subtractive / type-change drift dead-letters.</strong> When a field the</li>
+</ul>
+<p>  normalizer expects is missing or shape-changed, the record goes to   <code>dead_letter</code> with the raw response attached. Never to <code>posted</code>.</p>
+<ul>
+<li><strong>Bump the <code>schema_version</code>, ship a new descriptor.</strong> Old records with</li>
+</ul>
+<p>  old <code>schema_version</code> continue to flow; new field is mapped going   forward. The two co-exist.</p>
+<ul>
+<li><strong>Lineage stamp</strong> carries <code>schema_version</code> on every record (per</li>
+</ul>
+<p>  v0.4 README — "lineage stamp on every result carries the connector's   descriptor policy").</p>
+
+<h2>4. Outline</h2>
+
+<ul>
+<li>P-1. The Monday-morning drift story.</li>
+<li>P-2. Where most integrations fail silently.</li>
+<li>P-3. What <code>schema_version</code> catches.</li>
+<li>P-4. Additive vs subtractive vs type-change drift — three cases.</li>
+<li>P-5. The dead-letter contract (never a human queue; <code>docs/LIMITS.md</code>).</li>
+<li>P-6. The agent loop — what gets reconfigured in hours.</li>
+<li>P-7. CTA.</li>
+</ul>
+
+<h2>5. Required evidence before publish</h2>
+
+<ul>
+<li>Confirm <code>schema_version</code> stamping is in the byte-exact CSV emit</li>
+</ul>
+<p>  (already in <code>README.md</code>).</p>
+<ul>
+<li>Confirm <code>dead_letter</code>-on-shape-mismatch behavior in the normalizer</li>
+</ul>
+<p>  source (audit before publish).</p>
+<ul>
+<li>A simulated drift sequence as a code excerpt (additive + subtractive +</li>
+</ul>
+<p>  type-change).</p>
+
+<h2>6. Placeholders to fill</h2>
+
+<ul>
+<li>[PLACEHOLDER-time-recovery-bespoke]</li>
+<li>[PLACEHOLDER-time-recovery-hyperapi]</li>
+<li>[PLACEHOLDER-customer-real-drift-event] (consent-gated)</li>
+<li>[PLACEHOLDER-normalizer-source-audit]</li>
+</ul>
+
+<h2>7. Competitor positioning</h2>
+
+<ul>
+<li>Workato — NOT-FETCHED. Hypothesis: schema drift is per-recipe; no</li>
+</ul>
+<p>  framework-level <code>schema_version</code> contract.</p>
+<ul>
+<li>MuleSoft — NOT-FETCHED. Likely stronger on DataWeave; schema-version</li>
+</ul>
+<p>  story to be confirmed.</p>
+<ul>
+<li>Boomi — NOT-FETCHED.</li>
+</ul>
+
+<h2>8. Sources / provenance</h2>
+
+<ul>
+<li><code>connector-framework/README.md</code> (the <code>schema_version=2.3.0</code> line in the</li>
+</ul>
+<p>  byte-exact sample)</p>
+<ul>
+<li><code>docs/USAGE.md</code></li>
+<li><code>docs/LIMITS.md</code> (no HITL)</li>
+<li><code>src/hyperapi_connector/connectors/README-v0.4.md</code> (lineage stamp on</li>
+</ul>
+<p>  every result)</p>
+<ul>
+<li>skill: <code>connector-conformance</code></li>
+</ul>
+
+<h2>Z. Internal-only</h2>
+
+<ul>
+<li>Cost: ~5 hours.</li>
+<li>Dependencies: the normalizer-source audit.</li>
+<li>Risk: if the type-change-drift behavior turns out to be looser than the</li>
+</ul>
+<p>  plan claims, the post tightens its language. Audit gates the publish.</p>
+
+</body></html>

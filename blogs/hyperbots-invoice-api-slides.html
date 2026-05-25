@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hyperbots Invoice API &mdash; Slides</title>
+<style>
+  :root{
+    --teal:#07658D; --blue:#1B7DA7; --sky:#50B6E2;
+    --green:#039855; --dark:#211F26; --grey:#5B6066;
+    --light:#F4F8FB;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Calibri,Roboto,Arial,sans-serif;
+    background:#0d1418;color:var(--dark);
+    -webkit-font-smoothing:antialiased;
+  }
+  .slide{
+    width:100%;max-width:1280px;margin:32px auto;
+    aspect-ratio:16/9;background:#fff;
+    border-radius:14px;overflow:hidden;
+    box-shadow:0 18px 50px rgba(0,0,0,.45);
+    display:flex;flex-direction:column;position:relative;
+  }
+  .accent{height:9px;width:100%;}
+  .pad{padding:38px 54px 30px;display:flex;flex-direction:column;flex:1;}
+  .logo{height:34px;width:auto;}
+  .head h1{font-size:38px;color:var(--teal);font-weight:800;letter-spacing:-.5px;margin-top:18px;}
+  .head p.sub{font-size:21px;color:var(--dark);font-weight:400;margin-top:4px;}
+  .label{font-size:14px;font-weight:700;color:var(--grey);
+    text-transform:uppercase;letter-spacing:.8px;margin:24px 0 10px;}
+
+  /* pipeline */
+  .pipeline{display:flex;gap:5px;margin-bottom:6px;}
+  .stage{flex:1;position:relative;height:46px;display:flex;
+    align-items:center;justify-content:center;
+    color:#fff;font-weight:700;font-size:12.5px;
+    clip-path:polygon(0 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,0 100%,14px 50%);}
+  .stage:first-child{clip-path:polygon(0 0,calc(100% - 14px) 0,100% 50%,calc(100% - 14px) 100%,0 100%);}
+
+  /* capability cards */
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:24px;flex:1;}
+  .card{background:var(--light);border-radius:12px;padding:0 0 18px;
+    overflow:hidden;display:flex;flex-direction:column;}
+  .card .topbar{height:8px;width:100%;}
+  .card h3{font-size:16px;font-weight:800;padding:18px 18px 8px;}
+  .card p{font-size:13px;color:var(--grey);line-height:1.45;padding:0 18px;}
+
+  .foot{margin-top:18px;font-size:13px;font-weight:700;color:var(--teal);}
+
+  /* slide 2 */
+  .s2 .pad{background:var(--light);}
+  .point{background:#fff;border-radius:12px;display:flex;
+    margin-bottom:14px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+  .point .stripe{width:9px;flex-shrink:0;}
+  .point .ptext{padding:16px 22px;}
+  .point h3{font-size:18px;font-weight:800;margin-bottom:4px;}
+  .point p{font-size:13.5px;color:var(--grey);line-height:1.5;}
+  .close{background:var(--teal);border-radius:12px;
+    padding:16px 24px;font-size:15px;font-weight:700;color:#fff;}
+  .close .hi{color:var(--sky);}
+</style>
+</head>
+<body>
+
+<!-- ===================== SLIDE 1 ===================== -->
+<section class="slide">
+  <div class="accent" style="background:var(--teal);"></div>
+  <div class="pad">
+    <div class="head">
+      <img class="logo" src="hyperbots-logo.png" alt="Hyperbots">
+      <h1>Hyperbots Invoice API</h1>
+      <p class="sub">End-to-end invoice intelligence</p>
+    </div>
+
+    <div class="label">9-stage IDP pipeline</div>
+    <div class="pipeline">
+      <div class="stage" style="background:var(--teal);">Parse</div>
+      <div class="stage" style="background:var(--teal);">Split</div>
+      <div class="stage" style="background:var(--blue);">Classify</div>
+      <div class="stage" style="background:var(--blue);">Extract</div>
+      <div class="stage" style="background:var(--blue);">Augment</div>
+      <div class="stage" style="background:var(--sky);">Validate</div>
+      <div class="stage" style="background:var(--sky);">Match</div>
+      <div class="stage" style="background:var(--sky);">GL</div>
+      <div class="stage" style="background:var(--green);">Reason</div>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="topbar" style="background:var(--teal);"></div>
+        <h3 style="color:var(--teal);">Multi-format intake</h3>
+        <p>Native-text PDF, scanned / image PDF, PNG and JPG, even spreadsheet and Word invoices.</p>
+      </div>
+      <div class="card">
+        <div class="topbar" style="background:var(--blue);"></div>
+        <h3 style="color:var(--blue);">200+ dimensions of complexity</h3>
+        <p>Designed against lexical, layout, semantic, multi-currency, multi-language, scan-quality and embedded-data variation.</p>
+      </div>
+      <div class="card">
+        <div class="topbar" style="background:var(--sky);"></div>
+        <h3 style="color:var(--blue);">Pinned SDK + JSON contract</h3>
+        <p>A pinned SDK and a structured JSON contract: summary fields, line items, taxes and charges.</p>
+      </div>
+      <div class="card">
+        <div class="topbar" style="background:var(--green);"></div>
+        <h3 style="color:var(--green);">Deployed at real scale</h3>
+        <p>A production document vault with 2,389+ invoices processed.</p>
+      </div>
+    </div>
+
+    <div class="foot">Parse to reason in one API contract.</div>
+  </div>
+</section>
+
+<!-- ===================== SLIDE 2 ===================== -->
+<section class="slide s2">
+  <div class="accent" style="background:var(--green);"></div>
+  <div class="pad">
+    <div class="head">
+      <img class="logo" src="hyperbots-logo.png" alt="Hyperbots">
+      <h1>Built to be measured</h1>
+      <p class="sub">End-to-end intelligence, paired with honest measurement</p>
+    </div>
+
+    <div style="margin-top:24px;">
+      <div class="point">
+        <div class="stripe" style="background:var(--green);"></div>
+        <div class="ptext">
+          <h3 style="color:var(--green);">Strong where it counts: header capture</h3>
+          <p>In field-level testing, the API reliably extracts the invoice-defining header fields, currency and invoice total, when it returns a result. A specific, verified strength, stated as exactly that.</p>
+        </div>
+      </div>
+      <div class="point">
+        <div class="stripe" style="background:var(--blue);"></div>
+        <div class="ptext">
+          <h3 style="color:var(--blue);">We benchmark ourselves honestly</h3>
+          <p>A real DocumentAI Benchmark Factory: pinned versions, contamination checks, a no-faked-cell discipline, every result reproducible from a rerunnable command. A team confident enough to publish its own rigorous, warts-and-all benchmark.</p>
+        </div>
+      </div>
+      <div class="point">
+        <div class="stripe" style="background:var(--teal);"></div>
+        <div class="ptext">
+          <h3 style="color:var(--teal);">Rigorous evaluation in progress</h3>
+          <p>A multi-system invoice-extraction benchmark on validated ground truth is underway. Results will be published as measured, not marketed.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="close" style="margin-top:auto;">
+      The real differentiator: <span class="hi">end-to-end coverage plus honest measurement, not hype.</span>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
