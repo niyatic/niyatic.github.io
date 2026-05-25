@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Content plan &amp; strategy — Hyperbots content hub</title>
+<meta name="description" content="Hyperbots content strategy — from anchored data to editorial calendar to viral titles to drafts.">
+<style>
+:root {
+  --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26;
+  --accent-green:#027A48; --accent-green-bg:#E1F9D6;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font: 15px/1.6 "Rubik", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  background: var(--grey-2); color: var(--grey-12);
+  max-width: 880px; margin: 0 auto; padding: 28px 24px 64px;
+  -webkit-font-smoothing: antialiased;
+}
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 18px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.hero {
+  background: #FFFFFF; border: 1px solid var(--grey-4); border-radius: 12px;
+  border-left: 5px solid var(--brand-7);
+  padding: 22px 26px; margin-bottom: 28px;
+  box-shadow: 0 1px 3px rgba(33,31,38,.06);
+  display: flex; align-items: center; gap: 18px;
+}
+.hero img { width: 40px; height: 41px; flex-shrink: 0; }
+.hero h1 { font-size: 22px; color: var(--grey-12); font-weight: 600; margin: 0 0 4px; }
+.hero .sub { color: var(--grey-10); font-size: 13.5px; line-height: 1.55; }
+h2 { font-size: 17px; color: var(--brand-9); font-weight: 600; margin: 32px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h3 { font-size: 14px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; margin: 18px 0 6px; }
+p { margin: 10px 0; }
+.lead { color: var(--grey-11); font-size: 15px; line-height: 1.65; }
+.principle { background: #FFFFFF; border: 1px solid var(--grey-4); border-radius: 8px; padding: 14px 18px; margin: 10px 0; box-shadow: 0 1px 2px rgba(33,31,38,.04); }
+.principle .title { font-weight: 600; color: var(--brand-9); margin-bottom: 4px; }
+.principle .body { color: var(--grey-11); font-size: 14px; }
+.funnel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 16px 0; }
+.funnel .step { background: #FFFFFF; border: 1px solid var(--grey-4); border-radius: 8px; padding: 12px 14px; text-align: center; position: relative; }
+.funnel .step .n { display: inline-block; width: 22px; height: 22px; line-height: 22px; border-radius: 50%; background: var(--brand-7); color: #fff; font-size: 11px; font-weight: 700; margin-bottom: 6px; }
+.funnel .step .t { font-weight: 600; color: var(--grey-12); font-size: 13px; }
+.funnel .step .d { color: var(--grey-10); font-size: 11.5px; margin-top: 3px; line-height: 1.4; }
+@media (max-width: 640px) { .funnel { grid-template-columns: 1fr 1fr; } }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; margin: 12px 0; }
+.card { background: #FFFFFF; border: 1px solid var(--grey-4); border-radius: 10px; padding: 14px 16px; text-decoration: none; color: inherit; box-shadow: 0 1px 2px rgba(33,31,38,.04); transition: box-shadow 0.15s, transform 0.15s; display: block; }
+.card:hover { box-shadow: 0 4px 12px rgba(33,31,38,.08); transform: translateY(-1px); }
+.card .t { font-weight: 600; color: var(--brand-7); font-size: 14px; margin-bottom: 3px; }
+.card .d { color: var(--grey-10); font-size: 12.5px; line-height: 1.45; }
+.card .meta { color: var(--grey-11); font-size: 11.5px; margin-top: 5px; font-style: italic; }
+.anchor-note { background: var(--accent-green-bg); border-left: 4px solid var(--accent-green); color: var(--accent-green); padding: 12px 16px; border-radius: 6px; font-size: 13px; margin: 14px 0; }
+.anchor-note strong { color: var(--accent-green); }
+code { font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: 12.5px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+.footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--grey-4); color: var(--grey-10); font-size: 12px; }
+.footer a { color: var(--brand-7); text-decoration: none; }
+.footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<a class="back" href="/">← back to content hub</a>
+
+<div class="hero">
+  <img src="/assets/hyperbots-logo.svg" alt="Hyperbots"/>
+  <div>
+    <h1>Content plan &amp; strategy</h1>
+    <div class="sub">How we go from measured data → editorial calendar → viral titles → published drafts. Anchored, anti-hype, review-gated.</div>
+  </div>
+</div>
+
+<h2>📐 Our content strategy</h2>
+<p class="lead">Hyperbots content earns trust by being measurably right, not loud. Every page we ship traces back to anchored evidence — a benchmark we ran, a corpus we processed, a customer case with consent. Nothing invented; everything sourceable.</p>
+
+<div class="principle">
+  <div class="title">1. Anchored over assertive</div>
+  <div class="body">Numbers are <em>measured on disk this session</em> or marked <code>[PLACEHOLDER]</code>. A pointer is not a claim. If we can't source it, we don't print it.</div>
+</div>
+<div class="principle">
+  <div class="title">2. Depth bar from the di-study</div>
+  <div class="body">14 dimensions, doc-type × failure-mode matrices, per-line precision/recall — the methodology spine for every deep study. No marketing-grade comparisons.</div>
+</div>
+<div class="principle">
+  <div class="title">3. Own the loss</div>
+  <div class="body">Where competitors win, we say so. The "narrow honest edge" play: credibility comes from disclosure, not omission.</div>
+</div>
+<div class="principle">
+  <div class="title">4. Review chain + human gate</div>
+  <div class="body">Tech / brand / legal review on every external piece. Customer-named or competitor-named content needs explicit sign-off before publish.</div>
+</div>
+
+<div class="anchor-note">
+  <strong>Anchor data, measured 2026-05-25:</strong> Azure DI prebuilt-invoice on the 10 longest invoices in dataset_95 (49–323 line items each) — line-count preservation mean 0.640, exact-match docs 1/10, line-item set-F1 mean 0.344. One 88-line invoice came back as 2,150 rows. This is the kind of evidence the strategy is built on.
+</div>
+
+<h2>🔁 The funnel</h2>
+<p class="lead">Strategy doesn't ship — drafts do. The path from principle to publishable piece:</p>
+<div class="funnel">
+  <div class="step"><div class="n">1</div><div class="t">Strategy</div><div class="d">Anchored · depth bar · own the loss</div></div>
+  <div class="step"><div class="n">2</div><div class="t">Editorial calendar</div><div class="d">P-1..P-5 pointer outlines</div></div>
+  <div class="step"><div class="n">3</div><div class="t">Viral title catalog</div><div class="d">v3 → v4 → v5, anchored to failure modes</div></div>
+  <div class="step"><div class="n">4</div><div class="t">Drafts &amp; publish</div><div class="d">Tech / brand / legal review → human gate</div></div>
+</div>
+
+<h2>📋 Editorial calendar — P-1 through P-5</h2>
+<p class="lead">Five pointer outlines on the calendar. Each declares <em>exactly</em> what verified data it still needs before publish.</p>
+<div class="grid">
+  <a class="card" href="blog-plan.html#p-1-500-line-items-on-one-invoice-extracted-accurately">
+    <div class="t">P-1 · 500 line items on one invoice</div>
+    <div class="d">High-line-count invoice extraction at the long tail.</div>
+    <div class="meta">needs: real ≥500-line case + measured per-line accuracy</div>
+  </a>
+  <a class="card" href="blog-plan.html">
+    <div class="t">P-2 · 0.5s on OCR — a customer case</div>
+    <div class="d">Sub-second per-page latency, with the engineering.</div>
+    <div class="meta">needs: named customer + written consent</div>
+  </a>
+  <a class="card" href="blog-plan.html">
+    <div class="t">P-3 · Azure DI vs HyperAPI</div>
+    <div class="d">Honest invoice-extraction benchmark, anti-hype.</div>
+    <div class="meta">gated on Azure DI study + legal review</div>
+  </a>
+  <a class="card" href="blog-plan.html">
+    <div class="t">P-4 · 9,000 payment-term types</div>
+    <div class="d">Why early-pay discount capture leaks money.</div>
+    <div class="meta">needs: defensible source for "9,000"</div>
+  </a>
+  <a class="card" href="blog-plan.html">
+    <div class="t">P-5 · Account-number mismatch</div>
+    <div class="d">Concrete AP failure mode + how to detect.</div>
+    <div class="meta">lowest claim-risk; needs product detail only</div>
+  </a>
+  <a class="card" href="blog-plan.html">
+    <div class="t">→ Open full blog plan</div>
+    <div class="d">All five with section pointers and data gaps inline.</div>
+  </a>
+</div>
+
+<h2>🔥 Viral title catalogs</h2>
+<p class="lead">The catalog is the bridge from calendar to draft — doc-type × failure-mode titles, each anchored to a D-dimension from the di-study. Versioned so you can see how the line of attack evolved.</p>
+<div class="grid">
+  <a class="card" href="content/viral-titles/v5.html">
+    <div class="t">v5 — latest</div>
+    <div class="d">86 titles. §A anchored · §B non-anchored · §C relative deltas · §D Gemini full-n · §E cross-vendor failure pattern.</div>
+  </a>
+  <a class="card" href="content/viral-titles/v4.html">
+    <div class="t">v4</div>
+    <div class="d">First relative-comparison catalog — Hyperbots vs OpenAI / Gemini.</div>
+  </a>
+  <a class="card" href="content/viral-titles/v3.html">
+    <div class="t">v3</div>
+    <div class="d">First anchored / non-anchored split. 60 titles, 9 doc types.</div>
+  </a>
+</div>
+
+<h2>📝 Approved drafts</h2>
+<p class="lead">The three drafts that have cleared the strategy bar and are in the publish pipeline.</p>
+<div class="grid">
+  <a class="card" href="blogs/2026-05-22-viral-blog-1-no-faked-cell.html">
+    <div class="t">Viral 1 — "No faked cell"</div>
+    <div class="d">The integrity floor: why fabricating one number compounds.</div>
+  </a>
+  <a class="card" href="blogs/2026-05-22-viral-blog-2-narrow-honest-edge.html">
+    <div class="t">Viral 2 — "Narrow honest edge"</div>
+    <div class="d">Owning the loss as a credibility play.</div>
+  </a>
+  <a class="card" href="blogs/2026-05-22-viral-blog-3-cost-economics.html">
+    <div class="t">Viral 3 — "Cost economics"</div>
+    <div class="d">$/doc — the under-talked-about metric.</div>
+  </a>
+</div>
+
+<h2>🧠 Strategy essays (companion reads)</h2>
+<div class="grid">
+  <a class="card" href="blogs/2026-05-22-content-virality-strategy.html">
+    <div class="t">Content virality strategy</div>
+    <div class="d">The viral framework for B2B AI content.</div>
+  </a>
+  <a class="card" href="blogs/2026-05-22-abm-agent-with-claude-code.html">
+    <div class="t">ABM agent with Claude Code</div>
+    <div class="d">How the ABM-GTM agent was built.</div>
+  </a>
+  <a class="card" href="blogs/2026-05-22-agents-train-benchmark-deploy.html">
+    <div class="t">Agents · train → benchmark → deploy</div>
+    <div class="d">The three-step loop for agent-driven IDP.</div>
+  </a>
+</div>
+
+<div class="footer">
+  Repo: <a href="https://github.com/niyatic/niyatic.github.io">niyatic/niyatic.github.io</a> · Custom domain (DNS pending): <code>content-hub.hyperbots.com</code> · Last update: 2026-05-25
+</div>
+
+</body>
+</html>
