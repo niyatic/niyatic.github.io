@@ -1,0 +1,229 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BENCHMARK-AUDIT-REVIEW — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/lab/savior-bench-report.html">← back</a>
+
+<h1>BENCHMARK-AUDIT-REVIEW — SAVIOR-Bench launch artifacts</h1>
+
+<p>_Reviewer persona: Tier-1 viral technical content curator (HN-front-page / HF/DeepMind launch-post editorial bar). Judged on BOTH axes: (a) credibility/integrity under r/ML + HN scrutiny, (b) virality merit (is the hook the genuinely surprising-but-true finding; is the chart honest AND compelling; would a skeptical senior engineer share or screenshot-and-dunk). Review only — no edits to paper/posts. Fixes feed the content/research agents._</p>
+
+<p>Reviewed on branch <code>bench/audit-review</code> (cut from <code>master</code> @ <code>7d57e85</code>). Targets read in full: <code>paper/SAVIOR-Bench.md</code> (727 L), <code>paper/HF-CARD.md</code> (135 L), <code>leaderboard/index.html</code> (rendered + embedded <code>DATA</code>), <code>plan/FORMAT-CALIBRATION-vs-PureDocBench.md</code>. Source artifacts cross-checked: <code>~/Desktop/benchmark.xlsx</code> (sheets <code>intent</code>, <code>vlm-ocr</code>, <code>Sheet3</code>); <code>results/DC-000__*.json</code>.</p>
+
+<hr/>
+
+<h2>0. TL;DR verdicts</h2>
+
+<table>
+<tr><th>Artifact</th><th>Verdict</th><th>One-line reason</th></tr>
+<tr><td><code>paper/SAVIOR-Bench.md</code></td><td><strong>SHIP-WITH-FIXES</strong></td><td>Methodologically the most honest fine-tune-vs-zero-shot disclosure I have reviewed; but a hard 23-vs-24 model-count contradiction and a <strong>missing primary-source PDF</strong> must be fixed before any human posts.</td></tr>
+<tr><td><code>paper/HF-CARD.md</code></td><td><strong>SHIP-WITH-FIXES</strong></td><td>Faithful to the paper and correctly says "23-model" (the paper is the one that's wrong); inherits the missing-PDF provenance risk; needs the count reconciled with the paper and a recoverable-source line.</td></tr>
+<tr><td><code>leaderboard/index.html</code></td><td><strong>SHIP-WITH-FIXES</strong></td><td>Run-scope warning is exemplary; data matches results JSON. But it dumps <code>Claude Sonnet 4.6</code> / <code>DeepSeek-OCR-2</code> etc. as named competitor rows on a web page (not just the paper artifact) — confirm the naming exception explicitly covers this surface, and fix <code>family:&quot;unknown&quot;</code>.</td></tr>
+<tr><td><code>plan/FORMAT-CALIBRATION-vs-PureDocBench.md</code></td><td><strong>SHIP</strong> (internal plan)</td><td>Honest, well-scoped, not a public artifact. Only risk: it asserts PureDocBench specifics ("2,580 errors, 6 classes", "40 models", "15+11 figures") from an abstract+structural fetch — fine for an internal plan, must NOT leak verbatim into public copy.</td></tr>
+<tr><td><code>launch/POST.md</code> · <code>launch/BLOG.md</code> · <code>launch/FUNNEL.md</code></td><td><strong>DO-NOT-SHIP — N/A (not produced)</strong></td><td><strong>No <code>launch/</code> directory exists on <code>bench/launch-v1</code>; that branch has zero commits / zero diff vs <code>master</code>.</strong> The launch content agent has produced nothing yet. Nothing to ship; nothing to review. The hook recommendation below is the brief for whoever writes them.</td></tr>
+</table>
+
+<p><strong>1000-signups-in-24h read:</strong> the <em>paper</em> is credible enough to survive HN if the two integrity bugs below are fixed. The <em>launch funnel does not exist yet</em>, so there is currently nothing that could either earn or detonate 1000 signups. The single biggest credibility-bomb risk is the <strong>missing <code>Benchmark-VLM_OCR.pdf</code></strong>: it is cited as the primary source for IAA, latency, cost, the LoRA recipe, failure modes, and the corpus mix, and it is not on disk anywhere. If a journalist or HN commenter asks "show the source for IAA 0.761 / p50 2548 ms" the answer today is "an attested PDF we cannot produce." That is the line that turns a credible launch into a dunk.</p>
+
+<hr/>
+
+<h2>1. Integrity risks (with line refs)</h2>
+
+<h3>CRITICAL — must fix before any human posts</h3>
+
+<p><strong>I-1. 23 vs 24 parse-intent model count — internal self-contradiction.</strong> The parse-intent panel is <strong>23 models</strong>, verified three independent ways: (a) <code>results/DC-000__parse-intent-inhouse-v1__*.json</code> → <strong>23 files</strong>; (b) <code>benchmark.xlsx</code> sheet <code>intent</code> → 24 rows = 1 header + <strong>23 models</strong>; (c) <code>paper/SAVIOR-Bench.md</code> §5.1.1 table itself ends at <strong>Rank 23</strong> (L261–262); (d) <code>paper/HF-CARD.md</code> L72 correctly says <strong>"23-model"</strong>. But the paper says <strong>"24"</strong> in five places: abstract L40 ("24 systems"), contributions L90 ("~24 parse-intent systems"), related-work matrix L194 ("~24 parse"), experimental setup L215 ("~24 parse-intent systems"), and Sources L693 ("(24 cells)"). A skeptical reader counts the table to 23, sees "24" in the abstract, and concludes the authors did not check their own paper — cheap, fatal credibility damage on a benchmark whose entire pitch is rigor. <strong>Fix: change all five to 23</strong> (the table, the JSON, the xlsx, and the HF card are the ground truth; the prose is wrong).</p>
+
+<p><strong>I-2. Missing primary source: <code>Benchmark-VLM_OCR.pdf</code>.</strong> Cited throughout as the source for IAA 0.761 (L132, L580), document classes (L130–131), corpus mix (§2.1), latency p50/p99/fail (§5.4 L330–338), cost (§5.5 L342–349), the LoRA recipe (Appendix A L549), failure modes (§5.6 L353), and <code>n=509</code>. It is <strong>not present</strong> at the cited Desktop path, nor anywhere under the repo / <code>~/Desktop</code> / <code>~/Documents</code> (searched). Only <code>benchmark.xlsx</code> exists — and the xlsx contains <strong>only the model score tables</strong> (F1/WER, Recall/PaIRS/Precision): it has <strong>no IAA, no latency, no cost, no LoRA recipe, no failure modes, no corpus mix, no n</strong>. So every non-leaderboard number in the paper currently traces to an artifact that cannot be produced on demand. This is not (yet) fabrication — the framing is honestly "user-attested 2026-05-18" — but "attested to a source we cannot show you" is exactly the provenance shape that detonates under scrutiny. <strong>Fix (research agent): either (a) locate/commit a redacted <code>Benchmark-VLM_OCR.pdf</code> (or its data extract) into the repo so the attested numbers have a recoverable artifact, or (b) downgrade every PDF-only number to an explicitly flagged "attested, source not in repository" tier and stop citing a file path that does not resolve.</strong> Option (a) is strongly preferred before any public post.</p>
+
+<h3>MEDIUM</h3>
+
+<p><strong>I-3. <code>DocIntentOCR-3B</code> zero-shot F1 0.8102 with WER 0.5622 (§5.1.1 L240).</strong> This is the #2 system and the paper's designated "best zero-shot" comparator — it carries the entire honesty narrative ("fine-tune edge is only +0.0226 over best zero-shot"). It is an obscure 3B model beating GPT-4o on F1 zero-shot. The number matches the xlsx exactly (no fabrication), but the paper gives <strong>zero provenance for what <code>DocIntentOCR-3B</code> even is</strong> (no vendor, no version, no checkpoint, no config — Appendix D itself admits configs are missing for some rows, §10 R6 "partial"). The entire modesty framing leans on a black-box row. HN will ask "what is DocIntentOCR-3B and why does a 3B model beat GPT-4o zero-shot on your task." <strong>Fix: add a one-line provenance note for DocIntentOCR-3B (source/checkpoint/date), or explicitly flag it as an under-documented panel row and re-anchor the modesty claim on GPT-4o (0.8052, well-known) as the best zero-shot reference instead.</strong> GPT-4o is a far more defensible "best zero-shot" anchor for public copy.</p>
+
+<p><strong>I-4. PaIRS leaders are NPC, headline contrast mixes PC/NPC.</strong> Abstract L46 and Case Study 2 (L438–448) lean on "PaddleOCR-VL-1.5 0.8766 PaIRS vs Textract 0.5117" — but both are NPC, and the paper's own §2.2/§8 rule says NPC PaIRS is a format-compat proxy, not comparable. The paper <em>does</em> disclose this inline (L446–448, honest), but the <strong>abstract (L46) states the PaIRS leaders without the NPC caveat</strong>. An abstract-only reader gets a comparability claim the body retracts. <strong>Fix: add the PC/NPC caveat to the abstract sentence, or drop PaIRS rankings from the abstract entirely.</strong></p>
+
+<p><strong>I-5. Leaderboard names competitors on a web surface, not just "the benchmark artifact."</strong> <code>leaderboard/index.html</code> embeds and renders <code>Claude Sonnet 4.6</code>, <code>GPT-4o</code>, <code>Gemini-2.5-Pro</code>, <code>DeepSeek-OCR-2</code>, etc. as ranked rows. The paper's naming exception (L102–106) is scoped to "this benchmark artifact." A standalone HTML leaderboard is arguably a <em>second</em> artifact and a more marketing-adjacent surface than a paper. <strong>Fix (governance): confirm in one explicit line (in the leaderboard warn box or spec) that the scientific-naming exception covers the leaderboard page too; otherwise this is the "named competitors outside the artifact" guardrail breach the brief flags.</strong></p>
+
+<h3>LOW</h3>
+
+<ul>
+<li><strong>I-6.</strong> <code>family:&quot;unknown&quot;</code> on every embedded leaderboard row (L31 DATA)</li>
+</ul>
+<p>  — the "Model family" filter is dead. Cosmetic but a skeptical engineer   notices a benchmark site whose own facet filter is unpopulated.</p>
+<ul>
+<li><strong>I-7.</strong> <code>FORMAT-CALIBRATION</code> cites PureDocBench specifics ("2,580</li>
+</ul>
+<p>  errors, 6 classes", "40 models 0.1B–1T", "15+11 figures") from an   abstract + structural fetch only (its own L46 admits "not a full read").   Fine for an internal plan; the paper's §3 matrix already correctly   hedges ("as publicly described, not re-verified"). <strong>Risk: do not let   these unverified specifics migrate verbatim into the launch post</strong> — a   PureDocBench author reading "they said we have 2,580 errors" without the   hedge is a needless fight.</p>
+<ul>
+<li><strong>I-8.</strong> Provenance says product accuracy is "only per apis.hyperbots.com"</li>
+</ul>
+<p>  (L57–59) — good guardrail, consistently held. No issue; noted as a   positive.</p>
+
+<p><strong>Fabrication scan: clean on headline cells.</strong> Every score I spot-checked (hyperapi-parse-intent 0.8328/0.2589; Qwen2.5-VL-7B-F 0.9294/0.9157/0.7066; Textract 0.9233; GPT-4o 0.8052/0.4232) matches <code>benchmark.xlsx</code> exactly. <code>ci95=null</code> is honestly carried, not invented. The <code>[FT]</code> discipline is applied everywhere. The §3 matrix marking ✗ on its own gaps is genuinely above-average integrity. The integrity problems are <strong>provenance and self-consistency</strong>, not invented numbers.</p>
+
+<hr/>
+
+<h2>2. Virality merit (what earns shares vs gets dunked)</h2>
+
+<h3>What works (keep)</h3>
+<ul>
+<li>The <strong>inverted, self-deprecating framing</strong> ("fine-tuning buys only</li>
+</ul>
+<p>  +0.0061 recall over Textract; zero-shot GPT-4o wins precision; we do NOT   lead layout") is the rare honest-flex that technical audiences upvote.   This is the asset. A vendor publishing a benchmark where its own model   loses on 2 of 4 metrics is the surprising-but-true thing.</p>
+<ul>
+<li>§3 related-work matrix with ✗ self-marks is screenshot-worthy *in the</li>
+</ul>
+<p>  good way* — it reads as confidence, not weakness.</p>
+<ul>
+<li>The reproduction-status ASCII box (Appendix D) is the kind of artifact</li>
+</ul>
+<p>  that earns "ok these people are serious" replies.</p>
+
+<h3>Virality weaknesses (fix for the launch post the other agent must write)</h3>
+<ul>
+<li><strong>V-1. No single honest hook is foregrounded.</strong> The paper buries its best</li>
+</ul>
+<p>  shareable line ("we built a finance OCR benchmark and our own fine-tune   only beats off-the-shelf Textract by 0.6% on recall — and loses   precision and layout to zero-shot models") under 727 lines of hedging.   The launch post does not exist yet; whoever writes it must lead with this.</p>
+<ul>
+<li><strong>V-2. The leaderboard is not screenshot-optimized.</strong> A skeptical</li>
+</ul>
+<p>  engineer screenshots ONE table. The current <code>index.html</code> is a filterable   data grid with <code>family:&quot;unknown&quot;</code> — not a clean ranked hero chart. There   is no single honest "one chart." <strong>The funnel needs one chart: a grouped   bar of best-zero-shot vs the [FT] row across Recall / Precision / PaIRS /   parse-F1, which visually shows fine-tune winning only 2 of 4 — that   chart IS the hook and is honest.</strong></p>
+<ul>
+<li>**V-3. Naming GPT-4o / Claude / Gemini IS the share driver AND the</li>
+</ul>
+<p>  biggest dunk surface.** People share competitive numbers; competitors'   communities screenshot-and-dunk if anything is unfair. Current mitigation   (zero-shot label, <code>[FT]</code> tags, dated/versioned) is strong — but I-3   (black-box DocIntentOCR-3B as #2) and I-4 (abstract PC/NPC mixing) are   the two threads a hostile reader pulls. Fix those and the competitive   framing becomes net-positive virality.</p>
+<ul>
+<li><strong>V-4. CTA is weak.</strong> Only "benchmark access on request:</li>
+</ul>
+<p>  niyati.chhaya@hyprbots.com" (L136, HF-CARD L120). For 1000 signups in   24h you need a clean self-serve signup, not a personal email mailto.   This is a funnel-design gap for the (not-yet-written) launch artifacts,   not a paper bug.</p>
+
+<hr/>
+
+<h2>3. Recommended single strongest honest hook</h2>
+
+<p>> <strong>"We built a 509-doc financial-document OCR benchmark, put our own > fine-tuned model on it next to GPT-4o, Gemini, Claude, Textract and 20+ > others — and our model only beats off-the-shelf Textract by 0.6% on > recall, loses precision to zero-shot GPT-4o, and doesn't lead layout at > all. Here's the leaderboard and exactly how it's scored."</strong></p>
+
+<p>This is the genuinely surprising-but-true finding (a vendor benchmark where the vendor's model is <em>not</em> dominant), it is fully supported by the attested data, it is dunk-resistant <em>because</em> it under-claims, and it funnels naturally to "see the full leaderboard / get access." Pair it with <strong>one honest chart</strong> (V-2: grouped bars, best-zero-shot vs <code>[FT]</code> across the four metrics, showing 2-of-4). Do <strong>not</strong> lead with "hyperapi-parse-intent is</p>
+<p>#1" — that is the framing that invites the apples-to-apples dunk.</p>
+
+<hr/>
+
+<h2>4. Prioritized fix list (for content + research agents)</h2>
+
+<p><strong>P0 — block any human post until done</strong></p>
+<ol>
+<li><strong>(research)</strong> Resolve I-2: commit a recoverable <code>Benchmark-VLM_OCR.pdf</code></li>
+</ol>
+<p>   or data extract into the repo for the IAA/latency/cost/LoRA/failure/    corpus-mix numbers, OR re-tier every PDF-only number as "attested,    source not in repo" and stop citing an unresolvable path.</p>
+<ol>
+<li><strong>(content)</strong> Fix I-1: change "24" → "23" for the parse-intent panel in</li>
+</ol>
+<p>   SAVIOR-Bench.md L40, L90, L194, L215, L693. Re-verify the OCR "21"    against <code>vlm-ocr</code> (21 confirmed — OK).</p>
+
+<p><strong>P1 — fix before launch post is written</strong></p>
+<ol>
+<li><strong>(research/content)</strong> I-3: add provenance for <code>DocIntentOCR-3B</code> or</li>
+</ol>
+<p>   re-anchor "best zero-shot" on GPT-4o in all modesty/comparison prose.</p>
+<ol>
+<li><strong>(content)</strong> I-4: add the PC/NPC caveat to the abstract's PaIRS</li>
+</ol>
+<p>   sentence (L46) or remove PaIRS rankings from the abstract.</p>
+<ol>
+<li><strong>(governance)</strong> I-5: explicitly extend (and document) the</li>
+</ol>
+<p>   scientific-naming exception to cover <code>leaderboard/index.html</code>, or    de-name the leaderboard rows.</p>
+
+<p><strong>P2 — quality / virality polish</strong></p>
+<ol>
+<li><strong>(content)</strong> I-6: populate <code>family</code> in the leaderboard <code>DATA</code> so the</li>
+</ol>
+<p>   facet filter works.</p>
+<ol>
+<li><strong>(content)</strong> Lead the (to-be-written) launch post with the §3 hook +</li>
+</ol>
+<p>   one honest grouped-bar chart (V-1, V-2); add a real self-serve signup    CTA, not a personal mailto (V-4).</p>
+<ol>
+<li><strong>(content)</strong> Guard I-7: do not let unverified PureDocBench specifics</li>
+</ol>
+<p>   from FORMAT-CALIBRATION leak into public copy without the    "as publicly described, not re-verified" hedge already used in §3.</p>
+
+<p><strong>Launch artifacts status:</strong> <code>launch/POST.md</code>, <code>launch/BLOG.md</code>, <code>launch/FUNNEL.md</code> were specified as review targets but <strong>do not exist</strong> — <code>bench/launch-v1</code> has no <code>launch/</code> directory and is identical to <code>master</code> (0 commits ahead, empty diff). The content agent has not produced them. This review's §3 hook and §4 P1/P2 items are the brief that funnel must satisfy; they cannot be reviewed until they exist. **Re-review required once <code>launch/*</code> lands.**</p>
+
+<hr/>
+
+<h2>Sources</h2>
+<ul>
+<li><code>paper/SAVIOR-Bench.md</code> (727 L), <code>paper/HF-CARD.md</code> (135 L),</li>
+</ul>
+<p>  <code>leaderboard/index.html</code> (rendered + embedded <code>var DATA</code>),   <code>plan/FORMAT-CALIBRATION-vs-PureDocBench.md</code> — read in full on   <code>bench/audit-review</code> @ <code>master</code> <code>7d57e85</code>.</p>
+<ul>
+<li><code>~/Desktop/benchmark.xlsx</code> — sheets <code>intent</code> (24 rows = 23 models),</li>
+</ul>
+<p>  <code>vlm-ocr</code> (22 rows = 21 models), <code>Sheet3</code> (dup of vlm-ocr); headline   cells verified to match the paper exactly.</p>
+<ul>
+<li><code>results/DC-000__parse-intent-inhouse-v1__*.json</code> (<strong>23</strong> files),</li>
+</ul>
+<p>  <code>results/DC-000__savior-bench-v1__*.json</code> (<strong>21</strong> files) — count + cell   cross-check.</p>
+<ul>
+<li>Filesystem search for <code>Benchmark-VLM_OCR.pdf</code> across repo, <code>~/Desktop</code>,</li>
+</ul>
+<p>  <code>~/Documents</code> — <strong>not found</strong> (basis for I-2).</p>
+<ul>
+<li><code>git</code> branch/log/diff inspection of <code>bench/launch-v1</code> vs <code>master</code> —</li>
+</ul>
+<p>  basis for the launch-artifacts-do-not-exist finding.</p>
+
+<h2>Open assumptions</h2>
+<ul>
+<li>"Attested-not-reproduced" is taken at face value as honest framing, not</li>
+</ul>
+<p>  fabrication; I-2 is raised as a <em>provenance recoverability</em> risk (the   cited source artifact is absent), not an accusation that numbers were   invented — the xlsx-backed cells check out exactly.</p>
+<ul>
+<li>PureDocBench (arXiv 2605.07492) facts are second-hand via the paper's own</li>
+</ul>
+<p>  abstract+structural-fetch hedge; this review did not independently fetch   or audit PureDocBench and treats the §3 matrix's "as publicly described"   caveat as the controlling disclosure.</p>
+<ul>
+<li>The scientific-naming exception's scope (paper vs leaderboard vs launch</li>
+</ul>
+<p>  post) is a governance call flagged for <code>benchmark-format-steward</code>, not   resolved here.</p>
+<ul>
+<li>Launch artifacts (<code>launch/POST.md</code>/<code>BLOG.md</code>/<code>FUNNEL.md</code>) are assumed</li>
+</ul>
+<p>  still pending from a parallel agent; verdicts for them are N/A until they   exist and must be re-reviewed then.</p>
+
+<p>Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com></p>
+
+</body></html>

@@ -1,0 +1,144 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LEADERBOARD-SPEC — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/lab/savior-bench-report.html">← back</a>
+
+<h1>LEADERBOARD-SPEC — HyperAPI DocumentAI Benchmark (PM product spec)</h1>
+
+<p>Owner: <code>benchmark-product-manager</code>. Reviewed by <code>frontier-lab-cto</code>. Modeled on the HuggingFace Open LLM Leaderboard and Google DeepMind eval programs. Governing method: <code>.claude/skills/benchmark-factory/SKILL.md</code>.</p>
+
+<h2>1. Product goal</h2>
+<p>A leaderboard people trust: 100+ models × every finance-doc-AI task × all registered datasets, where every cell is <strong>measured, pinned, and rerunnable by a stranger</strong>. No self-reported numbers; no unpinned "vibes".</p>
+
+<h2>2. Task taxonomy + canonical metric</h2>
+<p>Source of truth: <code>finance-doc-agents-hyperapi/docs/task-catalog-full.csv</code> (549 implemented tasks across 30 patterns; 61,104 planned). Tasks are grouped into <strong>task families</strong> and each family declares ONE canonical metric, defined in code in <code>harness/metrics.py</code> (never prose):</p>
+
+<table>
+<tr><th>Family</th><th>Example task IDs</th><th>Canonical metric</th></tr>
+<tr><td>extract</td><td>DE-002 line items, DE-003 payment terms</td><td>field-level F1 / exact-match per field</td></tr>
+<tr><td>validate</td><td>DV-001 totals valid</td><td>boolean accuracy</td></tr>
+<tr><td>classify</td><td>document-type classification</td><td>exact-match accuracy</td></tr>
+<tr><td>calculate</td><td>tax/total computation</td><td>numeric-tolerance accuracy (tol 1%)</td></tr>
+<tr><td>reconcile / match / check</td><td>(planned families)</td><td>F1 / accuracy, defined in code when seeded</td></tr>
+</table>
+
+<p>SEED tasks shipped: <strong>DE-002, DE-003, DV-001, DC-001</strong> (representative of extract / validate / classify families; all map to implemented catalog tasks).</p>
+
+<h2>3. Model-submission / repro contract</h2>
+<ol>
+<li>Submitter provides: a canonical model ID + a <strong>pinned</strong> ref (HF revision/</li>
+</ol>
+<p>   commit hash, API model+version date, or local file sha256) + an <strong>adapter</strong>    (<code>predict(prompt, decoding) -&gt; text</code>, pure, no task logic).</p>
+<ol>
+<li>The factory runs the harness; the submitter never self-reports numbers.</li>
+<li>Decoding is fixed per task family and identical across all models in it.</li>
+<li>Every cell stores its literal rerun command + full pins. Re-running on the</li>
+</ol>
+<p>   pinned commit must reproduce the metric within Monte-Carlo CI.</p>
+<ol>
+<li><code>qa-reproducibility</code> re-runs ≥1 sampled cell per release; mismatch ⇒ STOP.</li>
+</ol>
+
+<h2>4. Dataset registry schema</h2>
+<p><code>datasets/registry/registry.json</code>. Per dataset: <code>id, name, type (external-public | synthetic-fixture | internal-hyperbots), source_url, license, public_availability_date, tasks[], split, loader, content_sha256, status</code>. Splits frozen at registration. Internal-Hyperbots data enters ONLY through the pluggable adapter (<code>datasets/loaders/internal_adapter.py</code>) when a real path + creds are supplied; never fabricated. v1 = external/public-only + the inert internal adapter + a clearly-labeled synthetic fixture for harness validation.</p>
+
+<h2>5. Public leaderboard UX</h2>
+<p>Single static HTML (<code>leaderboard/index.html</code>, no build, no network):</p>
+<ul>
+<li>Filter by <strong>task</strong>, <strong>dataset</strong>, <strong>model family</strong>.</li>
+<li>Each cell shows metric, <strong>95% CI</strong>, <strong>n</strong>, tie-band membership, and a</li>
+</ul>
+<p>  contamination flag.</p>
+<ul>
+<li>Per-cell <strong>drill-down</strong> reveals the exact rerun command + pins + the</li>
+</ul>
+<p>  contamination audit record.</p>
+<ul>
+<li>Hyperbots-IP rows are marked "Hyperbots IP" (open-source model fine-tuned by</li>
+</ul>
+<p>  Hyperbots); model IDs are factual entries, not competitive disparagement.</p>
+<ul>
+<li>A persistent banner states SEED-scope honesty (synthetic fixture ≠ ranking).</li>
+</ul>
+
+<h2>6. Refresh cadence</h2>
+<ul>
+<li>SEED: on every harness/commit change (regenerated from <code>results/</code>).</li>
+<li>Production target: monthly model-registry refresh + on-demand for new model</li>
+</ul>
+<p>  submissions; dataset registry frozen between named versions.</p>
+
+<h2>7. Trust / anti-gaming / contamination policy</h2>
+<ul>
+<li>No training/tuning on eval splits; dev/test separated by the registry.</li>
+<li>Prompt templates public + frozen per family; no per-model prompt engineering.</li>
+<li>Decoding fixed per family; no per-model decoding search.</li>
+<li>Contamination audit per (model,dataset) before publish: source, license,</li>
+</ul>
+<p>  public-availability date vs. model cutoff, n-gram/canary overlap signal;   unverifiable cases flagged, never silently dropped.</p>
+<ul>
+<li>Outliers trigger an audit, not a silent rerun-until-good.</li>
+<li>Metrics measured, never asserted; HyperAPI's own accuracy referenced only</li>
+</ul>
+<p>  "per apis.hyperbots.com" and never injected into a measured cell.</p>
+
+<h2>8. "What makes an entry valid" gate</h2>
+<p>Pinned model ref + adapter + frozen dataset split + canonical metric in code + contamination record + a rerun command that <code>qa-reproducibility</code> confirms matches within CI. Miss any ⇒ entry rejected by <code>frontier-lab-cto</code>.</p>
+
+<h2>Sources</h2>
+<ul>
+<li><code>.claude/skills/benchmark-factory/SKILL.md</code>; <code>.claude/agents/*</code></li>
+<li><code>finance-doc-agents-hyperapi/docs/task-catalog-full.csv</code> (549 implemented)</li>
+<li>This repo: <code>harness/</code>, <code>datasets/registry/registry.json</code>, <code>results/</code>,</li>
+</ul>
+<p>  <code>contamination/audit-records.json</code>, <code>leaderboard/index.html</code></p>
+
+<h2>Open assumptions</h2>
+<ol>
+<li>Task list = the finance-doc-AI catalog in finance-doc-agents-hyperapi.</li>
+<li>External datasets (SROIE, CORD) require user manual download per license;</li>
+</ol>
+<p>   loaders activate on local presence — no fabricated fallback.</p>
+<ol>
+<li>Internal-Hyperbots datasets: location/access/license human-provided later;</li>
+</ol>
+<p>   adapter stays inert until then.</p>
+<ol>
+<li>SEED cells use the synthetic fixture and are explicitly not ranking claims.</li>
+</ol>
+
+</body></html>
