@@ -1,0 +1,264 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Human Review Queue — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<a class="back" href="/">← back</a>
+
+<h1>Human review queue — 10% stratified sample</h1>
+
+<ul>
+<li>date: 2026-05-26</li>
+<li>total live: 1650 blogs (all passed rubric pre-filter)</li>
+<li>sample: <strong>163 blogs</strong> (10% stratified by bucket)</li>
+<li>target: 1 reviewer × ~30 min total (~10-12 sec/blog spot-check)</li>
+<li>verdict signals: ✅ approve (publishable as-is) · ⚠ minor fix (publish after small edit) · ❌ template-bug (re-emit batch)</li>
+</ul>
+
+<h2>Per-bucket sample sizes</h2>
+
+<table>
+<tr><th>Bucket</th><th>Live</th><th>Sample</th><th>What to check</th></tr>
+<tr><td>classify-misc</td><td>710</td><td>71</td><td>Is the doc-type pair coherent? Any irrelevant filler?</td></tr>
+<tr><td>extract-misc</td><td>432</td><td>43</td><td>Are the field-extraction examples plausible? No customer-leakage?</td></tr>
+<tr><td>invoice</td><td>163</td><td>16</td><td>Does the math-derived hook ring true? Any fabricated specifics?</td></tr>
+<tr><td>receipt</td><td>142</td><td>14</td><td>Receipt-specific framing (POS / restaurant / retail) sound?</td></tr>
+<tr><td>remittance</td><td>79</td><td>7</td><td>Remittance-advice framing distinct from invoice?</td></tr>
+<tr><td>tax-1099</td><td>30</td><td>3</td><td>IRS-form specifics correct? No customer SSN/EIN-like leakage?</td></tr>
+<tr><td>po</td><td>17</td><td>1</td><td>PO-specific terms (line items / vendor / amount) accurate?</td></tr>
+<tr><td>cheque</td><td>16</td><td>1</td><td>Cheque-specific (MICR / amount-in-words) sound? Not cfo-product?</td></tr>
+<tr><td>credit_note</td><td>15</td><td>1</td><td>Credit-note vs invoice/debit-note distinction crisp?</td></tr>
+<tr><td>bank_statement</td><td>15</td><td>1</td><td>Bank-statement framing generic (not cfo-nanoclaw-product)?</td></tr>
+<tr><td>debit_note</td><td>13</td><td>1</td><td>Debit-note vs credit-note clarity?</td></tr>
+<tr><td>payroll</td><td>9</td><td>1</td><td>Payroll generic (not cfo-product)?</td></tr>
+<tr><td>bol</td><td>4</td><td>1</td><td>BoL-specific (carrier / weight / consignee) accurate?</td></tr>
+<tr><td>tax-w2</td><td>3</td><td>1</td><td>W-2 specifics correct?</td></tr>
+<tr><td>packing_slip</td><td>2</td><td>1</td><td>Packing-slip terms accurate?</td></tr>
+</table>
+
+<h2>Sample blogs to review</h2>
+
+<table>
+<tr><th>✓</th><th>#</th><th>Slug</th><th>Bucket</th><th>Reviewer-persona</th><th>Blog URL</th></tr>
+<tr><td>☐</td><td>1</td><td><code>hyperapi-classify-1099-int-vs-dividend-notice</code></td><td>tax-1099</td><td>cfo-agents-shepherd</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-1099-int-vs-dividend-notice/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>2</td><td><code>hyperapi-classify-ach-return-vs-certificate-of-origin-ar</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-ach-return-vs-certificate-of-origin-ar/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>3</td><td><code>hyperapi-classify-commercial-invoice-vs-cover-page-hi</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-commercial-invoice-vs-cover-page-hi/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>4</td><td><code>hyperapi-classify-commercial-invoice-vs-k1-schedule</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-commercial-invoice-vs-k1-schedule/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>5</td><td><code>hyperapi-classify-construction-billing-document-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-construction-billing-document-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>6</td><td><code>hyperapi-classify-construction-lien-waiver-type-zh-hans</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-construction-lien-waiver-type-zh-hans/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>7</td><td><code>hyperapi-classify-contract-subtype-tr</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-contract-subtype-tr/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>8</td><td><code>hyperapi-classify-credit-note-vs-debit-note-zh-hans</code></td><td>credit_note</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-credit-note-vs-debit-note-zh-hans/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>9</td><td><code>hyperapi-classify-debit-note-vs-bank-statement-it</code></td><td>bank_statement</td><td>cfo-agents-shepherd</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-debit-note-vs-bank-statement-it/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>10</td><td><code>hyperapi-classify-debit-note-vs-cover-page-nl</code></td><td>debit_note</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-debit-note-vs-cover-page-nl/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>11</td><td><code>hyperapi-classify-delivery-challan-vs-cover-page-it</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-delivery-challan-vs-cover-page-it/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>12</td><td><code>hyperapi-classify-delivery-challan-vs-cover-page-pt</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-delivery-challan-vs-cover-page-pt/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>13</td><td><code>hyperapi-classify-delivery-challan-vs-wire-confirmation-hi</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-delivery-challan-vs-wire-confirmation-hi/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>14</td><td><code>hyperapi-classify-delivery-challan-vs-wire-confirmation-it</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-delivery-challan-vs-wire-confirmation-it/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>15</td><td><code>hyperapi-classify-demurrage-vs-detention-charge</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-demurrage-vs-detention-charge/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>16</td><td><code>hyperapi-classify-derivative-confirmation-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-derivative-confirmation-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>17</td><td><code>hyperapi-classify-derivative-contract-type-ja</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-derivative-contract-type-ja/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>18</td><td><code>hyperapi-classify-derivative-contract-type-zh-hans</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-derivative-contract-type-zh-hans/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>19</td><td><code>hyperapi-classify-dividend-notice-vs-escrow-statement-ja</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-dividend-notice-vs-escrow-statement-ja/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>20</td><td><code>hyperapi-classify-document-fiscal-period</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-document-fiscal-period/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>21</td><td><code>hyperapi-classify-escrow-instruction-type-ru</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-escrow-instruction-type-ru/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>22</td><td><code>hyperapi-classify-escrow-release-condition-type-pt</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-escrow-release-condition-type-pt/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>23</td><td><code>hyperapi-classify-escrow-release-condition-type-ru</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-escrow-release-condition-type-ru/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>24</td><td><code>hyperapi-classify-escrow-statement-event-type-zh-hans</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-escrow-statement-event-type-zh-hans/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>25</td><td><code>hyperapi-classify-escrow-statement-period-ru</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-escrow-statement-period-ru/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>26</td><td><code>hyperapi-classify-escrow-statement-purpose-fr</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-escrow-statement-purpose-fr/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>27</td><td><code>hyperapi-classify-escrow-statement-vs-cover-page-it</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-escrow-statement-vs-cover-page-it/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>28</td><td><code>hyperapi-classify-escrow-statement-vs-cover-page-ru</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-escrow-statement-vs-cover-page-ru/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>29</td><td><code>hyperapi-classify-esg-disclosure-document-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-esg-disclosure-document-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>30</td><td><code>hyperapi-classify-expense-receipt-completeness-de</code></td><td>receipt</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-expense-receipt-completeness-de/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>31</td><td><code>hyperapi-classify-expense-receipt-completeness-ja</code></td><td>receipt</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-expense-receipt-completeness-ja/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>32</td><td><code>hyperapi-classify-expense-receipt-vs-statement-ar</code></td><td>receipt</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-expense-receipt-vs-statement-ar/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>33</td><td><code>hyperapi-classify-expense-receipt-vs-statement-ja</code></td><td>receipt</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-expense-receipt-vs-statement-ja/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>34</td><td><code>hyperapi-classify-expense-reimbursable-status-ar</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-expense-reimbursable-status-ar/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>35</td><td><code>hyperapi-classify-expense-report-vs-check-deposit-ar</code></td><td>cheque</td><td>cfo-agents-shepherd</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-expense-report-vs-check-deposit-ar/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>36</td><td><code>hyperapi-classify-expense-travel-vs-nontravel</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-expense-travel-vs-nontravel/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>37</td><td><code>hyperapi-classify-expense-travel-vs-nontravel-ko</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-expense-travel-vs-nontravel-ko/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>38</td><td><code>hyperapi-classify-factoring-agreement-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-factoring-agreement-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>39</td><td><code>hyperapi-classify-fixed-asset-event-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-fixed-asset-event-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>40</td><td><code>hyperapi-classify-franchise-disclosure-section</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-franchise-disclosure-section/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>41</td><td><code>hyperapi-classify-freight-invoice-vs-lease-agreement-ar</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-freight-invoice-vs-lease-agreement-ar/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>42</td><td><code>hyperapi-classify-fx-contract-type-de</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-fx-contract-type-de/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>43</td><td><code>hyperapi-classify-goods-receipt-condition-ja</code></td><td>receipt</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-goods-receipt-condition-ja/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>44</td><td><code>hyperapi-classify-goods-receipt-note-vs-delivery-challan-hi</code></td><td>receipt</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-goods-receipt-note-vs-delivery-challan-hi/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>45</td><td><code>hyperapi-classify-grain-contract-pricing-type-es</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-grain-contract-pricing-type-es/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>46</td><td><code>hyperapi-classify-grain-contract-pricing-type-fr</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-grain-contract-pricing-type-fr/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>47</td><td><code>hyperapi-classify-grain-contract-pricing-type-hi</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-grain-contract-pricing-type-hi/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>48</td><td><code>hyperapi-classify-grant-funding-document-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-grant-funding-document-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>49</td><td><code>hyperapi-classify-grant-letter-funding-stage</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-grant-letter-funding-stage/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>50</td><td><code>hyperapi-classify-grant-restriction-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-grant-restriction-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>51</td><td><code>hyperapi-classify-insurance-premium-document-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-insurance-premium-document-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>52</td><td><code>hyperapi-classify-intercompany-invoice-vs-cover-page</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-intercompany-invoice-vs-cover-page/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>53</td><td><code>hyperapi-classify-invoice-subtype</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-invoice-subtype/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>54</td><td><code>hyperapi-classify-invoice-vs-quote</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-invoice-vs-quote/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>55</td><td><code>hyperapi-classify-journal-entry-vs-statement-of-account-ar</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-journal-entry-vs-statement-of-account-ar/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>56</td><td><code>hyperapi-classify-journal-entry-vs-statement-of-account-pt</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-journal-entry-vs-statement-of-account-pt/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>57</td><td><code>hyperapi-classify-lease-accounting-treatment</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-lease-accounting-treatment/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>58</td><td><code>hyperapi-classify-lease-agreement-vs-1099-int-ar</code></td><td>tax-1099</td><td>cfo-agents-shepherd</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-lease-agreement-vs-1099-int-ar/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>59</td><td><code>hyperapi-classify-lease-agreement-vs-1099-int-ko</code></td><td>tax-1099</td><td>cfo-agents-shepherd</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-lease-agreement-vs-1099-int-ko/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>60</td><td><code>hyperapi-classify-lease-agreement-vs-cover-page-ko</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-lease-agreement-vs-cover-page-ko/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>61</td><td><code>hyperapi-classify-lease-classification-finance-vs-operating-de</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-lease-classification-finance-vs-operating-de/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>62</td><td><code>hyperapi-classify-lease-incentive-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-lease-incentive-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>63</td><td><code>hyperapi-classify-ledger-account-normal-balance</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-ledger-account-normal-balance/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>64</td><td><code>hyperapi-classify-loan-collateral-status</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-loan-collateral-status/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>65</td><td><code>hyperapi-classify-loan-covenant-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-loan-covenant-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>66</td><td><code>hyperapi-classify-loan-repayment-structure</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-loan-repayment-structure/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>67</td><td><code>hyperapi-classify-margin-call-urgency</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-margin-call-urgency/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>68</td><td><code>hyperapi-classify-meter-reading-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-meter-reading-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>69</td><td><code>hyperapi-classify-packing-slip-vs-cover-page</code></td><td>packing_slip</td><td>gtm-b2c-virality</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-packing-slip-vs-cover-page/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>70</td><td><code>hyperapi-classify-payment-run-priority</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-payment-run-priority/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>71</td><td><code>hyperapi-classify-payroll-register-vs-trade-confirmation</code></td><td>payroll</td><td>cfo-agents-shepherd</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-payroll-register-vs-trade-confirmation/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>72</td><td><code>hyperapi-classify-pension-plan-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-pension-plan-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>73</td><td><code>hyperapi-classify-procurement-document-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-procurement-document-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>74</td><td><code>hyperapi-classify-promissory-note-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-promissory-note-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>75</td><td><code>hyperapi-classify-promissory-note-vs-cover-page</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-promissory-note-vs-cover-page/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>76</td><td><code>hyperapi-classify-purchase-order-vs-bill-of-lading</code></td><td>bol</td><td>gtm-b2c-virality</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-purchase-order-vs-bill-of-lading/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>77</td><td><code>hyperapi-classify-receipt-merchant-category</code></td><td>receipt</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-receipt-merchant-category/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>78</td><td><code>hyperapi-classify-reinsurance-cession-document-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-reinsurance-cession-document-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>79</td><td><code>hyperapi-classify-revenue-arrangement-performance-obligation</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-revenue-arrangement-performance-obligation/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>80</td><td><code>hyperapi-classify-royalty-deduction-category</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-royalty-deduction-category/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>81</td><td><code>hyperapi-classify-royalty-statement-payer-role</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-royalty-statement-payer-role/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>82</td><td><code>hyperapi-classify-sales-tax-exemption-certificate-vs-blanket-po-release</code></td><td>po</td><td>gtm-b2c-virality</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-sales-tax-exemption-certificate-vs-blanket-po-release/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>83</td><td><code>hyperapi-classify-scan-legibility</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-scan-legibility/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>84</td><td><code>hyperapi-classify-securities-corporate-action-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-securities-corporate-action-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>85</td><td><code>hyperapi-classify-statement-period-frequency</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-statement-period-frequency/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>86</td><td><code>hyperapi-classify-statement-period-monthly-quarterly</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-statement-period-monthly-quarterly/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>87</td><td><code>hyperapi-classify-tax-form-variant-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-tax-form-variant-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>88</td><td><code>hyperapi-classify-tax-invoice-vs-proforma</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-tax-invoice-vs-proforma/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>89</td><td><code>hyperapi-classify-timesheet-vs-cover-page</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-timesheet-vs-cover-page/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>90</td><td><code>hyperapi-classify-title-commitment-vs-cover-page</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-title-commitment-vs-cover-page/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>91</td><td><code>hyperapi-classify-trade-finance-instrument-stage</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-trade-finance-instrument-stage/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>92</td><td><code>hyperapi-classify-treasury-confirmation-instrument-class</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-treasury-confirmation-instrument-class/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>93</td><td><code>hyperapi-classify-treasury-confirmation-product</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-treasury-confirmation-product/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>94</td><td><code>hyperapi-classify-vendor-onboarding-form-vs-cover-page</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-vendor-onboarding-form-vs-cover-page/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>95</td><td><code>hyperapi-classify-w2-wage-statement-vs-cover-page</code></td><td>tax-w2</td><td>cfo-agents-shepherd</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-w2-wage-statement-vs-cover-page/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>96</td><td><code>hyperapi-classify-warehouse-document-type</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-warehouse-document-type/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>97</td><td><code>hyperapi-classify-wire-transfer-purpose</code></td><td>classify-misc</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-classify-wire-transfer-purpose/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>98</td><td><code>hyperapi-extract-1003-application-fields</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-1003-application-fields/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>99</td><td><code>hyperapi-extract-cash-pooling-statement-fields</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-cash-pooling-statement-fields/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>100</td><td><code>hyperapi-extract-certificate-of-origin-header-fields-it</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-certificate-of-origin-header-fields-it/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>101</td><td><code>hyperapi-extract-certificate-of-origin-remittance-fields-de</code></td><td>remittance</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-certificate-of-origin-remittance-fields-de/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>102</td><td><code>hyperapi-extract-claims-bordereau-line-items</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-claims-bordereau-line-items/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>103</td><td><code>hyperapi-extract-closing-disclosure-fields-it</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-closing-disclosure-fields-it/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>104</td><td><code>hyperapi-extract-closing-disclosure-trid-fields-de</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-closing-disclosure-trid-fields-de/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>105</td><td><code>hyperapi-extract-closing-disclosure-trid-fields-ja</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-closing-disclosure-trid-fields-ja/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>106</td><td><code>hyperapi-extract-closing-disclosure-trid-fields-nl</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-closing-disclosure-trid-fields-nl/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>107</td><td><code>hyperapi-extract-cms-1500-claim-fields-ja</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-cms-1500-claim-fields-ja/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>108</td><td><code>hyperapi-extract-commercial-invoice-header-fields-ru</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-commercial-invoice-header-fields-ru/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>109</td><td><code>hyperapi-extract-commercial-lease-fields-es</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-commercial-lease-fields-es/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>110</td><td><code>hyperapi-extract-commercial-lease-fields-ko</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-commercial-lease-fields-ko/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>111</td><td><code>hyperapi-extract-equipment-lease-schedule-fields-it</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-equipment-lease-schedule-fields-it/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>112</td><td><code>hyperapi-extract-equipment-lease-schedule-fields-ko</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-equipment-lease-schedule-fields-ko/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>113</td><td><code>hyperapi-extract-escrow-analysis-amounts-ja</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-escrow-analysis-amounts-ja/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>114</td><td><code>hyperapi-extract-escrow-analysis-fields-es</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-escrow-analysis-fields-es/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>115</td><td><code>hyperapi-extract-escrow-analysis-fields-fr</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-escrow-analysis-fields-fr/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>116</td><td><code>hyperapi-extract-escrow-statement-key-fields-ar</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-escrow-statement-key-fields-ar/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>117</td><td><code>hyperapi-extract-escrow-statement-remittance-fields-it</code></td><td>remittance</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-escrow-statement-remittance-fields-it/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>118</td><td><code>hyperapi-extract-escrow-statement-remittance-fields-zh-hans</code></td><td>remittance</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-escrow-statement-remittance-fields-zh-hans/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>119</td><td><code>hyperapi-extract-expense-report-header-fields-pt</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-expense-report-header-fields-pt/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>120</td><td><code>hyperapi-extract-factoring-advance-fields</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-factoring-advance-fields/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>121</td><td><code>hyperapi-extract-freight-invoice-accessorials-ja</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-freight-invoice-accessorials-ja/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>122</td><td><code>hyperapi-extract-freight-invoice-accessorials-nl</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-freight-invoice-accessorials-nl/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>123</td><td><code>hyperapi-extract-freight-invoice-fields</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-freight-invoice-fields/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>124</td><td><code>hyperapi-extract-freight-invoice-header-fields</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-freight-invoice-header-fields/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>125</td><td><code>hyperapi-extract-freight-invoice-header-fields-de</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-freight-invoice-header-fields-de/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>126</td><td><code>hyperapi-extract-freight-invoice-header-fields-hi</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-freight-invoice-header-fields-hi/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>127</td><td><code>hyperapi-extract-freight-invoice-header-fields-ko</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-freight-invoice-header-fields-ko/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>128</td><td><code>hyperapi-extract-freight-invoice-remittance-fields-zh-hans</code></td><td>invoice</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-freight-invoice-remittance-fields-zh-hans/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>129</td><td><code>hyperapi-extract-general-ledger-export-header-fields</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-general-ledger-export-header-fields/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>130</td><td><code>hyperapi-extract-general-ledger-export-remittance-fields</code></td><td>remittance</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-general-ledger-export-remittance-fields/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>131</td><td><code>hyperapi-extract-goods-receipt-note-header-fields-de</code></td><td>receipt</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-goods-receipt-note-header-fields-de/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>132</td><td><code>hyperapi-extract-goods-receipt-note-header-fields-it</code></td><td>receipt</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-goods-receipt-note-header-fields-it/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>133</td><td><code>hyperapi-extract-goods-receipt-note-header-fields-nl</code></td><td>receipt</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-goods-receipt-note-header-fields-nl/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>134</td><td><code>hyperapi-extract-goods-receipt-note-header-fields-pt</code></td><td>receipt</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-goods-receipt-note-header-fields-pt/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>135</td><td><code>hyperapi-extract-goods-receipt-note-remittance-fields-ar</code></td><td>receipt</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-goods-receipt-note-remittance-fields-ar/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>136</td><td><code>hyperapi-extract-goods-receipt-note-remittance-fields-tr</code></td><td>receipt</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-goods-receipt-note-remittance-fields-tr/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>137</td><td><code>hyperapi-extract-goods-receipt-note-remittance-fields-zh-hans</code></td><td>receipt</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-goods-receipt-note-remittance-fields-zh-hans/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>138</td><td><code>hyperapi-extract-indenture-redemption-terms</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-indenture-redemption-terms/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>139</td><td><code>hyperapi-extract-installment-loan-schedule-fields</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-installment-loan-schedule-fields/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>140</td><td><code>hyperapi-extract-insurance-binder-remittance-fields</code></td><td>remittance</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-insurance-binder-remittance-fields/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>141</td><td><code>hyperapi-extract-interest-rate-swap-economics</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-interest-rate-swap-economics/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>142</td><td><code>hyperapi-extract-journal-entry-remittance-fields</code></td><td>remittance</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-journal-entry-remittance-fields/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>143</td><td><code>hyperapi-extract-k1-partner-allocations</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-k1-partner-allocations/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>144</td><td><code>hyperapi-extract-lease-abstract-fields-ar</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-lease-abstract-fields-ar/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>145</td><td><code>hyperapi-extract-lease-agreement-header-fields-ru</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-lease-agreement-header-fields-ru/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>146</td><td><code>hyperapi-extract-lease-agreement-remittance-fields-it</code></td><td>remittance</td><td>comparative-study</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-lease-agreement-remittance-fields-it/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>147</td><td><code>hyperapi-extract-lease-agreement-rent-escalation</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-lease-agreement-rent-escalation/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>148</td><td><code>hyperapi-extract-lease-agreement-rent-escalation-es</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-lease-agreement-rent-escalation-es/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>149</td><td><code>hyperapi-extract-lease-agreement-rent-escalation-fr</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-lease-agreement-rent-escalation-fr/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>150</td><td><code>hyperapi-extract-lease-cam-reconciliation-charges-fr</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-lease-cam-reconciliation-charges-fr/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>151</td><td><code>hyperapi-extract-lease-cam-reconciliation-charges-nl</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-lease-cam-reconciliation-charges-nl/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>152</td><td><code>hyperapi-extract-lease-escalation-schedule-es</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-lease-escalation-schedule-es/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>153</td><td><code>hyperapi-extract-lease-escalation-schedule-pt</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-lease-escalation-schedule-pt/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>154</td><td><code>hyperapi-extract-lease-incentive-schedule-fields-hi</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-lease-incentive-schedule-fields-hi/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>155</td><td><code>hyperapi-extract-lease-incentive-schedule-fields-ja</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-lease-incentive-schedule-fields-ja/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>156</td><td><code>hyperapi-extract-lease-termination-notice-fields-nl</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-lease-termination-notice-fields-nl/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>157</td><td><code>hyperapi-extract-letter-of-credit-terms</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-letter-of-credit-terms/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>158</td><td><code>hyperapi-extract-letter-of-indemnity-obligations</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-letter-of-indemnity-obligations/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>159</td><td><code>hyperapi-extract-loan-amortization-schedule</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-loan-amortization-schedule/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>160</td><td><code>hyperapi-extract-loan-payoff-figures</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-loan-payoff-figures/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>161</td><td><code>hyperapi-extract-money-market-confirmation</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-money-market-confirmation/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>162</td><td><code>hyperapi-extract-packing-list-net-gross-weight-tr</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-packing-list-net-gross-weight-tr/blog.html">open</a></td></tr>
+<tr><td>☐</td><td>163</td><td><code>hyperapi-extract-pledge-agreement-collateral</code></td><td>extract-misc</td><td>abm-content-marketing</td><td><a href="https://niyatic.github.io/repos/hyperapi-extract-pledge-agreement-collateral/blog.html">open</a></td></tr>
+</table>
+
+<h2>Process</h2>
+
+<ol>
+<li>Click each [open] link; passphrase <code>hypercontent26</code>.</li>
+<li>Spot-check the blog: does the math-derived hook make sense? Is the audience tag right? Is the cross-vendor framing accurate (without naming competitors)? Any factual oddities?</li>
+<li>Check the ✓ box if approve, edit the row to <code>⚠</code> or <code>❌</code> if not.</li>
+<li>Aggregate verdicts into a closing block at the bottom of this doc.</li>
+</ol>
+
+<h2>Honest scope</h2>
+<ul>
+<li>The rubric is <strong>structural pre-filter</strong> (presence/absence of patterns), not LLM editorial judgment.</li>
+<li>This 10% sample is the FIRST human gate before any of the 1,650 ship to external surfaces (LinkedIn, Hyperbots marketing site).</li>
+<li>If <5% of the sample fails → ship the batch. If >5% fails → revise rubric and re-run.</li>
+</ul>
+
+<h2>Aggregate verdict</h2>
+<p>_(reviewer fills in)_</p>
+<ul>
+<li>approve: ___</li>
+<li>minor fix: ___</li>
+<li>template-bug: ___</li>
+<li>decision: SHIP / HOLD / REVISE-RUBRIC</li>
+</ul>
+</body></html>
