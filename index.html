@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hyperbots — content hub</title>
-<meta name="description" content="Hyperbots content hub — blog drafts, editorial calendar, deep-study frameworks, benchmarks lab.">
+<meta name="description" content="Hyperbots content hub — marketing content, benchmarks, ABM accounts.">
 <style>
 :root {
   --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
@@ -13,225 +13,80 @@
   --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
   --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing:border-box; margin:0; padding:0; }
 body {
-  font: 15px/1.6 "Rubik", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-  background: var(--grey-2);
-  color: var(--grey-12);
-  max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px;
-  -webkit-font-smoothing: antialiased;
+  font: 15px/1.6 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background:var(--grey-2); color:var(--grey-12);
+  max-width: 1080px; margin: 0 auto; padding: 28px 24px 56px;
+  -webkit-font-smoothing:antialiased;
 }
-.brand-header {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  padding: 18px 22px; background: #FFFFFF;
-  border: 1px solid var(--grey-4); border-radius: 12px;
-  border-left: 5px solid var(--brand-7);
-  margin-bottom: 24px;
-  box-shadow: 0 1px 3px rgba(33,31,38,.06);
+.hero {
+  background:#fff; border:1px solid var(--grey-4); border-radius:12px;
+  border-left:5px solid var(--brand-7); padding:20px 24px; margin-bottom:24px;
+  box-shadow:0 1px 3px rgba(33,31,38,.06);
+  display:flex; align-items:center; gap:16px;
 }
-.brand-header h1 { font-size: 22px; color: var(--grey-12); font-weight: 600; margin: 0; }
-.brand-header .sub { color: var(--grey-10); font-size: 13px; margin-top: 4px; }
-.brand-header .tag { font-size: 11px; padding: 3px 10px; background: var(--brand-2); color: var(--brand-9); border-radius: 11px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
-h2 { font-size: 17px; color: var(--brand-9); font-weight: 600; margin: 36px 0 12px; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); display:flex; align-items:center; gap:8px; }
-.sub { color: var(--grey-10); font-size: 13.5px; margin: 0 0 14px; line-height: 1.55; }
-.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; margin: 12px 0; }
+.hero img { width:38px; height:39px; }
+.hero h1 { font-size:22px; font-weight:600; color:var(--grey-12); margin:0; }
+.hero .sub { color:var(--grey-10); font-size:13.5px; margin-top:4px; }
+.hero .tag { font-size:11px; padding:3px 10px; background:var(--brand-2); color:var(--brand-9); border-radius:11px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; margin-left:auto; }
+.cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:12px; margin:18px 0; }
 .card {
-  background: #FFFFFF; border: 1px solid var(--grey-4); border-radius: 10px;
-  padding: 16px 18px; transition: box-shadow 0.15s, transform 0.15s;
-  box-shadow: 0 1px 2px rgba(33,31,38,.04);
-  display: block; text-decoration: none; color: inherit;
+  background:#fff; border:1px solid var(--grey-4); border-radius:10px;
+  padding:22px 24px; display:block; text-decoration:none; color:inherit;
+  border-left:5px solid var(--brand-7);
+  transition:box-shadow 0.15s, transform 0.15s;
+  box-shadow:0 1px 2px rgba(33,31,38,.04);
 }
-.card:hover { box-shadow: 0 4px 12px rgba(33,31,38,.10); transform: translateY(-1px); }
-.card .icon { font-size: 20px; margin-bottom: 6px; }
-.card .title { font-weight: 600; font-size: 14.5px; color: var(--brand-7); margin: 0 0 4px; }
-.card .desc { color: var(--grey-10); font-size: 12.5px; line-height: 1.5; }
-.card .meta { color: var(--grey-11); font-size: 11.5px; margin-top: 6px; font-style: italic; }
-.note { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 12px 16px; border-radius: 6px; margin: 14px 0; font-size: 13px; color: var(--grey-12); }
-.footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--grey-4); color: var(--grey-10); font-size: 12px; }
-.footer a { color: var(--brand-7); text-decoration: none; }
-.footer a:hover { text-decoration: underline; }
-code { font-family: "SF Mono", ui-monospace, Menlo, monospace; font-size: 12.5px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+.card:hover { box-shadow:0 4px 12px rgba(33,31,38,.10); transform:translateY(-1px); }
+.card .icon { font-size:30px; margin-bottom:6px; }
+.card .title { font-weight:600; font-size:18px; color:var(--brand-7); margin:0 0 6px; }
+.card .desc { color:var(--grey-10); font-size:13.5px; line-height:1.55; }
+.card .meta { margin-top:10px; color:var(--brand-9); font-size:12px; font-weight:600; }
+.note { background:var(--brand-2); border-left:3px solid var(--brand-7); padding:12px 16px; border-radius:6px; margin:14px 0; font-size:13px; color:var(--grey-12); }
+.footer { margin-top:48px; padding-top:18px; border-top:1px solid var(--grey-4); color:var(--grey-10); font-size:12px; }
+.footer a { color:var(--brand-7); text-decoration:none; }
+.footer a:hover { text-decoration:underline; }
+code { font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:12px; background:var(--brand-2); padding:1px 5px; border-radius:3px; }
 </style>
 </head>
 <body>
-
-<header class="brand-header">
-  <img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:36px;height:37px;display:block;margin-right:14px"/>
+<header class="hero">
+  <img src="/assets/hyperbots-logo.svg" alt="Hyperbots"/>
   <div>
     <h1>Hyperbots — content hub</h1>
-    <div class="sub">Editorial calendar · viral-title catalogs · deep-study frameworks · benchmarks lab. All one passphrase away.</div>
+    <div class="sub">Marketing content · benchmarks · ABM accounts. Reorganized into 3 buckets, all one passphrase away.</div>
   </div>
   <span class="tag">private · password-gated</span>
 </header>
 
 <div class="note">
-  <strong>Navigation lives here.</strong> Everything is one click away. The HyperAPI command center stays on internal surfaces — this site is for content, drafts, plans, and benchmarks.
+  <strong>3-bucket layout</strong> (introduced 2026-05-26). Marketing content (titles · drafts · plan · competitive study) · Benchmarks (dashboard · leaderboards · studies · factory) · ABM (accounts · events). Detail views inside each.
 </div>
 
-<a class="card" href="content-plan.html" style="display:block;background:linear-gradient(90deg,var(--brand-2),#fff);border-left:5px solid var(--brand-7);padding:18px 22px;margin:18px 0 8px;text-decoration:none;color:inherit">
-  <div style="display:flex;align-items:center;gap:14px">
-    <div style="font-size:28px">📋</div>
-    <div style="flex:1">
-      <div style="font-weight:600;color:var(--brand-9);font-size:16px;margin-bottom:3px">Content plan &amp; strategy</div>
-      <div style="color:var(--grey-11);font-size:13px;line-height:1.5">Start here. The narrative funnel: strategy → editorial calendar → viral titles → drafts.</div>
-    </div>
-    <div style="color:var(--brand-7);font-size:20px">→</div>
-  </div>
-</a>
-
-<h2>✍️ Editorial &amp; viral titles</h2>
-<p class="sub">Blog plans, viral-title catalogs (v3 = anchored vs non-anchored split, v4 = relative deltas, v5 = Gemini full-n + cross-vendor failure pattern).</p>
-<div class="card-grid">
-  <a class="card" href="blog-plan.html">
-    <div class="icon">📋</div>
-    <div class="title">Blog plan (editorial calendar)</div>
-    <div class="desc">P-1..P-5 pointer outlines + viral title catalog inline.</div>
+<div class="cards">
+  <a class="card" href="/marketing/">
+    <div class="icon">📝</div>
+    <div class="title">Marketing content</div>
+    <div class="desc">Viral-title catalogs, blog drafts, content plan + this-week queue, competitive deep-study, product slides.</div>
+    <div class="meta">→ titles · drafts · plan · competition</div>
   </a>
-  <a class="card" href="content/viral-titles/v5.html">
-    <div class="icon">🔥</div>
-    <div class="title">Viral title catalog v5 (latest)</div>
-    <div class="desc">86 titles · §A anchored · §B non-anchored · §C relative deltas · §D Gemini full-n · §E cross-vendor failure pattern.</div>
-  </a>
-  <a class="card" href="content/viral-titles/v4.html">
+  <a class="card" href="/benchmarks/">
     <div class="icon">📊</div>
-    <div class="title">Viral title catalog v4</div>
-    <div class="desc">First relative-comparison catalog (Hyperbots vs OpenAI/Gemini).</div>
+    <div class="title">Benchmarks</div>
+    <div class="desc">Dashboard view of all benchmark data — Azure DI study, SAVIOR-bench, per-doc-type pages, papers, leaderboards across Claude/OpenAI/Gemini families.</div>
+    <div class="meta">→ dashboard · leaderboards · studies · factory</div>
   </a>
-  <a class="card" href="content/viral-titles/v3.html">
-    <div class="icon">📑</div>
-    <div class="title">Viral title catalog v3</div>
-    <div class="desc">First anchored/non-anchored split (60 titles across 9 doc types).</div>
-  </a>
-  <a class="card" href="content/linkedin/linkedin-post-strategy.html">
-    <div class="icon">📱</div>
-    <div class="title">LinkedIn post strategy — v2 virality-enhanced</div>
-    <div class="desc">6-week calendar, 5 pillars, per-action virality justification + Earn-Trust pre-post gate + honesty bar. DRAFT.</div>
-  </a>
-  <a class="card" href="content/linkedin/linkedin-500-line-invoice.html">
-    <div class="icon">💼</div>
-    <div class="title">LinkedIn — 500-line invoice draft</div>
-    <div class="desc">CEO-authored draft + sourceability AUDIT sidecar.</div>
-  </a>
-</div>
-
-<h2>📚 Blog drafts &amp; staging</h2>
-<p class="sub">Approved viral-blog drafts + slide decks + staging content (the localhost:8787 hub).</p>
-<div class="card-grid">
-  <a class="card" href="blogs/">
-    <div class="icon">🗂️</div>
-    <div class="title">Open <code>/blogs/</code> staging index</div>
-    <div class="desc">HTML drafts — viral blogs 1/2/3 + ABM agent piece + content virality strategy + train-benchmark-deploy.</div>
-  </a>
-  <a class="card" href="blogs/2026-05-22-viral-blog-1-no-faked-cell.html">
-    <div class="icon">📝</div>
-    <div class="title">Viral blog 1 — "No faked cell"</div>
-    <div class="desc">The integrity-floor blog.</div>
-  </a>
-  <a class="card" href="blogs/2026-05-22-viral-blog-2-narrow-honest-edge.html">
-    <div class="icon">📝</div>
-    <div class="title">Viral blog 2 — "Narrow honest edge"</div>
-    <div class="desc">The owning-the-loss credibility play.</div>
-  </a>
-  <a class="card" href="blogs/2026-05-22-viral-blog-3-cost-economics.html">
-    <div class="icon">📝</div>
-    <div class="title">Viral blog 3 — "Cost economics"</div>
-    <div class="desc">$/doc as the under-talked-about metric.</div>
-  </a>
-</div>
-
-<h2>🏗️ Deep-study frameworks (content)</h2>
-<p class="sub">Plan-only frameworks. Numbers are <code>[PLACEHOLDER]</code>; methodology is at the di-study depth bar.</p>
-<div class="card-grid">
-  <a class="card" href="content/nanonets-framework/index.html">
-    <div class="icon">🧠</div>
-    <div class="title">Nanonets-style deep-study framework</div>
-    <div class="desc">14 cell plans (7 primitives × P2P/O2C) + competitor map. 3,020 lines.</div>
-    <div class="meta">competitor blog data: NOT REACHED in sandbox; rerun with WebFetch enabled</div>
-  </a>
-  <a class="card" href="content/comparative-blogs/2026-05-26-deep-comparative-document-ai-stack.html">
-    <div class="icon">📝</div>
-    <div class="title">Stack-level comparative — Document AI for finance, honestly</div>
-    <div class="desc">Publishable narrative synthesizing the deep-study framework. 7 primitives × 2 process families = 14 cells; 5 approach categories with characteristic failure modes; placeholders kept honestly. DRAFT.</div>
-    <div class="meta">2026-05-26 · 4,569 words · pairs with the gated study above</div>
-  </a>
-</div>
-
-<h2>🧪 Benchmarks lab</h2>
-<p class="sub">Primitive-level studies, per-doc-type pages, comparative leaderboards. Pending cells <strong>labeled</strong>, not hidden.</p>
-<div class="card-grid">
-  <a class="card" href="lab/">
-    <div class="icon">🧪</div>
-    <div class="title">Open <code>/lab/</code></div>
-    <div class="desc">Benchmark factory overview · Azure DI deep study · 6 per-doc-type pages · SAVIOR-bench · ABM chart.</div>
-  </a>
-  <a class="card" href="blogs/claude-compare-leaderboard.html">
-    <div class="icon">🏆</div>
-    <div class="title">Claude leaderboard</div>
-    <div class="desc">Claude-family comparison.</div>
-  </a>
-  <a class="card" href="blogs/openai-compare-leaderboard.html">
-    <div class="icon">🏆</div>
-    <div class="title">OpenAI leaderboard</div>
-    <div class="desc">GPT-family comparison.</div>
-  </a>
-  <a class="card" href="blogs/gemini-compare-leaderboard.html">
-    <div class="icon">🏆</div>
-    <div class="title">Gemini leaderboard</div>
-    <div class="desc">Gemini-family comparison.</div>
-  </a>
-  <a class="card" href="blogs/invoice-extraction-leaderboard.html">
-    <div class="icon">🏆</div>
-    <div class="title">Invoice-extraction leaderboard</div>
-    <div class="desc">Cross-family invoice extraction.</div>
-  </a>
-  <a class="card" href="blogs/bench-results-gt-leaderboard.html">
-    <div class="icon">🏆</div>
-    <div class="title">Bench-results vs gold leaderboard</div>
-    <div class="desc">Same-corpus comparative.</div>
-  </a>
-</div>
-
-<h2>📊 Dashboards &amp; status</h2>
-<div class="card-grid">
-  <a class="card" href="blogs/benchmark-dashboard.html">
-    <div class="icon">📈</div>
-    <div class="title">Benchmark dashboard</div>
-    <div class="desc">Live benchmark status snapshot.</div>
-  </a>
-  <a class="card" href="blogs/abm-top50-accounts.html">
+  <a class="card" href="/abm/">
     <div class="icon">🎯</div>
-    <div class="title">ABM top-50 accounts</div>
-    <div class="desc">Curated top-50 with committee maps.</div>
-  </a>
-  <a class="card" href="blogs/abm-target-accounts.html">
-    <div class="icon">🎯</div>
-    <div class="title">ABM target accounts (288)</div>
-    <div class="desc">Full enrichment set 51–338 — CFO + last public event, sortable.</div>
-  </a>
-  <a class="card" href="blogs/abm-accounts.html">
-    <div class="icon">📑</div>
-    <div class="title">ABM accounts — all (338)</div>
-    <div class="desc">Single flat list of every target account. Simple search + tier filter.</div>
-  </a>
-  <a class="card" href="content/events/jun-nov-2026.html">
-    <div class="icon">📅</div>
-    <div class="title">Events — Jun–Nov 2026 (NA · ME · India + Doc-AI)</div>
-    <div class="desc">26 sourced rows · 9 Tier-1 finance ICP · 8 doc-AI research · refreshed 2026-05-26.</div>
-  </a>
-</div>
-
-<h2>🎤 Slide decks</h2>
-<div class="card-grid">
-  <a class="card" href="blogs/hyperbots-invoice-api-slides.html">
-    <div class="icon">🎯</div>
-    <div class="title">HyperAPI invoice-extraction deck</div>
-    <div class="desc">API-level invoice extraction pitch.</div>
+    <div class="title">ABM accounts &amp; info</div>
+    <div class="desc">All 338 target accounts (top-50 curated + 288 enriched), events calendar, outbound assets.</div>
+    <div class="meta">→ accounts · events · outbound</div>
   </a>
 </div>
 
 <div class="footer">
-  Repo: <a href="https://github.com/niyatic/niyatic.github.io">niyatic/niyatic.github.io</a> · Custom domain (DNS pending): <code>content-hub.hyperbots.com</code> · Password gate: <code>gate.js</code> (obfuscation-grade; see header) · Last update: 2026-05-25
+  Repo: <a href="https://github.com/niyatic/niyatic.github.io">niyatic/niyatic.github.io</a> · Custom domain (DNS pending): <code>content-hub.hyperbots.com</code> · Password gate: <code>/gate.js</code> (obfuscation-grade; not real auth) · Last update: 2026-05-26
 </div>
-
 </body>
 </html>
