@@ -1,0 +1,267 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>reason-p2p — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<a class="back" href="/marketing/competition/nanonets-framework/">← back</a>
+<div class="fm">primitive: reason
+domain: p2p
+status: PLAN — methodology defined, numbers placeholder
+date: 2026-05-25
+depth_template: /Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/comparative/azure-di/azure-di-invoice-study.html
+parent_framework: ../FRAMEWORK-2026-05-25.md
+dimensions_in_scope: D6, D9, D12, D13, D1*, D2*, D8*
+dimensions_out_of_scope: D3, D4, D5, D7, D10, D11, D14
+notes: D12 (STP) is the dominant business metric for reason. Ground truth is
+  fuzzy by design; realqa-doc-ai-quality methodology applies — tolerances and
+  distributions, not pass/fail.</div>
+
+<h1>Reason (P2P) — deep-study plan</h1>
+
+<h2>1. Executive summary (TEMPLATE — numbers placeholder)</h2>
+
+<p><strong>Reason</strong> is the exception-routing primitive: given the output of parse/classify/extract/augment/validate/match, and given a population of held / unresolved P2P documents, <strong>decide</strong>: <code>approve</code> / <code>auto-correct-and-approve</code> / <code>route-to: &lt;role&gt;</code> / <code>request-info: &lt;ask&gt;</code> / <code>reject</code>, <strong>with a justification trace citing the fields, rules and external lookups that drove the decision</strong>. Hardest primitive because ground truth is itself a distribution (humans disagree). Numbers <code>[PENDING-MEASUREMENT]</code>.</p>
+
+<h2>2. Scope & coverage</h2>
+
+<ul>
+<li><strong>Workload.</strong> Held / exception P2P documents from validate-P2P and</li>
+</ul>
+<p>  match-P2P stages: tolerance excursions, missing GRN, partial-fulfilment,   vendor-onboarding gaps, duplicate suspects, sanctions hits, tax   excursions, multi-rule excursions.</p>
+<ul>
+<li><strong>Platforms.</strong> Hyperbots <code>reason</code> (or higher-order pipeline) + ≥1</li>
+</ul>
+<p>  competitor that exposes a comparable decision surface (named in §8).</p>
+<ul>
+<li><strong>Coverage dims.</strong> 7 of 14.</li>
+<li><strong>Test surface.</strong></li>
+<li><code>n = [PLACEHOLDER]</code> exception cases per dim.</li>
+<li>Stratification: exception type, dollar tier, complexity tier,</li>
+</ul>
+<p>    customer-policy band.</p>
+<ul>
+<li><strong>Three independent human reviewers per case</strong> (not two) — ground</li>
+</ul>
+<p>    truth is recorded as the <em>distribution</em> over decisions, not the     single "right" answer. Cases where 3/3 humans agree are the     high-confidence GT; 2/3 agreement is medium-confidence;     full-disagreement cases are explicitly excluded from headline     metrics and reported separately.</p>
+
+<h2>3. Methodology</h2>
+
+<h3>3.1 Data-status representation</h3>
+<p>Eight-row legend. <strong>Decision-level</strong>: per case, Correct = system decision matches the <em>modal</em> human decision; Incorrect = differs but falls within the human-disagreement envelope; <strong>Off-distribution</strong> = a new category specific to reason — system picks an option no human picked. Off-distribution decisions are flagged separately and never counted as Correct.</p>
+
+<h3>3.2 Sample design</h3>
+<p><code>n = [PLACEHOLDER]</code> cases per dim. <strong>Three reviewers per case</strong>; distribution recorded; modal-decision Cohen's κ-equivalent computed (Fleiss' κ for >2 raters). Macro-average across strata.</p>
+
+<h3>3.3 Metrics</h3>
+<ul>
+<li><strong>Decision agreement vs modal human</strong> = primary metric.</li>
+<li>**Decision agreement vs <em>any</em> human** = secondary (a system is</li>
+</ul>
+<p>  forgivable if it picks a non-modal-but-legitimate answer).</p>
+<ul>
+<li><strong>Off-distribution rate</strong> = fraction of decisions humans never</li>
+</ul>
+<p>  picked.</p>
+<ul>
+<li><strong>Justification-trace correctness</strong> = fraction of cases where the</li>
+</ul>
+<p>  cited fields/rules/lookups actually drove the human modal decision.</p>
+<ul>
+<li><strong>Hallucination rate</strong> = fraction of cases where the trace cites a</li>
+</ul>
+<p>  field/rule/lookup that does not exist in the document or master.</p>
+<ul>
+<li><strong>Calibration (D9)</strong> = reliability of the system's stated decision</li>
+</ul>
+<p>  confidence vs decision-correct-vs-modal.</p>
+<ul>
+<li><strong>D12 STP</strong> = fraction of cases the system can auto-resolve</li>
+</ul>
+<p>  (decision ∈ {approve, auto-correct-and-approve} with confidence ≥   pinned threshold) AND the auto-resolution would be ratified by the   modal human.</p>
+<ul>
+<li>95% bootstrap CI + n. Distributions reported, not just point</li>
+</ul>
+<p>  estimates.</p>
+
+<h3>3.4 Scoring rubric</h3>
+<ul>
+<li>Decision options pinned in PINS.txt: `{approve,</li>
+</ul>
+<p>  auto-correct-and-approve, route-to-{AP_lead, controller, vendor},   request-info-{vendor, GRN-team}, reject}`.</p>
+<ul>
+<li>Hallucination is a <em>binary</em> on the trace: any non-existent citation =</li>
+</ul>
+<p>  Hallucination on that case.</p>
+<ul>
+<li>Off-distribution: any decision option not present in the human</li>
+</ul>
+<p>  decision distribution = Off-distribution.</p>
+
+<h3>3.5 Evaluation controls</h3>
+<p>Frozen sha256. Rerunnable command:</p>
+<pre><code class="lang-">
+run --study reason-p2p-v0 \
+    --dimension D&lt;id&gt; \
+    --system hyperbots-idp@&lt;model-revision&gt; \
+    --system &lt;competitor&gt;@&lt;api-version&gt; \
+    --dataset p2p-reason-bench-v1@&lt;snapshot-sha256&gt; \
+    --reviewer-pool &lt;pool-sha256&gt; \
+    --split test --seed &lt;pinned&gt; \
+    --metric decision_agreement_vs_modal --bootstrap 1000
+</code></pre>
+
+<h3>3.6 Independence and disclosure</h3>
+<p>Hyperbots-published; affiliation declared. <strong>Special note (realqa-doc- ai-quality):</strong> when ground truth is a distribution, the report MUST publish the distribution shape (e.g. modal-decision share, 2-of-3 agreement share, Fleiss κ) alongside any "agreement" number; a single %-correct number is not enough. The methodology refuses to collapse distributions to a single value.</p>
+
+<h3>3.7 Limitations</h3>
+<ul>
+<li><strong>GT is fuzzy.</strong> Cases with full human disagreement are excluded from</li>
+</ul>
+<p>  headline metrics; their share is reported as a methodology integrity   indicator (high disagreement → harder/ambiguous corpus).</p>
+<ul>
+<li><strong>Justification-trace correctness</strong> requires human post-hoc</li>
+</ul>
+<p>  annotation of which fields/rules a human used; partly subjective.</p>
+<ul>
+<li><strong>Hallucination detection</strong> can only flag what the trace cites; a</li>
+</ul>
+<p>  system that gives a correct decision with no citation gets credit for   the decision but <code>[PLACEHOLDER]</code> on traceability.</p>
+
+<h3>3.8 Where this primitive sits in the IDP pipeline</h3>
+<p>The <strong>reason</strong> stage, end of the pipeline (after validate / match). Output drives the human-in-the-loop queue and the auto-execute path.</p>
+
+<h2>4. Dimension analysis (7 of 14)</h2>
+
+<table>
+<tr><th>ID</th><th>Dimension for reason(P2P)</th><th>Hyperbots</th><th>Competitor</th><th>Δ</th></tr>
+<tr><td>D1*</td><td>Exception complexity tier — single-rule vs multi-rule vs cross-system excursions.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D2*</td><td>Field-citation coverage — fraction of decision-driving fields cited in the trace.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D6</td><td><strong>Dominant.</strong> Cross-doc reasoning (the system must combine signals from invoice + PO + GRN + vendor master + policy).</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D8*</td><td>Arithmetic-trace fidelity — the trace's arithmetic recapitulation matches the document.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D9</td><td>Confidence calibration on the decision.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D12</td><td><strong>STP</strong> = share of held cases the system auto-resolves correctly per modal human.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D13</td><td>p50/p95 per-case decision latency.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+</table>
+
+<h2>5. Document × failure-mode matrix (reason-P2P)</h2>
+
+<table>
+<tr><th>#</th><th>Exception type</th><th>Modal human decision tendency</th><th>Dimensions</th></tr>
+<tr><td>1</td><td>Single-rule arithmetic minor excursion (<1%)</td><td>Auto-correct-and-approve</td><td>D6, D9</td></tr>
+<tr><td>2</td><td>Single-rule arithmetic material excursion (>5%)</td><td>Route-to AP lead</td><td>D6</td></tr>
+<tr><td>3</td><td>Tax-rate mismatch, vendor in a new jurisdiction</td><td>Request-info from vendor</td><td>D6</td></tr>
+<tr><td>4</td><td>Duplicate-invoice suspect (high confidence duplicate)</td><td>Reject</td><td>D9</td></tr>
+<tr><td>5</td><td>Duplicate-invoice suspect (low confidence)</td><td>Route-to AP lead</td><td>D9</td></tr>
+<tr><td>6</td><td>Goods invoice without GRN</td><td>Request-info from GRN team</td><td>D2*</td></tr>
+<tr><td>7</td><td>Partial-fulfilment with backorder release</td><td>Approve</td><td>D6</td></tr>
+<tr><td>8</td><td>Sanctions hit</td><td>Reject + route-to compliance</td><td>D6</td></tr>
+<tr><td>9</td><td>Multi-rule excursion (arithmetic + tax + date)</td><td>Distribution split across reviewers</td><td>D1*, D9</td></tr>
+<tr><td>10</td><td>Vendor-onboarding gap (new vendor, no master)</td><td>Route-to vendor-onboarding</td><td>D2*</td></tr>
+<tr><td>11</td><td>Blanket-PO over-consumption</td><td>Route-to controller</td><td>D6</td></tr>
+<tr><td>12</td><td>Legitimate-but-unusual line (credit-on-invoice)</td><td>Approve with note</td><td>D9</td></tr>
+</table>
+
+<p><code>[PLACEHOLDER — expand to 30–55 strata.]</code></p>
+
+<h2>6. Metric-taxonomy crosswalk (reason-P2P)</h2>
+
+<table>
+<tr><th>Dim</th><th>200-item roll-up</th><th>204-row cluster</th><th>Note</th></tr>
+<tr><td>D1*</td><td>B. 26-31; D. 94-95</td><td>C, O</td><td>Exception complexity.</td></tr>
+<tr><td>D2*</td><td>A. 3-4,7-9</td><td>D</td><td>Field-citation coverage.</td></tr>
+<tr><td>D6</td><td>C. 53-56,58-73,75-77,79; D. 83-90,121-135</td><td>G</td><td>Cross-doc reasoning.</td></tr>
+<tr><td>D8*</td><td>B. 33-34,42-47</td><td>F</td><td>Arithmetic-trace fidelity.</td></tr>
+<tr><td>D9</td><td>framework-introduced</td><td>—</td><td>Calibration.</td></tr>
+<tr><td>D12</td><td>framework-introduced; D. 97-98,133</td><td>—</td><td>STP.</td></tr>
+<tr><td>D13</td><td>G. 181-188</td><td>—</td><td>Latency.</td></tr>
+</table>
+
+<p>D12 dominates for reason (it is the publishable headline). Decision- agreement is the academic headline; STP is the business headline.</p>
+
+<h2>7. HyperAPI capability coverage (reason-P2P)</h2>
+
+<ul>
+<li><code>reason</code> — primary</li>
+<li><code>parse-intent</code> — primitive-intent annotation</li>
+<li><code>detect</code> — exception detection</li>
+<li><code>validate</code> + <code>reconcile</code> + <code>match</code> — upstream signals consumed</li>
+</ul>
+
+<p>Capability counts: <code>[PLACEHOLDER]</code>.</p>
+
+<h2>8. Competitor offerings inventory (reason-P2P)</h2>
+
+<table>
+<tr><th>Vendor</th><th>SKU / API</th><th>Marketing source</th><th>Status</th></tr>
+<tr><td>AppZen</td><td>Autonomous AP / Audit</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>SAP Ariba</td><td>AI-assisted exception routing</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Coupa</td><td>AP exception handling</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Tipalti</td><td>AP exception handling</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Stampli</td><td>AP exception co-pilot</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Mindbridge</td><td>AI audit & exception</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+</table>
+
+
+<p><strong>WebFetch retry log (2026-05-25, CEO directive #14).</strong> A second sub-agent context was spawned with a fresh tool-permission set and re-attempted <code>WebFetch</code> against the competitor blog targets in <code>FRAMEWORK-2026-05-25.md</code> §1. The harness denied the permission again (not a network/HTTP error). Per the honesty discipline, every row above remains <code>NOT REACHED IN THIS SANDBOX</code>; no competitor post title, excerpt, or methodology characterization is invented here. See <code>../WEBFETCH-RESULTS-2026-05-25.md</code> for the per-target retry record.</p>
+
+<p>No competitor capability claim ships without the marketing-source cell populated.</p>
+
+<h2>9. Findings & outlook</h2>
+
+<p><code>[PLACEHOLDER]</code>.</p>
+
+<p>Falsifiable hypotheses:</p>
+<ol>
+<li>Hyperbots STP (D12) on auto-correct-and-approve strata ≥ competitor</li>
+</ol>
+<p>   at equal off-distribution rate.</p>
+<ol>
+<li>Hyperbots hallucination rate < competitor on trace citations.</li>
+<li>Hyperbots decision agreement on multi-rule excursions ≥ competitor</li>
+</ol>
+<p>   at equal Fleiss κ in the underlying corpus.</p>
+
+<h2>Z. Internal-only notes</h2>
+<ul>
+<li>Three-reviewer GT pool is the highest-cost ingredient.</li>
+<li>Off-distribution-rate is the safety floor; flag any release that</li>
+</ul>
+<p>  trades off agreement for off-distribution.</p>
+<ul>
+<li>Hallucination guardrail is co-owned with the strict-pr-review skill.</li>
+</ul>
+
+</body></html>

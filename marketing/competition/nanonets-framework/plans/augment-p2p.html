@@ -1,0 +1,258 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>augment-p2p — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<a class="back" href="/marketing/competition/nanonets-framework/">← back</a>
+<div class="fm">primitive: augment
+domain: p2p
+status: PLAN — methodology defined, numbers placeholder
+date: 2026-05-25
+depth_template: /Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/comparative/azure-di/azure-di-invoice-study.html
+parent_framework: ../FRAMEWORK-2026-05-25.md
+dimensions_in_scope: D2, D6, D9, D10, D13, D4*, D5*
+dimensions_out_of_scope: D1, D3, D7, D8, D11, D14</div>
+
+<h1>Augment (P2P) — deep-study plan</h1>
+
+<h2>1. Executive summary (TEMPLATE — numbers placeholder)</h2>
+
+<p><strong>Augment</strong> enriches extracted P2P fields by external lookups: vendor master (canonicalise vendor name → vendor ID + payment terms), tax- registry (validate VAT/GSTIN/EIN → jurisdiction + active status), PO master (line catalogue → expected price + UoM), FX rates (per pinned snapshot), holiday calendars (for due-date sanity), and chart-of- accounts (suggest GL account from line category). Output = enriched field set + per-enrichment confidence + provenance. Numbers <code>[PENDING-MEASUREMENT]</code>.</p>
+
+<h2>2. Scope & coverage</h2>
+
+<ul>
+<li><strong>Workload.</strong> Post-extract P2P documents, enriched against the lookup</li>
+</ul>
+<p>  surfaces above.</p>
+<ul>
+<li><strong>Platforms.</strong> Hyperbots <code>augment</code> (or sub-services: <code>vendor-resolver</code>,</li>
+</ul>
+<p>  <code>tax-id-validator</code>, etc.) + ≥1 competitor.</p>
+<ul>
+<li><strong>Coverage dims.</strong> 7 of 14.</li>
+<li><strong>Test surface.</strong></li>
+<li><code>n = [PLACEHOLDER]</code> per dim.</li>
+<li>Stratification: enrichment family (vendor / tax-ID / PO-line /</li>
+</ul>
+<p>    FX / holiday / GL), match-difficulty band (exact / fuzzy /     no-match), source freshness band (current / 1-week / 1-month     stale).</p>
+<ul>
+<li>Gold: master-data-validated mappings.</li>
+</ul>
+
+<h2>3. Methodology</h2>
+
+<h3>3.1 Data-status representation</h3>
+<p>Eight-row legend. Per-enrichment scoring: each enrichment is its own unit.</p>
+
+<h3>3.2 Sample design</h3>
+<p><code>n = [PLACEHOLDER]</code> per dim. Master-data snapshot pinned by sha256.</p>
+
+<h3>3.3 Metrics</h3>
+<ul>
+<li><strong>Per-enrichment-family P/R/F1.</strong></li>
+<li><strong>Enrichment hit-rate</strong> = fraction of fields that get a non-null</li>
+</ul>
+<p>  enrichment.</p>
+<ul>
+<li><strong>Lookup precision</strong> = fraction of non-null enrichments that are</li>
+</ul>
+<p>  correct.</p>
+<ul>
+<li><strong>Freshness lag</strong> = wall-clock age of the master-data snapshot at</li>
+</ul>
+<p>  enrichment time (reported, not optimised).</p>
+<ul>
+<li><strong>FX-error rate</strong> = <code>|applied FX − GT FX|</code> distribution, with the</li>
+</ul>
+<p>  pinned snapshot date.</p>
+<ul>
+<li><strong>Provenance traceability</strong> = fraction of enrichments that cite the</li>
+</ul>
+<p>  source row in master data.</p>
+<ul>
+<li>95% bootstrap CI + n.</li>
+</ul>
+
+<h3>3.4 Scoring rubric</h3>
+<ul>
+<li>Vendor canonicalisation: casefold + whitespace-collapsed + alias</li>
+</ul>
+<p>  table; exact-match on canonical ID after lookup.</p>
+<ul>
+<li>Tax-ID: format-pattern + checksum (per-jurisdiction rule) + active-</li>
+</ul>
+<p>  status flag.</p>
+<ul>
+<li>FX: numeric-tolerance <code>max([PLACEHOLDER]% rel, [PLACEHOLDER] abs)</code></li>
+</ul>
+<p>  against pinned snapshot.</p>
+<ul>
+<li>Wrong enrichment = FP AND FN.</li>
+</ul>
+
+<h3>3.5 Evaluation controls</h3>
+<p>Frozen sha256 (data + master). Rerunnable command:</p>
+<pre><code class="lang-">
+run --study augment-p2p-v0 \
+    --dimension D&lt;id&gt; \
+    --system hyperbots-idp@&lt;model-revision&gt; \
+    --system &lt;competitor&gt;@&lt;api-version&gt; \
+    --dataset p2p-augment-bench-v1@&lt;snapshot-sha256&gt; \
+    --master-snapshot &lt;master-sha256&gt; \
+    --split test --seed &lt;pinned&gt; \
+    --metric enrichment_hit_rate --bootstrap 1000
+</code></pre>
+
+<h3>3.6 Independence and disclosure</h3>
+<p>Hyperbots-published; affiliation declared. <strong>Special note:</strong> master-data snapshot is the same for all systems under test; competitor lookups that reach a <em>different</em> master are flagged as not-apples-to-apples.</p>
+
+<h3>3.7 Limitations</h3>
+<ul>
+<li>Vendor master is customer-specific; the bench uses a canonical</li>
+</ul>
+<p>  10k-vendor master pinned in PINS.txt.</p>
+<ul>
+<li>Tax-registry APIs differ per jurisdiction; the bench limits to</li>
+</ul>
+<p>  <code>[PLACEHOLDER — jurisdictions]</code> with pinned validation rules.</p>
+<ul>
+<li>Holiday calendars are region-specific; pinned per region.</li>
+</ul>
+
+<h3>3.8 Where this primitive sits in the IDP pipeline</h3>
+<p>The <strong>augment</strong> stage, downstream of extract, upstream of validate and match.</p>
+
+<h2>4. Dimension analysis (7 of 14)</h2>
+
+<table>
+<tr><th>ID</th><th>Dimension for augment(P2P)</th><th>Hyperbots</th><th>Competitor</th><th>Δ</th></tr>
+<tr><td>D2</td><td>Field coverage — which fields get enriched (and which the system claims to enrich vs actually does).</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D4*</td><td>FX freshness + tolerance.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D5*</td><td>Multilingual master-data normalisation (vendor names in CJK / Cyrillic / Latin).</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D6</td><td>Cross-doc reconciliation post-enrichment (PO-line catalogue ↔ invoice price).</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D9</td><td>Calibration on enrichment confidence.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D10</td><td>Sustained enrichments/min.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D13</td><td>p50/p95 per-document enrichment latency.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+</table>
+
+<h2>5. Document × failure-mode matrix (augment-P2P)</h2>
+
+<table>
+<tr><th>#</th><th>Enrichment situation</th><th>Match-difficulty</th><th>Dimensions</th></tr>
+<tr><td>1</td><td>Exact vendor-name match to master</td><td>Exact</td><td>D2</td></tr>
+<tr><td>2</td><td>Vendor name with typo / abbreviation</td><td>Fuzzy</td><td>D5*</td></tr>
+<tr><td>3</td><td>Vendor in CJK script with Latinised invoice header</td><td>Multilingual fuzzy</td><td>D5*</td></tr>
+<tr><td>4</td><td>Invalid VAT format (must reject + flag)</td><td>Tax-ID validation</td><td>D2, D9</td></tr>
+<tr><td>5</td><td>Valid VAT format but inactive in registry</td><td>Tax-ID active-check</td><td>D2</td></tr>
+<tr><td>6</td><td>PO-line price differs from catalogue (must flag, not auto-overwrite)</td><td>PO-line check</td><td>D6</td></tr>
+<tr><td>7</td><td>FX rate at invoice date vs document date drift</td><td>FX</td><td>D4*</td></tr>
+<tr><td>8</td><td>Holiday-calendar adjusted due-date</td><td>Date</td><td>D2</td></tr>
+<tr><td>9</td><td>GL-account suggestion from line description (multi-category line)</td><td>GL classification</td><td>D2, D9</td></tr>
+<tr><td>10</td><td>Master-data stale (last update 30 days ago)</td><td>Freshness</td><td>D9</td></tr>
+<tr><td>11</td><td>Vendor exists in master but DBA name on invoice</td><td>Alias resolution</td><td>D2</td></tr>
+<tr><td>12</td><td>Tax-registry API throttled (degrade gracefully)</td><td>Source-degradation</td><td>D9, D10</td></tr>
+</table>
+
+<p><code>[PLACEHOLDER — expand to 30–55 strata.]</code></p>
+
+<h2>6. Metric-taxonomy crosswalk (augment-P2P)</h2>
+
+<table>
+<tr><th>Dim</th><th>200-item roll-up</th><th>204-row cluster</th><th>Note</th></tr>
+<tr><td>D2</td><td>A. 3-4,7-9,17-19,21-25; D. 93,101-103</td><td>D, E, M</td><td>Field-coverage of enrichments.</td></tr>
+<tr><td>D4*</td><td>A. 10-13; D. 82,91-92</td><td>J, K</td><td>FX freshness/tolerance.</td></tr>
+<tr><td>D5*</td><td>A. 6; E. 136-155</td><td>I, L</td><td>Multilingual master-data.</td></tr>
+<tr><td>D6</td><td>C. 53-56; D. 83-90</td><td>G</td><td>PO-line / catalogue checks.</td></tr>
+<tr><td>D9</td><td>framework-introduced</td><td>—</td><td>Enrichment calibration.</td></tr>
+<tr><td>D10</td><td>G. 184,189</td><td>—</td><td>Throughput.</td></tr>
+<tr><td>D13</td><td>G. 181-188</td><td>—</td><td>Latency.</td></tr>
+</table>
+
+<h2>7. HyperAPI capability coverage (augment-P2P)</h2>
+
+<ul>
+<li><code>augment</code> (or sub-services: <code>vendor-resolver</code>, <code>tax-id-validator</code>,</li>
+</ul>
+<p>  <code>fx-resolver</code>, <code>holiday-resolver</code>, <code>gl-suggester</code>) — primary</p>
+<ul>
+<li><code>detect</code> — for invalid-format / inactive detection</li>
+<li><code>validate</code> — downstream rule layer that consumes augment output</li>
+</ul>
+
+<p>Capability counts: <code>[PLACEHOLDER]</code>.</p>
+
+<h2>8. Competitor offerings inventory (augment-P2P)</h2>
+
+<table>
+<tr><th>Vendor</th><th>SKU / API</th><th>Marketing source</th><th>Status</th></tr>
+<tr><td>SAP Ariba</td><td>Vendor master + enrichment</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Coupa</td><td>Supplier enrichment</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Tipalti</td><td>Vendor onboarding + validation</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>AppZen</td><td>Vendor enrichment</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Dun & Bradstreet</td><td>D-U-N-S + vendor master</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Avalara</td><td>Tax-ID validation</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+</table>
+
+
+<p><strong>WebFetch retry log (2026-05-25, CEO directive #14).</strong> A second sub-agent context was spawned with a fresh tool-permission set and re-attempted <code>WebFetch</code> against the competitor blog targets in <code>FRAMEWORK-2026-05-25.md</code> §1. The harness denied the permission again (not a network/HTTP error). Per the honesty discipline, every row above remains <code>NOT REACHED IN THIS SANDBOX</code>; no competitor post title, excerpt, or methodology characterization is invented here. See <code>../WEBFETCH-RESULTS-2026-05-25.md</code> for the per-target retry record.</p>
+
+<p>No competitor capability claim ships without the marketing-source cell populated.</p>
+
+<h2>9. Findings & outlook</h2>
+
+<p><code>[PLACEHOLDER]</code>.</p>
+
+<p>Falsifiable hypotheses:</p>
+<ol>
+<li>Hyperbots fuzzy-vendor-resolution F1 ≥ competitor on multilingual</li>
+</ol>
+<p>   strata.</p>
+<ol>
+<li>Hyperbots tax-ID-active-check F1 ≥ competitor.</li>
+<li>Hyperbots provenance-traceability rate ≥ competitor.</li>
+</ol>
+
+<h2>Z. Internal-only notes</h2>
+<ul>
+<li>10k canonical vendor master + jurisdiction tax-rule set is the</li>
+</ul>
+<p>  reproducibility gate.</p>
+<ul>
+<li>FX snapshot date pinning is the single biggest comparability risk.</li>
+</ul>
+
+</body></html>

@@ -1,0 +1,213 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>validate-o2c — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<a class="back" href="/marketing/competition/nanonets-framework/">← back</a>
+<div class="fm">primitive: validate
+domain: o2c
+status: PLAN — methodology defined, numbers placeholder
+date: 2026-05-25
+depth_template: /Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/comparative/azure-di/azure-di-invoice-study.html
+parent_framework: ../FRAMEWORK-2026-05-25.md
+dimensions_in_scope: D2, D6, D9, D12, D13, D1*, D8*
+dimensions_out_of_scope: D3, D4, D5, D7, D10, D11, D14</div>
+
+<h1>Validate (O2C) — deep-study plan</h1>
+
+<h2>1. Executive summary (TEMPLATE — numbers placeholder)</h2>
+
+<p>Given extracted / matched O2C documents, <strong>validate</strong> applies business rules: aging-bucket arithmetic (Σ buckets = open balance), applied- amount sanity (applied ≤ open balance), deduction-code legitimacy (valid code, within authority limit), credit-memo apportionment, duplicate-remittance detection, customer-credit-limit check, and dispute-eligibility rules. Output = verdict + rule trace. Numbers <code>[PENDING-MEASUREMENT]</code>.</p>
+
+<h2>2. Scope & coverage</h2>
+
+<ul>
+<li><strong>Workload.</strong> O2C documents post-extract: payments + matched open-</li>
+</ul>
+<p>  invoice subsets, statements with aging tables, credit memos, disputes.</p>
+<ul>
+<li><strong>Platforms.</strong> Hyperbots <code>validate</code> + ≥1 competitor.</li>
+<li><strong>Coverage dims.</strong> 7 of 14.</li>
+<li><strong>Test surface.</strong></li>
+<li><code>n = [PLACEHOLDER]</code> per dim.</li>
+<li>Stratification: rule-family, excursion severity, customer-credit-</li>
+</ul>
+<p>    tier.</p>
+
+<h2>3. Methodology</h2>
+
+<h3>3.1 Data-status representation</h3>
+<p>Eight-row legend. Per-rule scoring.</p>
+
+<h3>3.2 Sample design</h3>
+<p><code>n = [PLACEHOLDER]</code> per dim; rule-coverage-stratified. Two annotators + adjudicator; κ reported.</p>
+
+<h3>3.3 Metrics</h3>
+<ul>
+<li>Per-rule P/R/F1.</li>
+<li>Rule-coverage F1.</li>
+<li>False-block / false-pass rate (O2C-specific: false-pass of an</li>
+</ul>
+<p>  illegitimate deduction is a real-dollar loss; track separately).</p>
+<ul>
+<li>Verdict agreement, dollar-weighted.</li>
+<li>Rule-citation accuracy.</li>
+<li>Calibration (D9) on hold/pass confidence.</li>
+<li>95% bootstrap CI + n.</li>
+</ul>
+
+<h3>3.4 Scoring rubric</h3>
+<ul>
+<li>Aging-bucket arithmetic tolerance: `max([PLACEHOLDER]% rel,</li>
+</ul>
+<p>  [PLACEHOLDER] abs)` pinned.</p>
+<ul>
+<li>Deduction-authority-limit table pinned in PINS.txt with snapshot</li>
+</ul>
+<p>  date.</p>
+<ul>
+<li>Duplicate-remit detection threshold pinned.</li>
+</ul>
+
+<h3>3.5 Evaluation controls</h3>
+<p>Frozen sha256. Rerunnable command:</p>
+<pre><code class="lang-">
+run --study validate-o2c-v0 \
+    --dimension D&lt;id&gt; \
+    --system hyperbots-idp@&lt;model-revision&gt; \
+    --system &lt;competitor&gt;@&lt;api-version&gt; \
+    --dataset o2c-validate-bench-v1@&lt;snapshot-sha256&gt; \
+    --split test --seed &lt;pinned&gt; \
+    --metric verdict_agreement --bootstrap 1000
+</code></pre>
+
+<h3>3.6 Independence and disclosure</h3>
+<p>Hyperbots-published; affiliation declared; identical canonical rule set across systems.</p>
+
+<h3>3.7 Limitations</h3>
+<ul>
+<li>Customer-credit-limit data is partner-restricted; partner-bench tier</li>
+</ul>
+<p>  required.</p>
+<ul>
+<li>Dispute-eligibility rules vary by industry; pinned canonical set</li>
+</ul>
+<p>  approximation.</p>
+
+<h3>3.8 Where this primitive sits in the IDP pipeline</h3>
+<p><strong>validate</strong> stage; downstream of extract + augment; upstream of match (cash app) or co-resident.</p>
+
+<h2>4. Dimension analysis (7 of 14)</h2>
+
+<table>
+<tr><th>ID</th><th>Dimension for validate(O2C)</th><th>Hyperbots</th><th>Competitor</th><th>Δ</th></tr>
+<tr><td>D1*</td><td>Rule complexity per payment / statement.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D2</td><td>Rule coverage.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D6</td><td><strong>Dominant.</strong> Aging-bucket arithmetic + cross-doc consistency.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D8*</td><td>Aging-table + applied-line arithmetic.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D9</td><td>Calibration on hold confidence.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D12</td><td>STP — share of payments / statements passed without human touch.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D13</td><td>p50/p95 per-payment validation latency.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+</table>
+
+<h2>5. Document × failure-mode matrix (validate-O2C)</h2>
+
+<table>
+<tr><th>#</th><th>Composition</th><th>Rule excursion</th><th>Dimensions</th></tr>
+<tr><td>1</td><td>Clean payment-to-invoice with valid deduction code</td><td>None</td><td>D6</td></tr>
+<tr><td>2</td><td>Deduction code outside customer's authority limit</td><td>Deduction authority</td><td>D2</td></tr>
+<tr><td>3</td><td>Applied amount > open balance (over-application bug)</td><td>Sanity</td><td>D6</td></tr>
+<tr><td>4</td><td>Aging-bucket sum ≠ stated open balance</td><td>Aging arithmetic</td><td>D6, D8*</td></tr>
+<tr><td>5</td><td>Duplicate remittance (same payment-ref, two submissions)</td><td>Duplicate</td><td>D9</td></tr>
+<tr><td>6</td><td>Customer over credit-limit (block release)</td><td>Credit-limit</td><td>D2</td></tr>
+<tr><td>7</td><td>Credit memo apportioned across invoices, sum mismatch</td><td>Apportionment arithmetic</td><td>D6</td></tr>
+<tr><td>8</td><td>Dispute filed against an invoice ineligible per policy</td><td>Dispute eligibility</td><td>D2</td></tr>
+<tr><td>9</td><td>Statement aging total ≠ Σ invoices on statement</td><td>Statement arithmetic</td><td>D6</td></tr>
+<tr><td>10</td><td>Multi-excursion (sanity + duplicate + authority)</td><td>Multi-rule</td><td>D1*</td></tr>
+<tr><td>11</td><td>Cross-FX residual rounding edge</td><td>FX rounding</td><td>D6</td></tr>
+<tr><td>12</td><td>Edge: legitimate over-payment on retention release</td><td>False-positive risk</td><td>D9</td></tr>
+</table>
+
+<p><code>[PLACEHOLDER — expand to 30–55 strata.]</code></p>
+
+<h2>6. Metric-taxonomy crosswalk (validate-O2C)</h2>
+<p>Same column structure as validate-P2P §6. O2C-specific: deduction-code authority rolls under taxonomy D (Domain-financial) items 121-135.</p>
+
+<h2>7. HyperAPI capability coverage (validate-O2C)</h2>
+
+<ul>
+<li><code>validate</code> — primary</li>
+<li><code>reconcile</code> — arithmetic engine</li>
+<li><code>detect</code> — duplicate-remit / credit-limit detection</li>
+</ul>
+
+<p>Capability counts: <code>[PLACEHOLDER]</code>.</p>
+
+<h2>8. Competitor offerings inventory (validate-O2C)</h2>
+
+<table>
+<tr><th>Vendor</th><th>SKU / API</th><th>Marketing source</th><th>Status</th></tr>
+<tr><td>HighRadius</td><td>Credit + cash-app validation</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Billtrust</td><td>Validation engine</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>BlackLine</td><td>Validation</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Esker</td><td>O2C validation</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Versapay</td><td>Validation</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+</table>
+
+
+<p><strong>WebFetch retry log (2026-05-25, CEO directive #14).</strong> A second sub-agent context was spawned with a fresh tool-permission set and re-attempted <code>WebFetch</code> against the competitor blog targets in <code>FRAMEWORK-2026-05-25.md</code> §1. The harness denied the permission again (not a network/HTTP error). Per the honesty discipline, every row above remains <code>NOT REACHED IN THIS SANDBOX</code>; no competitor post title, excerpt, or methodology characterization is invented here. See <code>../WEBFETCH-RESULTS-2026-05-25.md</code> for the per-target retry record.</p>
+
+<p>No competitor capability claim ships without the marketing-source cell populated.</p>
+
+<h2>9. Findings & outlook</h2>
+
+<p><code>[PLACEHOLDER]</code>.</p>
+
+<p>Falsifiable hypotheses:</p>
+<ol>
+<li>Hyperbots fuzzy-duplicate-remit F1 ≥ competitor.</li>
+<li>Hyperbots deduction-authority-limit per-rule F1 ≥ competitor.</li>
+<li>Hyperbots D12 STP on clean payments ≥ competitor at equal false-pass</li>
+</ol>
+<p>   rate.</p>
+
+<h2>Z. Internal-only notes</h2>
+<ul>
+<li>Customer-credit-limit data must be partner-bound.</li>
+<li>Authority-limit canonical table is the reproducibility gate.</li>
+</ul>
+
+</body></html>

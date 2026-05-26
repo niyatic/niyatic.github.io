@@ -1,0 +1,208 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>classify-o2c — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<a class="back" href="/marketing/competition/nanonets-framework/">← back</a>
+<div class="fm">primitive: classify
+domain: o2c
+status: PLAN — methodology defined, numbers placeholder
+date: 2026-05-25
+depth_template: /Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/comparative/azure-di/azure-di-invoice-study.html
+parent_framework: ../FRAMEWORK-2026-05-25.md
+dimensions_in_scope: D1, D3, D5, D7, D9, D10, D13, D14, D2*, D6*, D8*
+dimensions_out_of_scope: D4, D11</div>
+
+<h1>Classify (O2C) — deep-study plan</h1>
+
+<h2>1. Executive summary (TEMPLATE — numbers placeholder)</h2>
+
+<p>Assign one of eight O2C labels — sales_order / sales_invoice / asn / customer_credit_memo / dunning_notice / statement_of_account / remittance_advice / dispute_correspondence — plus an <code>other</code> reject class. O2C classification has its own confusability pairs: remittance_advice ↔ statement_of_account (both table-heavy), dunning_notice ↔ dispute_correspondence (both prose). Numbers <code>[PENDING-MEASUREMENT]</code>.</p>
+
+<h2>2. Scope & coverage</h2>
+
+<ul>
+<li><strong>Workload.</strong> Eight O2C labels + reject.</li>
+<li><strong>Platforms.</strong> Hyperbots <code>classify</code> + ≥1 competitor.</li>
+<li><strong>Coverage dims.</strong> 11 of 14 (D4, D11 dropped).</li>
+<li><strong>Test surface.</strong></li>
+<li><code>n = [PLACEHOLDER]</code> per dim.</li>
+<li>Stratified by label-frequency-band and by table-heaviness (remittance</li>
+</ul>
+<p>    and statement carry table-presence-as-feature load — D8*).</p>
+<ul>
+<li>κ per class.</li>
+</ul>
+
+<h2>3. Methodology</h2>
+
+<h3>3.1 Data-status representation</h3>
+<p>Eight-row legend per framework §0.4. Class-specific Correct / Incorrect / Missed / Spurious as in classify-P2P §3.1.</p>
+
+<h3>3.2 Sample design</h3>
+<p><code>n = [PLACEHOLDER]</code> per dim; label-frequency-band stratification with <strong>explicit upsampling of dispute_correspondence</strong> (free-form prose tail).</p>
+
+<h3>3.3 Metrics</h3>
+<ul>
+<li>Per-class P/R/F1; macro-F1.</li>
+<li>Confusion matrix with off-diagonal entropy.</li>
+<li>AUROC per class.</li>
+<li>Precision-at-coverage curve.</li>
+<li>95% bootstrap CI + n.</li>
+</ul>
+
+<h3>3.4 Scoring rubric</h3>
+<p>Top-1 exact-label match; reject as first-class label; ε-tie abstention. Pinned ε in PINS.txt.</p>
+
+<h3>3.5 Evaluation controls</h3>
+<p>Frozen sha256. Rerunnable command:</p>
+<pre><code class="lang-">
+run --study classify-o2c-v0 \
+    --dimension D&lt;id&gt; \
+    --system hyperbots-idp@&lt;model-revision&gt; \
+    --system &lt;competitor&gt;@&lt;api-version&gt; \
+    --dataset o2c-classify-bench-v1@&lt;snapshot-sha256&gt; \
+    --split test --seed &lt;pinned&gt; \
+    --metric macro_f1 --bootstrap 1000
+</code></pre>
+
+<h3>3.6 Independence and disclosure</h3>
+<p>Hyperbots-published; affiliation declared.</p>
+
+<h3>3.7 Limitations</h3>
+<ul>
+<li>dispute_correspondence labels carry residual GT subjectivity (some</li>
+</ul>
+<p>  emails are ambiguous between "dispute" and "general inquiry");   per-class κ will be lower than for structured O2C docs.</p>
+<ul>
+<li>Statement vs remittance confusion is the dominant fixable failure mode;</li>
+</ul>
+<p>  off-diagonal entropy is the right metric for it.</p>
+
+<h3>3.8 Where this primitive sits in the IDP pipeline</h3>
+<p><code>classify</code> stage; upstream parse/split; downstream extract.</p>
+
+<h2>4. Dimension analysis (11 of 14)</h2>
+
+<table>
+<tr><th>ID</th><th>Dimension for classify(O2C)</th><th>Hyperbots</th><th>Competitor</th><th>Δ</th></tr>
+<tr><td>D1</td><td>Complexity tier (statements + remittance trend higher).</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D2*</td><td>Label coverage (8 + reject); per-label F1.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D3</td><td>Customer-ERP statement template variance.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D5</td><td>Multilingual dunning + dispute correspondence.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D6*</td><td>Header/footer context as class signal.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D7</td><td>Faxed-remittance / lockbox-scan degradation.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D8*</td><td>Table-presence feature on remittance / statement.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D9</td><td>ECE per class; calibration on remittance ↔ statement boundary.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D10</td><td>Sustained throughput, especially month-end bursts.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D13</td><td>p50/p95 latency.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D14</td><td>File-format coverage (TIFF lockbox, EDI 820 PDF).</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+</table>
+
+<p>D12 STP redefined: precision-at-auto-route-threshold.</p>
+
+<h2>5. Document × failure-mode matrix (classify-O2C)</h2>
+
+<table>
+<tr><th>#</th><th>Doc family</th><th>Failure-mode signal</th><th>Dimensions</th></tr>
+<tr><td>1</td><td>Sales order</td><td>Sales_order ↔ sales_invoice confusion</td><td>D1, D3</td></tr>
+<tr><td>2</td><td>Sales invoice</td><td>Multi-currency consolidated</td><td>D6*, D3</td></tr>
+<tr><td>3</td><td>ASN</td><td>ASN ↔ packing_slip-like layout</td><td>D3, D8*</td></tr>
+<tr><td>4</td><td>Customer credit memo</td><td>Reads like a sales_invoice with negative totals</td><td>D6*</td></tr>
+<tr><td>5</td><td>Dunning notice</td><td>Dunning ↔ dispute_correspondence (both prose)</td><td>D5, D6*</td></tr>
+<tr><td>6</td><td>Statement of account</td><td>Statement ↔ remittance confusion (both table-heavy)</td><td>D8*</td></tr>
+<tr><td>7</td><td>Statement (multi-currency)</td><td>Consolidated, multiple aging tables</td><td>D8*, D1</td></tr>
+<tr><td>8</td><td>Remittance advice</td><td>Lockbox-scanned, blurry</td><td>D7</td></tr>
+<tr><td>9</td><td>Remittance advice</td><td>EDI 820 PDF render (machine-clean)</td><td>D14</td></tr>
+<tr><td>10</td><td>Dispute correspondence</td><td>Mixed-language email body</td><td>D5</td></tr>
+<tr><td>11</td><td>Bundle</td><td>Statement + remittance scanned together</td><td>D8*, D1</td></tr>
+<tr><td>12</td><td>"Other"</td><td>Marketing newsletter from supplier (must reject)</td><td>reject-class</td></tr>
+</table>
+
+<p><code>[PLACEHOLDER — expand to 30–55 strata.]</code></p>
+
+<h2>6. Metric-taxonomy crosswalk (classify-O2C)</h2>
+
+<p>Same column structure as classify-P2P §6. O2C-specific: dispute / correspondence prose classification rolls under C (Semantic) of the 200-item taxonomy and cluster G of the 204-row inventory.</p>
+
+<h2>7. HyperAPI capability coverage (classify-O2C)</h2>
+
+<ul>
+<li><code>classify</code> — primary</li>
+<li><code>detect</code> — for sub-doc detection within bundles</li>
+<li><code>parse-intent</code> — coarse intent annotation</li>
+</ul>
+
+<p>Capability counts: <code>[PLACEHOLDER]</code>.</p>
+
+<h2>8. Competitor offerings inventory (classify-O2C)</h2>
+
+<table>
+<tr><th>Vendor</th><th>SKU / API</th><th>Marketing source</th><th>Status</th></tr>
+<tr><td>Azure DI</td><td><code>prebuilt-read</code> + custom classifier</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>AWS</td><td>Comprehend custom classifier</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Google Document AI</td><td>Document Classifier</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>HighRadius</td><td>Cash app routing classifier</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Billtrust</td><td>Routing classifier</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Nanonets</td><td>Doc classification</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+</table>
+
+
+<p><strong>WebFetch retry log (2026-05-25, CEO directive #14).</strong> A second sub-agent context was spawned with a fresh tool-permission set and re-attempted <code>WebFetch</code> against the competitor blog targets in <code>FRAMEWORK-2026-05-25.md</code> §1. The harness denied the permission again (not a network/HTTP error). Per the honesty discipline, every row above remains <code>NOT REACHED IN THIS SANDBOX</code>; no competitor post title, excerpt, or methodology characterization is invented here. See <code>../WEBFETCH-RESULTS-2026-05-25.md</code> for the per-target retry record.</p>
+
+<p>No competitor capability claim ships without the marketing-source cell populated.</p>
+
+<h2>9. Findings & outlook</h2>
+
+<p><code>[PLACEHOLDER]</code>.</p>
+
+<p>Falsifiable hypotheses:</p>
+<ol>
+<li>Hyperbots macro-F1 on remittance ↔ statement confusion ≥ competitor.</li>
+<li>Hyperbots dispute_correspondence per-class F1 ≥ competitor (a known</li>
+</ol>
+<p>   hard class).</p>
+<ol>
+<li>ECE for Hyperbots on dunning ↔ dispute confusion pair < competitor.</li>
+</ol>
+
+<h2>Z. Internal-only notes</h2>
+<ul>
+<li>Dispute correspondence GT requires a domain-expert annotator.</li>
+<li>Lockbox-scan dataset may be partner-restricted; flag licensing.</li>
+</ul>
+
+</body></html>

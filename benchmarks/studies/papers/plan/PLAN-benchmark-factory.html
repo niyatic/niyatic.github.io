@@ -1,0 +1,86 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PLAN-benchmark-factory — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<a class="back" href="/benchmarks/studies/savior-bench-report.html">← back</a>
+
+<h1>DocumentAI Benchmark Factory — CTO Plan (PLAN → answers + human approval → go)</h1>
+
+<p><strong>Status:</strong> PLAN by <code>frontier-lab-cto</code>. Team NOT recruited/instantiated until human approves + answers the blocking questions. Mirrors ABM/repo-factory gating.</p>
+
+<h2>1. Mission</h2>
+<p>A trusted leaderboard: <strong>100+ models per task</strong>, across <strong>all external + internal Hyperbots datasets</strong>, for <strong>every finance-doc-AI task</strong>, operated like the HuggingFace Open LLM Leaderboard / DeepMind eval suites — reproducible, contamination-controlled, statistically honest, every cell drillable to a rerunnable command.</p>
+
+<h2>2. Team</h2>
+<p>frontier-lab-cto (lead) · benchmark-product-manager (HF/DeepMind-style) · eval-harness-engineer · dataset-curator · model-wrangler · contamination-auditor · stats-methodologist · leaderboard-frontend-eng · qa-reproducibility. (<code>.claude/agents/</code>)</p>
+
+<h2>3. Method</h2>
+<ul>
+<li><strong>Task taxonomy:</strong> the finance-doc-AI task catalog (assumed = the 549 implemented + planned catalog in finance-doc-agents-hyperapi; confirm — blocking Q).</li>
+<li><strong>Datasets:</strong> registry of external/public sets + internal Hyperbots sets (access + license — blocking Q); fixed splits; contamination audit before any number ships.</li>
+<li><strong>Models:</strong> 100+ via adapters — open-weights (HF hub) + hosted APIs; pinned versions; per-model cost/throughput budget.</li>
+<li><strong>Harness:</strong> one fair, pinned harness; identical prompt/decoding per task family; metrics + CIs + n; every cell = a rerunnable command.</li>
+<li><strong>Leaderboard:</strong> public UI, filterable by task/dataset/model-family, per-cell drill-down; documented refresh cadence; anti-gaming + held-out policy.</li>
+<li><strong>Gate:</strong> qa-reproducibility independently re-runs sampled cells; CTO STOPs any irreproducible/contaminated result.</li>
+</ul>
+
+<h2>4. Scope decision (BLOCKING — asked)</h2>
+<p>100+ models × all tasks × all datasets of real inference is significant compute/cost. v1 options: (A) <strong>Full real-run</strong> now (needs compute + API budget + keys). (B) <strong>Rigorous harness + methodology + dataset/model registry + seed leaderboard</strong> (a real, defensible subset run end-to-end) with a pinned, documented path to scale to 100+ — scale as budget allows. Recommend (B) as v1 (credible + reproducible immediately; honest about coverage), scaling to (A).</p>
+
+<h2>5. Go sequence (on approval + answers)</h2>
+<ol>
+<li>Recruit/instantiate the 9 agents + <code>benchmark-factory</code> skill.</li>
+<li>PM publishes leaderboard product spec + task/metric catalog + dataset registry + repro contract.</li>
+<li>Harness built + validated on a seed task×dataset×(small model set); contamination audit; QA re-run.</li>
+<li>Scale models/tasks/datasets per the approved scope toward 100+; leaderboard deployed; cadence live.</li>
+</ol>
+
+<h2>Sources</h2>
+<ul>
+<li>CTO mandate: <code>.claude/agents/frontier-lab-cto.md</code>; PM mandate: <code>.claude/agents/benchmark-product-manager.md</code></li>
+<li>Task catalog reference: finance-doc-agents-hyperapi <code>docs/task-catalog-full.csv</code> (to confirm).</li>
+</ul>
+
+<h2>Open assumptions</h2>
+<ol>
+<li>Task list = the finance-doc-AI catalog in finance-doc-agents-hyperapi — <strong>blocking question</strong>.</li>
+<li>Internal Hyperbots datasets: location, access, licensing for benchmarking — <strong>blocking question</strong>.</li>
+<li>v1 scope = harness+methodology+seed leaderboard with documented path to 100+, vs. full 100+ real-run now — <strong>blocking question</strong>.</li>
+<li>Model set spans open-weights + hosted APIs; hosted-API keys/budget human-provided; no eval result asserted without a rerunnable command.</li>
+</ol>
+
+</body></html>

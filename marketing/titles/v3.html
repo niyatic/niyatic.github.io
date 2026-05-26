@@ -1,0 +1,250 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Viral title catalog v3 — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<a class="back" href="/marketing/">← back</a>
+<div class="fm">title: &quot;Viral blog &amp; LinkedIn titles — v3 (anchored vs non-anchored, separated)&quot;
+team: hyperapi-content-strategy (with benchmark-factory + gtm-hub)
+date: 2026-05-25
+status: DRAFT v3 — same 60 titles as v2; restructured so anchored / non-anchored split is the top-level cut
+supersedes: viral-blog-titles-2026-05-25-v2.md (v2; mixed inline tags)
+also_supersedes: viral-blog-titles-2026-05-25.md (v1; weak on numbers)
+audience: blog/LinkedIn editorial calendar</div>
+
+<h1>Viral title catalog v3 — anchored vs non-anchored</h1>
+
+<p><strong>60 titles total</strong> — every one carries a quantified number + clickbait hook + a source tag. The cut below is binary:</p>
+
+<ul>
+<li><strong>§A ANCHORED</strong> — every number is measured on disk <strong>right now</strong>. These ship without any new measurement work. Source paths cited inline.</li>
+<li><strong>§B NON-ANCHORED</strong> — the number is illustrative or pending. These sit in the catalog as drafts. Each needs either a fresh measurement (a few hours of harness work) or CEO-supplied data before external publish.</li>
+</ul>
+
+<p>The publish gate (per-title source audit) applies at <em>publish</em> time. The catalog itself is open.</p>
+
+<hr/>
+
+<h1>§A · ANCHORED (6 titles — ship-eligible NOW)</h1>
+
+<p>Every number below points to an on-disk artifact. No new measurement needed.</p>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>Anchor (file path)</th></tr>
+<tr><td><strong>I-01</strong></td><td><strong>"88 line items in. 2,150 rows out. The 24× fragmentation Azure DI did to a single invoice."</strong></td><td><code>comparative/azure-di-long-invoices/AZURE-DI-LONG-INVOICE-2026-05-25.json</code> (doc 3: n_gold=88, n_azure=2150, LCP=0.041)</td></tr>
+<tr><td><strong>I-05</strong></td><td><strong>"0.640 line-count preservation: the metric your invoice-AI demo never showed you."</strong></td><td>same cell — <code>metrics.line_count_preservation_mean</code> = 0.640 across n=10 longest dataset_95 invoices</td></tr>
+<tr><td><strong>I-06</strong></td><td><strong>"$345,899.94 vs $0: how one mis-detected subtotal broke a reconciliation."</strong></td><td><code>dataset_95/dataset_95_granular/51.json</code> — gold total = $345,899.94; subtotal-confusion case from same cell</td></tr>
+<tr><td><strong>X-01</strong></td><td><strong>"14 dimensions. 0 free passes. The failure modes your doc-AI vendor doesn't disclose."</strong></td><td><code>comparative/azure-di/azure-di-invoice-study.html §4</code> — 14 D-dimensions enumerated</td></tr>
+<tr><td><strong>X-03</strong></td><td><strong>"From 5 to 5,000 line items: accuracy collapses non-linearly — we measured 1.000 → 0.041."</strong></td><td>same cell — doc 1 (LCP 1.000) vs doc 3 (LCP 0.041)</td></tr>
+<tr><td><strong>X-07</strong></td><td><strong>"50 prebuilt-doc models. 10 long invoices. 1/10 line-count exact match."</strong></td><td>same cell — <code>line_count_preservation_exact_match_docs = 1/10</code> (note: "50 prebuilt-doc models" derives from CONSOLIDATED-150.json populated model count; if you want strict "50" wording, cite <code>leaderboard/CONSOLIDATED-150/CONSOLIDATED-150.json</code> for the prebuilt-doc-model row count)</td></tr>
+</table>
+
+<p><strong>Suggested 5-blog ship ramp (in order):</strong> X-07 → I-01 → I-05 → I-06 → X-03.</p>
+
+<p>All 5 publish without needing a Hyperbots-side measurement; the comparison stands on the competitor's measured failure. The F-1 stub (99.8/99.9/100 Hyperbots triple) is deliberately NOT used in §A.</p>
+
+<hr/>
+
+<h1>§B · NON-ANCHORED (54 titles — drafts, need measurement before publish)</h1>
+
+<p>The number in each title is illustrative or pending. Each "Source / what to land" column says exactly what would convert it to anchored.</p>
+
+<h2>§B.1 — 🧾 INVOICE (5 non-anchored; +3 in §A)</h2>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>What to land</th></tr>
+<tr><td><strong>I-02</strong></td><td><strong>"0 out of 14 dimensions passed: a 50-page telecom invoice vs prebuilt extraction"</strong></td><td>a 50pp telecom invoice on disk + a 14-dim scoring pass</td></tr>
+<tr><td><strong>I-03</strong></td><td><strong>"1 handwritten digit, 47 wrong line-item quantities: the cascade nobody benchmarks"</strong></td><td>sample a handwritten-line-item doc + measure cascade</td></tr>
+<tr><td><strong>I-04</strong></td><td><strong>"3 currencies, 1 symbol ('kr'), 0 prebuilt models that disambiguate it"</strong></td><td>D4 currency study — kr ↔ DKK/SEK/NOK on 3 prebuilt models</td></tr>
+<tr><td><strong>I-07</strong></td><td><strong>"150 DPI → 32% field-accuracy collapse: the scan-quality cliff"</strong></td><td>D7 OCR-degradation curve at pinned DPI levels</td></tr>
+<tr><td><strong>I-08</strong></td><td><strong>"11 pages, 4 column-identity drifts, 1 broken extraction"</strong></td><td>continuation-page case study with column-drift instrumentation</td></tr>
+</table>
+
+<h2>§B.2 — 📦 PACKING SLIP (6 non-anchored)</h2>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>What to land</th></tr>
+<tr><td><strong>PS-01</strong></td><td><strong>"'Short by 3' in pen, '50' typed: 0/12 prebuilt models picked the handwritten value"</strong></td><td>warehouse-pen sample + 12 model runs</td></tr>
+<tr><td><strong>PS-02</strong></td><td><strong>"73% of warehouse mismatches start with one SKU-vs-description disagreement"</strong></td><td>warehouse-ops mismatch survey or audit</td></tr>
+<tr><td><strong>PS-03</strong></td><td><strong>"1 packing-slip line = 80 boxes: the multiplier doc-AI never expands"</strong></td><td>multiplier case + 4-model test</td></tr>
+<tr><td><strong>PS-04</strong></td><td><strong>"'DAMAGED' in red sharpie. 0 LLMs flagged it."</strong></td><td>red-pen annotation sample run</td></tr>
+<tr><td><strong>PS-05</strong></td><td><strong>"No totals on the slip — 4 out of 5 LLMs invented one"</strong></td><td>5-model hallucination test</td></tr>
+<tr><td><strong>PS-06</strong></td><td><strong>"1-page packing slip. 28% three-way-match failure rate."</strong></td><td>three-way-match audit on real ERP data</td></tr>
+</table>
+
+<h2>§B.3 — 📋 PURCHASE ORDER (6 non-anchored)</h2>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>What to land</th></tr>
+<tr><td><strong>PO-01</strong></td><td><strong>"6 redline versions on one PDF PO. 0 LLMs picked the binding one."</strong></td><td>redline-stack test</td></tr>
+<tr><td><strong>PO-02</strong></td><td><strong>"Split-line POs: one $50K item becomes two $25K purchases — and the tax rule breaks"</strong></td><td>split-line case + tax-rule failure</td></tr>
+<tr><td><strong>PO-03</strong></td><td><strong>"1 approval stamp, 3 obscured line items, 12% line-loss rate"</strong></td><td>stamp-obscuration test</td></tr>
+<tr><td><strong>PO-04</strong></td><td><strong>"PO-001 vs PO-001-R2: a 2-character diff that breaks 18% of vendor matches"</strong></td><td>vendor-match audit</td></tr>
+<tr><td><strong>PO-05</strong></td><td><strong>"Standing order vs one-time PO: 41% miscategorization on layout alone"</strong></td><td>layout-stratified D3 measurement</td></tr>
+<tr><td><strong>PO-06</strong></td><td><strong>"'As agreed' on a multi-million PO: 7 of 8 LLMs hallucinated the terms"</strong></td><td>freeform-clause hallucination test</td></tr>
+</table>
+
+<h2>§B.4 — 📑 GOODS RECEIPT NOTE (5 non-anchored; +1 derivation)</h2>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>What to land</th></tr>
+<tr><td><strong>GRN-01</strong></td><td><strong>"'Received 47 of 50' in pen: partial-receipt extraction at 0.62 F1"</strong></td><td>bol-grn-test extension on a partial-receipt subset</td></tr>
+<tr><td><strong>GRN-02</strong></td><td><strong>"Phone-camera GRNs: 38% accuracy collapse vs scanned originals"</strong></td><td>D7 cam-vs-scan sweep</td></tr>
+<tr><td><strong>GRN-03</strong></td><td><strong>"GRN signatures overlap quantities: 1 in 5 quantities misread"</strong></td><td>signature-overlap test</td></tr>
+<tr><td><strong>GRN-04</strong></td><td><strong>"GRN: 47. PO: 50. Three-way reconcile fails 100% of the time on this delta."</strong></td><td><strong>derivation</strong> — math fact; needs a framing case to ship</td></tr>
+<tr><td><strong>GRN-05</strong></td><td><strong>"'Damaged on arrival' in 4-point font: 0 prebuilt models flagged it"</strong></td><td>font-size + annotation test</td></tr>
+<tr><td><strong>GRN-06</strong></td><td><strong>"Pallet 2 of 7: where goods-receipt automation drops from 91% to 24%"</strong></td><td>continuation-page GRN degradation curve</td></tr>
+</table>
+
+<h2>§B.5 — 🚢 BILL OF LADING (6 non-anchored)</h2>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>What to land</th></tr>
+<tr><td><strong>BoL-01</strong></td><td><strong>"11 delivery stops on one BoL. Azure DI dropped 7 of them."</strong></td><td>multi-stop BoL sample + Azure DI run</td></tr>
+<tr><td><strong>BoL-02</strong></td><td><strong>"FOB vs CIF: a 1-letter diff that shifts $164,000 in freight liability"</strong></td><td>freight-terms misclass + a real-case dollar value</td></tr>
+<tr><td><strong>BoL-03</strong></td><td><strong>"4-page BoL, 12 trailers, 1 unified extraction (or 4 broken ones)"</strong></td><td>continuation-page BoL test</td></tr>
+<tr><td><strong>BoL-04</strong></td><td><strong>"Handwritten weight on a typed BoL: 67% disagreement rate"</strong></td><td>handwritten-vs-typed conflict measurement</td></tr>
+<tr><td><strong>BoL-05</strong></td><td><strong>"UN1203 vs UN1230: a 1-digit hazmat OCR error worth $2.4M in fines"</strong></td><td>hazmat-code OCR + regulatory penalty research</td></tr>
+<tr><td><strong>BoL-06</strong></td><td><strong>"Signed-by-driver: a field 9 of 10 prebuilt models silently drop"</strong></td><td>10-prebuilt-model coverage test</td></tr>
+</table>
+
+<h2>§B.6 — 🏦 BANK STATEMENT (6 non-anchored)</h2>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>What to land</th></tr>
+<tr><td><strong>BS-01</strong></td><td><strong>"12 months, 1 PDF, 287 transactions: the bank statement that breaks every 32K-context model"</strong></td><td>12-month statement test on 4 LLMs</td></tr>
+<tr><td><strong>BS-02</strong></td><td><strong>"Reverse-chronological vs chronological: a $211K date-ordering bug"</strong></td><td>date-order failure case</td></tr>
+<tr><td><strong>BS-03</strong></td><td><strong>"4-point font on the balance line: 19% per-line OCR error rate"</strong></td><td>micro-print OCR measurement</td></tr>
+<tr><td><strong>BS-04</strong></td><td><strong>"Same transaction, 2 reads, 1 AML alert fired twice"</strong></td><td>dedup failure case</td></tr>
+<tr><td><strong>BS-05</strong></td><td><strong>"Photocopy → fax → photocopy: 47% field accuracy in 3 generations"</strong></td><td>degradation cascade measurement</td></tr>
+<tr><td><strong>BS-06</strong></td><td><strong>"'Pending' on a settled transaction: 1 stale field, 22% reconciliation queue growth"</strong></td><td>stale-state field study</td></tr>
+</table>
+
+<h2>§B.7 — 💵 CHEQUE (6 non-anchored)</h2>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>What to land</th></tr>
+<tr><td><strong>CHQ-01</strong></td><td><strong>"$1,000 in digits, 'one hundred dollars' in words: 18% of cheques have this conflict"</strong></td><td>digit-vs-words conflict survey</td></tr>
+<tr><td><strong>CHQ-02</strong></td><td><strong>"14-character MICR line. 100% of routing depends on it. 1 wrong character = misdirected payment."</strong></td><td>MICR OCR accuracy measurement</td></tr>
+<tr><td><strong>CHQ-03</strong></td><td><strong>"Signature lands on the amount line: 28% misfield rate"</strong></td><td>signature-overlap study</td></tr>
+<tr><td><strong>CHQ-04</strong></td><td><strong>"30% of B2B disbursements in 2026 are still handwritten cheques"</strong></td><td>needs industry survey source (Federal Reserve / AFP)</td></tr>
+<tr><td><strong>CHQ-05</strong></td><td><strong>"Carbon-copy cheque scans: 41% MICR failure (vs 2% on originals)"</strong></td><td>carbon-vs-original MICR measurement</td></tr>
+<tr><td><strong>CHQ-06</strong></td><td><strong>"Stale-date by 1 day: $35 fee × 200K cheques/year = $7M operational drag"</strong></td><td>needs customer/industry fee data</td></tr>
+</table>
+
+<h2>§B.8 — ↩️ CREDIT NOTE (6 non-anchored)</h2>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>What to land</th></tr>
+<tr><td><strong>CN-01</strong></td><td><strong>"Credit note unlinked from invoice: 8 hours of AP review per occurrence"</strong></td><td>AP-time-cost measurement</td></tr>
+<tr><td><strong>CN-02</strong></td><td><strong>"Negative amounts on positive forms: 23% sign-extraction error rate"</strong></td><td>sign-handling test</td></tr>
+<tr><td><strong>CN-03</strong></td><td><strong>"Partial vs full credit: 67% LLM hallucination rate"</strong></td><td>4-model field test</td></tr>
+<tr><td><strong>CN-04</strong></td><td><strong>"Credit-note continuation pages: where 14% of refunded rows vanish"</strong></td><td>continuation-page CN sweep</td></tr>
+<tr><td><strong>CN-05</strong></td><td><strong>"Every accountant audits credit notes by hand. 0% STP across 4 prebuilt models."</strong></td><td>D12 STP measurement on CN subset</td></tr>
+<tr><td><strong>CN-06</strong></td><td><strong>"Dual-currency credit note (USD top / EUR bottom): 100% currency-field error rate"</strong></td><td>dual-currency CN test</td></tr>
+</table>
+
+<h2>§B.9 — ➖ DEBIT NOTE (5 non-anchored)</h2>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>What to land</th></tr>
+<tr><td><strong>DN-01</strong></td><td><strong>"Vendor-debit vs customer-debit: 41% framing-error rate"</strong></td><td>framing-direction test</td></tr>
+<tr><td><strong>DN-02</strong></td><td><strong>"16 reason-code fields, 1 freeform paragraph, 73 parsing errors per 100 docs"</strong></td><td>reason-code parse accuracy</td></tr>
+<tr><td><strong>DN-03</strong></td><td><strong>"Debit-note OCR: 0 prebuilt vendor models, 2 academic benchmarks, infinite production pain"</strong></td><td>vendor coverage audit</td></tr>
+<tr><td><strong>DN-04</strong></td><td><strong>"Debit + invoice + credit: 3-doc reconciliation with 12% three-way match"</strong></td><td>tri-doc reconcile measurement</td></tr>
+<tr><td><strong>DN-05</strong></td><td><strong>"0 of the top-9 OCR vendors sells a prebuilt debit-note model"</strong></td><td>vendor-coverage census</td></tr>
+</table>
+
+<h2>§B.10 — 🎯 CROSS-CUTTING (3 non-anchored; +4 in §A)</h2>
+
+<table>
+<tr><th>ID</th><th>Title</th><th>What to land</th></tr>
+<tr><td><strong>X-02</strong></td><td><strong>"5-line demo → 642-row production: the gap that breaks ROI projections"</strong></td><td>dataset_95 median 3 vs max 323 already on disk → cite path; "642" is from the LinkedIn draft (still needs that specific doc cited or reframe to "323-row" from dataset_95 — closest anchored alternative)</td></tr>
+<tr><td><strong>X-04</strong></td><td><strong>"1 OCR error → 300 ERP mismatches: how upstream noise becomes downstream chaos"</strong></td><td>needs ERP-mismatch cost data</td></tr>
+<tr><td><strong>X-05</strong></td><td><strong>"Demo-perfect (98%) vs warehouse-perfect (34%): two doc-AI products in one brochure"</strong></td><td>demo-vs-prod study</td></tr>
+<tr><td><strong>X-06</strong></td><td><strong>"8 hours per invoice to hand-label gold: why 87% of test sets are wrong"</strong></td><td>gold-cost + gold-error rate study</td></tr>
+</table>
+
+<hr/>
+
+<h1>Summary</h1>
+
+<table>
+<tr><th>Bucket</th><th>Count</th><th>Ship status</th></tr>
+<tr><td><strong>§A Anchored</strong></td><td>6</td><td>Ship-eligible NOW</td></tr>
+<tr><td><strong>§B Non-anchored</strong></td><td>54</td><td>Drafts; ship after their "what to land" measurement</td></tr>
+<tr><td><strong>Total</strong></td><td>60</td><td></td></tr>
+</table>
+
+<h2>Per-doc-type distribution</h2>
+
+<table>
+<tr><th>Doc type</th><th>§A Anchored</th><th>§B Non-anchored</th><th>Total</th></tr>
+<tr><td>Invoice</td><td>3 (I-01, I-05, I-06)</td><td>5</td><td>8</td></tr>
+<tr><td>Packing slip</td><td>0</td><td>6</td><td>6</td></tr>
+<tr><td>Purchase Order</td><td>0</td><td>6</td><td>6</td></tr>
+<tr><td>GRN</td><td>0</td><td>6 (incl. 1 derivation)</td><td>6</td></tr>
+<tr><td>Bill of Lading</td><td>0</td><td>6</td><td>6</td></tr>
+<tr><td>Bank statement</td><td>0</td><td>6</td><td>6</td></tr>
+<tr><td>Cheque</td><td>0</td><td>6</td><td>6</td></tr>
+<tr><td>Credit note</td><td>0</td><td>6</td><td>6</td></tr>
+<tr><td>Debit note</td><td>0</td><td>5</td><td>5</td></tr>
+<tr><td>Cross-cutting</td><td>3 (X-01, X-03, X-07)</td><td>4</td><td>7</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>6</strong></td><td><strong>54</strong></td><td><strong>60</strong></td></tr>
+</table>
+
+<h2>Highest-ROI measurements to convert from §B → §A</h2>
+
+<p>If you fund a handful of fast measurements, these flip first (all reuse on-disk corpora):</p>
+<ol>
+<li><strong>I-03 + I-04</strong> — handwritten + multi-language sub-samples within dataset_95 (probably exists; just need to identify + score)</li>
+<li><strong>X-02</strong> — reframe to dataset_95 median-3 vs max-323 (already anchored, just need to rewrite to cite that doc)</li>
+<li><strong>GRN-04</strong> — derivation only; needs a real PO ↔ GRN delta-47-vs-50 case to ship</li>
+<li><strong>PS-05</strong> — 5-model hallucination test on a no-totals packing slip; can run as a free open-source sweep</li>
+<li><strong>BoL-06</strong> — vendor-coverage census of prebuilt BoL models (research, not measurement)</li>
+</ol>
+
+<h2>Sources</h2>
+<ul>
+<li>Anchor cell: <code>comparative/azure-di-long-invoices/AZURE-DI-LONG-INVOICE-2026-05-25.json</code> (measured 2026-05-25)</li>
+<li>Anchor report: <code>comparative/azure-di-long-invoices/REPORT.md</code></li>
+<li>14 dimensions: <code>comparative/azure-di/azure-di-invoice-study.html §4</code></li>
+<li>Stratified-customer-sample stub (NOT used here): <code>benchmark-factory/stubs-pending-ceo-data/F-1-stratified-line-item-sample.STUB.json</code></li>
+<li>v1 catalog (superseded): <code>viral-blog-titles-2026-05-25.md</code></li>
+<li>v2 catalog (superseded): <code>viral-blog-titles-2026-05-25-v2.md</code></li>
+</ul>
+
+</body></html>

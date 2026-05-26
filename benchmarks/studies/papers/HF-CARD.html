@@ -1,0 +1,166 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HF-CARD — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<a class="back" href="/benchmarks/studies/savior-bench-report.html">← back</a>
+
+<h1>HuggingFace Dataset / Model Card — SAVIOR-Bench (DRAFT, human-gated)</h1>
+
+<p>> ## EXTERNAL-PUBLISH HUMAN-GATE (W5 — non-waivable) > > <strong>DRAFT — external publish requires explicit human approval; nothing > auto-published; named competitors scoped to <code>paper/</code> artifact only.</strong> > > Recorded approval line (required before any HF upload): > <code>approved-by: &lt;human-name&gt; · date: &lt;YYYY-MM-DD&gt; · against-commit: &lt;sha&gt;</code> > — appended only when a human signs off in PR. Until that line exists > against a green pre-launch readiness gate (<code>launch/FUNNEL.md</code> §1 > G1–G8), this card stays a draft and is not uploaded.</p>
+
+<p>> <strong>Status: DRAFT only.</strong> This card is not uploaded. HF upload is > human-gated (externally visible). Frontmatter below is a proposal.</p>
+
+<pre><code class="lang-yaml">
+# ---- proposed HF dataset card frontmatter ----
+license: other
+license_name: mixed-source-corpora
+license_link: mailto:niyati.chhaya@hyprbots.com
+language:
+  - en
+  - multilingual
+size_categories:
+  - n&lt;1K
+task_categories:
+  - image-to-text
+tags:
+  - ocr
+  - document-understanding
+  - finance
+  - invoices
+  - layout-analysis
+pretty_name: SAVIOR-Bench v1
+</code></pre>
+
+<h2>Dataset summary</h2>
+
+<p>SAVIOR-Bench v1 — <strong>509 expert-annotated financial documents</strong> for OCR transcription, layout fidelity (PaIRS), and parse-intent extraction. Inter-annotator agreement <strong>0.761</strong> (fuzzy string similarity, 187 double- annotated pairs).</p>
+
+<table>
+<tr><th>Source corpus</th><th>Share</th></tr>
+<tr><td>UCSF Industry Documents</td><td>46.95%</td></tr>
+<tr><td>In-house synthetic</td><td>17.88%</td></tr>
+<tr><td>Misc. public financial</td><td>17.49%</td></tr>
+<tr><td>Inv3D</td><td>9.04%</td></tr>
+<tr><td>FUNSD</td><td>8.64%</td></tr>
+</table>
+
+<p><strong>Document classes:</strong> invoices, packing slips, forms, multilingual scans, low-quality PDFs, complex tables.</p>
+
+<h2>Tasks & metrics</h2>
+
+<ul>
+<li><strong>OCR (n=509):</strong> word-level multiset <strong>recall</strong> / <strong>precision</strong>; <strong>PaIRS</strong></li>
+</ul>
+<p>  layout fidelity (prompt-controlled models only; NPC = format-compat proxy).</p>
+<ul>
+<li><strong>Parse-intent:</strong> <strong>F1</strong> ↑ / <strong>WER</strong> ↓ (n not reported in attested source).</li>
+<li><strong>Decoding (frozen):</strong> temp 0.1, top-p 0.9, max_tokens 2048, seed 20260516.</li>
+</ul>
+
+<h2>Leaderboard (attested, abridged)</h2>
+
+<p><strong>OCR — top by recall</strong> (<code>[FT]</code> = fine-tuned, not apples-to-apples):</p>
+
+<table>
+<tr><th>Model</th><th>Recall</th><th>Precision</th><th>PaIRS</th><th>cat</th><th>Setting</th></tr>
+<tr><td>Qwen2.5-VL-7B-F <code>[FT]</code></td><td>0.9294</td><td>0.9157</td><td>0.7066</td><td>NPC</td><td>fine-tuned</td></tr>
+<tr><td>Textract</td><td>0.9233</td><td>0.8902</td><td>0.5117</td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>Azure-DI</td><td>0.9202</td><td>0.8978</td><td>0.5025</td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>Qwen2.5-VL-3B-F <code>[FT]</code></td><td>0.9167</td><td>0.9101</td><td>0.7068</td><td>NPC</td><td>fine-tuned</td></tr>
+<tr><td>Gemini-2.5-Flash</td><td>0.9144</td><td>0.8967</td><td>0.6074</td><td>PC</td><td>zero-shot</td></tr>
+</table>
+
+<p><strong>Parse-intent — top by F1:</strong></p>
+
+<table>
+<tr><th>Model</th><th>F1</th><th>WER</th><th>Setting</th></tr>
+<tr><td>hyperapi-parse-intent <code>[FT]</code></td><td>0.8328</td><td>0.2589</td><td>fine-tuned</td></tr>
+<tr><td>DocIntentOCR-3B</td><td>0.8102</td><td>0.5622</td><td>zero-shot</td></tr>
+<tr><td>GPT-4o</td><td>0.8052</td><td>0.4232</td><td>zero-shot</td></tr>
+</table>
+
+<p>Full 21-model OCR and 23-model parse-intent tables: see <code>paper/SAVIOR-Bench.md</code> §4.</p>
+
+<h2>Model card — SAVIOR-Train fine-tunes (Hyperbots-IP)</h2>
+
+<p><code>Qwen2.5-VL-7B-F</code>, <code>Qwen2.5-VL-3B-F</code>, <code>hyperapi-parse-intent</code> are open-source backbones (Qwen2.5-VL-Instruct) <strong>fine-tuned by Hyperbots</strong> via LoRA (rank 32, α 64; vision-encoder final layer + language decoder; lr 1e-4 vision / 5e-4 language; batch 1, grad-accum 10; 7 epochs 3B / 5 epochs 7B; 2× H100 80 GB, CUDA 12.3). Inference: top-p 0.9, temp 0.1, frozen 10-step layout prompt. Latency p50 2,548 ms / p99 3,319 ms, 3% fail rate; cost ≈ $0.19 / 1k successful calls (A100 40 GB @ ~$2/hr).</p>
+
+<h2>Honesty & provenance (mandatory)</h2>
+
+<ul>
+<li><strong>Fine-tune disclosure:</strong> the <code>[FT]</code> rows are fine-tuned on SAVIOR-Train;</li>
+</ul>
+<p>  all other rows are <strong>zero-shot native</strong>. Comparisons are <strong>not   apples-to-apples</strong>.</p>
+<ul>
+<li><strong>Provenance:</strong> all cells <strong>in-house-run, user-attested 2026-05-18</strong>, **not</li>
+</ul>
+<p>  factory-harness-reproduced** (factory re-run = optional strengthening, not   a publication gate per attestation).</p>
+<ul>
+<li><strong>No CI:</strong> <code>ci95=null</code> → "reported (no CI)"; no interval fabricated.</li>
+<li>Metrics are <strong>model OCR/parse performance</strong>, not product accuracy</li>
+</ul>
+<p>  (product accuracy only "per apis.hyperbots.com").</p>
+<ul>
+<li>Competitor naming is a <strong>scoped scientific-benchmark exception</strong> for this</li>
+</ul>
+<p>  artifact only; neutral, evidenced, dated/versioned.</p>
+
+<h2>Limitations</h2>
+
+<p>Fine-tune-vs-zero-shot asymmetry; PaIRS PC-only; corpus-level aggregate only (no by-class/quality/field slices); parse-intent <code>n</code> unknown; single version (v1, 2026-05-18). See <code>paper/SAVIOR-Bench.md</code> §5.</p>
+
+<h2>Positioning & honest depth roadmap</h2>
+
+<p>Positioned vs public document-parsing benchmarks in <code>paper/SAVIOR-Bench.md</code> §3 (related-work matrix, incl. PureDocBench): SAVIOR-Bench's current distinctness is <strong>financial-document specificity + provenance-tagging + parse-intent coverage</strong>; it does <strong>not</strong> yet match PureDocBench-class <em>evidence depth</em> (regenerable source-traceable corpus, factory-reproduced cells, per-category/degradation slices). That gap is <strong>named, not faked</strong> — §10 "Path to PureDocBench-depth" is the explicit roadmap to close it (factory re-reproduction, slices, regenerable corpus, broader model coverage). Own-ground-truth audit in Appendix B; failure taxonomy Appendix C; reproducibility Appendix D.</p>
+
+<h2>Citation / access</h2>
+
+<p>Benchmark access on request: <strong>niyati.chhaya@hyprbots.com</strong>. Cite as "SAVIOR-Bench v1 (Hyperbots, 2026)".</p>
+
+<h2>Sources</h2>
+<ul>
+<li><code>paper/SAVIOR-Bench.md</code> (full paper, §1–10 + Appendix A–D);</li>
+</ul>
+<p>  <code>results/DC-000__*</code> (attested cells); <code>benchmark.xlsx</code>;   <code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code> — in-repo verbatim extract   of the Hyperbots-provided <code>Benchmark-VLM_OCR.pdf</code> source-of-record   (in-house-attested, 2026-05-18; PDF not redistributed);   <code>plan/{PLAN-SAVIOR-BENCH-PAPER,FORMAT-CALIBRATION-vs-PureDocBench}.md</code>;   cto-org <code>benchmark-format-steward</code> (governance).</p>
+
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT card; HF upload is human-gated (externally visible) and not</li>
+</ul>
+<p>  performed. Numbers are in-house-attested (not factory-reproduced);   fine-tune-vs-zero-shot disclosed; competitor naming scoped to this   scientific artifact only. "v1, 2026-05-18" — competitors improve; the   comparison is timestamped, not eternal.</p>
+
+</body></html>

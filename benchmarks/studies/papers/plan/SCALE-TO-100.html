@@ -1,0 +1,127 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SCALE-TO-100 — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<a class="back" href="/benchmarks/studies/savior-bench-report.html">← back</a>
+
+<h1>SCALE-TO-100 — Pinned path to 100+ models × all tasks × all datasets</h1>
+
+<p>Owner: <code>frontier-lab-cto</code> + <code>model-wrangler</code>. Method: <code>.claude/skills/benchmark-factory/SKILL.md</code>. This is the documented, pinned procedure to scale the SEED leaderboard to production. It does NOT run 100+ real inference now (human-locked decision); it specifies exactly how.</p>
+
+<h2>1. What already scales unchanged</h2>
+<p>The SEED harness is the production harness. <code>harness/run.py</code> is task×dataset×model-agnostic: adding models = adding registry entries + adapters; adding tasks = adding <code>harness/tasks.json</code> + <code>harness/metrics.py</code> entries; adding datasets = adding a registered loader. No harness rewrite.</p>
+
+<h2>2. Model list shape (target 100+)</h2>
+<p><code>harness/models.json</code>, each entry pinned:</p>
+<pre><code class="lang-">
+{&quot;id&quot;,&quot;family&quot;,&quot;adapter&quot;,&quot;pin&quot;:{&quot;kind&quot;:&quot;hf-revision|api-version|file-sha256&quot;,
+ &quot;ref&quot;:&quot;&lt;commit/revision/date/sha&gt;&quot;},&quot;cost_per_1k_docs_usd&quot;,&quot;throughput_docs_per_s&quot;,
+ &quot;is_hyperbots_ip&quot;:bool}
+</code></pre>
+<p>Coverage shape:</p>
+<ul>
+<li>Open-weights via HF hub (pinned <code>revision=&lt;commit&gt;</code>): small→large</li>
+</ul>
+<p>  (e.g. 0.5B–70B class), instruction-tuned + base.</p>
+<ul>
+<li>Hosted-API models (pinned model+version date), keys human-provided.</li>
+<li>Hyperbots IP: open-source models fine-tuned by Hyperbots, pinned by weight</li>
+</ul>
+<p>  sha256. Production accuracy cited only "per apis.hyperbots.com", never   injected into a measured cell.</p>
+
+<h2>3. The HF-hub / API adapter (the only new code to scale models)</h2>
+<p>Adapter contract is already fixed: pure <code>predict(prompt, decoding) -&gt; text</code>. A scale-up adapter loads the model offline with a <strong>pinned revision</strong>:</p>
+<pre><code class="lang-">
+from transformers import pipeline      # pinned in harness/PINS.txt
+pipe = pipeline(&quot;text-generation&quot;, model=ID, revision=COMMIT,
+                device_map=&quot;auto&quot;, torch_dtype=&quot;auto&quot;)
+def predict(prompt, decoding):
+    return pipe(prompt, do_sample=decoding[&quot;temperature&quot;]&gt;0,
+                temperature=decoding[&quot;temperature&quot;], top_p=decoding[&quot;top_p&quot;],
+                max_new_tokens=decoding[&quot;max_tokens&quot;])[0][&quot;generated_text&quot;]
+</code></pre>
+<p>Scale-up dependency pins (already staged in <code>harness/PINS.txt</code>, commented until activated): <code>transformers==4.44.2</code>, <code>torch==2.4.1</code>, <code>accelerate==0.34.2</code>, <code>huggingface-hub==0.25.1</code>. Heavy venvs live in <code>/tmp</code>; never committed (<code>.gitignore</code> enforces).</p>
+
+<h2>4. Task + dataset scale-out</h2>
+<ul>
+<li>Tasks: walk the 549 implemented catalog rows by family; for each family add</li>
+</ul>
+<p>  ONE canonical metric in <code>harness/metrics.py</code> + ONE frozen prompt in   <code>harness/tasks.json</code>. Reviewed by <code>stats-methodologist</code>.</p>
+<ul>
+<li>Datasets: register SROIE + CORD (already in registry, status</li>
+</ul>
+<p>  <code>requires-manual-download</code>); add FUNSD/DocVQA-style sets per task mapping.   <code>dataset-curator</code> freezes split + sha256 on first local load. Internal   Hyperbots data plugs in via <code>datasets/loaders/internal_adapter.py</code> the   moment <code>HYPERBOTS_INTERNAL_DATASET_PATH</code> + <code>HYPERBOTS_INTERNAL_CREDS</code> exist.</p>
+
+<h2>5. Cost / throughput plan</h2>
+<ul>
+<li>Budget = Σ over (model,task,dataset) of <code>n_docs / throughput_docs_per_s</code></li>
+</ul>
+<p>  (compute) and <code>n_docs/1000 * cost_per_1k_docs_usd</code> (API). Registry carries   both fields per model so the total is computed before any large run.</p>
+<ul>
+<li>Tiering: run small/open models first (cheap, offline, in <code>/tmp</code> venv);</li>
+</ul>
+<p>  gate expensive API models behind explicit human budget approval.</p>
+<ul>
+<li>Parallelism: cells are independent → embarrassingly parallel; shard by</li>
+</ul>
+<p>  (model,task,dataset); each shard writes its own <code>results/*.json</code>.</p>
+<ul>
+<li>Throughput control + cost ceiling owned by <code>model-wrangler</code>; CTO STOP if a</li>
+</ul>
+<p>  run would exceed approved budget.</p>
+
+<h2>6. Release pipeline (per the skill, every refresh)</h2>
+<p>curate datasets → register pinned models → <code>harness/run.py</code> shards → <code>contamination/audit.py</code> per (model,dataset) → <code>stats-methodologist</code> validates CIs/tie-bands → <code>harness/repro_check.py</code> (≥1 sampled cell, STOP on mismatch) → <code>leaderboard/build.py</code> regenerates static UI.</p>
+
+<h2>7. Where the internal adapter plugs in</h2>
+<p><code>datasets/loaders/internal_adapter.py</code> is inert (<code>is_active()==False</code>) until both env vars are set, then it emits the documented record schema and the same harness/contamination/repro pipeline runs over it with zero code change.</p>
+
+<h2>Sources</h2>
+<ul>
+<li><code>.claude/skills/benchmark-factory/SKILL.md</code>; <code>harness/</code> (already generic);</li>
+</ul>
+<p>  <code>harness/PINS.txt</code>; <code>datasets/registry/registry.json</code>;   <code>datasets/loaders/internal_adapter.py</code>; this repo's SEED run + repro artifact.</p>
+
+<h2>Open assumptions</h2>
+<ol>
+<li>Real 100+ inference needs human-approved compute + API keys/budget.</li>
+<li>HF revisions / API version dates pinned at registration time.</li>
+<li>External datasets require manual download per their licenses.</li>
+<li>Internal-Hyperbots access (path + creds + license) human-provided later.</li>
+</ol>
+
+</body></html>

@@ -1,0 +1,208 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>split-o2c — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<a class="back" href="/marketing/competition/nanonets-framework/">← back</a>
+<div class="fm">primitive: split
+domain: o2c
+status: PLAN — methodology defined, numbers placeholder
+date: 2026-05-25
+depth_template: /Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/comparative/azure-di/azure-di-invoice-study.html
+parent_framework: ../FRAMEWORK-2026-05-25.md
+dimensions_in_scope: D1, D3, D7, D10, D11, D13, D14, D2*, D8*
+dimensions_out_of_scope: D4, D5, D6, D9</div>
+
+<h1>Split (O2C) — deep-study plan</h1>
+
+<h2>1. Executive summary (TEMPLATE — numbers placeholder)</h2>
+
+<p>Multi-document O2C bundles arrive most often through <strong>lockbox</strong> intake (a TIFF/PDF containing many remittance advices, each bound to one or more check images) and through <strong>customer-portal exports</strong> (statement of account + a stapled set of remittance advices). How correctly does an IDP system split the bundle into its logical sub-documents? The remittance↔check pairing makes O2C splitting distinctively harder than P2P: a single remittance often spans multiple pages AND must remain bound to the matching check image. Numbers <code>[PENDING-MEASUREMENT]</code>.</p>
+
+<h2>2. Scope & coverage</h2>
+
+<ul>
+<li><strong>Workload.</strong> Lockbox bundles (TIFF/PDF), customer-portal exports</li>
+</ul>
+<p>  (PDF), email-attached remittance batches.</p>
+<ul>
+<li><strong>Platforms.</strong> Hyperbots <code>split</code> + ≥1 competitor.</li>
+<li><strong>Coverage dims.</strong> 9 of 14 (D4, D5, D6, D9 dropped).</li>
+<li><strong>Test surface.</strong></li>
+<li><code>n = [PLACEHOLDER]</code> bundles per dim.</li>
+<li>Stratified by lockbox-vendor template (e.g. WF / BoA / Chase /</li>
+</ul>
+<p>    Citi / partner-bank), by per-bundle remittance count, by     presence/absence of check images, and by file format.</p>
+
+<h2>3. Methodology</h2>
+
+<h3>3.1 Data-status representation</h3>
+<p>Eight-row legend per framework §0.4 (same Correct/Incorrect/Missed/ Spurious semantics as split-P2P §3.1).</p>
+
+<h3>3.2 Sample design</h3>
+<p><code>n = [PLACEHOLDER]</code> bundles per dim. <strong>Two-level annotation:</strong> (1) split into logical sub-docs, (2) for each sub-doc, which check image is bound to it (the remit↔check pairing). κ on both.</p>
+
+<h3>3.3 Metrics</h3>
+<ul>
+<li>Boundary-F1.</li>
+<li>Span-F1.</li>
+<li>Page-attribution accuracy.</li>
+<li>Full-bundle exact-match accuracy.</li>
+<li><strong>Remit↔check pairing F1</strong> (O2C-specific; precision/recall of the</li>
+</ul>
+<p>  binding edges).</p>
+<ul>
+<li>95% bootstrap CI + n.</li>
+</ul>
+
+<h3>3.4 Scoring rubric</h3>
+<p>Same as split-P2P §3.4 plus: a remittance with the wrong check binding is Incorrect at the pairing level even if its span was Correct.</p>
+
+<h3>3.5 Evaluation controls</h3>
+<p>Frozen sha256. Rerunnable command:</p>
+<pre><code class="lang-">
+run --study split-o2c-v0 \
+    --dimension D&lt;id&gt; \
+    --system hyperbots-idp@&lt;model-revision&gt; \
+    --system &lt;competitor&gt;@&lt;api-version&gt; \
+    --dataset o2c-split-bench-v1@&lt;snapshot-sha256&gt; \
+    --split test --seed &lt;pinned&gt; \
+    --metric boundary_f1 --bootstrap 1000
+</code></pre>
+
+<h3>3.6 Independence and disclosure</h3>
+<p>Hyperbots-published; affiliation declared.</p>
+
+<h3>3.7 Limitations</h3>
+<ul>
+<li>Lockbox bundle data is bank-restricted; public-bench tier will use</li>
+</ul>
+<p>  synthetic-but-realistic lockbox TIFFs; partner-bench tier requires   partner consent.</p>
+<ul>
+<li>Check images on the back of a remittance (duplex scan) is a</li>
+</ul>
+<p>  policy-pinned strata; documented in PINS.txt.</p>
+
+<h3>3.8 Where this primitive sits in the IDP pipeline</h3>
+<p><strong>split</strong> stage. Downstream: classify-O2C labels each span; extract-O2C parses open-invoice list and applied amounts; match-O2C does the cash application.</p>
+
+<h2>4. Dimension analysis (9 of 14)</h2>
+
+<table>
+<tr><th>ID</th><th>Dimension for split(O2C)</th><th>Hyperbots</th><th>Competitor</th><th>Δ</th></tr>
+<tr><td>D1</td><td>Bundle complexity — pages × sub-docs × check-image count.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D2*</td><td>Boundary coverage — remit↔remit boundaries + remit↔check boundaries.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D3</td><td>Lockbox-bank template variance.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D7</td><td>Faxed / low-DPI lockbox scans.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D8*</td><td>Cross-page open-invoice-table continuity.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D10</td><td>Throughput on bursty month-end lockbox volumes.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D11</td><td>Page-attribution + remit↔check pairing accuracy.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D13</td><td>p50/p95 per-bundle latency.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+<tr><td>D14</td><td>File-format coverage — multi-page TIFF, EDI 820 PDF render, scanned image PDFs.</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td><td>[PLACEHOLDER]</td></tr>
+</table>
+
+<h2>5. Document × failure-mode matrix (split-O2C)</h2>
+
+<table>
+<tr><th>#</th><th>Bundle composition</th><th>Transition style</th><th>Dimensions</th></tr>
+<tr><td>1</td><td>Lockbox TIFF: 20 remittances, alternating check/remit pages</td><td>Repeating check-then-remit cycle</td><td>D2*, D11</td></tr>
+<tr><td>2</td><td>Lockbox PDF: 5 remittances, each multi-page</td><td>Multi-page remit, single check</td><td>D8<em>, D2</em></td></tr>
+<tr><td>3</td><td>Lockbox: duplex scan (check on back of remit page)</td><td>Duplex pairing</td><td>D11</td></tr>
+<tr><td>4</td><td>Customer-portal export: statement + 8 remittances</td><td>Cover-page-each</td><td>D2*, D3</td></tr>
+<tr><td>5</td><td>Email with 4 attached PDF remittances</td><td>File-format boundary</td><td>D14</td></tr>
+<tr><td>6</td><td>Cross-currency remittance batch (USD + EUR mix)</td><td>Mixed-currency adjacency</td><td>D2*</td></tr>
+<tr><td>7</td><td>Long open-invoice list spanning 5 pages within one remit</td><td>Hostile continuation</td><td>D8*</td></tr>
+<tr><td>8</td><td>False-bundle (single-remit, single-check, no split needed)</td><td>No transition</td><td>D2*</td></tr>
+<tr><td>9</td><td>EDI 820 PDF render (machine-clean, regular boundaries)</td><td>Machine-regular</td><td>D14</td></tr>
+<tr><td>10</td><td>Faxed bundle, low DPI</td><td>Mixed quality</td><td>D7</td></tr>
+<tr><td>11</td><td>Bundle with statement_of_account appended at end</td><td>Mixed-doc-type</td><td>D2*</td></tr>
+<tr><td>12</td><td>100-remit stress bundle</td><td>Stress</td><td>D1, D10</td></tr>
+</table>
+
+<p><code>[PLACEHOLDER — expand to 30–55 strata.]</code></p>
+
+<h2>6. Metric-taxonomy crosswalk (split-O2C)</h2>
+
+<p>Same column structure as split-P2P §6. O2C-specific addition: the remit↔check pairing edge is a study-introduced item with no direct taxonomy entry — recorded as a framework gap (D11-adjacent).</p>
+
+<h2>7. HyperAPI capability coverage (split-O2C)</h2>
+
+<ul>
+<li><code>split</code> — primary</li>
+<li><code>bundle</code> — companion for lockbox ingestion</li>
+<li><code>detect</code> — check-image detection signals</li>
+<li><code>parse</code> — per-page features</li>
+</ul>
+
+<p>Capability counts: <code>[PLACEHOLDER]</code>.</p>
+
+<h2>8. Competitor offerings inventory (split-O2C)</h2>
+
+<table>
+<tr><th>Vendor</th><th>SKU / API</th><th>Marketing source</th><th>Status</th></tr>
+<tr><td>Azure DI</td><td>Layout + custom classifier-as-splitter</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>AWS Textract</td><td>StartDocumentAnalysis + classifier</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Google Document AI</td><td>Splitter & Classifier</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>HighRadius</td><td>Lockbox + Cash App Cloud</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>Billtrust</td><td>Quantum Cash Application</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+<tr><td>ABBYY</td><td>Vantage submission split</td><td>[PLACEHOLDER]</td><td>NOT REACHED IN THIS SANDBOX</td></tr>
+</table>
+
+
+<p><strong>WebFetch retry log (2026-05-25, CEO directive #14).</strong> A second sub-agent context was spawned with a fresh tool-permission set and re-attempted <code>WebFetch</code> against the competitor blog targets in <code>FRAMEWORK-2026-05-25.md</code> §1. The harness denied the permission again (not a network/HTTP error). Per the honesty discipline, every row above remains <code>NOT REACHED IN THIS SANDBOX</code>; no competitor post title, excerpt, or methodology characterization is invented here. See <code>../WEBFETCH-RESULTS-2026-05-25.md</code> for the per-target retry record.</p>
+
+<p>No competitor capability claim ships without the marketing-source cell populated.</p>
+
+<h2>9. Findings & outlook</h2>
+
+<p><code>[PLACEHOLDER]</code>.</p>
+
+<p>Falsifiable hypotheses:</p>
+<ol>
+<li>Hyperbots remit↔check pairing F1 ≥ competitor on duplex-scan strata.</li>
+<li>Hyperbots boundary-F1 ≥ competitor on multi-page-remittance strata.</li>
+<li>Hyperbots full-bundle exact-match accuracy ≥ competitor on 50+ remit</li>
+</ol>
+<p>   lockbox bundles.</p>
+
+<h2>Z. Internal-only notes</h2>
+<ul>
+<li>Lockbox dataset acquisition is the dominant blocker.</li>
+<li>Remit↔check pairing is the highest-value O2C-split metric — flag for</li>
+</ul>
+<p>  publish-first consideration.</p>
+
+</body></html>

@@ -1,0 +1,573 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HyperAPI DocumentAI Benchmark Factory — Dashboard</title>
+<style>
+:root{
+  --bg:#f6f7f9; --card:#fff; --ink:#16181d; --muted:#697; --line:#e3e6ea;
+  --th:#eef1f6; --hover:#f4f9ff;
+  --hb1:#1b9aaa; --hb2:#0f5e8c; --hb-ink:#0f5e8c; --hb-soft:#e7f6f8;
+  --ip:#e7f6f8;
+  --warn-bg:#fff6e8; --warn-bd:#f4d18c; --warn-ink:#9a6400;
+  --ok:#127a32; --bad:#b3261e; --accent:#0f5e8c;
+}
+*{box-sizing:border-box}
+body{font:14px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  margin:0;padding:0;color:var(--ink);background:var(--bg)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px 40px}
+.masthead{background:linear-gradient(110deg,var(--hb2),var(--hb1));color:#fff;
+  padding:26px 0 22px;margin-bottom:8px}
+.masthead .wrap{padding-bottom:0}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brand .dot{width:11px;height:11px;border-radius:50%;background:#7fe3ee;
+  box-shadow:0 0 0 4px rgba(127,227,238,.28)}
+h1{font-size:23px;margin:0;font-weight:700;letter-spacing:-.01em}
+.byline{color:#cfeef2;font-size:12px;margin:5px 0 0}
+h2{font-size:16px;margin:30px 0 10px;border-bottom:2px solid var(--line);padding-bottom:6px;color:var(--hb-ink)}
+h3{font-size:12.5px;margin:18px 0 8px;color:#334;text-transform:uppercase;letter-spacing:.05em}
+.sub{color:var(--muted);margin:8px 0 16px}
+a{color:var(--accent)}
+code{background:#eef1f4;padding:1px 5px;border-radius:3px;font-size:12px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.band{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 4px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:9px;
+  padding:13px 17px;min-width:120px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.stat .num{font-size:25px;font-weight:700;line-height:1.05;color:var(--hb-ink)}
+.stat .lbl{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.stat.ok .num{color:var(--ok)}
+.stat.warn .num{color:var(--warn-ink)}
+.warn{background:var(--warn-bg);border:1px solid var(--warn-bd);
+  padding:11px 14px;border-radius:8px;margin:12px 0;color:#5a3a00}
+.note{background:var(--hb-soft);border:1px solid #bfe6ec;padding:11px 14px;
+  border-radius:8px;margin:12px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:9px;
+  padding:15px 17px;margin:12px 0;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+table{border-collapse:collapse;width:100%;background:var(--card);
+  box-shadow:0 1px 3px rgba(0,0,0,.07);margin:6px 0 4px;font-size:13px}
+th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--th);font-weight:600}
+th.sortable{cursor:pointer;user-select:none;white-space:nowrap}
+th.sortable:hover{background:#e2e8f1}
+th.sortable .arr{color:#aab;font-size:10px}
+tr:hover{background:var(--hover)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.ip{background:var(--ip)}
+.ft{color:#9a6400;font-weight:700;font-size:10px;border:1px solid #e6c98a;
+  border-radius:3px;padding:0 4px;margin-left:4px;background:#fff7e6}
+.tag{font-size:10px;border-radius:3px;padding:1px 6px;white-space:nowrap;display:inline-block}
+.tag-repro{background:#e3f6e8;color:var(--ok);border:1px solid #b6e3c2}
+.tag-attest{background:#fdeceb;color:var(--bad);border:1px solid #f3c7c3}
+.tag-ext{background:#fdeceb;color:#b3261e;border:1px solid #f3c7c3}
+.tag-synth{background:#eef0f2;color:#555;border:1px solid #d8dbe0}
+.tag-prelim{background:#fff6e8;color:#9a6400;border:1px solid #f4d18c}
+.muted{color:var(--muted)}
+.ci{color:var(--muted);font-size:12px}
+.chart{background:var(--card);border:1px solid var(--line);border-radius:9px;
+  padding:14px 16px;overflow-x:auto;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.legend{font-size:11px;color:var(--muted);margin-top:6px}
+.legend span{display:inline-block;margin-right:14px}
+.sw{display:inline-block;width:10px;height:10px;border-radius:2px;
+  vertical-align:middle;margin-right:4px}
+.pill{display:inline-block;font-size:11px;border:1px solid #bfe6ec;background:var(--hb-soft);
+  color:var(--hb-ink);border-radius:20px;padding:2px 10px;margin:2px 4px 2px 0}
+footer{margin:34px 0 8px;color:var(--muted);font-size:12px;
+  border-top:1px solid var(--line);padding-top:12px}
+.honest{font-weight:600;color:var(--warn-ink)}
+.facetgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:10px 0}
+.facet{border:1px solid var(--line);border-radius:9px;padding:13px 14px;background:var(--card)}
+.facet h4{margin:0 0 6px;font-size:13px;color:var(--hb-ink)}
+.facet .st{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.facet.done .st{color:var(--ok)}
+.facet.todo .st{color:var(--warn-ink)}
+@media(max-width:760px){.facetgrid{grid-template-columns:1fr}}
+
+table.crossmatrix{width:100%;border-collapse:collapse;font-size:12.5px;background:#fff;margin:8px 0 6px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+table.crossmatrix th,table.crossmatrix td{border:1px solid #e3e6ea;padding:6px 9px;text-align:right;}
+table.crossmatrix th{background:#eef1f6;font-weight:600;}
+table.crossmatrix th:first-child,table.crossmatrix td:first-child{text-align:left;font-family:ui-monospace,Menlo,monospace;font-size:12px;}
+table.crossmatrix td.win{background:#e3f6e8;font-weight:700;color:#127a32;}
+table.crossmatrix td.best{color:#127a32;font-weight:600;text-align:center;}
+table.crossmatrix td.worst{color:#b3261e;text-align:center;}
+table.crossmatrix tr.zero td{color:#999;background:#fafafa;}
+</style>
+</head>
+<body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<div class="masthead"><div class="wrap">
+  <div class="brand"><span class="dot"></span>
+  <h1>HyperAPI DocumentAI Benchmark Factory — Dashboard</h1></div>
+  <p class="byline">Hyperbots · a read-only view over committed <code>results/*.json</code>. Every number is harness-measured or attested-with-provenance — never blended, never invented.</p>
+</div></div>
+<div class="wrap">
+
+<p class="sub">Refreshed 2026-05-23 from the live repo. Axes not measured are
+marked <span class="honest">"not measured"</span>; externally-sourced cells are flagged
+<span class="tag tag-ext">external-attested</span> (<code>factory_reproduced=false</code>);
+mini-pilot numbers are labelled <span class="tag tag-prelim">preliminary / partial-n</span>.
+Complements the <a href="index.html">SEED Leaderboard</a>.</p>
+<h2>1 &middot; Summary</h2>
+<div class="band">
+<div class="stat"><div class="num">135</div><div class="lbl">Result cells</div></div>
+<div class="stat"><div class="num">6</div><div class="lbl">Tasks with cells</div></div>
+<div class="stat"><div class="num">83</div><div class="lbl">Models / configs</div></div>
+<div class="stat"><div class="num">5</div><div class="lbl">Datasets with cells</div></div>
+<div class="stat ok"><div class="num">0</div><div class="lbl">Factory-reproduced</div></div>
+<div class="stat warn"><div class="num">135</div><div class="lbl">Attested / external</div></div>
+</div>
+<div class="note">
+<b>What changed since the last build (56 cells).</b> The factory now holds
+<b>135 result cells</b> across <b>6 tasks</b>. New since the prior
+dashboard: the <b>DS-001 FinancePSS-205</b> document-splitting benchmark added
+<b>48 cells</b> (16 model families across 48 RICoT configurations), and the
+<b>OCR edit-distance</b> leaderboard added <b>31 cells</b> as the OCR-accuracy data
+point of the reframed SAVIOR-Bench <code>parse</code> task. The remaining cells:
+SAVIOR-Bench word-recall (21), parse-intent F1 (23), and the
+synthetic-fixture seed cells (12).
+<br><br>
+<b>Reproducibility split.</b> 0 of 135 cells are produced by the pinned
+deterministic factory harness (the <code>finbench-synth-fixture-v1</code> seed cells,
+verified byte-for-byte by <code>repro_check.py</code> — sampled <code>all_match: true</code>).
+The other 135 cells are <b>attested / externally-sourced</b> — transcribed verbatim
+from external benchmark reports or in-house runs, with explicit provenance and
+<code>ci95 = null</code> (no fabricated intervals). They are <b>NOT</b> factory-harness-reproduced;
+factory reproduction is optional/strengthening, not a publication gate. See &sect;6 for the
+W6 0/23 finding.
+</div>
+<h2>2 &middot; SAVIOR-Bench <code>parse</code> — a three-facet task (DC-000)</h2>
+<p class="sub">As of the 2026-05-22 reframe (<code>harness/tasks.json</code>), the
+<code>parse</code> task is <b>three facets</b>: extraction, layout-awareness, and bounding-box.
+Only the extraction facet is populated; the other two are <b>defined but not yet measured</b>
+— no ground-truth data is in scope, and no numbers are fabricated for them.</p>
+<div class="facetgrid">
+<div class="facet done"><div class="st">Facet 1 · Populated</div>
+<h4>Extraction</h4><p style="margin:4px 0;font-size:12px">Field/value/line-item +
+OCR text-recognition accuracy. Primary metric <code>savior_word_recall</code>;
+also <code>parse_intent_f1</code>, <code>wer</code>, <code>ocr_edit_distance</code>.</p>
+<p style="margin:4px 0;font-size:11px" class="muted">Populated by 3 attested datasets —
+savior-bench-v1 (n=509), parse-intent-inhouse-v1, and the 31-model OCR edit-distance
+leaderboard. See &sect;3.</p></div>
+<div class="facet todo"><div class="st">Facet 2 · Not measured</div>
+<h4>Layout awareness</h4><p style="margin:4px 0;font-size:12px">Reading order,
+layout-element structure, table/region structure. Metrics <code>layout_element_accuracy</code>,
+<code>reading_order_accuracy</code>, <code>pairs_layout</code>.</p>
+<p style="margin:4px 0;font-size:11px" class="muted">DEFINED — NOT YET MEASURED. No
+layout-awareness ground-truth dataset is in scope. Result status: "Not yet measured —
+facet defined, awaiting data." No numbers fabricated.</p></div>
+<div class="facet todo"><div class="st">Facet 3 · Not measured</div>
+<h4>Bounding box</h4><p style="margin:4px 0;font-size:12px">Visual grounding —
+correctness of predicted field/region boxes. Metrics <code>bbox_iou</code>,
+<code>field_to_region_grounding_accuracy</code>.</p>
+<p style="margin:4px 0;font-size:11px" class="muted">DEFINED — NOT YET MEASURED. No
+bounding-box / visual-grounding ground-truth dataset is in scope. Result status:
+"Not yet measured — facet defined, awaiting data." No numbers fabricated.</p></div>
+</div>
+<h2>3 &middot; Leaderboards</h2>
+<p class="sub">Click a column header to sort. <span class="ft">FT</span> = fine-tuned
+(not apples-to-apples vs zero-shot). <span class="ip" style="padding:1px 6px;border-radius:3px">shaded</span>
+= Hyperbots IP.</p>
+<h3>DS-001 &mdash; FinancePSS-205 document splitting <span class="muted" style="text-transform:none;font-weight:400">(family: split)</span></h3>
+<p style="margin:8px 0 2px"><b>Dataset:</b> <code>financepss-205-v1</code>
+&nbsp;<span class="tag tag-ext">external-attested</span>&nbsp;
+<b>Metric:</b> <code>doc_f1</code> (segment-match F1 over 682 ground-truth segments)&nbsp;
+<b>n:</b> 205 page-stream files / 1,772 pages / 682 GT segments&nbsp;
+<b>Domain:</b> Transaction Accounting</p>
+<p class="sub" style="margin:2px 0 8px">48 attested cells spanning 16 model families
+across 48 RICoT configurations. Numbers transcribed verbatim from the FinancePSS-205
+benchmark report (RICoT-v4.2); <b>not</b> factory-harness-reproduced
+(<code>factory_reproduced=false</code>, <code>ci95=null</code>). Table below shows the
+<b>best configuration per model family</b>; all 48 cells are in the data file.</p>
+<table data-sortable="1"><thead><tr><th class="sortable">Model family <span class="arr">&#8597;</span></th><th class="sortable num">doc_f1 <span class="arr">&#8593;</span></th><th class="num">95% CI</th><th class="sortable num">STP % <span class="arr">&#8597;</span></th><th class="sortable num">page_f1 <span class="arr">&#8597;</span></th><th class="sortable num">perfect <span class="arr">&#8597;</span></th><th class="sortable">Best config <span class="arr">&#8597;</span></th><th class="sortable">Status <span class="arr">&#8597;</span></th></tr></thead><tbody>
+<tr><td data-sort="claude-sonnet-4-6">claude-sonnet-4-6 <span class="muted" style="font-size:11px">Anthropic</span></td><td class="num" data-sort="0.861"><b>86.1%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="79.02">79.02</td><td class="num" data-sort="0.9361">0.9361</td><td class="num" data-sort="162">162/205</td><td data-sort="v4.2 · plr on · ir off · expand"><span class="muted" style="font-size:11px">v4.2 · plr on · ir off · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="GLM 4.7">GLM 4.7 <span class="muted" style="font-size:11px">Zhipu AI</span></td><td class="num" data-sort="0.8558"><b>85.6%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="78.54">78.54</td><td class="num" data-sort="0.9298">0.9298</td><td class="num" data-sort="161">161/205</td><td data-sort="v4 · plr on · ir off · expand"><span class="muted" style="font-size:11px">v4 · plr on · ir off · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="haiku-4-5">haiku-4-5 <span class="muted" style="font-size:11px">Anthropic</span></td><td class="num" data-sort="0.825"><b>82.5%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="76.1">76.10</td><td class="num" data-sort="0.9102">0.9102</td><td class="num" data-sort="156">156/205</td><td data-sort="v4.2 · plr on · ir on-1024 · expand"><span class="muted" style="font-size:11px">v4.2 · plr on · ir on-1024 · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="qwen3-235b-a22b2507-v1">qwen3-235b-a22b2507-v1 <span class="muted" style="font-size:11px">Alibaba</span></td><td class="num" data-sort="0.821"><b>82.1%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="74.15">74.15</td><td class="num" data-sort="0.9229">0.9229</td><td class="num" data-sort="152">152/205</td><td data-sort="v4.2 · plr on · ir n/a · expand"><span class="muted" style="font-size:11px">v4.2 · plr on · ir n/a · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="deepseek-v3-2">deepseek-v3-2 <span class="muted" style="font-size:11px">DeepSeek</span></td><td class="num" data-sort="0.8153"><b>81.5%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="75.61">75.61</td><td class="num" data-sort="0.9124">0.9124</td><td class="num" data-sort="155">155/205</td><td data-sort="v4.2 · plr on · ir on · expand"><span class="muted" style="font-size:11px">v4.2 · plr on · ir on · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="GPT 4.1">GPT 4.1 <span class="muted" style="font-size:11px">OpenAI</span></td><td class="num" data-sort="0.8101"><b>81.0%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="72.2">72.20</td><td class="num" data-sort="0.9125">0.9125</td><td class="num" data-sort="148">148/205</td><td data-sort="v4.2 · plr on · ir n/a · expand"><span class="muted" style="font-size:11px">v4.2 · plr on · ir n/a · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="kimi-k2-5">kimi-k2-5 <span class="muted" style="font-size:11px">Moonshot AI</span></td><td class="num" data-sort="0.7997"><b>80.0%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="79.02">79.02</td><td class="num" data-sort="0.8961">0.8961</td><td class="num" data-sort="162">162/205</td><td data-sort="v4.2 · plr on · ir off · expand"><span class="muted" style="font-size:11px">v4.2 · plr on · ir off · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="Llama-4 Maverick">Llama-4 Maverick <span class="muted" style="font-size:11px">Meta</span></td><td class="num" data-sort="0.7867"><b>78.7%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="73.17">73.17</td><td class="num" data-sort="0.903">0.9030</td><td class="num" data-sort="150">150/205</td><td data-sort="v4 · plr on · ir n/a · expand"><span class="muted" style="font-size:11px">v4 · plr on · ir n/a · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="qwen3-32b">qwen3-32b <span class="muted" style="font-size:11px">Alibaba</span></td><td class="num" data-sort="0.7738"><b>77.4%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="69.76">69.76</td><td class="num" data-sort="0.8944">0.8944</td><td class="num" data-sort="143">143/205</td><td data-sort="v4.2 · plr on · ir on · expand"><span class="muted" style="font-size:11px">v4.2 · plr on · ir on · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="qwen-3.5-2b">qwen-3.5-2b <span class="ft" title="fine-tuned">FT</span> <span class="muted" style="font-size:11px">focal (distilled from Kimi K2)</span></td><td class="num" data-sort="0.7719"><b>77.2%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="67.32">67.32</td><td class="num" data-sort="0.8986">0.8986</td><td class="num" data-sort="138">138/205</td><td data-sort="v3+v4 · plr on · ir n/a · expand"><span class="muted" style="font-size:11px">v3+v4 · plr on · ir n/a · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="qwen3-coder-480b">qwen3-coder-480b <span class="muted" style="font-size:11px">Alibaba</span></td><td class="num" data-sort="0.7612"><b>76.1%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="70.73">70.73</td><td class="num" data-sort="0.8912">0.8912</td><td class="num" data-sort="145">145/205</td><td data-sort="v4.2 · plr on · ir n/a · expand"><span class="muted" style="font-size:11px">v4.2 · plr on · ir n/a · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="meta-llama3.3-70b">meta-llama3.3-70b <span class="muted" style="font-size:11px">Meta</span></td><td class="num" data-sort="0.7582"><b>75.8%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="68.78">68.78</td><td class="num" data-sort="0.894">0.8940</td><td class="num" data-sort="141">141/205</td><td data-sort="v4.2 · plr on · ir n/a · expand"><span class="muted" style="font-size:11px">v4.2 · plr on · ir n/a · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="kimi-k2-thinking">kimi-k2-thinking <span class="muted" style="font-size:11px">Moonshot AI</span></td><td class="num" data-sort="0.7546"><b>75.5%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="64.88">64.88</td><td class="num" data-sort="0.8784">0.8784</td><td class="num" data-sort="133">133/205</td><td data-sort="v4.2 · plr on · ir on · expand"><span class="muted" style="font-size:11px">v4.2 · plr on · ir on · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="minimax-m2-5">minimax-m2-5 <span class="muted" style="font-size:11px">MiniMax</span></td><td class="num" data-sort="0.7306"><b>73.1%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="68.29">68.29</td><td class="num" data-sort="0.8621">0.8621</td><td class="num" data-sort="140">140/205</td><td data-sort="v4.2 · plr on · ir on · expand"><span class="muted" style="font-size:11px">v4.2 · plr on · ir on · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="gemma-3-27b-it">gemma-3-27b-it <span class="muted" style="font-size:11px">Google</span></td><td class="num" data-sort="0.7127"><b>71.3%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="68.29">68.29</td><td class="num" data-sort="0.8597">0.8597</td><td class="num" data-sort="140">140/205</td><td data-sort="v4.2 · plr on · ir n/a · expand"><span class="muted" style="font-size:11px">v4.2 · plr on · ir n/a · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td data-sort="gemma-3-12b-it">gemma-3-12b-it <span class="muted" style="font-size:11px">Google</span></td><td class="num" data-sort="0.4473"><b>44.7%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="48.29">48.29</td><td class="num" data-sort="0.7069">0.7069</td><td class="num" data-sort="99">99/205</td><td data-sort="v4.2 · plr on · ir n/a · expand"><span class="muted" style="font-size:11px">v4.2 · plr on · ir n/a · expand</span></td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+</tbody></table>
+<p class="sub" style="margin:2px 0 12px">RICoT = Reasoned-in-Context page-level
+reasoning. Config dimensions: <code>ricot_version</code> (v4 / v4.2 / fine-tuned v3+v4),
+<code>page_level_reasoning</code>, <code>internal_reasoning</code> (on / off / n/a; on-1024
+= 1024-token budget), <code>expand</code> (sub-document signal promotion). The single
+fine-tuned config is <code>qwen-3.5-2b</code> (distilled from Kimi K2) — disclosed FT,
+not apples-to-apples with zero-shot rows. <code>ci95 = null</code>: the source report gives
+point estimates only — no interval fabricated.</p>
+<h3>OCR edit-distance leaderboard <span class="muted" style="text-transform:none;font-weight:400">(DC-000 parse — extraction facet)</span></h3>
+<p style="margin:8px 0 2px"><b>Dataset:</b> <code>ocr-edit-distance-v1</code>
+&nbsp;<span class="tag tag-ext">external-attested</span>&nbsp;
+<b>Metric:</b> <code>ocr_edit_distance</code> &mdash;
+<b>lower is better</b> (normalized Levenshtein, predicted vs gold transcription).</p>
+<p class="sub" style="margin:2px 0 8px">31 attested cells transcribed verbatim
+from the user-provided OCR edit-distance leaderboard table
+(<code>/tmp/savior-ocr/ocr-edit-distance.tsv</code>); ingested by
+<code>harness/ingest_ocr_edit_distance.py</code>. <code>factory_reproduced=false</code>,
+<code>ci95=null</code>. Row #12 <b>HyperAPI PaddleOCR (OURS)</b> is the Hyperbots entry.</p>
+<table data-sortable="1"><thead><tr><th class="sortable num">Rank <span class="arr">&#8593;</span></th><th class="sortable">Model <span class="arr">&#8597;</span></th><th class="sortable num">edit distance <span class="arr">&#8597;</span></th><th class="sortable">Type <span class="arr">&#8597;</span></th><th class="sortable">Status <span class="arr">&#8597;</span></th></tr></thead><tbody>
+<tr><td class="num" data-sort="1">#1</td><td data-sort="GLM-OCR">GLM-OCR</td><td class="num" data-sort="0.019"><b>0.0190</b></td><td data-sort="Specialist VLM">Specialist VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="2">#2</td><td data-sort="GPT-4o">GPT-4o</td><td class="num" data-sort="0.02"><b>0.0200</b></td><td data-sort="General VLM">General VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="3">#3</td><td data-sort="MinerU-2.5">MinerU-2.5</td><td class="num" data-sort="0.023"><b>0.0230</b></td><td data-sort="Pipeline">Pipeline</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="4">#4</td><td data-sort="Qwen3-VL-235B">Qwen3-VL-235B</td><td class="num" data-sort="0.025"><b>0.0250</b></td><td data-sort="General VLM">General VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="5">#5</td><td data-sort="PaddleOCR-VL-1.5">PaddleOCR-VL-1.5</td><td class="num" data-sort="0.031"><b>0.0310</b></td><td data-sort="Specialist VLM">Specialist VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="6">#6</td><td data-sort="Mathpix">Mathpix</td><td class="num" data-sort="0.033"><b>0.0330</b></td><td data-sort="Pipeline (Commercial)">Pipeline (Commercial)</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="7">#7</td><td data-sort="GOT-OCR-2.0">GOT-OCR-2.0</td><td class="num" data-sort="0.041"><b>0.0410</b></td><td data-sort="Specialist VLM">Specialist VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="8">#8</td><td data-sort="Surya">Surya</td><td class="num" data-sort="0.057"><b>0.0570</b></td><td data-sort="Pipeline">Pipeline</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="9">#9</td><td data-sort="MinerU-0.9">MinerU-0.9</td><td class="num" data-sort="0.058"><b>0.0580</b></td><td data-sort="Pipeline">Pipeline</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="10">#10</td><td data-sort="Gemini-1.5-Pro">Gemini-1.5-Pro</td><td class="num" data-sort="0.058"><b>0.0580</b></td><td data-sort="General VLM">General VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="11">#11</td><td data-sort="Qwen3.5-2B-FT">Qwen3.5-2B-FT</td><td class="num" data-sort="0.059"><b>0.0590</b></td><td data-sort="Finetuned VLM">Finetuned VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="12">#12</td><td class="ip" data-sort="HyperAPI PaddleOCR OURS">HyperAPI PaddleOCR OURS</td><td class="num" data-sort="0.061"><b>0.0610</b></td><td data-sort="Pipeline Tools">Pipeline Tools</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="13">#13</td><td data-sort="OpenOCR">OpenOCR</td><td class="num" data-sort="0.07"><b>0.0700</b></td><td data-sort="Pipeline">Pipeline</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="14">#14</td><td data-sort="PaddleOCR-v4">PaddleOCR-v4</td><td class="num" data-sort="0.071"><b>0.0710</b></td><td data-sort="Pipeline">Pipeline</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="15">#15</td><td data-sort="Qwen2-VL-72B">Qwen2-VL-72B</td><td class="num" data-sort="0.072"><b>0.0720</b></td><td data-sort="General VLM">General VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="16">#16</td><td data-sort="InternVL2-76B">InternVL2-76B</td><td class="num" data-sort="0.074"><b>0.0740</b></td><td data-sort="General VLM">General VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="17">#17</td><td data-sort="Gemini-1.5-Flash">Gemini-1.5-Flash</td><td class="num" data-sort="0.087"><b>0.0870</b></td><td data-sort="General VLM">General VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="18">#18</td><td data-sort="Tesseract-OCR">Tesseract-OCR</td><td class="num" data-sort="0.096"><b>0.0960</b></td><td data-sort="Pipeline">Pipeline</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="19">#19</td><td data-sort="InternVL2-26B">InternVL2-26B</td><td class="num" data-sort="0.118"><b>0.1180</b></td><td data-sort="General VLM">General VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="20">#20</td><td data-sort="GPT-4o-mini">GPT-4o-mini</td><td class="num" data-sort="0.134"><b>0.1340</b></td><td data-sort="General VLM">General VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="21">#21</td><td data-sort="Qwen2-VL-7B">Qwen2-VL-7B</td><td class="num" data-sort="0.146"><b>0.1460</b></td><td data-sort="General VLM">General VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="22">#22</td><td data-sort="InternVL2-8B">InternVL2-8B</td><td class="num" data-sort="0.189"><b>0.1890</b></td><td data-sort="General VLM">General VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="23">#23</td><td data-sort="DocOwl2">DocOwl2</td><td class="num" data-sort="0.251"><b>0.2510</b></td><td data-sort="Specialist VLM">Specialist VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="24">#24</td><td data-sort="EasyOCR">EasyOCR</td><td class="num" data-sort="0.26"><b>0.2600</b></td><td data-sort="Pipeline">Pipeline</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="25">#25</td><td data-sort="mPLUG-DocOwl1.5">mPLUG-DocOwl1.5</td><td class="num" data-sort="0.272"><b>0.2720</b></td><td data-sort="Specialist VLM">Specialist VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="26">#26</td><td data-sort="Fox">Fox</td><td class="num" data-sort="0.282"><b>0.2820</b></td><td data-sort="Specialist VLM">Specialist VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="27">#27</td><td data-sort="TextMonkey">TextMonkey</td><td class="num" data-sort="0.293"><b>0.2930</b></td><td data-sort="Specialist VLM">Specialist VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="28">#28</td><td data-sort="LLaVA-1.6-34B">LLaVA-1.6-34B</td><td class="num" data-sort="0.312"><b>0.3120</b></td><td data-sort="General VLM">General VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="29">#29</td><td data-sort="Vary-toy">Vary-toy</td><td class="num" data-sort="0.323"><b>0.3230</b></td><td data-sort="Specialist VLM">Specialist VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="30">#30</td><td data-sort="Marker-1.0">Marker-1.0</td><td class="num" data-sort="0.382"><b>0.3820</b></td><td data-sort="Pipeline">Pipeline</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+<tr><td class="num" data-sort="31">#31</td><td data-sort="Nougat-0.1.0">Nougat-0.1.0</td><td class="num" data-sort="0.401"><b>0.4010</b></td><td data-sort="Specialist VLM">Specialist VLM</td><td data-sort="1"><span class="tag tag-ext">external-attested</span></td></tr>
+</tbody></table>
+<p class="sub" style="margin:2px 0 12px">Lower edit-distance = better OCR transcription. The fine-tuned row (<code>Qwen3.5-2B-FT</code>) is disclosed FT.</p>
+<h3>SAVIOR-Bench word recall <span class="muted" style="text-transform:none;font-weight:400">(DC-000 parse — extraction facet)</span></h3>
+<p style="margin:8px 0 2px"><b>Dataset:</b> <code>savior-bench-v1</code> &nbsp;<span class="tag tag-attest">in-house-attested</span>&nbsp; <b>Metric:</b> <code>savior_word_recall</code> &nbsp; <b>n:</b> 509</p>
+<table data-sortable="1"><thead><tr><th class="sortable">Model <span class="arr">&#8597;</span></th><th class="sortable num">word_recall <span class="arr">&#8593;</span></th><th class="num">95% CI</th><th class="sortable num">n <span class="arr">&#8597;</span></th><th class="sortable num">word_precision <span class="arr">&#8597;</span></th><th class="sortable num">pairs_layout <span class="arr">&#8597;</span></th><th class="sortable">Status <span class="arr">&#8597;</span></th></tr></thead><tbody>
+<tr><td class="ip" data-sort="Qwen2.5-VL-7B-F">Qwen2.5-VL-7B-F <span class="ft" title="fine-tuned">FT</span></td><td class="num" data-sort="0.9294"><b>92.9%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.9157">0.9157</td><td class="num" data-sort="0.7066">0.7066</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Textract">Textract</td><td class="num" data-sort="0.9233"><b>92.3%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.8902">0.8902</td><td class="num" data-sort="0.5117">0.5117</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Azure-DI">Azure-DI</td><td class="num" data-sort="0.9202"><b>92.0%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.8978">0.8978</td><td class="num" data-sort="0.5025">0.5025</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td class="ip" data-sort="Qwen2.5-VL-3B-F">Qwen2.5-VL-3B-F <span class="ft" title="fine-tuned">FT</span></td><td class="num" data-sort="0.9167"><b>91.7%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.9101">0.9101</td><td class="num" data-sort="0.7068">0.7068</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Gemini-2.5-Flash">Gemini-2.5-Flash</td><td class="num" data-sort="0.9144"><b>91.4%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.8967">0.8967</td><td class="num" data-sort="0.6074">0.6074</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Qwen2.5-VL-7B-Instr.">Qwen2.5-VL-7B-Instr.</td><td class="num" data-sort="0.9091"><b>90.9%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.9145">0.9145</td><td class="num" data-sort="0.5629">0.5629</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Nanonets-OCR-s">Nanonets-OCR-s</td><td class="num" data-sort="0.9039"><b>90.4%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.5336">0.5336</td><td class="num" data-sort="0.4354">0.4354</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="dots.ocr">dots.ocr</td><td class="num" data-sort="0.8992"><b>89.9%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.929">0.929</td><td class="num" data-sort="0.554">0.554</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="GPT-4o">GPT-4o</td><td class="num" data-sort="0.8854"><b>88.5%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.9322">0.9322</td><td class="num" data-sort="0.5826">0.5826</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Mistral OCR">Mistral OCR</td><td class="num" data-sort="0.8611"><b>86.1%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.8986">0.8986</td><td class="num" data-sort="0.5382">0.5382</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Qwen2.5-VL-3B-Instr.">Qwen2.5-VL-3B-Instr.</td><td class="num" data-sort="0.8547"><b>85.5%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.912">0.912</td><td class="num" data-sort="0.5764">0.5764</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Qwen3.6-35B-A3B">Qwen3.6-35B-A3B</td><td class="num" data-sort="0.7843"><b>78.4%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.9213">0.9213</td><td class="num" data-sort="0.5492">0.5492</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="DeepSeek-OCR">DeepSeek-OCR</td><td class="num" data-sort="0.7706"><b>77.1%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.9008">0.9008</td><td class="num" data-sort="0.5034">0.5034</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="olmOCR-7B-0725-FP8">olmOCR-7B-0725-FP8</td><td class="num" data-sort="0.7463"><b>74.6%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.945">0.945</td><td class="num" data-sort="0.5864">0.5864</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="MinerU2.5-Pro-2604-1.2B">MinerU2.5-Pro-2604-1.2B</td><td class="num" data-sort="0.733852"><b>73.4%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.8006">0.8006</td><td class="num" data-sort="0.543725">0.543725</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="dots.mocr">dots.mocr</td><td class="num" data-sort="0.7227"><b>72.3%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.8563">0.8563</td><td class="num" data-sort="0.81905">0.81905</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="PaddleOCR-VL-1.5">PaddleOCR-VL-1.5</td><td class="num" data-sort="0.722"><b>72.2%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.712">0.712</td><td class="num" data-sort="0.8766">0.8766</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="GLM-OCR">GLM-OCR</td><td class="num" data-sort="0.653"><b>65.3%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.8691">0.8691</td><td class="num" data-sort="0.8687">0.8687</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="PaddleOCR-VL">PaddleOCR-VL</td><td class="num" data-sort="0.5955"><b>59.6%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.8194">0.8194</td><td class="num" data-sort="0.418">0.418</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Qianfan-OCR">Qianfan-OCR</td><td class="num" data-sort="0.524"><b>52.4%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.4563">0.4563</td><td class="num" data-sort="0.5321">0.5321</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="DeepSeek-OCR-2">DeepSeek-OCR-2</td><td class="num" data-sort="0.238"><b>23.8%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="509">509</td><td class="num" data-sort="0.1526">0.1526</td><td class="num" data-sort="0.6531">0.6531</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+</tbody></table>
+<h3>Parse-intent F1 <span class="muted" style="text-transform:none;font-weight:400">(DC-000 parse — extraction facet)</span></h3>
+<p style="margin:8px 0 2px"><b>Dataset:</b> <code>parse-intent-inhouse-v1</code> &nbsp;<span class="tag tag-attest">in-house-attested</span>&nbsp; <b>Metric:</b> <code>parse_intent_f1</code></p>
+<table data-sortable="1"><thead><tr><th class="sortable">Model <span class="arr">&#8597;</span></th><th class="sortable num">parse_intent_f1 <span class="arr">&#8593;</span></th><th class="num">95% CI</th><th class="sortable num">wer <span class="arr">&#8597;</span></th><th class="sortable">Status <span class="arr">&#8597;</span></th></tr></thead><tbody>
+<tr><td class="ip" data-sort="hyperapi-parse-intent">hyperapi-parse-intent <span class="ft" title="fine-tuned">FT</span></td><td class="num" data-sort="0.8328"><b>83.3%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="0.2589">0.2589</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="DocIntentOCR-3B">DocIntentOCR-3B</td><td class="num" data-sort="0.8102"><b>81.0%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="0.5622">0.5622</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="GPT-4o">GPT-4o</td><td class="num" data-sort="0.8052"><b>80.5%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="0.4232">0.4232</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="o3">o3</td><td class="num" data-sort="0.7686"><b>76.9%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="0.4869">0.4869</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="PaddleOCR-VL-1.5">PaddleOCR-VL-1.5</td><td class="num" data-sort="0.726"><b>72.6%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="2.9641">2.9641</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="GLM-OCR">GLM-OCR</td><td class="num" data-sort="0.715"><b>71.5%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="1.54">1.54</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="dots.mocr">dots.mocr</td><td class="num" data-sort="0.6963"><b>69.6%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="1.6317">1.6317</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Gemini 2.5 Flash">Gemini 2.5 Flash</td><td class="num" data-sort="0.6653"><b>66.5%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="1.3306">1.3306</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Qwen2.5-VL-3B-Inst">Qwen2.5-VL-3B-Inst</td><td class="num" data-sort="0.6563"><b>65.6%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="0.7404">0.7404</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Qwen2.5-VL-7B-Inst">Qwen2.5-VL-7B-Inst</td><td class="num" data-sort="0.6485"><b>64.8%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="0.8172">0.8172</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Gemini 2.5 Pro">Gemini 2.5 Pro</td><td class="num" data-sort="0.6351"><b>63.5%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="0.6009">0.6009</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="GPT-4.1">GPT-4.1</td><td class="num" data-sort="0.6261"><b>62.6%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="0.9058">0.9058</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Mistral-Large-3-675B">Mistral-Large-3-675B</td><td class="num" data-sort="0.6077"><b>60.8%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="0.984">0.984</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Claude Sonnet 4.6">Claude Sonnet 4.6</td><td class="num" data-sort="0.5974"><b>59.7%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="0.9308">0.9308</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Qwen3.6-35B-A3B">Qwen3.6-35B-A3B</td><td class="num" data-sort="0.5643"><b>56.4%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="2.546">2.546</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Qwen3-VL-32B-Instruct">Qwen3-VL-32B-Instruct</td><td class="num" data-sort="0.5414"><b>54.1%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="1.272">1.272</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Logics-Parsing-v2">Logics-Parsing-v2</td><td class="num" data-sort="0.5241"><b>52.4%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="6.198">6.198</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Llama-3.2-90B-Vision">Llama-3.2-90B-Vision</td><td class="num" data-sort="0.4982"><b>49.8%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="1.0986">1.0986</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="MinerU2.5-Pro-2604-1.2B">MinerU2.5-Pro-2604-1.2B</td><td class="num" data-sort="0.4705"><b>47.0%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="1.1708">1.1708</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="FireRed-OCR">FireRed-OCR</td><td class="num" data-sort="0.4408"><b>44.1%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="4.5847">4.5847</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Youtu-Parsing">Youtu-Parsing</td><td class="num" data-sort="0.4277"><b>42.8%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="5.363">5.363</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="Qianfan-OCR">Qianfan-OCR</td><td class="num" data-sort="0.364"><b>36.4%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="6.656">6.656</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+<tr><td data-sort="DeepSeek-OCR-2">DeepSeek-OCR-2</td><td class="num" data-sort="0.343"><b>34.3%</b></td><td class="num"><span class="ci">&mdash;</span></td><td class="num" data-sort="12.3541">12.3541</td><td data-sort="1"><span class="tag tag-attest">attested, not re-derived</span></td></tr>
+</tbody></table>
+<p class="sub" style="margin:2px 0 12px">In-house-attested cells: user-attested 2026-05-18 from <code>benchmark.xlsx</code>, provenance recorded; NOT factory-harness-reproduced; <code>ci95 = null</code> (no per-doc score vector to bootstrap).</p>
+<h3>Synthetic-fixture seed cells <span class="muted" style="text-transform:none;font-weight:400">(DC-001 / DE-002 / DE-003 / DV-001)</span></h3>
+<p class="sub" style="margin:6px 0 8px">The 12 <code>finbench-synth-fixture-v1</code>
+cells are factory-harness-reproduced byte-for-byte (pinned seed <code>20260516</code>,
+verified by <code>repro_check.py</code>). They exercise the harness end-to-end and are
+<b>not valid for cross-model ranking</b> — the contamination audit explicitly flags them
+so. See the <a href="index.html">SEED Leaderboard</a> for the full per-cell tables.</p>
+<h2>4 &middot; Model comparison — DS-001 doc_f1 (best config per family)</h2>
+<p class="sub">Headline metric <code>doc_f1</code> on <code>financepss-205-v1</code>
+(n=205 streams / 682 GT segments, external-attested). Best RICoT config per model family.
+Inline SVG, no chart library — values copied verbatim from result cells.</p>
+<div class="chart"><svg width="670" height="396" viewBox="0 0 670 396" font-family="-apple-system,Segoe UI,Roboto,sans-serif" font-size="11">
+<line x1="200.0" y1="10" x2="200.0" y2="370" stroke="#e3e6ea"/>
+<text x="200.0" y="384" fill="#999" text-anchor="middle">0%</text>
+<line x1="305.0" y1="10" x2="305.0" y2="370" stroke="#e3e6ea"/>
+<text x="305.0" y="384" fill="#999" text-anchor="middle">25%</text>
+<line x1="410.0" y1="10" x2="410.0" y2="370" stroke="#e3e6ea"/>
+<text x="410.0" y="384" fill="#999" text-anchor="middle">50%</text>
+<line x1="515.0" y1="10" x2="515.0" y2="370" stroke="#e3e6ea"/>
+<text x="515.0" y="384" fill="#999" text-anchor="middle">75%</text>
+<line x1="620.0" y1="10" x2="620.0" y2="370" stroke="#e3e6ea"/>
+<text x="620.0" y="384" fill="#999" text-anchor="middle">100%</text>
+<text x="192" y="24.5" fill="#334" text-anchor="end">claude-sonnet-4-6</text>
+<rect x="200" y="13" width="361.6" height="15" rx="2" fill="#1b9aaa"><title>claude-sonnet-4-6: doc_f1 0.8610 (n=205, external-attested)</title></rect>
+<text x="566.6" y="24.5" fill="#334">86.1%</text>
+<text x="192" y="46.5" fill="#334" text-anchor="end">GLM 4.7</text>
+<rect x="200" y="35" width="359.4" height="15" rx="2" fill="#1b9aaa"><title>GLM 4.7: doc_f1 0.8558 (n=205, external-attested)</title></rect>
+<text x="564.4" y="46.5" fill="#334">85.6%</text>
+<text x="192" y="68.5" fill="#334" text-anchor="end">haiku-4-5</text>
+<rect x="200" y="57" width="346.5" height="15" rx="2" fill="#1b9aaa"><title>haiku-4-5: doc_f1 0.8250 (n=205, external-attested)</title></rect>
+<text x="551.5" y="68.5" fill="#334">82.5%</text>
+<text x="192" y="90.5" fill="#334" text-anchor="end">qwen3-235b-a22b2507-v1</text>
+<rect x="200" y="79" width="344.8" height="15" rx="2" fill="#1b9aaa"><title>qwen3-235b-a22b2507-v1: doc_f1 0.8210 (n=205, external-attested)</title></rect>
+<text x="549.8" y="90.5" fill="#334">82.1%</text>
+<text x="192" y="112.5" fill="#334" text-anchor="end">deepseek-v3-2</text>
+<rect x="200" y="101" width="342.4" height="15" rx="2" fill="#1b9aaa"><title>deepseek-v3-2: doc_f1 0.8153 (n=205, external-attested)</title></rect>
+<text x="547.4" y="112.5" fill="#334">81.5%</text>
+<text x="192" y="134.5" fill="#334" text-anchor="end">GPT 4.1</text>
+<rect x="200" y="123" width="340.2" height="15" rx="2" fill="#1b9aaa"><title>GPT 4.1: doc_f1 0.8101 (n=205, external-attested)</title></rect>
+<text x="545.2" y="134.5" fill="#334">81.0%</text>
+<text x="192" y="156.5" fill="#334" text-anchor="end">kimi-k2-5</text>
+<rect x="200" y="145" width="335.9" height="15" rx="2" fill="#1b9aaa"><title>kimi-k2-5: doc_f1 0.7997 (n=205, external-attested)</title></rect>
+<text x="540.9" y="156.5" fill="#334">80.0%</text>
+<text x="192" y="178.5" fill="#334" text-anchor="end">Llama-4 Maverick</text>
+<rect x="200" y="167" width="330.4" height="15" rx="2" fill="#1b9aaa"><title>Llama-4 Maverick: doc_f1 0.7867 (n=205, external-attested)</title></rect>
+<text x="535.4" y="178.5" fill="#334">78.7%</text>
+<text x="192" y="200.5" fill="#334" text-anchor="end">qwen3-32b</text>
+<rect x="200" y="189" width="325.0" height="15" rx="2" fill="#1b9aaa"><title>qwen3-32b: doc_f1 0.7738 (n=205, external-attested)</title></rect>
+<text x="530.0" y="200.5" fill="#334">77.4%</text>
+<text x="192" y="222.5" fill="#334" text-anchor="end">qwen-3.5-2b [FT]</text>
+<rect x="200" y="211" width="324.2" height="15" rx="2" fill="#9a6400"><title>qwen-3.5-2b: doc_f1 0.7719 (n=205, external-attested)</title></rect>
+<text x="529.2" y="222.5" fill="#334">77.2%</text>
+<text x="192" y="244.5" fill="#334" text-anchor="end">qwen3-coder-480b</text>
+<rect x="200" y="233" width="319.7" height="15" rx="2" fill="#1b9aaa"><title>qwen3-coder-480b: doc_f1 0.7612 (n=205, external-attested)</title></rect>
+<text x="524.7" y="244.5" fill="#334">76.1%</text>
+<text x="192" y="266.5" fill="#334" text-anchor="end">meta-llama3.3-70b</text>
+<rect x="200" y="255" width="318.4" height="15" rx="2" fill="#1b9aaa"><title>meta-llama3.3-70b: doc_f1 0.7582 (n=205, external-attested)</title></rect>
+<text x="523.4" y="266.5" fill="#334">75.8%</text>
+<text x="192" y="288.5" fill="#334" text-anchor="end">kimi-k2-thinking</text>
+<rect x="200" y="277" width="316.9" height="15" rx="2" fill="#1b9aaa"><title>kimi-k2-thinking: doc_f1 0.7546 (n=205, external-attested)</title></rect>
+<text x="521.9" y="288.5" fill="#334">75.5%</text>
+<text x="192" y="310.5" fill="#334" text-anchor="end">minimax-m2-5</text>
+<rect x="200" y="299" width="306.9" height="15" rx="2" fill="#1b9aaa"><title>minimax-m2-5: doc_f1 0.7306 (n=205, external-attested)</title></rect>
+<text x="511.9" y="310.5" fill="#334">73.1%</text>
+<text x="192" y="332.5" fill="#334" text-anchor="end">gemma-3-27b-it</text>
+<rect x="200" y="321" width="299.3" height="15" rx="2" fill="#1b9aaa"><title>gemma-3-27b-it: doc_f1 0.7127 (n=205, external-attested)</title></rect>
+<text x="504.3" y="332.5" fill="#334">71.3%</text>
+<text x="192" y="354.5" fill="#334" text-anchor="end">gemma-3-12b-it</text>
+<rect x="200" y="343" width="187.9" height="15" rx="2" fill="#1b9aaa"><title>gemma-3-12b-it: doc_f1 0.4473 (n=205, external-attested)</title></rect>
+<text x="392.9" y="354.5" fill="#334">44.7%</text>
+<line x1="200" y1="10" x2="200" y2="370" stroke="#999"/>
+</svg></div>
+<div class="legend"><span><span class="sw" style="background:#1b9aaa"></span>Zero-shot / prompted RICoT</span><span><span class="sw" style="background:#9a6400"></span>Fine-tuned config</span></div>
+<p class="sub" style="margin-top:8px">No 95% CI is drawn: the FinancePSS-205 report carries point estimates only, with no per-stream score vector to bootstrap an interval from. This is the honest state, not an omission.</p>
+<h2>5 &middot; Comparative studies</h2>
+<p class="sub">Side-studies under <code>comparative/</code> — consistency and
+head-to-head investigations that are not part of the core pinned leaderboard. Each links to
+its own self-contained report. Mini-pilot numbers are
+<span class="tag tag-prelim">preliminary / partial-n</span>.</p>
+<div class="card"><table><thead><tr><th>Study</th><th>What it measures</th><th>Status / n</th><th>Report</th></tr></thead><tbody>
+<tr>
+<td><b>Invoice-extraction consistency</b></td>
+<td>Consistency of candidate extractors vs the HyperAPI deployed extractor on the
+STP invoice set.</td>
+<td><span class="tag tag-prelim">consistency study</span> — agreement vs the deployed
+reference, not an accuracy ranking.</td>
+<td><a href="/benchmarks/leaderboards/invoice-extraction-leaderboard.html">invoice-extraction-leaderboard.html</a></td></tr>
+<tr>
+<td><b>claude-compare</b> (head-to-head)</td>
+<td>Claude Opus vs Haiku on invoice extraction (granular field micro-F1),
+via the Claude Code agent harness.</td>
+<td><span class="tag tag-prelim">preliminary</span> — n=16 common-doc pilot (opus also
+n=20); sonnet excluded (credits wall); accuracy only, cost/latency not measured.</td>
+<td><a href="/benchmarks/leaderboards/claude-compare-leaderboard.html">claude-compare-leaderboard.html</a></td></tr>
+<tr>
+<td><b>Azure DI study</b> — n=95 mini-pilot</td>
+<td>Hyperbots IDP vs Microsoft Azure Document Intelligence (prebuilt-invoice
+2024-11-30) on granular invoice extraction (overall field-level micro-F1).</td>
+<td><span class="tag tag-prelim">mini-pilot measured</span> — Azure scored
+95/95; Claude (opus) n=16; HyperAPI <code>extract</code> pilot finalised at
+n=93 (2 of 95 terminal failures). The full study design is
+n=5,000/dimension — NOT yet run.</td>
+<td><a href="/benchmarks/studies/azure-di-invoice-study.html">azure-di-invoice-study.html</a></td></tr>
+<tr>
+<td><b>results.zip GT benchmark</b></td>
+<td>Claude Opus vs HyperAPI scored against the real <code>results.zip</code> ground truth
+(canonical-field micro-F1).</td>
+<td><span class="tag tag-prelim">partial-n</span> — Opus batch-1/2 full (100 each);
+HyperAPI batch-1 partial (33/100) — not head-to-head comparable.</td>
+<td><a href="/benchmarks/leaderboards/bench-results-gt-leaderboard.html">bench-results-gt-leaderboard.html</a></td></tr>
+<tr>
+<td><b>openai-models / gemini-models</b></td>
+<td>Per-vendor invoice-extraction comparisons (OpenAI and Gemini families).</td>
+<td><span class="tag tag-prelim">preliminary</span> — vendor sub-leaderboards under
+<code>comparative/</code>.</td>
+<td><a href="/benchmarks/leaderboards/openai-compare-leaderboard.html">openai</a> ·
+<a href="/benchmarks/leaderboards/gemini-compare-leaderboard.html">gemini</a></td></tr>
+<tr>
+<td><b>Pipelines</b> — end-to-end pipeline study</td>
+<td>117-row catalogue of OCR &rarr; structure &rarr; extract &rarr; validate
+pipelines; 21 ran end-to-end on bench-100, scored vs HyperAPI prod ref
+(consistency study). Defines a pipeline grammar
+and a runnable catalogue (<code>comparative/pipelines/catalogue.yaml</code>).</td>
+<td><span class="tag tag-prelim">consistency study</span> — 21 of 117 ran
+(remaining 96 are <code>blocked-on-&lt;dep&gt;</code> with honest 0 scored docs,
+no fabricated numbers).</td>
+<td>pipelines/index.html</td></tr>
+</tbody></table>
+<p class="sub" style="margin-top:10px"><b>Azure DI mini-pilot — measured numbers
+(mini-pilot n).</b> Headline metric is <b>overall field-level micro-F1</b> —
+true/false positives and false negatives pooled across every scored field
+family in each system's scorer-output JSON, then F1 computed on the pooled
+counts (stored as <code>overall_micro_f1</code> in each JSON). On the n=95 pilot
+(<code>comparative/azure-di/minipilot-scores/</code>): <b>Azure DI overall
+micro-F1 = 36.6%</b> (n&asymp;95, 95/95 scored); <b>Claude (opus) overall
+micro-F1 = 76.1%</b> (n&asymp;16, common-doc split); <b>HyperAPI
+<code>extract</code> overall micro-F1 = 35.7%</b> (n&asymp;93; 2 of 95 docs
+failed terminally and are recorded as missing in
+<code>hyperapi_n95.json</code>). Secondary metric (not the headline): Azure DI
+line-item-count exact-match = 45.3%. Per-field F1s carry bootstrap 95% CIs
+(2000 resamples, seed 20260522). These are <b>mini-pilot</b> numbers — the
+full comparative design is n=5,000/dimension and is not yet run; treat the
+mini-pilot as direction-of-travel, not a verdict.</p>
+</div>
+<h2>5.5 &middot; Field-level cross-model matrix &mdash; 4-model B1&ndash;B5 head-to-head</h2>
+<p class="sub">Per-field F1 across the 4-model B1&ndash;B5 cross-model run (Opus / Haiku / Gemini Flash / Gemini Pro)
+against the HyperAPI prod reference (<code>results.zip</code>). Companion to the
+<a href="/benchmarks/leaderboards/claude-compare-leaderboard.html">claude-compare leaderboard</a>; reads as &quot;flash is best at <code>line_item.complete_description</code>, opus is best at <code>summary.currency</code>, pro is best at most summary numerics&quot;
+rather than only the single overall F1 per model.
+Row winner highlighted (sole winner only); ties marked &quot;tie&quot;.
+<span class="honest">Zero-coverage rows</span> (tp+fp+fn=0) shown as &mdash; rather than 0% or NaN.
+This is a <b>consistency study</b>, not accuracy. Source: <code>/tmp/bench-batch5/scored/all_models_per_field.json</code> (pooled
+across 5 batches; n_scored per model: opus 482, haiku 435, flash 433, pro 433).</p>
+<div class="card">
+<table class="crossmatrix">
+<thead><tr><th>Field</th><th>opus F1</th><th>haiku F1</th><th>flash F1</th><th>pro F1</th><th>Best</th><th>Worst</th></tr></thead>
+<tbody>
+<tr><td>line_item.complete_description</td><td>0.172</td><td>0.508</td><td class="win"><b>0.578</b></td><td>0.543</td><td class="best">flash</td><td class="worst">opus</td></tr>
+<tr><td>line_item.quantity</td><td class="win"><b>0.882</b></td><td>0.824</td><td>0.878</td><td>0.869</td><td class="best">opus</td><td class="worst">haiku</td></tr>
+<tr><td>line_item.subtotal_amount</td><td>0.656</td><td>0.740</td><td>0.798</td><td class="win"><b>0.849</b></td><td class="best">pro</td><td class="worst">opus</td></tr>
+<tr><td>line_item.total_amount</td><td>0.827</td><td>0.804</td><td class="win"><b>0.873</b></td><td>0.857</td><td class="best">flash</td><td class="worst">haiku</td></tr>
+<tr><td>line_item.total_tax_amount</td><td>0.742</td><td>0.837</td><td>0.855</td><td class="win"><b>0.874</b></td><td class="best">pro</td><td class="worst">opus</td></tr>
+<tr><td>line_item.unit_price</td><td class="win"><b>0.852</b></td><td>0.780</td><td>0.841</td><td>0.808</td><td class="best">opus</td><td class="worst">haiku</td></tr>
+<tr><td>summary.currency</td><td class="win"><b>0.633</b></td><td>0.466</td><td>0.401</td><td>0.369</td><td class="best">opus</td><td class="worst">pro</td></tr>
+<tr><td>summary.document_type</td><td>0.000</td><td>0.000</td><td>0.000</td><td>0.000</td><td class="best">tie</td><td class="worst">tie</td></tr>
+<tr><td>summary.extra_charges</td><td class="win"><b>0.485</b></td><td>0.413</td><td>0.051</td><td>0.347</td><td class="best">opus</td><td class="worst">flash</td></tr>
+<tr><td>summary.subtotal_amount</td><td>0.885</td><td>0.909</td><td>0.911</td><td class="win"><b>0.921</b></td><td class="best">pro</td><td class="worst">opus</td></tr>
+<tr><td>summary.taxes</td><td>0.000</td><td>0.000</td><td>0.000</td><td>0.000</td><td class="best">tie</td><td class="worst">tie</td></tr>
+<tr><td>summary.total_amount</td><td>0.955</td><td>0.949</td><td>0.950</td><td class="win"><b>0.960</b></td><td class="best">pro</td><td class="worst">haiku</td></tr>
+<tr><td>summary.total_amount_due</td><td>0.970</td><td>0.968</td><td class="win"><b>0.977</b></td><td>0.967</td><td class="best">flash</td><td class="worst">pro</td></tr>
+<tr><td>summary.total_amount_in_words</td><td class="win"><b>0.012</b></td><td>0.009</td><td>0.009</td><td>0.009</td><td class="best">opus</td><td class="worst">tie</td></tr>
+<tr><td>summary.total_discount_amount</td><td>0.000</td><td>0.000</td><td>0.000</td><td>0.000</td><td class="best">tie</td><td class="worst">tie</td></tr>
+<tr><td>summary.total_extra_charge</td><td>0.891</td><td>0.925</td><td>0.930</td><td class="win"><b>0.962</b></td><td class="best">pro</td><td class="worst">opus</td></tr>
+<tr><td>summary.total_tax_amount</td><td>0.938</td><td>0.961</td><td>0.974</td><td class="win"><b>0.981</b></td><td class="best">pro</td><td class="worst">opus</td></tr>
+</tbody>
+</table>
+<p class="sub" style="margin-top:8px;font-size:11.5px">
+<b>Sole-winner tally across 17 measured fields:</b>
+gemini-pro 6 &middot; claude-opus 5 &middot; gemini-flash 3 &middot; claude-haiku 0 &middot;
+3 rows tied at F1=0 (<code>summary.document_type</code>, <code>summary.taxes</code>, <code>summary.total_discount_amount</code> &mdash; not emitted by any model).
+The pooled-F1 ordering (pro 0.7412 &gt; flash 0.7395 &gt; haiku 0.7093 &gt; opus 0.6646) hides this:
+opus actually leads on 5 individual fields, but is dragged down by <code>line_item.complete_description</code> (F1 0.172) and a class of summary fields it emits at high precision but very low recall.</p>
+</div>
+
+<h2>6 &middot; Reproducibility &amp; audit</h2>
+<div class="warn">
+<b>W6 attestation probe — 0 / 23 cells factory-re-derived.</b><br>
+The W6 workstream (run 2026-05-20, harness @ <code>3382abb</code>) attempted to re-derive
+every cell of the 23-row DC-000 <code>parse-intent-inhouse-v1</code> table under the pinned
+offline harness. Outcome from <code>results/_w6_factory_rerun.json</code>:
+<ul style="margin:6px 0">
+<li><b>cells attempted: 23 · green repro checks: 0 · CIs added: 0 · attested values
+retracted: 0</b></li>
+<li>Every rerun returned code <code>1</code> — red reason
+<code>no-adapter-for-vendor-model-in-SEED-harness</code> for all 23.</li>
+</ul>
+<b>Why (structural):</b> (1) the harness adapter REGISTRY registers only SEED adapters
+(<code>rule-baseline-v1</code>, <code>keyword-extractor-v1</code>,
+<code>hyperbots-ip-seed-v1</code>) — none of the 23 vendor models has an adapter;
+(2) <code>run.py</code> LOADERS does not register <code>parse-intent-inhouse-v1</code> —
+the in-house corpus is not in-repo; (3) the attested <code>benchmark.xlsx</code> carries
+only aggregate F1/WER per model, no per-document scores — nothing to bootstrap a CI from.
+The attested numbers are <b>preserved unchanged</b> (not contradicted, only un-re-derivable
+here), <code>reproduced_by_factory</code> stays <code>false</code>, <code>ci95</code> stays
+<code>null</code>. No interval was fabricated.
+</div>
+<div class="card">
+<h3>Repro check (synthetic-fixture cells)</h3>
+<p style="margin:4px 0">From <code>results/_repro_check.json</code>: the deterministic harness
+re-ran a sample of fixture cells and confirmed <code>all_match: true</code> (sampled 2 of the
+12 fixture cells; metric and 95% CI matched exactly, same <code>git_commit</code>
+<code>97ee05a</code>). Fixture cells are reproducible byte-for-byte from pinned seed
+<code>20260516</code>.</p></div>
+<div class="card">
+<h3>Contamination audit</h3>
+<p style="margin:4px 0">From <code>contamination/audit-records.json</code> (3 records, one per
+fixture-cell model): <code>finbench-synth-fixture-v1</code> is
+<span class="tag tag-repro">structurally-none</span> leakage risk — generated
+deterministically at run time from pinned seed <code>20260516</code>, sha256 frozen, never
+published before the run; no model could have trained on it.</p>
+<p class="sub" style="margin-top:6px"><b>The attested / external datasets
+(<code>savior-bench-v1</code>, <code>parse-intent-inhouse-v1</code>,
+<code>ocr-edit-distance-v1</code>, <code>financepss-205-v1</code>) have no contamination
+audit record</b> — contamination status for those is
+<span class="honest">not assessed in this run</span>.</p></div>
+<h2>7 &middot; Honest gaps — what is NOT measured</h2>
+<div class="card"><table><thead><tr><th>Axis</th><th>Status</th><th>Source / reason</th></tr></thead><tbody>
+<tr><td>SAVIOR-Bench parse — layout-awareness facet</td><td><span class="honest">Not yet measured</span></td><td><code>tasks.json</code> DC-000: facet defined (metrics named) but no layout-awareness ground-truth dataset is in scope. No numbers fabricated.</td></tr>
+<tr><td>SAVIOR-Bench parse — bounding-box facet</td><td><span class="honest">Not yet measured</span></td><td><code>tasks.json</code> DC-000: facet defined but no bounding-box / visual-grounding ground-truth dataset is in scope. No numbers fabricated.</td></tr>
+<tr><td>95% CIs on DS-001 / OCR / SAVIOR / parse-intent cells</td><td><span class="honest">Not available</span></td><td>External reports / in-house source carry point estimates only — no per-item score vector to bootstrap from. <code>ci95 = null</code> — not fabricated.</td></tr>
+<tr><td>DS-001 factory-harness reproduction</td><td><span class="honest">Not reproduced</span></td><td>The 48 FinancePSS-205 cells are external-attested. Factory reproduction needs the underlying corpus — EXECUTION PENDING REAL DATA, not a publication gate.</td></tr>
+<tr><td>OCR edit-distance factory reproduction</td><td><span class="honest">Not reproduced</span></td><td>The 31 cells are external-attested from a leaderboard table. Reproduction needs the underlying OCR corpus — EXECUTION PENDING REAL DATA.</td></tr>
+<tr><td>Azure DI comparative study — full design</td><td><span class="honest">Mini-pilot only</span></td><td>Only the n=95 mini-pilot exists (HyperAPI extract finalised at n=93; 2 terminal failures). The full study is n=5,000/dimension and is not yet run.</td></tr>
+<tr><td>Cost per call / latency</td><td><span class="honest">Not measured in this run</span></td><td>SEED run is a deterministic fixture exercise; comparative agent-harness studies measure accuracy only.</td></tr>
+<tr><td>Tabular task TR-000 (table structure recognition)</td><td><span class="honest">Registered, not yet run</span></td><td><code>tasks.json</code>: TR-000 is pinned (prompt + decoding frozen) but has no result cells — metrics (teds/grits/cell_f1) and hosting pending real compute.</td></tr>
+<tr><td>External public datasets (SROIE-2019, CORD-v2)</td><td><span class="honest">Registered, not run</span></td><td><code>registry.json</code>: status <code>registered-requires-manual-download</code>.</td></tr>
+<tr><td>Internal Hyperbots dataset adapter</td><td><span class="honest">STUB — inactive</span></td><td><code>internal_adapter.py</code> registers nothing and raises <code>NotImplementedError</code> until creds are supplied. No internal data fabricated.</td></tr>
+<tr><td>Synthetic-fixture cells for cross-model ranking</td><td><span class="honest">Not valid for ranking</span></td><td>The 12 <code>finbench-synth-fixture-v1</code> cells exercise the harness only; the contamination audit flags them "not for cross-model ranking claims".</td></tr>
+</tbody></table></div>
+<footer>
+Data sources: <code>results/*.json</code> (135 cells), <code>results/_w6_factory_rerun.json</code>, <code>results/_repro_check.json</code>, <code>harness/tasks.json</code>, <code>contamination/audit-records.json</code>, <code>datasets/registry/registry.json</code>, <code>comparative/azure-di/minipilot-scores/*.json</code>, <code>comparative/results-gt-bench/</code>. &nbsp; Pinned harness git commits: <code>97ee05a</code> (fixture cells), <code>3382abb</code> (W6 probe). Python 3.14, stdlib-only, seed <code>20260516</code>. &nbsp; This dashboard is a pure function of the committed files above — it adds no numbers of its own. &nbsp; Serves at <code>http://localhost:8787/benchmark-dashboard.html</code>.
+</footer>
+</div>
+<script>
+function makeSortable(tbl){
+  var ths = tbl.querySelectorAll('th.sortable');
+  ths.forEach(function(th){
+    th.addEventListener('click', function(){
+      var tbody = tbl.querySelector('tbody');
+      var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
+      var dir = th.getAttribute('data-dir') === 'asc' ? 'desc' : 'asc';
+      ths.forEach(function(o){ o.setAttribute('data-dir',''); var a=o.querySelector('.arr'); if(a)a.textContent='↕'; });
+      th.setAttribute('data-dir', dir);
+      var a = th.querySelector('.arr'); if(a) a.textContent = dir==='asc' ? '↑' : '↓';
+      var ci = Array.prototype.indexOf.call(th.parentNode.children, th);
+      rows.sort(function(r1,r2){
+        var v1 = r1.children[ci].getAttribute('data-sort');
+        var v2 = r2.children[ci].getAttribute('data-sort');
+        var n1 = parseFloat(v1), n2 = parseFloat(v2);
+        var both = !isNaN(n1) && !isNaN(n2);
+        var cmp = both ? (n1-n2) : String(v1).localeCompare(String(v2));
+        return dir==='asc' ? cmp : -cmp;
+      });
+      rows.forEach(function(r){ tbody.appendChild(r); });
+    });
+  });
+}
+document.querySelectorAll('table[data-sortable]').forEach(makeSortable);
+</script>
+</body>
+</html>
