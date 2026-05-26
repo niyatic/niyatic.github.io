@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Content plan — Hyperbots content hub</title>
+<style>
+:root {
+  --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26;
+  --t1:#1a7f37; --t2:#b25e09; --t3:#6b7280;
+  --green:#039855; --amber:#DC6803; --red:#B42318;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  font: 15px/1.6 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background:var(--grey-2); color:var(--grey-12);
+  max-width: 1080px; margin: 0 auto; padding: 28px 24px 56px;
+  -webkit-font-smoothing:antialiased;
+}
+.back { color:var(--grey-10); font-size:13px; text-decoration:none; display:inline-block; margin-bottom:14px; }
+.back:hover { color:var(--brand-7); text-decoration:underline; }
+.hero {
+  background:#fff; border:1px solid var(--grey-4); border-radius:12px;
+  border-left:5px solid var(--brand-7); padding:20px 24px; margin-bottom:24px;
+  box-shadow:0 1px 3px rgba(33,31,38,.06);
+  display:flex; align-items:center; gap:16px;
+}
+.hero img { width:38px; height:39px; }
+.hero h1 { font-size:22px; font-weight:600; color:var(--grey-12); margin:0; }
+.hero .sub { color:var(--grey-10); font-size:13.5px; margin-top:4px; }
+.hero .tag { font-size:11px; padding:3px 10px; background:var(--brand-2); color:var(--brand-9); border-radius:11px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; margin-left:auto; }
+h2 { font-size:17px; color:var(--brand-9); font-weight:600; margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--brand-4); }
+p.lead { color:var(--grey-11); font-size:14px; line-height:1.65; margin:0 0 14px; }
+.cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:12px; margin:12px 0; }
+.card {
+  background:#fff; border:1px solid var(--grey-4); border-radius:10px;
+  padding:16px 18px; display:block; text-decoration:none; color:inherit;
+  transition:box-shadow 0.15s, transform 0.15s;
+  box-shadow:0 1px 2px rgba(33,31,38,.04);
+}
+.card:hover { box-shadow:0 4px 12px rgba(33,31,38,.10); transform:translateY(-1px); }
+.card .icon { font-size:22px; margin-bottom:6px; }
+.card .title { font-weight:600; font-size:14.5px; color:var(--brand-7); margin:0 0 4px; }
+.card .desc { color:var(--grey-10); font-size:12.5px; line-height:1.5; }
+.card .meta { color:var(--grey-11); font-size:11.5px; margin-top:6px; font-style:italic; }
+.kpis { display:flex; gap:10px; margin:14px 0 22px; flex-wrap:wrap; }
+.kpi { background:#fff; border:1px solid var(--grey-4); border-radius:8px; padding:10px 16px; min-width:130px; flex:1; box-shadow:0 1px 2px rgba(33,31,38,.04); }
+.kpi .n { font-size:22px; font-weight:700; color:var(--brand-9); }
+.kpi .l { color:var(--grey-10); font-size:11px; text-transform:uppercase; letter-spacing:0.04em; margin-top:2px; }
+.note { background:var(--brand-2); border-left:3px solid var(--brand-7); padding:12px 16px; border-radius:6px; margin:14px 0; font-size:13px; color:var(--grey-12); }
+.status-pill { display:inline-block; font-size:10.5px; font-weight:700; letter-spacing:0.04em; padding:2px 7px; border-radius:4px; }
+.status-pill.green { background:#e6f4ea; color:var(--t1); }
+.status-pill.amber { background:#fdf0e0; color:var(--t2); }
+.status-pill.red { background:#fde7e7; color:var(--red); }
+.footer { margin-top:48px; padding-top:18px; border-top:1px solid var(--grey-4); color:var(--grey-10); font-size:12px; }
+.footer a { color:var(--brand-7); text-decoration:none; }
+.footer a:hover { text-decoration:underline; }
+code { font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:12px; background:var(--brand-2); padding:1px 5px; border-radius:3px; }
+</style>
+</head>
+<body>
+<a class="back" href="/marketing/">← back to marketing</a>
+
+<header class="hero">
+  <img src="/assets/hyperbots-logo.svg" alt="Hyperbots"/>
+  <div>
+    <h1>Content plan &amp; calendar</h1>
+    <div class="sub">Strategy → editorial calendar → this-week queue. All in one place.</div>
+  </div>
+</header>
+
+<div class="cards">
+  <a class="card" href="/marketing/plan/content-plan.html">
+  <div class="icon">📐</div>
+  <div class="title">Content plan &amp;amp; strategy</div>
+  <div class="desc">The narrative funnel: strategy → editorial calendar → viral titles → drafts. Plus the this-week callout.</div>
+  
+</a>
+  <a class="card" href="/marketing/plan/blog-plan.html">
+  <div class="icon">📋</div>
+  <div class="title">Editorial calendar (blog plan)</div>
+  <div class="desc">P-1..P-5 pointer outlines with verified-data flags, viral title catalog inline, and the 13-item this-week push with readiness audit.</div>
+  
+</a>
+  <a class="card" href="/marketing/plan/blog-plan.html#this-week">
+  <div class="icon">📅</div>
+  <div class="title">This week · target 2026-05-31</div>
+  <div class="desc">13 items with per-item RED/YELLOW/GREEN readiness audit. Honest ship: ~2 items (4, 8) + 1 conditional (1).</div>
+  
+</a>
+</div>
+</body>
+</html>

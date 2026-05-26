@@ -1,0 +1,222 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TABULAR-API-HANDSHAKE — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<a class="back" href="/benchmarks/studies/savior-bench-report.html">← back</a>
+
+<h1>TABULAR REASONING — API Handshake Spec (apis.hyperbots.com)</h1>
+
+<p>_Owner: cto-org <code>finance-doc-ml-engineer</code> (= the ML engineer for the API handshake, per program mandate). <strong>Design only.</strong> This spec is NOT implemented against the live API and was NOT called from this environment. It is deliberately consistent with the existing hyperapi-sdk wire contract (<code>X-API-Key</code>, <code>X-Request-ID</code>, <code>X-Async</code>, presigned POST + S3 PUT, <code>POST /v1/&lt;op&gt;</code> with <code>document_key</code>, <code>GET /v1/jobs/{id}</code> poll, typed-error taxonomy) so a future <code>tabular</code> op drops into the same SDK with no new transport. Product accuracy claims are <strong>per apis.hyperbots.com only</strong> and appear nowhere here._</p>
+
+<h2>1. Operation</h2>
+
+<p>New op <code>POST /v1/tabular</code> — table structure recognition (TSR) on an already-uploaded document, returning the recognized table(s) as HTML + a normalized grid. Same submit+poll envelope as <code>/v1/extract</code> and <code>/v1/split</code> (reuses the SDK's <code>_submit_and_wait</code> machinery; no new client code beyond a thin <code>tabular(document_key, ...)</code> method and a typed result/error).</p>
+
+<h2>2. Auth (redacted)</h2>
+
+<ul>
+<li>Header: <code>X-API-Key: hk_&lt;redacted&gt;</code> (key class <code>hk_</code>, never logged,</li>
+</ul>
+<p>  never committed; SDK resolves from arg or <code>HYPERAPI_KEY</code> env).</p>
+<ul>
+<li>Every request carries a client-generated <code>X-Request-ID</code> (UUIDv4),</li>
+</ul>
+<p>  echoed in responses and errors for traceability.</p>
+<ul>
+<li>TLS only; key scoping/quotas per the existing apis.hyperbots.com</li>
+</ul>
+<p>  account model (unchanged by this op).</p>
+
+<h2>3. Upload modes (unchanged from SDK contract)</h2>
+
+<ol>
+<li><strong>Presigned flow (canonical):</strong> <code>POST /v1/documents/upload</code> →</li>
+</ol>
+<p>   <code>{ upload_url, expires_in, document_key, ... }</code>; client <code>PUT</code>s bytes    to <code>upload_url</code> (S3); then references the returned <code>document_key</code>.    Supports large multi-page PDFs/scans (the enterprise-table case).</p>
+<ol>
+<li><strong>Inline (small images):</strong> <code>document_key</code> may instead be an inline</li>
+</ol>
+<p>   base64 payload field for single-page table crops under the size cap    (cap = existing platform inline limit; reject over-cap with    <code>payload_too_large</code>, do not silently truncate).</p>
+
+<p>Accepted media: <code>application/pdf</code>, <code>image/png</code>, <code>image/jpeg</code>, <code>image/tiff</code> (multi-frame TIFF = multi-page). Page selection optional (<code>pages: [int]</code>, 1-indexed) to scope TSR to specific pages.</p>
+
+<h2>4. Request schema</h2>
+
+<pre><code class="lang-">
+POST /v1/tabular
+X-API-Key: hk_&lt;redacted&gt;
+X-Request-ID: &lt;uuid&gt;
+X-Async: true            # async submit+poll (recommended for multi-page)
+Content-Type: application/json
+
+{
+  &quot;document_key&quot;: &quot;&lt;key from /v1/documents/upload&gt;&quot;,
+  &quot;pages&quot;: [1, 2],                 // optional; default = all pages
+  &quot;output&quot;: {
+    &quot;format&quot;: &quot;html&quot;,             // &quot;html&quot; (canonical) | &quot;grid&quot; | &quot;both&quot;
+    &quot;include_cell_bboxes&quot;: true,  // per-cell [x0,y0,x1,y1] in page coords
+    &quot;merge_spanning&quot;: true        // emit rowspan/colspan vs flattened
+  },
+  &quot;model&quot;: &quot;tabular-default&quot;,     // pinned server-side model id (versioned)
+  &quot;options&quot;: { &quot;max_tables_per_page&quot;: 16 }
+}
+</code></pre>
+
+<p>Decoding for the served model is <strong>pinned server-side</strong> and surfaced in the response (<code>model_version</code> + <code>decoding_digest</code>) — the client does NOT choose temperature/top_p, mirroring the benchmark's pinned-decoding discipline (TR-000: temp 0.0, top_p 1.0, seed 20260516).</p>
+
+<h2>5. Response schema</h2>
+
+<p>Async submit → <code>202</code> <code>{ &quot;job_id&quot;: &quot;...&quot;, &quot;status&quot;: &quot;queued&quot;, &quot;poll_url&quot;: &quot;/v1/jobs/&lt;id&gt;&quot; }</code>. Poll <code>GET /v1/jobs/&lt;id&gt;</code> →</p>
+
+<pre><code class="lang-">
+200
+{
+  &quot;status&quot;: &quot;succeeded&quot;,          // queued|running|succeeded|failed
+  &quot;request_id&quot;: &quot;&lt;uuid&gt;&quot;,
+  &quot;model_version&quot;: &quot;tabular-default@2026-05-20-rev&lt;sha&gt;&quot;,
+  &quot;decoding_digest&quot;: &quot;sha256:&lt;pinned-decoding-hash&gt;&quot;,
+  &quot;result&quot;: {
+    &quot;tables&quot;: [
+      {
+        &quot;page&quot;: 1,
+        &quot;table_index&quot;: 0,
+        &quot;bbox&quot;: [x0,y0,x1,y1],
+        &quot;html&quot;: &quot;&lt;table&gt;…&lt;/table&gt;&quot;,
+        &quot;grid&quot;: {                 // present if output.format includes grid
+          &quot;n_rows&quot;: 12, &quot;n_cols&quot;: 6,
+          &quot;cells&quot;: [
+            { &quot;row&quot;: 0, &quot;col&quot;: 0, &quot;rowspan&quot;: 1, &quot;colspan&quot;: 2,
+              &quot;text&quot;: &quot;Description&quot;, &quot;bbox&quot;: [..], &quot;is_header&quot;: true }
+          ]
+        },
+        &quot;confidence&quot;: 0.0          // model-reported; advisory only, not a
+                                   // benchmark metric (never a TR-000 cell)
+      }
+    ]
+  }
+}
+</code></pre>
+
+<p>Synchronous mode (<code>X-Async: false</code>, single small image): same body returned <code>200</code> inline without <code>job_id</code>.</p>
+
+<h2>6. Error taxonomy (reuses SDK typed errors)</h2>
+
+<table>
+<tr><th>HTTP</th><th>Error type</th><th>Meaning</th><th>Client action</th></tr>
+<tr><td>400</td><td><code>bad_request</code></td><td>malformed body / unknown field</td><td>fix request</td></tr>
+<tr><td>401</td><td><code>auth_error</code></td><td>missing/invalid <code>hk_</code> key</td><td>refresh key</td></tr>
+<tr><td>403</td><td><code>forbidden</code></td><td>key lacks <code>tabular</code> scope/quota</td><td>upgrade/scope</td></tr>
+<tr><td>404</td><td><code>not_found</code></td><td>unknown <code>document_key</code>/<code>job_id</code></td><td>re-upload</td></tr>
+<tr><td>413</td><td><code>payload_too_large</code></td><td>inline over cap</td><td>use presigned flow</td></tr>
+<tr><td>415</td><td><code>unsupported_media</code></td><td>media type not in §3</td><td>convert</td></tr>
+<tr><td>422</td><td><code>unprocessable_document</code></td><td>corrupt/encrypted/no table found</td><td>inspect doc</td></tr>
+<tr><td>429</td><td><code>rate_limited</code></td><td>quota/throughput exceeded; <code>Retry-After</code> set</td><td><strong>SDK does NOT auto-retry 429</strong> (matches existing contract — caller backs off)</td></tr>
+<tr><td>5xx</td><td><code>server_error</code></td><td>transient</td><td>bounded retry w/ backoff</td></tr>
+</table>
+
+<p>Failed job poll → <code>200 {status:&quot;failed&quot;, error:{type, message, request_id}}</code> (job-level failure is not an HTTP error, matching the existing submit+poll envelope).</p>
+
+<h2>7. Versioning</h2>
+
+<ul>
+<li>Op path stable at <code>/v1/tabular</code>; behavioral changes are gated by the</li>
+</ul>
+<p>  server-side <code>model_version</code> (<code>&lt;id&gt;@&lt;date&gt;-rev&lt;sha&gt;</code>) returned on every   response — clients pin/observe it for reproducibility parity with the   benchmark's pinned <code>harness/models.json</code> revisions.</p>
+<ul>
+<li><code>decoding_digest</code> lets a caller assert the served decoding equals the</li>
+</ul>
+<p>  benchmarked TR-000 pin (offline comparability).</p>
+<ul>
+<li>Deprecations: additive fields only within <code>/v1</code>; breaking changes →</li>
+</ul>
+<p>  <code>/v2/tabular</code>, dual-served through a documented window.</p>
+
+<h2>8. Benchmark ↔ product separation (honesty)</h2>
+
+<ul>
+<li>This handshake describes how the <strong>selected/hosted</strong> tabular model is</li>
+</ul>
+<p>  <em>served</em>. The TR-000 leaderboard scores models under the pinned   factory harness; a product <code>confidence</code> field is <strong>advisory only</strong> and   is <strong>never</strong> injected into a TR-000 cell (same rule as   <code>hyperbots-ip-seed-v1</code> in <code>harness/models.json</code>).</p>
+<ul>
+<li>No accuracy/latency number appears in this spec. Product performance</li>
+</ul>
+<p>  is <strong>per apis.hyperbots.com only</strong>; benchmark numbers come solely from   reproduced-or-provenance-tagged TR-000 runs.</p>
+
+<h2>Status</h2>
+<ul>
+<li>§1–§7 request/response/auth/error/versioning contract — **DESIGNED</li>
+</ul>
+<p>  (v1)**, consistent with the live SDK wire contract (read, not assumed).</p>
+<ul>
+<li>§8 benchmark↔product separation — <strong>DESIGNED (v1)</strong>.</li>
+<li>The <code>tabular</code> op scope, the served model, and the live endpoint are</li>
+</ul>
+<p>  <strong>NOT provisioned</strong> — this is an ML-engineer handshake design doc;   nothing here is deployed or live-verified. Serving is EXECUTION-   PENDING REAL COMPUTE and human-gated. No endpoint was contacted from   this environment.</p>
+
+<h2>Sources</h2>
+<ul>
+<li>Existing SDK wire contract:</li>
+</ul>
+<p>  <code>~/Documents/finance-doc-agents-hyperapi/framework/src/hyperapi_framework/client.py</code>   (<code>X-API-Key</code>, <code>X-Request-ID</code>, <code>X-Async</code>, presigned <code>POST   /v1/documents/upload</code> + S3 <code>PUT</code>, <code>POST /v1/&lt;op&gt;</code> <code>document_key</code>,   <code>GET /v1/jobs/{id}</code> poll, no-auto-retry-429, typed-error taxonomy,   <code>HYPERAPI_KEY</code> env).</p>
+<ul>
+<li>In-repo honesty model: <code>harness/models.json</code> (<code>is_hyperbots_ip</code></li>
+</ul>
+<p>  note), <code>harness/tasks.json</code> TR-000 pinned decoding.</p>
+<ul>
+<li>CTO-org mandate: <code>finance-doc-ml-engineer.md</code>,</li>
+</ul>
+<p>  <code>api-design-reviewer.md</code> (in <code>~/Desktop/hyperapi-cto-org/.claude/agents/</code>).</p>
+
+<h2>Open assumptions</h2>
+<ol>
+<li>apis.hyperbots.com adds a <code>tabular</code> op scope to the existing key</li>
+</ol>
+<p>   model; not yet provisioned — spec is design-only, not live-verified.</p>
+<ol>
+<li>Inline size cap = the platform's existing inline limit (value to be</li>
+</ol>
+<p>   confirmed with the live API; not asserted here).</p>
+<ol>
+<li>The served tabular model = the systems-researcher pick</li>
+</ol>
+<p>   (Qwen2.5-VL-7B class) once hosting executes — hosting is PENDING REAL    COMPUTE; this spec does not imply it is deployed.</p>
+<ol>
+<li>Exact typed-error class names mirror the SDK's <code>_OP_TO_ERROR</code> map;</li>
+</ol>
+<p>   final names follow the SDK at implementation time.</p>
+
+</body></html>

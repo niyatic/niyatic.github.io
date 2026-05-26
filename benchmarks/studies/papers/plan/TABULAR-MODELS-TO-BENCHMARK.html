@@ -1,0 +1,295 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TABULAR-MODELS-TO-BENCHMARK — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<a class="back" href="/benchmarks/studies/savior-bench-report.html">← back</a>
+
+<h1>TABULAR REASONING — Models to Benchmark + Local-Host Recommendation</h1>
+
+<p>_Owner: cto-org <code>applied-research-engineer</code> (model roster) + <code>efficient-ml-research-scientist</code> / <code>frontier-smol-model-researcher</code> (= the "systems researcher" for local-model selection — role mapping per program mandate; no dedicated systems-researcher agent exists)._</p>
+
+<p><strong>HONESTY GATE:</strong> This environment has <strong>no GPU / no serving infra</strong>. No model below was run, fine-tuned, or hosted here. This is the <strong>roster + endpoint inventory + a hosting plan</strong>. The local-host recommendation is a <em>design selection</em>; actual hosting is explicitly <strong>"execution pending real compute."</strong> Endpoint URLs are recorded as the standard public locations of these services as of the assistant knowledge cutoff (Jan 2026) and <strong>must be re-verified live before any run</strong> — none was called from here.</p>
+
+<h2>1. Prompted open-source models in scope (no fine-tune unless flagged)</h2>
+
+<table>
+<tr><th>Model</th><th>Sizes</th><th>Table output</th><th>Family role</th><th>Weights (HF id, to pin by revision)</th></tr>
+<tr><td><strong>Qwen2.5-VL</strong></td><td>3B / 7B / 32B / 72B</td><td>HTML, Markdown, bbox-grounded cells</td><td>open-VLM front-runner</td><td><code>Qwen/Qwen2.5-VL-{3,7,32,72}B-Instruct</code></td></tr>
+<tr><td><strong>InternVL 3</strong> (and 2.5)</td><td>1B–78B</td><td>HTML / Markdown</td><td>open-VLM</td><td><code>OpenGVLab/InternVL3-*</code></td></tr>
+<tr><td><strong>GOT-OCR 2.0</strong></td><td>~0.6B</td><td>HTML / LaTeX / Markdown tables</td><td>OCR-2.0 e2e</td><td><code>stepfun-ai/GOT-OCR2_0</code></td></tr>
+<tr><td><strong>PaddleOCR-VL</strong></td><td>small</td><td>structured table</td><td>OCR-VL pipeline</td><td>PaddlePaddle release</td></tr>
+<tr><td><strong>dots.ocr</strong></td><td>~1.7B</td><td>Markdown / structure</td><td>compact OCR-VL</td><td><code>rednote-hilab/dots.ocr</code></td></tr>
+<tr><td><strong>MinerU / PDF-Extract-Kit</strong></td><td>pipeline</td><td>HTML table via wrapped TSR</td><td>pipeline baseline</td><td><code>opendatalab/*</code></td></tr>
+<tr><td><strong>Table Transformer (TATR)</strong></td><td>DETR-scale</td><td>grid (cells + spans)</td><td><strong>specialist TSR baseline</strong></td><td><code>microsoft/table-transformer-structure-recognition-v1.1-all</code></td></tr>
+<tr><td><strong>olmOCR</strong></td><td>7B</td><td>Markdown incl. tables</td><td>open OCR-VLM</td><td><code>allenai/olmOCR-7B-*</code></td></tr>
+<tr><td><strong>MiniCPM-V 2.6</strong></td><td>8B</td><td>HTML / Markdown</td><td>efficient VLM</td><td><code>openbmb/MiniCPM-V-2_6</code></td></tr>
+<tr><td><strong>Phi-3.5-vision</strong></td><td>4.2B</td><td>Markdown</td><td>small VLM</td><td><code>microsoft/Phi-3.5-vision-instruct</code></td></tr>
+<tr><td><strong>PP-Structure (PaddleOCR)</strong></td><td>pipeline</td><td>HTML</td><td>rule+DL cascade baseline</td><td>PaddleOCR release</td></tr>
+</table>
+
+<p>Closed frontier anchors (scientific comparison only, not products, keys human-provided): GPT-4o / GPT-4.1, Gemini 1.5/2.x, Claude 3.x.</p>
+
+<h2>2. Hosted API endpoints for tabular reasoning (inventory — verify live)</h2>
+
+<p>These are the standard public service locations as of the knowledge cutoff; <strong>none was contacted from this environment</strong>. Re-verify endpoint, model id, and pricing before any benchmarked run; record provenance.</p>
+
+<table>
+<tr><th>Provider</th><th>Endpoint (to re-verify)</th><th>Relevant models</th><th>Auth</th><th>Notes</th></tr>
+<tr><td>Hugging Face Inference / Inference Endpoints</td><td><code>https://api-inference.huggingface.co/models/&lt;id&gt;</code> ; dedicated <code>https://&lt;endpoint&gt;.endpoints.huggingface.cloud</code></td><td>Qwen2.5-VL, InternVL, GOT-OCR2, MiniCPM-V</td><td><code>Bearer hf_…</code></td><td>serverless availability varies by model size; large VLMs need dedicated endpoint</td></tr>
+<tr><td>Alibaba DashScope (Model Studio)</td><td><code>https://dashscope-intl.aliyun.com/...</code> (OpenAI-compat path available)</td><td>Qwen-VL-Max / Qwen2.5-VL hosted</td><td>API key</td><td>first-party Qwen-VL hosting</td></tr>
+<tr><td>Together AI</td><td><code>https://api.together.xyz/v1/chat/completions</code></td><td>Qwen2.5-VL, InternVL (catalog-dependent)</td><td><code>Bearer …</code></td><td>OpenAI-compatible; vision support model-dependent</td></tr>
+<tr><td>Fireworks AI</td><td><code>https://api.fireworks.ai/inference/v1/chat/completions</code></td><td>select VLMs</td><td><code>Bearer …</code></td><td>OpenAI-compatible</td></tr>
+<tr><td>OpenRouter</td><td><code>https://openrouter.ai/api/v1/chat/completions</code></td><td>aggregates Qwen-VL / frontier</td><td><code>Bearer …</code></td><td>routing layer; provenance must record upstream</td></tr>
+<tr><td>Replicate</td><td><code>https://api.replicate.com/v1/predictions</code></td><td>GOT-OCR2, some VLMs (community)</td><td><code>Token …</code></td><td>async predict/poll model</td></tr>
+<tr><td>OpenAI / Google / Anthropic</td><td>first-party vision chat endpoints</td><td>GPT-4o/4.1, Gemini, Claude (anchors)</td><td>provider keys</td><td>frontier anchors only</td></tr>
+</table>
+
+<p><strong>Honest gap:</strong> which exact open VLMs are <em>serverless-available vs require a paid dedicated endpoint</em> fluctuates; the benchmark plan must treat endpoint availability as a per-model provenance field, not an assumption.</p>
+
+<h2>3. Systems-researcher recommendation — ONE small model to host locally</h2>
+
+<p><strong>Recommended: <code>Qwen2.5-VL-7B-Instruct</code></strong> (pin by HF revision/commit at selection time), served via vLLM on a single ~24 GB GPU (bf16/AWQ-int4 fallback for ≤16 GB).</p>
+
+<p>Rationale (efficient-ml / frontier-smol view):</p>
+<ol>
+<li><strong>Best capability/size on tables in the open tier</strong> — native HTML &</li>
+</ol>
+<p>   bbox-grounded cell output; strong on dense/merged finance tables in    reported evaluations; the program's "SOTA-via-open-prompted" thesis    rests on a VLM, and 7B is the smallest size that is competitive on    hard tables without fine-tune.</p>
+<ol>
+<li><strong>Deployable on commodity hardware</strong> — fits one 24 GB GPU at bf16;</li>
+</ol>
+<p>   int4 (AWQ/GPTQ) brings it to ~10–12 GB with modest quality loss,    enabling a realistic apis.hyperbots.com self-host path.</p>
+<ol>
+<li><strong>Mature serving</strong> — first-class vLLM/SGLang support, OpenAI-</li>
+</ol>
+<p>   compatible server → trivial handshake parity with the API spec    (see TABULAR-API-HANDSHAKE.md).</p>
+<ol>
+<li><strong>License</strong> — Qwen2.5-VL is Apache-2.0-class permissive (confirm exact</li>
+</ol>
+<p>   license text at pin time), suitable for hosted commercial inference.</p>
+
+<p>Runners-up / fallbacks:</p>
+<ul>
+<li><strong>GOT-OCR2.0 (~0.6B)</strong> — far cheaper, CPU-feasible; pick if the latency/</li>
+</ul>
+<p>  cost budget dominates and table complexity is moderate (it is OCR-2.0,   weaker than a 7B VLM on heavily merged finance tables).</p>
+<ul>
+<li><strong>InternVL3-8B</strong> — closest alternative if Qwen licensing/availability</li>
+</ul>
+<p>  blocks; comparable footprint.</p>
+<ul>
+<li><strong>MiniCPM-V-2.6 (8B)</strong> — efficient fallback with good doc grounding.</li>
+</ul>
+
+<p><strong>HOSTING-GAP STATEMENT (mandatory honesty):</strong> No GPU or serving infrastructure exists in this environment. The recommendation is a <strong>design selection only</strong>. Actual local hosting (vLLM deploy, throughput/ latency measurement, int4 quality delta) is <strong>EXECUTION PENDING REAL COMPUTE</strong> — not performed, not claimed. No throughput/latency number is asserted; the figures above are deployment <em>targets/constraints</em>, not measured results.</p>
+
+<h2>4. Benchmark wiring plan (consistent with existing harness)</h2>
+
+<ul>
+<li>Each model = one entry in <code>harness/models.json</code>, pinned by HF</li>
+</ul>
+<p>  revision/commit (open weights) or by <code>provider+model_id+date</code>   (hosted API), with an adapter in <code>harness/adapters/</code> (chat-formatting   lives ONLY in the adapter, per the tasks.json <code>_note</code>).</p>
+<ul>
+<li>TR-000 prompt + decoding are pinned and identical across all models</li>
+</ul>
+<p>  in the <code>tabular</code> family (mirrors the DC-000 contract).</p>
+<ul>
+<li>Hosted-API results carry `provenance: {provider, endpoint, model_id,</li>
+</ul>
+<p>  run_date, fine_tune: zero-shot}<code>; </code>ci95<code> only if bootstrapped, else   </code>null` (no fabricated interval — DC-000 rule).</p>
+<ul>
+<li>Specialist TATR is benchmarked as the structure baseline so the</li>
+</ul>
+<p>  open-VLM-vs-specialist gap is <em>measured</em>, not assumed.</p>
+<ul>
+<li>The concrete loader/metric/adapter interface these models plug into</li>
+</ul>
+<p>  is specified in <code>plan/TABULAR-BENCHMARK-WIRING.md</code> (§1 loader, §2   metric signatures, §5 VLM image-substitution adapter hook). Until the   metric impl lands, <code>score_item(&quot;TR-000&quot;,…)</code> raises   <code>NotImplementedError</code> by design — no model can produce a TR-000 cell   yet (enforces "registered-not-yet-run" in code, not just prose).</p>
+
+<h2>5. Per-model prompt / decoding / harness-invocation spec (DESIGNED — not run)</h2>
+
+<p><code>plan/TABULAR-BENCHMARK-WIRING.md</code> §5 explicitly defers "concrete per-model adapter behavior" to <strong>this</strong> doc. Filling that named gap. <strong>Spec only — no model invoked, no adapter executed, no number produced.</strong> The benchmarked prompt + decoding are NOT chosen here: they are already frozen in <code>harness/tasks.json</code> <code>TR-000</code> and are identical for every model in the <code>tabular</code> family. This section only specifies how each adapter <em>wraps</em> that one frozen artifact — chat-formatting lives ONLY in the adapter (<code>tasks.json</code> <code>_note</code> contract).</p>
+
+<h3>5.1 The single frozen artifact (verbatim from <code>harness/tasks.json</code>)</h3>
+
+<ul>
+<li><strong>Prompt template (task-level, ONE for the whole family):</strong></li>
+</ul>
+<p>  <code>&quot;Recognize the table in the document below. Output ONLY the table as   valid HTML using &lt;table&gt;, &lt;tr&gt;, &lt;td&gt;/&lt;th&gt;, with rowspan/colspan for   merged cells, preserving the exact cell text and reading order. Output   nothing except the HTML table. Document:\n---\n{input_text}\n---\nHTML   table:&quot;</code></p>
+<ul>
+<li><strong>Decoding (task-pinned, ONE for the whole family):</strong></li>
+</ul>
+<p>  <code>temperature=0.0, top_p=1.0, max_tokens=4096, stop=[], seed=20260516</code>.</p>
+<ul>
+<li>No adapter may change the instruction text or the decoding values.</li>
+</ul>
+<p>  The ONLY per-model freedom is (a) how <code>{input_text}</code> is realized   (text vs image) and (b) the model-native chat envelope around the   unchanged instruction.</p>
+
+<h3>5.2 <code>{input_text}</code> realization by family (image-substitution hook)</h3>
+
+<p>Per wiring-doc §5, for <code>family == &quot;tabular&quot;</code> the adapter substitutes the table's rendered page image for the <code>{input_text}</code> slot while keeping the frozen instruction verbatim:</p>
+
+<table>
+<tr><th>Family</th><th><code>{input_text}</code> realized as</th><th>Envelope the adapter builds</th></tr>
+<tr><td>Open VLM (Qwen2.5-VL, InternVL3, MiniCPM-V, Phi-3.5-V, olmOCR)</td><td>rendered page image (PNG, page-native DPI; no client-side crop unless the GT slice is a crop)</td><td>model-native multimodal chat: <code>[{role:user, content:[{image}, {text: &lt;frozen instruction with the literal &quot;{input_text}&quot; marker removed and the image taking its place&gt;}]}]</code></td></tr>
+<tr><td>OCR-2.0 e2e (GOT-OCR2.0, dots.ocr, PaddleOCR-VL)</td><td>rendered page image</td><td>model-native "OCR→HTML/markdown table" mode; frozen instruction passed where the model accepts a task string; HTML table parsed from the model's structured output</td></tr>
+<tr><td>Specialist TSR (Table Transformer / TATR, PP-Structure, MinerU)</td><td>rendered page image</td><td>NOT a prompted LM — adapter calls the model's structure-recognition forward pass, then <strong>serializes its predicted grid to the SAME HTML contract</strong> the metric expects; the frozen instruction is recorded in provenance as "N/A — specialist, instruction not applicable" (NOT silently dropped)</td></tr>
+<tr><td>Frontier anchor (GPT-4o/4.1, Gemini, Claude — keys human-provided)</td><td>rendered page image</td><td>provider-native vision chat; frozen instruction verbatim; anchor-only, never a product claim</td></tr>
+</table>
+
+<p>Image rendering itself is part of the (EXECUTION-PENDING) loader (<code>tabular_loader.py</code>, wiring-doc §1); this section only fixes the contract, it does not render anything here.</p>
+
+<h3>5.3 Decoding reconciliation across the three pinned surfaces</h3>
+
+<p>Three places independently pin decoding; they MUST agree, and the adapter is responsible for asserting it (offline, at run time):</p>
+
+<ol>
+<li><strong>Benchmark (authoritative):</strong> <code>tasks.json</code> TR-000 — `temp 0.0,</li>
+</ol>
+<p>   top_p 1.0, max_tokens 4096, seed 20260516`.</p>
+<ol>
+<li><strong>Open-weights serving (vLLM/SGLang/HF):</strong> adapter passes exactly</li>
+</ol>
+<p>   the §5.1 values to the engine; greedy (<code>temp 0.0</code>) makes <code>top_p</code>    inert but is still sent for an explicit, logged match. Models that    ignore <code>seed</code> under greedy → adapter records <code>seed_effective: &quot;n/a    (greedy-deterministic)&quot;</code> rather than asserting a false seed match.</p>
+<ol>
+<li><strong>Hosted API / apis.hyperbots.com:</strong> decoding is server-pinned and</li>
+</ol>
+<p>   surfaced as <code>decoding_digest</code> (TABULAR-API-HANDSHAKE.md §4/§7); the    adapter compares that digest to the benchmark pin and <strong>fails the    run (does not silently proceed)</strong> on mismatch — no cell is emitted    from a decoding-divergent run.</p>
+
+<h3>5.4 Expected harness invocation (illustrative — NOT executed here)</h3>
+
+<p>The exact commands a future operator would run once metrics + loader + adapters land. Running them today raises <code>NotImplementedError</code> by design (<code>score_item(&quot;TR-000&quot;)</code> guard) — shown so the interface is unambiguous, NOT because anything ran:</p>
+
+<pre><code class="lang-">
+# 1. register a model (open-weights, pinned by HF revision)
+#    harness/models.json gains, e.g.:
+#    {&quot;id&quot;:&quot;qwen2.5-vl-7b&quot;,&quot;family&quot;:&quot;tabular&quot;,&quot;adapter&quot;:&quot;qwen25vl&quot;,
+#     &quot;pin&quot;:{&quot;kind&quot;:&quot;hf-revision&quot;,&quot;repo&quot;:&quot;Qwen/Qwen2.5-VL-7B-Instruct&quot;,
+#            &quot;rev&quot;:&quot;&lt;commit-sha-pinned-at-selection&gt;&quot;},
+#     &quot;is_hyperbots_ip&quot;: false}
+#
+# 2. run TR-000 for that model over a frozen slice manifest
+python harness/run.py --task TR-000 --model qwen2.5-vl-7b \
+       --slice enterprise-veryhard-v1            # -&gt; EXECUTION-PENDING:
+                                                 #    raises NotImplementedError
+                                                 #    until metric bodies land
+#
+# 3. score + provenance (mandatory disclosure fields)
+python harness/score.py --task TR-000 --model qwen2.5-vl-7b \
+       --emit-provenance                          # writes provider/endpoint/
+                                                  # model_id/run_date +
+                                                  # fine_tune_vs_zero_shot +
+                                                  # teds_variant; ci95 only if
+                                                  # bootstrapped else null
+</code></pre>
+
+<p>For a hosted-API model the <code>pin</code> is <code>{&quot;kind&quot;:&quot;hosted-api&quot;,&quot;provider&quot;: ...,&quot;model_id&quot;:...,&quot;date&quot;:...}</code> and step 2 goes through the API adapter (TABULAR-API-HANDSHAKE.md envelope) instead of a local engine; every emitted cell carries <code>provenance.fine_tune: zero-shot</code> (or the explicit fine-tune disclosure) — never blank.</p>
+
+<h3>5.5 Honesty invariants for this section</h3>
+
+<ul>
+<li>No adapter exists in <code>harness/adapters/</code> for any tabular model yet;</li>
+</ul>
+<p>  the §5.4 commands are interface illustrations, not a run log.</p>
+<ul>
+<li>The frozen prompt/decoding are READ from <code>tasks.json</code>, not invented</li>
+</ul>
+<p>  here; this section adds zero new pinned values.</p>
+<ul>
+<li>Specialist (non-LM) models have "instruction not applicable" recorded</li>
+</ul>
+<p>  as provenance, never silently coerced into a prompted-model column.</p>
+<ul>
+<li>Nothing in §5 produces, implies, or estimates a TR-000 number.</li>
+</ul>
+
+<h2>Status</h2>
+<ul>
+<li>§1 prompted-OSS roster — <strong>DESIGNED (v1)</strong>; weights not pinned, no</li>
+</ul>
+<p>  model loaded in this environment.</p>
+<ul>
+<li>§2 hosted-API inventory — <strong>DESIGNED (v1)</strong>; no endpoint contacted;</li>
+</ul>
+<p>  ids re-verify-before-run.</p>
+<ul>
+<li>§3 local-host recommendation — <strong>DESIGNED (v1)</strong>; hosting EXECUTION-</li>
+</ul>
+<p>  PENDING REAL COMPUTE (no GPU/serving infra here).</p>
+<ul>
+<li>§4 harness wiring — <strong>DESIGNED (v1, cross-ref v2 wiring doc)</strong>;</li>
+</ul>
+<p>  adapters + models.json entries EXECUTION-PENDING.</p>
+<ul>
+<li>§5 per-model prompt/decoding/harness-invocation spec — **DESIGNED</li>
+</ul>
+<p>  (v2)**; closes the wiring-doc §5 "concrete per-model adapter behavior"   forward-reference. Prompt/decoding READ verbatim from <code>tasks.json</code>   (no new pinned value invented); adapters + invocation EXECUTION-   PENDING; <code>score_item(&quot;TR-000&quot;)</code> still raises <code>NotImplementedError</code>.</p>
+<ul>
+<li>No benchmark number exists for any model; TR-000 stays REGISTERED-</li>
+</ul>
+<p>  NOT-YET-RUN.</p>
+
+<h2>Sources</h2>
+<ul>
+<li>CTO-org mandates: <code>efficient-ml-research-scientist.md</code>,</li>
+</ul>
+<p>  <code>frontier-smol-model-researcher.md</code>, <code>applied-research-engineer.md</code>,   <code>finance-doc-ml-engineer.md</code> (in <code>~/Desktop/hyperapi-cto-org/.claude/agents/</code>).</p>
+<ul>
+<li>In-repo: <code>harness/models.json</code>, <code>harness/tasks.json</code> (TR-000 frozen</li>
+</ul>
+<p>  prompt + decoding READ verbatim for §5, not invented),   <code>plan/TABULAR-BENCHMARK-WIRING.md</code> §5 (the forward-reference §5 here   resolves), <code>plan/TABULAR-API-HANDSHAKE.md</code> (§5.3 decoding-digest   reconciliation), <code>plan/SCALE-TO-100.md</code>, <code>harness/PINS.txt</code>.</p>
+<ul>
+<li>Model/endpoint identities from public provider documentation and HF</li>
+</ul>
+<p>  model hub as of assistant knowledge cutoff (Jan 2026). <strong>No endpoint   was contacted from this environment</strong>; all URLs/ids are   re-verify-before-run.</p>
+
+<h2>Open assumptions</h2>
+<ol>
+<li>Hosted-API keys/budget are human-provided; no key is stored here.</li>
+<li>Exact serverless-vs-dedicated availability per open VLM must be</li>
+</ol>
+<p>   verified at run time (treated as provenance, not assumption).</p>
+<ol>
+<li>Local-host pick assumes a single ~24 GB GPU target; revisit if the</li>
+</ol>
+<p>   real compute envelope differs.</p>
+<ol>
+<li>License texts must be re-confirmed at weight-pin time before</li>
+</ol>
+<p>   commercial hosting.</p>
+
+</body></html>

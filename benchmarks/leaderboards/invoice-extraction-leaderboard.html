@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Invoice Extraction — Consistency vs the HyperAPI Deployed Extractor (STP invoice set)</title>
+<style>
+:root{--bg:#fafafa;--card:#fff;--ink:#111;--muted:#666;--line:#e3e3e3;
+  --th:#f0f3f7;--hover:#f7fbff;--ok:#0a7d27;--warn:#a66100;--bad:#b3261e;--accent:#0366d6;}
+*{box-sizing:border-box}
+body{font:14px/1.55 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  margin:0;padding:24px;color:var(--ink);background:var(--bg)}
+.wrap{max-width:1100px;margin:0 auto}
+h1{font-size:23px;margin:0 0 4px}
+h2{font-size:17px;margin:34px 0 12px;border-bottom:2px solid var(--line);padding-bottom:6px}
+h3{font-size:14px;margin:0 0 10px}
+.sub{color:var(--muted);margin:0 0 6px}
+a{color:var(--accent)}
+code{background:#f2f2f2;padding:1px 5px;border-radius:3px;font-size:12px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+.brand{display:inline-block;background:#111;color:#fff;font-weight:700;
+  padding:3px 9px;border-radius:4px;letter-spacing:.02em;font-size:12px}
+table{border-collapse:collapse;width:100%;font-size:13px;background:var(--card)}
+th,td{border:1px solid var(--line);padding:6px 9px;text-align:right}
+th{background:var(--th);font-weight:600}
+th:first-child,td:first-child{text-align:left}
+td:nth-child(2){text-align:left}
+.lb td:nth-child(2){text-align:left}
+tbody tr:hover{background:var(--hover)}
+.ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+.mut,.mut td{color:var(--muted)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;
+  padding:16px 18px;margin:14px 0}
+.kpis{display:flex;gap:22px;flex-wrap:wrap;margin:6px 0 10px}
+.kpi{display:flex;flex-direction:column}
+.kv{font-size:20px;font-weight:700}
+.kl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.ci{font-size:12px;color:var(--muted);margin:2px 0 12px}
+.ft th,.ft td{padding:4px 8px}
+.rank{font-weight:700;color:var(--muted);text-align:center!important}
+.note{background:#fff8e6;border:1px solid #ffe2a8;border-radius:7px;
+  padding:12px 16px;font-size:13px;margin:14px 0}
+.note b{color:#8a5a00}
+.banner{background:#0d1b2a;color:#e8eef5;border-radius:8px;padding:16px 20px;
+  margin:14px 0;font-size:13px;line-height:1.6}
+.banner b{color:#ffd479}
+.partB{border-left:5px solid #a66100;padding-left:14px}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;
+  border-radius:4px;letter-spacing:.03em;text-transform:uppercase}
+.tag-cons{background:#fbeed5;color:#a66100;border:1px solid #ecd09a}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.grid2{grid-template-columns:1fr}}
+ul{margin:8px 0 8px 18px;padding:0} li{margin:3px 0}
+.foot{color:var(--muted);font-size:12px;margin-top:30px;border-top:1px solid var(--line);
+  padding-top:12px}
+.xlink{font-size:12px;color:var(--muted);margin:8px 0}
+.refrow td{background:#f3f5f8;font-style:italic}
+.refnote{font-style:normal;color:var(--muted);font-size:11px;display:block;margin-top:2px}
+</style>
+</head>
+<body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<div class="wrap">
+
+<p><span class="brand">HyperAPI</span> &nbsp;<span class="sub" style="display:inline">DocumentAI Benchmark Factory · by Hyperbots</span></p>
+<h1>Invoice Extraction — Consistency vs the HyperAPI Deployed Extractor <span class="tag tag-cons">STP invoice set</span></h1>
+<p class="sub">A consistency study — how closely other systems reproduce the HyperAPI deployed extractor's output on a set of straight-through-processed invoices. This is <b>not</b> an accuracy leaderboard and there is no measured-accuracy ranking · generated 2026-05-22</p>
+<p class="xlink">Related: <a href="/benchmarks/leaderboards/claude-compare-leaderboard.html">claude-compare leaderboard</a> ·
+<a href="/benchmarks/studies/azure-di-invoice-study.html">Azure DI invoice study</a> ·
+<a href="/benchmarks/factory/overview.html">Benchmark Factory overview</a></p>
+
+<div class="banner">
+<b>Read this first — what this study is, and what it is not.</b> This study
+measures <b>agreement with HyperAPI's deployed-extractor output</b> on a set of
+straight-through-processed (STP) invoices — i.e. <b>how closely each other
+system reproduces HyperAPI's extractions</b>. It is <b>not</b> a measurement of
+correctness against independent validated truth. The ground-truth file is
+<code>results.zip</code>, which <b>is HyperAPI's own deployed-extractor
+output</b>, so <b>HyperAPI is the reference, not a ranked winner</b> — a system
+agrees with itself by construction. A high agreement number means a system is
+<i>consistent with</i> HyperAPI's output; it does <b>not</b> mean either system
+is accurate. <b>For accuracy against independent validated gold</b>, see the
+<a href="/benchmarks/studies/azure-di-invoice-study.html">Azure DI study's Mini&nbsp;Pilot section</a>
+and the <a href="/benchmarks/leaderboards/claude-compare-leaderboard.html">claude-compare leaderboard</a>.
+</div>
+
+<div class="note">
+<b>STP invoice set.</b> Every document in this set is a
+<b>straight-through-processed (STP) invoice</b> — an invoice the HyperAPI
+extractor processed end-to-end with <b>no human touch</b>. Because these
+invoices were handled fully automatically by the deployed extractor, the
+extractor's output on them (<code>results.zip</code>) is exactly what was used
+downstream, and that is what every other system is compared against here.
+</div>
+
+<!-- ================= CONSISTENCY STUDY ================= -->
+<h2 class="partB">Consistency vs. the deployed HyperAPI extractor
+  <span class="tag tag-cons">agreement, NOT accuracy</span></h2>
+
+<div class="card partB">
+<p><b>What this measures.</b> Every number below is measured against
+<code>results.zip</code>, which <b>is HyperAPI's own deployed-extractor
+output</b> on the STP invoice set. So these numbers answer one question:
+<b>"how closely does another system reproduce what HyperAPI's extractor already
+produced"</b> — an <b>agreement / consistency metric, not correctness</b>.
+HyperAPI is the <b>reference by construction</b>: it agrees with itself, so its
+row is the baseline, not a competitive score. For accuracy against independent
+validated gold, see the
+<a href="/benchmarks/studies/azure-di-invoice-study.html">Azure DI study's Mini Pilot section</a>
+and the <a href="/benchmarks/leaderboards/claude-compare-leaderboard.html">claude-compare leaderboard</a>.</p>
+</div>
+
+<h3>Agreement with the HyperAPI reference — STP invoice set, manifest batches 1–2</h3>
+<table class="lb">
+<thead><tr><th>#</th><th>System / batch</th><th>Agreement with HyperAPI reference (micro-F1)</th>
+  <th>Precision</th><th>Recall</th><th>Line-count match</th><th>n docs</th>
+  <th>95% CI</th></tr></thead>
+<tbody>
+<tr class="refrow"><td class="rank">—</td><td>HyperAPI deployed extractor (the reference)</td><td><b>100% (reference)</b>
+  <span class="refnote">100% — reference. The ground-truth file for this set is HyperAPI's own deployed output, so HyperAPI agrees with itself by construction. This is NOT a measured accuracy figure.</span></td><td>—</td><td>—</td><td>—</td><td>—</td><td>reference baseline</td></tr>
+<tr><td class="rank">—</td><td>Claude Opus (batch-2, docs 101–200) — agreement with the HyperAPI reference</td><td class="warn"><b>83.8%</b></td><td>87.3%</td><td>80.6%</td><td>82.0%</td><td>100</td><td class="mut">[78.9%, 87.9%]</td></tr>
+<tr><td class="rank">—</td><td>Claude Opus (batch-1, docs 1–100) — agreement with the HyperAPI reference</td><td class="warn"><b>79.2%</b></td><td>85.4%</td><td>73.8%</td><td>92.0%</td><td>100</td><td class="mut">[73.3%, 86.6%]</td></tr>
+<tr><td class="rank">—</td><td>Azure DI <code>prebuilt-invoice</code> — agreement with the HyperAPI reference
+  <span class="refnote">Full run: all 200 consistency-study docs scored. 167 docs extracted; 33 are non-PDF files (Excel/Word) mislabeled <code>.pdf</code> that Azure DI rejects — recorded as honest errors and scored as recall misses, not dropped.</span></td>
+  <td class="bad"><b>60.8%</b></td><td>76.6%</td><td>50.4%</td><td>67.5%</td>
+  <td><b>200 (167 extracted, 33 non-PDF errors)</b></td><td class="mut">[52.7%, 70.4%]</td></tr>
+</tbody>
+</table>
+<p class="sub" style="font-size:12px;margin-top:6px">
+Agreement = canonical-field micro-F1 of a system's output vs. HyperAPI's
+<code>results.zip</code> output on the same STP invoices. CI = 1,000-resample
+document-level bootstrap. <b>HyperAPI's row is 100% by construction</b> —
+comparing <code>results.zip</code> to itself is a tautological match and is
+<b>not</b> a measured accuracy figure or a benchmark win; it is the reference
+baseline. The Claude rows are <b>agreement with the HyperAPI reference</b>, each
+shown with its <i>n</i>. The <b>Azure DI row is the full run</b>: all
+<b>200 of 200</b> consistency-study docs are scored — 167 extracted by Azure DI
+and 33 non-PDF files (Excel/Word mislabeled <code>.pdf</code>) that Azure DI
+rejects, recorded as honest errors and scored as recall misses rather than
+dropped.</p>
+
+<div class="grid2">
+<div class="card">
+<h3>Claude Opus vs. HyperAPI reference — batch-1 (docs 1–100, STP)</h3>
+<div class="kpis">
+<div class="kpi"><span class="kv warn">79.2%</span><span class="kl">agreement with HyperAPI ref</span></div>
+<div class="kpi"><span class="kv">85.4%</span><span class="kl">precision</span></div>
+<div class="kpi"><span class="kv">73.8%</span><span class="kl">recall</span></div>
+<div class="kpi"><span class="kv">92.0%</span><span class="kl">line-count match</span></div>
+<div class="kpi"><span class="kv">100</span><span class="kl">docs</span></div>
+</div>
+<p class="ci">95% bootstrap CI [73.3%, 86.6%] · 0 docs unmatched · n=100 STP
+invoices. Reads as: Claude reproduced ~79% of HyperAPI's deployed-extractor
+field values on docs 1–100. Agreement with the HyperAPI reference — not a
+correctness claim about either system.</p>
+</div>
+<div class="card">
+<h3>Claude Opus vs. HyperAPI reference — batch-2 (docs 101–200, STP)</h3>
+<div class="kpis">
+<div class="kpi"><span class="kv warn">83.8%</span><span class="kl">agreement with HyperAPI ref</span></div>
+<div class="kpi"><span class="kv">87.3%</span><span class="kl">precision</span></div>
+<div class="kpi"><span class="kv">80.6%</span><span class="kl">recall</span></div>
+<div class="kpi"><span class="kv">82.0%</span><span class="kl">line-count match</span></div>
+<div class="kpi"><span class="kv">100</span><span class="kl">docs</span></div>
+</div>
+<p class="ci">95% bootstrap CI [78.9%, 87.9%] · 0 docs unmatched · n=100 STP
+invoices. Reads as: Claude reproduced ~84% of HyperAPI's deployed-extractor
+field values on docs 101–200. Agreement with the HyperAPI reference, not
+accuracy.</p>
+</div>
+<div class="card">
+<h3>Azure DI <code>prebuilt-invoice</code> vs. HyperAPI reference — full run (200 docs)</h3>
+<div class="kpis">
+<div class="kpi"><span class="kv bad">60.8%</span><span class="kl">agreement with HyperAPI ref</span></div>
+<div class="kpi"><span class="kv">76.6%</span><span class="kl">precision</span></div>
+<div class="kpi"><span class="kv">50.4%</span><span class="kl">recall</span></div>
+<div class="kpi"><span class="kv">67.5%</span><span class="kl">line-count match</span></div>
+<div class="kpi"><span class="kv">n=200</span><span class="kl">docs (167 extracted, 33 errors)</span></div>
+</div>
+<p class="ci">95% bootstrap CI [52.7%, 70.4%] · 0 docs unmatched ·
+<b>n=200 of 200 — full run</b>. 167 docs were extracted by Azure DI; 33 are
+non-PDF files (Excel/Word) mislabeled <code>.pdf</code> that Azure DI rejects
+with <code>InvalidContent</code> — recorded as honest <code>{"_error":…}</code>
+records and scored as recall misses against the reference, not dropped. Reads
+as: across all 200 STP invoices, Azure DI reproduced ~61% of HyperAPI's
+deployed-extractor field values. Agreement with the HyperAPI reference, not
+accuracy.</p>
+</div>
+</div>
+
+<div class="card" style="background:#f6f8fa">
+<h3>Why this consistency study is worth publishing</h3>
+<ul>
+<li><b>It is a real, reproducible measurement</b> — just of the right thing.
+"How close is a general-purpose LLM to a deployed production extractor's output
+on STP invoices" is a legitimate question; it is simply <i>not</i> an accuracy
+ranking.</li>
+<li><b>HyperAPI cannot be ranked here.</b> The ground truth is HyperAPI's own
+output, so its agreement is 100% by construction. That 100% is the reference
+baseline — it is not a measured accuracy figure and not a benchmark win.</li>
+<li><b>Where a system and HyperAPI disagree, this study cannot tell you who is
+right.</b> Only an accuracy study against independent validated gold can — see
+the <a href="/benchmarks/studies/azure-di-invoice-study.html">Azure DI study's Mini Pilot
+section</a> and the <a href="/benchmarks/leaderboards/claude-compare-leaderboard.html">claude-compare
+leaderboard</a>. A consistency study and an accuracy study answer different
+questions and must not be merged into one ranking.</li>
+</ul>
+</div>
+
+<h2>Integrity rules applied to this page</h2>
+<ul>
+<li><b>This is a consistency study, not an accuracy leaderboard.</b> Every
+number is agreement with the HyperAPI deployed-extractor reference on the STP
+invoice set — banner-labelled and column-labelled as such.</li>
+<li><b>HyperAPI's 100% is not a win.</b> It is shown as "100% (reference)" with
+an inline explanation: the ground-truth file is HyperAPI's own deployed output,
+so HyperAPI agrees with itself by construction. No agreement metric is presented
+as accuracy.</li>
+<li><b>For accuracy, look elsewhere.</b> Accuracy against independent validated
+gold lives in the <a href="/benchmarks/studies/azure-di-invoice-study.html">Azure DI study's Mini
+Pilot section</a> and the <a href="/benchmarks/leaderboards/claude-compare-leaderboard.html">claude-compare
+leaderboard</a> — not on this page.</li>
+<li><b>Real numbers only.</b> Every cell is a measured scorer output —
+the Claude rows from <code>comparative/results-gt-bench/gt_scores.json</code>,
+the Azure DI row from <code>comparative/azure-di-consistency/azure_gt_score.json</code>
+(produced by <code>score_azure_consistency.py</code>, which reuses the same
+<code>score_gt.py</code> normalizer and canonical field set). Nothing was
+fabricated for this page. This is the W6 / no-faked-cell discipline.</li>
+<li><b>The Azure DI row is the full run.</b> All 200 consistency-study docs are
+scored: 167 extracted by Azure DI and 33 non-PDF files (Excel/Word mislabeled
+<code>.pdf</code>) that Azure DI rejects with <code>InvalidContent</code>. Those
+33 are kept as honest <code>{"_error":…}</code> records and scored as recall
+misses against the reference — not dropped and not fabricated — so the n=200
+figure reflects the real doc set as shipped.</li>
+</ul>
+
+<p class="foot">
+HyperAPI DocumentAI Benchmark Factory · by Hyperbots · 2026-05-22 ·
+Consistency study · reference = results.zip (HyperAPI's deployed-extractor
+output on the STP invoice set) · harness <code>dataset95-scorer-v1</code>.
+Every number is a measured scorer output — no figure is asserted or estimated.
+HyperAPI's 100% is a by-construction reference baseline, not a measured
+accuracy figure.
+</p>
+
+</div>
+</body>
+</html>

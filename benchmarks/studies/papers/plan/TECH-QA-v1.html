@@ -1,0 +1,260 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TECH-QA-v1 — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<a class="back" href="/benchmarks/studies/savior-bench-report.html">← back</a>
+
+<h1>TECH-QA-v1 — Benchmark Factory v1 Technical QA</h1>
+
+<p>Reviewer: senior eval/ML-infra engineer. Scope: full repo at committed local <code>4fe2440</code> (no remote). Method: read all design docs + code, then <strong>actually executed</strong> the harness, repro gate, contamination audit, leaderboard build; re-derived cells with independent code; ran fault-injection and break-it tests. Environment: system <code>python3</code> 3.14.3 (same as stored pins); stdlib-only; fully offline. No junk committed (temp work in <code>/tmp/wave7qa</code>, originals restored byte-for-byte after testing).</p>
+
+<h2>System summary (plain English)</h2>
+<p>A <code>frontier-lab-cto</code>-led, HF-Open-LLM-Leaderboard-style finance-document-AI benchmark factory. A scientific-method skill (<code>SKILL.md</code>) is the constitution: every leaderboard cell must be measured, version-pinned, and rerunnable by a stranger. v1 ships a <strong>stdlib-only, offline, deterministic harness</strong> (<code>harness/run.py</code>) that runs one pure <code>predict(prompt,decoding)-&gt;text</code> adapter on one task × one dataset, scores it with a per-family canonical metric (<code>harness/metrics.py</code>), computes a 2000-resample seeded bootstrap 95% CI + n, and writes a <code>results/*.json</code> carrying the literal rerun command + pins. A SEED leaderboard was run end-to-end: 4 tasks (DE-002/DE-003/DV-001/DC-001) × 1 clearly-labeled synthetic fixture × 3 deterministic adapters = 12 measured cells, plus a contamination audit, a <code>repro_check.py</code> STOP gate, and a static HTML leaderboard. External datasets (SROIE, CORD) are registered but download-gated; the internal-Hyperbots dataset adapter is an inert stub. A <code>SCALE-TO-100.md</code> documents the (not-yet-run) path to 100+ real models.</p>
+
+<h2>Reproduce log (commands actually run)</h2>
+<pre><code class="lang-">
+python3 datasets/seed/gen_fixture.py
+  -&gt; fixture 60 docs sha256 1c66a582...964b  (== manifest.json; zero git diff) PASS
+for t in DE-002 DE-003 DV-001 DC-001; do for m in rule-baseline-v1 \
+  keyword-extractor-v1 hyperbots-ip-seed-v1; do \
+  python3 harness/run.py --task $t --dataset finbench-synth-fixture-v1 \
+  --model $m --seed 20260516; done; done
+  -&gt; all 12 metric/ci95_low/ci95_high/n BIT-IDENTICAL to stored results PASS
+python3 harness/repro_check.py   -&gt; {&quot;all_match&quot;: true,&quot;sampled&quot;: 2}  exit 0  PASS
+python3 contamination/audit.py   -&gt; KeyError: &#x27;dataset&#x27;  exit 1            FAIL (D1)
+python3 leaderboard/build.py     -&gt; leaderboard/index.html; 12 cells       PASS
+Fault-injection: patched metrics.py DE-003 -&gt; 0.0; repro_check.py
+  -&gt; {&quot;all_match&quot;: false} exit 2 (STOP correctly fired); reverted            PASS
+Determinism: same cell run x3 -&gt; output byte-identical                       PASS
+Failure handling: unknown model/dataset/task -&gt; clean message, nonzero exit  PASS
+Internal adapter: is_active()=False; load() raises NotImplementedError       PASS
+SROIE/CORD loaders with no path -&gt; FileNotFoundError, no fabricated rows     PASS
+Network scan of harness/loaders/contamination/build -&gt; none                  PASS
+</code></pre>
+<p>Independent re-derivation (fresh code, NOT importing harness.metrics):</p>
+<ul>
+<li>DV-001 rule-baseline: 48/60 valid golds => acc 0.8; bootstrap (0.8,0.7,0.9)</li>
+</ul>
+<p>  == stored. PASS</p>
+<ul>
+<li>DC-001 rule-baseline: acc 0.75; bootstrap (0.75,0.633333,0.85) == stored. PASS</li>
+<li>DE-002 rule-baseline: field_f1 0.033333 == stored. PASS</li>
+</ul>
+
+<h2>Per-area findings</h2>
+
+<h3>1. Reproducibility — PASS (with one stale-pin caveat)</h3>
+<ul>
+<li>All 12 cells reproduce metric/CI/n <strong>bit-for-bit</strong> from their stored</li>
+</ul>
+<p>  <code>rerun_command</code> on the pinned commit + same Python. Fixture regenerates to   the exact frozen sha256. Determinism verified across repeated runs.</p>
+<ul>
+<li><code>repro_check.py</code> runs and STOPs correctly on injected mismatch (exit 2).</li>
+<li>CAVEAT (D2): every committed <code>results/*.json</code> has</li>
+</ul>
+<p>  <code>pins.git_commit = 65aa750</code> (the <em>scaffold</em> commit) while the repo head is   <code>4fe2440</code>. The SEED numbers were generated at the prior commit and committed   stale; they were NOT regenerated at the commit that ships them. They <em>do</em>   still reproduce (harness logic unchanged between the two commits), so this is   an integrity/process defect, not a numeric one — but the repro contract says   "re-running on the pinned commit reproduces", and the pinned commit recorded   in the artifact is not the commit a cloner is on.</p>
+
+<h3>2. Correctness — FAIL (one real metric bug)</h3>
+<ul>
+<li>bootstrap CI, field_f1, exact_match, numeric_tolerance: math verified by</li>
+</ul>
+<p>  independent re-derivation of 3 cells incl. CIs — exact match. <code>n</code> honestly   reported (60). Tie-band = CI-overlap, statistically honest.</p>
+<ul>
+<li><strong>D3 (critical): <code>bool_match</code> is wrong for the negative class.</strong> It tests</li>
+</ul>
+<p>  substring containment against <code>{&quot;true&quot;,&quot;yes&quot;,&quot;valid&quot;,&quot;1&quot;}</code>; <code>&quot;valid&quot;</code> is a   substring of <code>&quot;invalid&quot;</code>, so a correct <code>&quot;invalid&quot;</code> prediction is parsed as   True. Verified: <code>bool_match(&quot;invalid&quot;,False)=0.0</code> (should be 1.0) and   <code>bool_match(&quot;invalid&quot;,True)=1.0</code> (should be 0.0). Effect: the entire DV-001   column is meaningless. The two adapters that actually compute validity score   0.8 (12 correct "invalid" answers marked wrong) and the always-"valid"   rule-baseline also scores 0.8 — they only <em>look</em> tied because the bug exactly   cancels for the constant baseline. This is a measured-but-incorrect cell that   ships in the SEED leaderboard.</p>
+
+<h3>3. Honesty — PASS (strong)</h3>
+<ul>
+<li>SEED uses an explicitly labeled synthetic fixture; generator and registry</li>
+</ul>
+<p>  shout "NOT a real-world benchmark"; leaderboard has a persistent banner.</p>
+<ul>
+<li>No fabricated SROIE/CORD contents anywhere; both loaders raise rather than</li>
+</ul>
+<p>  emit fake rows; registry records real source_url/mirror/license/splits and   marks them <code>requires-manual-download</code>, sha256 PENDING.</p>
+<ul>
+<li>Internal adapter genuinely inert: <code>is_active()</code> gated on two env vars; both</li>
+</ul>
+<p>  code paths raise <code>NotImplementedError</code>; cannot silently fabricate. Verified.</p>
+<ul>
+<li>contamination/audit: synthetic = real structural argument with the live</li>
+</ul>
+<p>  sha256; external = honest <code>REQUIRES-CHECK / PENDING-on-local-corpus</code>, not a   fake pass. Not a stub.</p>
+
+<h3>4. Robustness — PASS (with D1)</h3>
+<ul>
+<li>Fully offline (no network imports/calls anywhere). Deterministic</li>
+</ul>
+<p>  (pinned seeds for data, decoding, bootstrap, repro-sample). No   float-nondeterminism (integer-indexed bootstrap, rounded to 6 dp).</p>
+<ul>
+<li>Clean failure on unknown model/dataset/task and on missing external data.</li>
+<li><strong>D1 (high): <code>contamination/audit.py</code> crashes out-of-the-box.</strong> It globs</li>
+</ul>
+<p>  <code>results/<em>.json</code> and the repo </em>ships* <code>results/_repro_check.json</code> (no   <code>dataset</code> key) -> <code>KeyError</code>. The README's documented order   (<code>audit.py</code> then <code>repro_check.py</code>) only works on a pristine first run where   <code>_repro_check.json</code> is absent; on the committed repo, and on every re-run,   <code>python contamination/audit.py</code> fails. <code>leaderboard/build.py</code> correctly   filters <code>_</code>-prefixed files; <code>audit.py</code> does not.</p>
+<ul>
+<li><strong>D4 (low): <code>repro_check.py</code> weak isolation.</strong> Its comment says "re-run into a</li>
+</ul>
+<p>  temp results dir to avoid clobbering, then compare", but it does not: it   re-reads the <em>same</em> file <code>run.py</code> just overwrote and compares to the   pre-read copy. It still catches a true mismatch (fault-injection confirmed),   but it conflates "rerun is deterministic" with "rerun matches the committed   artifact" and cannot detect a committed-artifact-vs-code drift (this is   exactly how D2's stale commit slipped through the gate).</p>
+
+<h3>5. Scale claim — CREDIBLE (concrete, honestly bounded)</h3>
+<p><code>SCALE-TO-100.md</code> is specific, not hand-wave: harness is genuinely task/dataset/model-agnostic (verified by reading <code>run.py</code> — adding a model = registry+adapter entry, no harness change); the one new component (HF-hub pinned-<code>revision</code> adapter) is sketched against the fixed <code>predict</code> contract; scale-up deps are pre-staged+commented in <code>PINS.txt</code> (<code>transformers==4.44.2</code> etc.); cost/throughput fields exist per model in <code>models.json</code>; sharding/tiering/budget-gate and the release pipeline are named. It is explicitly NOT run (human-locked) and says so. Gaps: no executed proof of even one real HF model (the "only new code to scale" is unexercised); the 549-task / 100-model claim is a procedure, not a demonstration. Credible as a <em>plan</em>; unproven as an <em>implementation</em>.</p>
+
+<h3>6. Guardrails — PASS</h3>
+<p>Metrics computed in code, never asserted. HyperAPI accuracy appears only as "per apis.hyperbots.com" (leaderboard banner + adapter/registry notes), never injected into a measured cell. Hyperbots-IP rows factually framed ("open-source model fine-tuned by Hyperbots"), not disparagement of others. Zero HITL references. Every design doc carries <code>## Sources</code> + <code>## Open assumptions</code>. Frozen single prompt per task; decoding fixed per family; no per-model prompt/decoding search.</p>
+
+<h2>Prioritized defect list</h2>
+<table>
+<tr><th>ID</th><th>Sev</th><th>Area</th><th>Defect</th><th>Fix</th></tr>
+<tr><td>D3</td><td>CRITICAL</td><td>Correctness</td><td><code>bool_match</code> substring bug: "invalid"->True; DV-001 column invalid</td><td>Token-exact / word-boundary match; check negative set first or use exact equality on normalized label</td></tr>
+<tr><td>D1</td><td>HIGH</td><td>Robustness</td><td><code>contamination/audit.py</code> KeyError on shipped <code>_repro_check.json</code>; crashes out-of-the-box & on re-run</td><td>Skip <code>os.path.basename(f).startswith(&quot;_&quot;)</code> like <code>build.py</code> does</td></tr>
+<tr><td>D2</td><td>HIGH</td><td>Reproducibility/Integrity</td><td>All committed results pin <code>git_commit=65aa750</code> but repo head is <code>4fe2440</code>; SEED numbers committed stale</td><td>Regenerate <code>results/</code> at the shipping commit (or have run.py refuse to write if working tree != HEAD)</td></tr>
+<tr><td>D4</td><td>LOW</td><td>Robustness</td><td><code>repro_check.py</code> doesn't isolate the rerun (re-reads overwritten file); can't catch artifact/code drift (let D2 through)</td><td>Re-run into a temp <code>RESULTS_DIR</code>, diff against committed file</td></tr>
+</table>
+
+<h2>Verdict</h2>
+<ul>
+<li><strong>Is the SEED leaderboard trustworthy? NO — not as shipped.</strong> The harness,</li>
+</ul>
+<p>  pinning, honesty, and reproducibility machinery are genuinely solid and the   numbers reproduce bit-for-bit, BUT (a) the DV-001 cells are computed with a   broken metric (D3) so 3 of 12 cells are wrong-but-measured, and (b) every   committed cell pins the wrong git commit (D2), violating the repo's own   repro contract, and (c) the contamination audit step fails out-of-the-box   (D1). These are mechanical, isolated, and fixable in well under a day; the   architecture is sound and the foundation is trustworthy once D1–D3 are fixed.</p>
+<ul>
+<li><strong>Reproduce match? YES</strong> — fixture sha256 and all 12 metrics/CIs/n are</li>
+</ul>
+<p>  bit-identical to stored; only <code>git_commit</code> differs (which is D2, a defect in   the <em>stored</em> value, not in reproduction).</p>
+<ul>
+<li><strong>Scale path credible? YES as a documented plan</strong> (concrete, pinned,</li>
+</ul>
+<p>  honestly bounded), <strong>unproven as implementation</strong> (no real HF model ever   executed; the single scale-up adapter is unexercised).</p>
+
+<h2>Sources</h2>
+<ul>
+<li>This repo @ <code>4fe2440</code>: <code>README.md</code>, <code>plan/PLAN-benchmark-factory.md</code>,</li>
+</ul>
+<p>  <code>plan/LEADERBOARD-SPEC.md</code>, <code>plan/SCALE-TO-100.md</code>,   <code>.claude/skills/benchmark-factory/SKILL.md</code>, <code>.claude/agents/<em></code>,   <code>harness/run.py</code>, <code>harness/metrics.py</code>, <code>harness/repro_check.py</code>,   <code>harness/tasks.json</code>, <code>harness/models.json</code>, <code>harness/PINS.txt</code>,   <code>harness/adapters/</em></code>, <code>datasets/seed/gen_fixture.py</code>,   <code>datasets/seed/manifest.json</code>, <code>datasets/registry/registry.json</code>,   <code>datasets/loaders/<em></code>, <code>contamination/audit.py</code>,   <code>contamination/audit-records.json</code>, <code>leaderboard/build.py</code>, <code>results/</em>.json</code>.</p>
+<ul>
+<li>Executed reproduction + fault-injection + independent re-derivation, this QA</li>
+</ul>
+<p>  session (logged above). Temp artifacts: <code>/tmp/wave7qa/</code> (uncommitted).</p>
+
+<h2>Open assumptions</h2>
+<ol>
+<li>System <code>python3</code> 3.14.3 == the interpreter that produced the stored pins</li>
+</ol>
+<p>   (it does: stored <code>pins.python</code> = "3.14.3"). Reproduction on a different    CPython minor is expected-but-untested (PINS.txt claims >=3.10 stdlib-only).</p>
+<ol>
+<li>The two design-doc commits (65aa750 scaffold, 4fe2440 instantiation) leave</li>
+</ol>
+<p>   harness logic unchanged — verified indirectly: cells reproduce despite the    commit pin mismatch, implying the metric/harness code is identical between    them.</p>
+<ol>
+<li>SROIE/CORD/internal real-data paths are exercised only via their inactive</li>
+</ol>
+<p>   guards; the actual parsing code is intentionally unimplemented (honest    <code>NotImplementedError</code>), so end-to-end external-dataset behaviour is    unverifiable until a human supplies the corpora.</p>
+<ol>
+<li>"Trustworthy once D1–D3 fixed" assumes no further latent metric bugs in the</li>
+</ol>
+<p>   not-yet-seeded families (reconcile/match/check) — those have no code yet.</p>
+
+<hr/>
+
+<h2>Remediation (Wave-7 fix pass)</h2>
+
+<p>Reviewer-issued defects D1–D4 fixed; SEED re-run end-to-end with the fixed harness; results/ + leaderboard/ regenerated; audit + repro gate re-verified. Smallest-correct-change per defect, no scope creep. Method unchanged (measured-not-asserted; accuracy only "per apis.hyperbots.com"; Hyperbots-IP framed factually; no HITL; stdlib-only, offline, deterministic).</p>
+
+<h3>What changed</h3>
+<ul>
+<li><strong>D3 (CRITICAL) — <code>harness/metrics.py</code> <code>bool_match</code>.</strong> Replaced substring</li>
+</ul>
+<p>  containment (<code>any(w in pn for w in t)</code>) with <strong>exact normalized-token   equality</strong> (<code>pn in t</code> / <code>pn in f</code>) after <code>_norm</code> (strip+lower+ws-collapse).   Hand re-derivation, re-confirmed in code: <code>bool_match(&quot;invalid&quot;,False)=1.0</code>,   <code>bool_match(&quot;invalid&quot;,True)=0.0</code>, <code>bool_match(&quot;valid&quot;,True)=1.0</code>,   <code>bool_match(&quot;valid&quot;,False)=0.0</code>, <code>bool_match(&quot;  VALID &quot;,True)=1.0</code>.   "invalid" no longer matches the positive set; normalization preserved.</p>
+<ul>
+<li><strong>D1 (HIGH) — <code>contamination/audit.py</code>.</strong> Glob now skips</li>
+</ul>
+<p>  <code>os.path.basename(f).startswith(&quot;_&quot;)</code> (mirrors <code>leaderboard/build.py</code>) and   defensively skips rows lacking <code>dataset</code>/<code>model</code>. Works pristine and on   every re-run; <code>_repro_check.json</code> no longer triggers <code>KeyError:&#x27;dataset&#x27;</code>.</p>
+<ul>
+<li><strong>D2 (HIGH) — truthful pins.</strong> <code>harness/run.py</code> <code>git_commit()</code> already</li>
+</ul>
+<p>  stamps live <code>git rev-parse HEAD</code> at run time; the defect was <em>stale committed   artifacts</em>. SEED regenerated at the shipping commit so every   <code>results/<em>.json</code> <code>pins.git_commit</code> now equals repo HEAD   (the immutable code commit <code>cf2d9a5…</code>, not the scaffold <code>65aa750…</code>).   Shipped as a <strong>two-commit split</strong>: commit 1 freezes the fixed harness code;   commit 2 carries SEED artifacts regenerated </em>against<em> commit 1, so every   <code>results/</em>.json</code> <code>pins.git_commit</code> truthfully equals a real, immutable   ancestor that contains the exact harness that produced the numbers. (A   single commit cannot self-reference its own SHA inside committed artifacts;   pinning the producing-code ancestor is the only structurally-honest state.)</p>
+<ul>
+<li><strong>D4 (LOW) — <code>harness/repro_check.py</code> isolation + drift-sensitivity.</strong></li>
+</ul>
+<p>  <code>run.py</code> honors <code>BENCH_RESULTS_DIR</code>; repro_check now reruns into a   <code>tempfile.mkdtemp</code> (auto-removed) and compares the <strong>fresh rerun vs. the   stored committed artifact</strong> (no clobber). For pin drift it requires the   artifact's <code>pins.git_commit</code> to be (a) a real commit, (b) an <strong>ancestor of   HEAD</strong>, and (c) <strong>byte-identical in <code>harness/</code> + fixture code to HEAD</strong> —   i.e. the stored numbers are a faithful rerun of the current code. This   catches the exact D2 failure (pinning the scaffold <code>65aa750</code>, whose   <code>metrics.py</code> differs) and bogus/unknown pins, while not imposing the   impossible "pin == own commit" on committed artifacts. Rerun failure   (returncode/missing file) and numeric/CI/n mismatch still STOP.</p>
+
+<h3>Before -> after DV-001 (the only column that moved)</h3>
+<table>
+<tr><th>cell</th><th>before metric/CI</th><th>after metric/CI</th></tr>
+<tr><td>DV-001 rule-baseline-v1</td><td>0.8  [0.7,0.9]</td><td>0.8  [0.7,0.9] (unchanged: always-"valid", 48/60 valid golds; the substring bug canceled exactly for the constant baseline)</td></tr>
+<tr><td>DV-001 keyword-extractor-v1</td><td>0.8  [0.7,0.9]</td><td>1.0  [1.0,1.0]</td></tr>
+<tr><td>DV-001 hyperbots-ip-seed-v1</td><td>0.8  [0.7,0.9]</td><td>1.0  [1.0,1.0]</td></tr>
+</table>
+
+<p>Gold distribution (measured): 60 DV-001 rows = 48 valid + 12 invalid. The two adapters that actually compute validity were previously losing the 12 "invalid" answers to the substring bug (12/60 -> 0.2 loss -> 0.8); now correct on both classes -> 1.0. The bogus 3-way 0.8 tie is resolved into true scores. All 9 non-DV-001 cells are <strong>bit-identical</strong> before vs. after (metric/CI/n); <code>n</code>=60 throughout; CIs sane.</p>
+
+<h3>Re-verify log (commands actually run, this pass)</h3>
+<pre><code class="lang-">
+python3 datasets/seed/gen_fixture.py
+  -&gt; 60 docs sha256 1c66a582…964b (== manifest; zero diff)            PASS
+12 cells re-run vs frozen code commit cf2d9a5 (4 tasks x 3 adapters)
+  -&gt; 9 cells bit-identical; DV-001 kw+ip 0.8-&gt;1.0; rule-baseline 0.8  PASS
+  -&gt; all 12 pins.git_commit == cf2d9a5 (producing-code ancestor)      PASS
+python3 contamination/audit.py   -&gt; 3 records, exit 0 (no KeyError)   PASS (D1)
+python3 harness/repro_check.py   -&gt; {&quot;all_match&quot;:true,&quot;sampled&quot;:2} 0  PASS
+python3 leaderboard/build.py     -&gt; index.html, 12 cells             PASS
+D4 drift tests (fault-injection, restored byte-for-byte after):
+  inject scaffold pin 65aa750 (harness differs) -&gt; exit 2 STOP        PASS
+  inject metric drift (+0.1)                    -&gt; exit 2 STOP        PASS
+  committed state (pin=cf2d9a5, ancestor, same harness) -&gt; exit 0     PASS
+No venv needed (stdlib-only). Temp rerun dirs auto-cleaned; no junk committed.
+</code></pre>
+
+<h3>Residual risks</h3>
+<ol>
+<li>Open-assumption #4 stands: only the seeded families (extract/validate/</li>
+</ol>
+<p>   classify/calculate) are exercised; reconcile/match/check have no code yet —    unaudited for latent metric bugs.</p>
+<ol>
+<li>DV-001 = synthetic fixture only; 1.0 scores reflect adapters precisely</li>
+</ol>
+<p>   designed for this fixture, not a real-world or cross-model ranking claim    (SEED banner already states this).</p>
+<ol>
+<li>D4 pin-drift check requires <code>git</code> and the artifact's pinned commit to be</li>
+</ol>
+<p>   a fetched ancestor of HEAD; a shallow/grafted clone lacking that commit    would (conservatively, correctly) STOP rather than silently pass.</p>
+<ol>
+<li>External SROIE/CORD/internal paths remain inactive (honest</li>
+</ol>
+<p>   NotImplementedError) — end-to-end external behavior still unverifiable    until a human supplies the corpora.</p>
+
+</body></html>

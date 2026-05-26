@@ -1,0 +1,822 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAVIOR-Bench — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<a class="back" href="/benchmarks/studies/savior-bench-report.html">← back</a>
+
+<h1>SAVIOR-Bench: A Provenance-Tagged Benchmark for Financial-Document Parsing — Extraction, Layout Awareness, and Bounding-Box Visual Grounding</h1>
+
+<p><strong>Draft — paper artifact, P2.5 (not externally published).</strong> HF upload and the live blog are human-gated. This document is the structured draft from the in-house-attested results-of-record. P2.5 deepens the paper toward PureDocBench <em>format</em> parity (research spine, related-work matrix, audit / taxonomy / case-study / reproducibility appendices, an explicit gap roadmap). <strong>P2.5 adds structure and honest framing only — it adds no new data, no reproduced cells, no fabricated slices, and no invented figures.</strong> Every number is unchanged from P2 and carries its provenance tag.</p>
+
+<p>> <strong><code>parse</code> is a THREE-FACET task (reframe 2026-05-22 — read this).</strong> > SAVIOR-Bench's <code>parse</code> task (DC-000) is defined as <strong><code>parse</code> = extraction + > layout awareness + bounding box</strong> — three facets, each with its own > metric(s): > 1. <strong>Extraction</strong> — field/value/line-item extraction accuracy AND OCR >    text-recognition accuracy (word-level recall/precision, parse-intent >    F1/WER, and OCR normalized edit distance). <strong>Measured</strong> (attested). > 2. <strong>Layout awareness</strong> — reading order, layout-element structure, >    table/region structure (metrics: layout-element accuracy, reading-order >    accuracy, PaIRS). <strong>Defined; not yet measured</strong> — no ground-truth data >    in scope. > 3. <strong>Bounding box</strong> — visual grounding: correctness of predicted bounding >    boxes / field-to-region localization (metrics: bbox IoU, >    field-to-region grounding accuracy). <strong>Defined; not yet measured</strong> — no >    ground-truth data in scope. > The layout-awareness and bounding-box facets are <strong>defined, not > fabricated</strong>: §2.3 names their metrics and scoring; their result status is > "Not yet measured — facet defined, awaiting data." No number is invented > for an unmeasured facet. The facet structure is mirrored in > <code>harness/tasks.json</code> DC-000 (<code>facets</code>).</p>
+
+<hr/>
+
+<h2>Abstract</h2>
+
+<p>> <strong>Fine-tune disclosure (read this first — it is the single most important > methodological caveat in this paper).</strong> Two rows in the SAVIOR-Bench OCR > table (<code>Qwen2.5-VL-7B-F</code>, <code>Qwen2.5-VL-3B-F</code>) and the leading parse-intent > system (<code>hyperapi-parse-intent</code>) are <strong>fine-tuned</strong> on SAVIOR-Train > (Hyperbots-IP, open-source backbones fine-tuned by Hyperbots via LoRA — see > Appendix A). <strong>Every other row is zero-shot in the vendor's native > settings.</strong> These are <strong>not apples-to-apples comparisons</strong> and are labelled > inline with a <code>[FT]</code> tag everywhere they appear. The fine-tuned-vs-zero-shot > distinction is a methodology fact independent of who ran the numbers.</p>
+
+<p>SAVIOR-Bench is a 509-document, expert-annotated financial-document benchmark spanning five corpora (UCSF Industry Documents, in-house synthetic, misc. public financial, Inv3D, FUNSD) with inter-annotator agreement (IAA) of <strong>0.761</strong> (fuzzy string similarity over 187 double-annotated pairs). The benchmark defines a single <code>parse</code> task (DC-000) as a <strong>three-facet</strong> task — <strong><code>parse</code> = extraction + layout awareness + bounding box</strong> — evaluated on identical inputs, prompts, and scoring:</p>
+
+<ul>
+<li><strong>Facet 1 — Extraction.</strong> Field/value/line-item extraction AND OCR</li>
+</ul>
+<p>  text-recognition accuracy: word-level multiset <strong>recall</strong> and   <strong>precision</strong>, <strong>parse-intent F1</strong> and <strong>word error rate (WER)</strong>, and OCR   <strong>normalized edit distance</strong>. <strong>Measured</strong> (attested) — the SAVIOR-Bench   OCR table (21 systems), the parse-intent table (23 systems), and a   31-model OCR edit-distance leaderboard (externally-sourced; §5.1.4).</p>
+<ul>
+<li><strong>Facet 2 — Layout awareness.</strong> Reading order, layout-element structure,</li>
+</ul>
+<p>  table/region structure: <strong>layout-element accuracy</strong>, <strong>reading-order   accuracy</strong>, and <strong>PaIRS</strong> (pairwise spatial relationship score, reported   only for prompt-controlled models). <strong>Defined; not yet measured</strong> — see   §2.3.</p>
+<ul>
+<li><strong>Facet 3 — Bounding box.</strong> Visual grounding: correctness of predicted</li>
+</ul>
+<p>  bounding boxes / field-to-region localization: <strong>bbox IoU</strong> and   <strong>field-to-region grounding accuracy</strong>. <strong>Defined; not yet measured</strong> —   see §2.3.</p>
+
+<p>We report all seven HuggingFace-grade pillars: side-by-side comparison, dataset composition, accuracy slices (to the extent the attested data supports them), latency distributions, cost-per-call and cost-per-correct, failure modes, and methodology/reproducibility.</p>
+
+<p>On parse-intent (23 systems), the fine-tuned <code>hyperapi-parse-intent</code> <code>[FT]</code> leads at <strong>F1 0.8328 / WER 0.2589</strong>; the best <em>well-documented</em> zero-shot system is GPT-4o (0.8052 / 0.4232) — a +0.0276 F1 fine-tune gap. (An under-documented panel row, <code>DocIntentOCR-3B</code>, posts a marginally higher 0.8102 / 0.5622 with no recorded vendor/checkpoint/config; reported as-attested, not used as the comparison anchor — see §5.1.1.) On SAVIOR-Bench OCR (21 systems), the fine-tuned <code>Qwen2.5-VL-7B-F</code> <code>[FT]</code> leads recall at <strong>0.9294</strong>, narrowly above strong zero-shot cloud baselines Textract (0.9233) and Azure-DI (0.9202); on layout fidelity, the highest PaIRS scores go to zero-shot PaddleOCR-VL-1.5 (0.8766) and dots.mocr (0.8191) — <strong>but the SAVIOR-Bench panel is non-prompt-controlled (NPC), so PaIRS here is a format-compatibility proxy, not a directly comparable layout-quality ranking</strong> (see §2.2 / §8; the body retracts any PC-vs-NPC PaIRS contrast).</p>
+
+<p><strong>Provenance (applies to every number in this paper):</strong> all cells are <strong>in-house-run, user-attested 2026-05-18</strong> (source: <code>benchmark.xlsx</code> + <code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code>, the in-repo recoverable extract transcribed verbatim from the Hyperbots-provided <code>Benchmark-VLM_OCR.pdf</code>). They are <strong>not factory-harness-reproduced</strong> — factory re-reproduction under the deterministic harness is optional and strengthening, not a publication gate (per the 2026-05-18 attestation). Confidence intervals are <strong>reported (no CI)</strong>: <code>ci95=null</code>; no interval is fabricated. <code>n=509</code> for the OCR table; <code>n</code> is not reported for the parse-intent table in the attested source (stated honestly, not inferred). Any product-accuracy figure would be cited only "per apis.hyperbots.com"; the metrics in this paper are <strong>model OCR/parse performance</strong>, labelled as such.</p>
+
+<p><strong>Scope note vs deeper public benchmarks.</strong> This paper matches the <em>format discipline</em> of deep public document-AI benchmarks (research spine, related-work matrix, audit/taxonomy/repro appendices). It does <strong>not</strong> claim their <em>evidence depth</em>: SAVIOR-Bench is attested-not-reproduced, has no per-category/-degradation slices, and is not yet a regenerable corpus. §10 ("Path to PureDocBench-depth") names that gap and the work that would close it, instead of imitating depth the artifact has not earned. The related-work matrix in §3 marks ✗ on every dimension we do not yet satisfy.</p>
+
+<hr/>
+
+<h2>1. Introduction</h2>
+
+<p>Financial-document understanding (invoices, packing slips, forms, multilingual scans, low-quality PDFs, complex tables) places two demands on an OCR/VLM stack that generic OCR benchmarks under-measure: (1) <strong>whole-token fidelity</strong> — downstream LLM extraction needs <code>Total</code>, not <code>Totl</code>; a 1-char edit that char-level CER rewards still breaks a key match; and (2) <strong>layout fidelity</strong> — reading order and spatial structure determine whether a table parses. SAVIOR-Bench scores both, on a financial-document corpus, with a single frozen prompt and pinned decoding per task family, against a wide panel of vendor, frontier, and open-source systems.</p>
+
+<p><strong>Contributions.</strong></p>
+<ol>
+<li>A 509-document expert-annotated financial-document benchmark (five</li>
+</ol>
+<p>   corpora, six document classes) with an annotation-agreement number    (IAA 0.761) and an audit of <em>our own</em> ground truth (Appendix B).</p>
+<ol>
+<li>A dual task family — OCR transcription + layout fidelity and parse-intent</li>
+</ol>
+<p>   extraction — scored on identical inputs, prompts, and pinned decoding.</p>
+<ol>
+<li>A side-by-side panel of ~21 OCR and 23 parse-intent systems (vendor,</li>
+</ol>
+<p>   frontier, open-source), with the fine-tuned-vs-zero-shot distinction    surfaced first and labelled inline.</p>
+<ol>
+<li>A formal failure taxonomy distilled from the attested failure-mode data</li>
+</ol>
+<p>   (Appendix C), honest case studies from existing fixtures (§7), and a    reproducibility appendix with an explicit    <em>attested-not-factory-reproduced</em> status box (Appendix D).</p>
+<ol>
+<li>An honest related-work comparison matrix (§3) that marks where</li>
+</ol>
+<p>   SAVIOR-Bench does <strong>not</strong> yet satisfy an infrastructure dimension, and a    named roadmap (§10) for closing the evidence-depth gap to deeper public    benchmarks.</p>
+
+<p><strong>Naming exception (per-surface governance — W2/G5).</strong> Naming the measured systems is a deliberate scientific-benchmark norm (the HuggingFace/DeepMind convention; it <em>is</em> pillar 1). Comparisons here are neutral, evidenced, dated, and versioned. The naming exception is scoped <strong>per surface, explicitly</strong>:</p>
+
+<table>
+<tr><th>Surface</th><th>Named competitors allowed?</th><th>Rule</th></tr>
+<tr><td><code>paper/SAVIOR-Bench.md</code> (this artifact)</td><td>✓ allowed</td><td>Scientific-benchmark exception applies.</td></tr>
+<tr><td><code>paper/HF-CARD.md</code></td><td>✓ allowed</td><td>Same artifact; same exception.</td></tr>
+<tr><td><code>leaderboard/index.html</code></td><td>✓ allowed</td><td>Same scientific artifact; named rows are required for a leaderboard to exist.</td></tr>
+<tr><td><code>launch/POST.md</code>, <code>launch/BLOG.md</code>, <code>launch/FUNNEL.md</code>, signup landing, any marketing copy</td><td>✗ NOT allowed</td><td>Category labels only ("leading cloud document-AI API", "frontier multimodal LLM", "open-source OCR/VLM"); the named comparison lives only in the linked benchmark artifact.</td></tr>
+</table>
+
+<p>This rule is non-waivable; standing no-named-competitors guardrail applies everywhere outside the three scientific surfaces above (I-inv-3).</p>
+
+<p><strong>Paper structure.</strong> §2 Benchmark Construction (dataset + scoring rubric); §3 Related Work (comparison matrix); §4 Experimental Setup; §5 Results (the seven pillars); §6 Analysis; §7 Case Studies; §8 Limitations; §9 Conclusion & Future Work; §10 Path to PureDocBench-depth; Appendices A (LoRA recipe), B (fixture/annotation audit), C (failure taxonomy), D (reproducibility, incl. D.2 status box, D.4 verbatim per-cell provenance string, D.5 honest-citation guidance). The headline figure is §5.1.3 — a faithful re-presentation of §5.1.1/§5.1.2 that retains the metric groups where fine-tuning loses.</p>
+
+<hr/>
+
+<h2>2. Benchmark Construction</h2>
+
+<h3>2.1 Dataset</h3>
+
+<p><strong>SAVIOR-Bench v1 — 509 expert-annotated financial documents.</strong></p>
+
+<table>
+<tr><th>Source corpus</th><th>Share</th></tr>
+<tr><td>UCSF Industry Documents</td><td>46.95%</td></tr>
+<tr><td>In-house synthetic</td><td>17.88%</td></tr>
+<tr><td>Misc. public financial</td><td>17.49%</td></tr>
+<tr><td>Inv3D</td><td>9.04%</td></tr>
+<tr><td>FUNSD</td><td>8.64%</td></tr>
+</table>
+
+<ul>
+<li><strong>Document classes (per the PDF):</strong> invoices, packing slips, forms,</li>
+</ul>
+<p>  multilingual scans, low-quality PDFs, complex tables.</p>
+<ul>
+<li><strong>Annotation quality:</strong> IAA <strong>0.761</strong> — fuzzy string similarity computed</li>
+</ul>
+<p>  over <strong>187 double-annotated pairs</strong>. The annotation process and a   mismatch analysis of our <em>own</em> ground truth are in Appendix B (this is an   audit of our fixtures, <strong>not</strong> a third-party benchmark audit).</p>
+<ul>
+<li><strong>Access:</strong> benchmark access on request — niyati.chhaya@hyprbots.com.</li>
+</ul>
+<p>  Sample document crops appear in the source <code>Benchmark-VLM_OCR.pdf</code>   (transcribed in-repo at <code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code>).   Per-document   raw labels are not redistributed in this draft (licensing of the   underlying public corpora is mixed; UCSF/FUNSD/Inv3D terms govern).</p>
+
+<h3>2.2 The <code>parse</code> task is three facets</h3>
+
+<p><code>parse</code> (DC-000) is <strong>one task with three facets</strong>: a parsed document is only correct if its <strong>text/fields</strong> are right (extraction), its <strong>structure</strong> is right (layout awareness), and each field is <strong>placed</strong> correctly on the page (bounding box). The three facets are scored independently, each with its own metric(s), and a system can lead one facet while losing another. The facet definitions and metrics are mirrored in <code>harness/tasks.json</code> DC-000 (<code>facets</code>).</p>
+
+<h4>Facet 1 — Extraction (MEASURED, attested)</h4>
+
+<p>Field/value/line-item extraction accuracy AND OCR text-recognition accuracy.</p>
+
+<ul>
+<li><strong>Word-level recall & precision (multiset).</strong> Reference and hypothesis are</li>
+</ul>
+<p>  treated as token multisets; recall = matched / reference tokens, precision   = matched / hypothesis tokens. Word-level (not char-level) is deliberate:   downstream LLM extraction consumes whole tokens, so <code>Totl</code> ≠ <code>Total</code> must   be penalized fully, not partially.</p>
+<ul>
+<li><strong>Parse-intent F1 / WER.</strong> Structured-parse variant: F1 over extracted</li>
+</ul>
+<p>  intent fields (↑ better); WER over the transcription (↓ better).</p>
+<ul>
+<li><strong>OCR normalized edit distance (<code>ocr_edit_distance</code>).</strong> Normalized</li>
+</ul>
+<p>  Levenshtein edit distance of predicted vs gold transcription (range 0–1,   <strong>↓ better</strong>). Populated from the externally-sourced 31-model OCR   edit-distance leaderboard (<code>ocr-edit-distance-v1</code>; §5.1.4).</p>
+
+<h4>Facet 2 — Layout awareness (DEFINED; NOT YET MEASURED)</h4>
+
+<p>Reading order, layout-element structure, table/region structure.</p>
+
+<ul>
+<li><strong>Layout-element accuracy (<code>layout_element_accuracy</code>).</strong> Accuracy of</li>
+</ul>
+<p>  predicted layout-element labels/structure (title, paragraph, table,   figure, region) vs the gold layout. Scored as element-match F1 over the   gold layout tree (range 0–1, ↑ better).</p>
+<ul>
+<li><strong>Reading-order accuracy (<code>reading_order_accuracy</code>).</strong> Correctness of the</li>
+</ul>
+<p>  predicted reading order of layout elements vs the gold sequence. Scored as   a normalized rank-correlation / sequence-match over the ordered element   list (range 0–1, ↑ better).</p>
+<ul>
+<li><strong>PaIRS (pairwise spatial relationship score).</strong> Quadratic spatial penalty</li>
+</ul>
+<p>  over pairwise token-position relationships, z-scored, for layout/reading-   order fidelity. <strong>Reported only for prompt-controlled (PC) models</strong> —   systems whose output layout can be steered by the frozen prompt.   Non-prompt-controlled (NPC) systems (e.g. cloud document-AI APIs that emit   a fixed schema) are scored on format compatibility, and their PaIRS values   are present but not directly comparable to PC PaIRS. This is a stated   methodological limit, not a hidden one (see §8).</p>
+
+<p><strong>Status.</strong> This facet is <strong>defined here but not yet measured</strong>: no layout-awareness ground-truth dataset (gold layout trees / reading-order sequences) is in scope for SAVIOR-Bench v1. Its result status is <strong>"Not yet measured — facet defined, awaiting data."</strong> No layout-awareness number is fabricated. (The attested SAVIOR-Bench OCR table does carry PaIRS values — those are reported in §5.1.2 as a layout <em>proxy</em>, with the PC/NPC comparability caveat; the full layout-awareness facet — element + reading- order accuracy on gold layout trees — remains unmeasured.)</p>
+
+<h4>Facet 3 — Bounding box / visual grounding (DEFINED; NOT YET MEASURED)</h4>
+
+<p>Correctness of predicted bounding boxes / field-to-region localization.</p>
+
+<ul>
+<li><strong>Bounding-box IoU (<code>bbox_iou</code>).</strong> Mean Intersection-over-Union of</li>
+</ul>
+<p>  predicted vs gold bounding boxes over all grounded fields/regions (range   0–1, ↑ better).</p>
+<ul>
+<li>**Field-to-region grounding accuracy</li>
+</ul>
+<p>  (<code>field_to_region_grounding_accuracy</code>).** Fraction of extracted fields   whose predicted box matches the gold region above an IoU threshold (e.g.   IoU ≥ 0.5) (range 0–1, ↑ better).</p>
+
+<p><strong>Status.</strong> This facet is <strong>defined here but not yet measured</strong>: no bounding-box / visual-grounding ground-truth dataset (gold field boxes) is in scope for SAVIOR-Bench v1. Its result status is <strong>"Not yet measured — facet defined, awaiting data."</strong> No bounding-box number is fabricated.</p>
+
+<h3>2.3 Decoding</h3>
+
+<ul>
+<li><strong>Decoding (frozen, per <code>harness/tasks.json</code> DC-000):</strong> temperature 0.1,</li>
+</ul>
+<p>  top-p 0.9, max_tokens 2048, seed 20260516. One frozen prompt template per   task, identical for every model in the family; model chat-formatting lives   only in adapters.</p>
+
+<hr/>
+
+<h2>3. Related Work</h2>
+
+<p>SAVIOR-Bench sits among public document-AI / parse benchmarks. The matrix below compares it on infrastructure dimensions that distinguish a verifiable, contamination-aware, regenerable benchmark from a static results table. <strong>It is deliberately honest: ✗ marks every dimension SAVIOR-Bench does not yet satisfy.</strong> PureDocBench facts are from its public abstract + a structural fetch (arXiv 2605.07492, WebFetched 2026-05-18), not a full read; other benchmarks are summarized from their public descriptions. Cell values for non-SAVIOR benchmarks are <em>as publicly described</em>, not independently re-verified by us — this is a positioning table, <strong>not</strong> a third-party benchmark audit.</p>
+
+<p><strong>Legend:</strong> ✓ = satisfied · ◐ = partial / scoped · ✗ = not satisfied · n/d = not determined from public description.</p>
+
+<table>
+<tr><th>Dimension</th><th>SAVIOR-Bench v1</th><th>PureDocBench (2605.07492)</th><th>Generic OCR bench (CER/WER leaderboards)</th><th>Public form/KIE sets (FUNSD/CORD-style)</th></tr>
+<tr><td>Sample images / crops shown</td><td>◐ (crops in PDF, labels not redistributed)</td><td>✓ (figures + case studies)</td><td>◐</td><td>✓</td></tr>
+<tr><td>Document classes enumerated</td><td>✓ (6 classes)</td><td>✓</td><td>✗ (mixed)</td><td>◐ (single domain)</td></tr>
+<tr><td>Per-category / per-track slices</td><td><strong>✗</strong> (corpus-level aggregate only)</td><td>✓ (per-track/-category/-degradation)</td><td>◐</td><td>◐</td></tr>
+<tr><td>Degradation / robustness tracks</td><td><strong>✗</strong> (none)</td><td>✓ (degradation tracks)</td><td>✗</td><td>✗</td></tr>
+<tr><td>Annotation-agreement reported (IAA)</td><td>✓ (0.761, 187 pairs)</td><td>n/d</td><td>✗</td><td>◐</td></tr>
+<tr><td>Own-fixture audit / error taxonomy</td><td>✓ (Appendix B/C, our GT only)</td><td>✓ (prior-benchmark audit, 2.5k+ errors)</td><td>✗</td><td>✗</td></tr>
+<tr><td>Confidence intervals</td><td><strong>✗</strong> (<code>ci95=null</code>, "reported (no CI)")</td><td>n/d</td><td>✗</td><td>✗</td></tr>
+<tr><td>Contamination-mitigation statement</td><td>◐ (mixed public corpora, no held-out regen)</td><td>✓ (source-traceable)</td><td>✗</td><td>✗</td></tr>
+<tr><td>Regenerable / source-traceable corpus</td><td><strong>✗</strong> (static attested corpus)</td><td>✓</td><td>✗</td><td>✗</td></tr>
+<tr><td>Numbers reproduced under a fixed harness</td><td><strong>✗</strong> (attested, not factory-reproduced)</td><td>✓ (reproduced leaderboard)</td><td>◐</td><td>◐</td></tr>
+<tr><td>Frozen prompt + pinned decoding documented</td><td>✓ (DC-000, seed 20260516)</td><td>✓</td><td>◐</td><td>◐</td></tr>
+<tr><td>Model panel breadth</td><td>◐ (~21 OCR / 23 parse, configs not all per-model)</td><td>✓ (40 models, 0.1B–1T)</td><td>◐</td><td>◐</td></tr>
+<tr><td>Fine-tune-vs-zero-shot disclosed inline</td><td>✓ (<code>[FT]</code>, abstract-first)</td><td>n/d</td><td>✗</td><td>✗</td></tr>
+<tr><td>Cost + latency distributions reported</td><td>◐ (p50/p99/fail, cost; no full histogram)</td><td>n/d</td><td>✗</td><td>✗</td></tr>
+</table>
+
+<p><strong>Honest reading of this matrix.</strong> SAVIOR-Bench is competitive on <em>disclosure discipline</em> (IAA reported, own-fixture audit, fine-tune disclosure, frozen decoding) but is <strong>strictly behind PureDocBench on evidence depth</strong>: no per-category/-degradation slices, no confidence intervals, no regenerable corpus, and numbers attested rather than reproduced. Those ✗ cells are not closed by this paper; §10 is the named path that would close them. Marking them ✗ rather than papering over them is the point of this section.</p>
+
+<hr/>
+
+<h2>4. Experimental Setup</h2>
+
+<ul>
+<li><strong>Tasks.</strong> Two families on identical inputs: (a) OCR transcription +</li>
+</ul>
+<p>  layout fidelity (DC-000, dataset <code>savior-bench-v1</code>, <code>n=509</code>); (b)   parse-intent structured extraction (DC-000, dataset   <code>parse-intent-inhouse-v1</code>, <code>n</code> not reported in the attested source).</p>
+<ul>
+<li><strong>Panel.</strong> ~21 OCR systems and 23 parse-intent systems spanning cloud</li>
+</ul>
+<p>  document-AI vendors, frontier multimodal LLMs, and open-source OCR/VLM   stacks. Three rows are SAVIOR-Train fine-tuned (Hyperbots-IP); all others   are zero-shot in vendor-native settings.</p>
+<ul>
+<li><strong>Decoding (frozen).</strong> temperature 0.1, top-p 0.9, max_tokens 2048,</li>
+</ul>
+<p>  seed 20260516; one frozen prompt template per task family; model   chat-formatting confined to adapters (<code>harness/tasks.json</code> DC-000).</p>
+<ul>
+<li><strong>Provenance.</strong> All cells in-house-run, user-attested 2026-05-18</li>
+</ul>
+<p>  (<code>benchmark.xlsx</code>, <code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code> ←   Hyperbots-provided <code>Benchmark-VLM_OCR.pdf</code>); not factory-harness-   reproduced; <code>ci95=null</code>. See Appendix D and the status box therein.</p>
+
+<hr/>
+
+<h2>5. Results — the seven pillars</h2>
+
+<p>> <strong>Statistical-integrity banner (W3 — read this before reading any cell > below).</strong> Every cell in §5 carries <code>ci95=null</code> ("reported (no CI)"); <strong>no > interval is computed</strong>, and under I-inv-4 <strong>no interval is ever > fabricated</strong>. The attested source is corpus-level aggregate only — per- > document scores do not exist, so Monte-Carlo bootstrap (resamples 2000, > seed 20260516 per <code>harness/PINS.txt</code>) cannot run yet (closure path: §10 > R1 + R2 under W6). Every cell in <code>results/DC-000__*.json</code> likewise > carries <code>ci95_low: null, ci95_high: null</code>. Where a comparison phrase > here states a delta ("+0.0276 F1", "+0.0061 recall", "narrowly above"), > it is <strong>direction-only</strong>, NOT an interval-significant claim — the body > language ("narrow", "modest", "marginally") is the honest hedge. <code>n</code> is > reported where the source provides it (<code>n=509</code> for OCR) and explicitly > reported as <strong>not in source</strong> where it does not (parse-intent table — see > §8 limitation #6, OPEN-QUESTION-3). No <code>n</code> is inferred. The bootstrap > recipe is documented as the <strong>path</strong>, never asserted as <strong>run</strong>.</p>
+
+<p>> <strong>Provenance recoverability banner (W1).</strong> Every cell published in this > section carries the four-part provenance contract: <strong>source-file</strong> > (<code>benchmark.xlsx</code> for leaderboard cells; <code>paper/SOURCE-EXTRACT-Benchmark- &gt; VLM-OCR.md</code> for IAA, latency, cost, LoRA recipe, failure modes, corpus > mix, and <code>n=509</code> — both resolve on disk in this repo); > <strong>run_date</strong> 2026-05-18; <strong>harness sha</strong> <code>4325b6c</code> (this commit's tree — > the deterministic-harness scaffold under which a <em>factory</em> re-run would > execute, NOT under which these cells were produced); <strong>attested, NOT > factory-reproduced</strong> (per the 2026-05-18 attestation — factory > re-reproduction is strengthening, not a publication gate). No cite in > this paper points at an absent artifact; the previously-referenced > <code>Benchmark-VLM_OCR.pdf</code> is the Hyperbots source-of-record and resolves > in-repo via the verbatim extract <code>paper/SOURCE-EXTRACT-Benchmark-VLM- &gt; OCR.md</code>. See Appendix D.</p>
+
+<h3>5.1 Pillar 1 — Side-by-side on identical inputs/prompts/scoring</h3>
+
+<h4>5.1.1 Parse-intent (DC-000, dataset <code>parse-intent-inhouse-v1</code>) — F1 ↑ / WER ↓</h4>
+
+<p><code>[FT]</code> = fine-tuned (Hyperbots-IP / SAVIOR-Train), not apples-to-apples vs the zero-shot rows. <code>n</code> not reported in the attested source for this table.</p>
+
+<table>
+<tr><th>Rank</th><th>Model</th><th>F1 ↑</th><th>WER ↓</th><th>Setting</th></tr>
+<tr><td>1</td><td>hyperapi-parse-intent <code>[FT]</code></td><td><strong>0.8328</strong></td><td><strong>0.2589</strong></td><td>fine-tuned</td></tr>
+<tr><td>2</td><td>DocIntentOCR-3B</td><td>0.8102</td><td>0.5622</td><td>zero-shot</td></tr>
+<tr><td>3</td><td>GPT-4o</td><td>0.8052</td><td>0.4232</td><td>zero-shot</td></tr>
+<tr><td>4</td><td>o3</td><td>0.7686</td><td>0.4869</td><td>zero-shot</td></tr>
+<tr><td>5</td><td>PaddleOCR-VL-1.5</td><td>0.7260</td><td>2.9641</td><td>zero-shot</td></tr>
+<tr><td>6</td><td>GLM-OCR</td><td>0.7150</td><td>1.5400</td><td>zero-shot</td></tr>
+<tr><td>7</td><td>dots.mocr</td><td>0.6963</td><td>1.6317</td><td>zero-shot</td></tr>
+<tr><td>8</td><td>Gemini 2.5 Flash</td><td>0.6653</td><td>1.3306</td><td>zero-shot</td></tr>
+<tr><td>9</td><td>Qwen2.5-VL-3B-Inst</td><td>0.6563</td><td>0.7404</td><td>zero-shot</td></tr>
+<tr><td>10</td><td>Qwen2.5-VL-7B-Inst</td><td>0.6485</td><td>0.8172</td><td>zero-shot</td></tr>
+<tr><td>11</td><td>Gemini 2.5 Pro</td><td>0.6351</td><td>0.6009</td><td>zero-shot</td></tr>
+<tr><td>12</td><td>GPT-4.1</td><td>0.6261</td><td>0.9058</td><td>zero-shot</td></tr>
+<tr><td>13</td><td>Mistral-Large-3-675B</td><td>0.6077</td><td>0.9840</td><td>zero-shot</td></tr>
+<tr><td>14</td><td>Claude Sonnet 4.6</td><td>0.5974</td><td>0.9308</td><td>zero-shot</td></tr>
+<tr><td>15</td><td>Qwen3.6-35B-A3B</td><td>0.5643</td><td>2.5460</td><td>zero-shot</td></tr>
+<tr><td>16</td><td>Qwen3-VL-32B-Instruct</td><td>0.5414</td><td>1.2720</td><td>zero-shot</td></tr>
+<tr><td>17</td><td>Logics-Parsing-v2</td><td>0.5241</td><td>6.1980</td><td>zero-shot</td></tr>
+<tr><td>18</td><td>Llama-3.2-90B-Vision</td><td>0.4982</td><td>1.0986</td><td>zero-shot</td></tr>
+<tr><td>19</td><td>MinerU2.5-Pro-2604-1.2B</td><td>0.4705</td><td>1.1708</td><td>zero-shot</td></tr>
+<tr><td>20</td><td>FireRed-OCR</td><td>0.4408</td><td>4.5847</td><td>zero-shot</td></tr>
+<tr><td>21</td><td>Youtu-Parsing</td><td>0.4277</td><td>5.3630</td><td>zero-shot</td></tr>
+<tr><td>22</td><td>Qianfan-OCR</td><td>0.3640</td><td>6.6560</td><td>zero-shot</td></tr>
+<tr><td>23</td><td>DeepSeek-OCR-2</td><td>0.3430</td><td>12.3541</td><td>zero-shot</td></tr>
+</table>
+
+<p>> <strong>Reading guidance.</strong> The headline (<code>hyperapi-parse-intent</code> first) is a > <strong>fine-tuned</strong> result and must be read against the <strong>best zero-shot</strong> > reference. We anchor the modesty framing on <strong>GPT-4o (0.8052)</strong> as the > best <em>well-documented</em> zero-shot system. <code>DocIntentOCR-3B</code> (0.8102) posts > a marginally higher F1 but is an <strong>under-documented panel row</strong>: no > vendor / checkpoint / config is recorded for it (Appendix D, §10 R6 — > per-model configs exist for some rows only). Its number is reported > as-attested and <strong>not</strong> used as the modesty anchor. The fine-tune gap > over the GPT-4o zero-shot anchor is <strong>+0.0276 F1</strong> with a large WER > reduction (0.2589 vs 0.4232); over the marginally-higher but > under-documented DocIntentOCR-3B it is +0.0226 F1. It is not a claim > that the backbone is intrinsically stronger zero-shot.</p>
+
+<p>> <strong>W6 factory-reproduction audit (2026-05-20).</strong> The pinned harness was run > per-cell against all 23 rows of this table under the W6 workstream > (<code>harness/w6_factory_rerun_DC000.py</code> against <code>harness/run.py</code> with > <code>--task DC-000 --dataset parse-intent-inhouse-v1 --seed 20260516</code>, > bootstrap pins 2000 / 20260516). Per-cell outcomes are logged in > <code>results/_w6_factory_rerun.json</code> and as a <code>factory_rerun_2026_05_20</code> block > on every <code>results/DC-000__parse-intent-inhouse-v1__*.json</code> cell. > <strong>Result: 0/23 cells re-derived green; 23/23 red on structural > impossibility; 0 CIs added; 0 attested rows retracted; 0 silent flips > of <code>reproduced_by_factory</code>.</strong> The three structural reasons (recorded > verbatim in the audit log) are: (i) <code>harness/adapters/__init__.py</code> > REGISTRY registers only the SEED adapters (<code>rule-baseline-v1</code>, > <code>keyword-extractor-v1</code>, <code>hyperbots-ip-seed-v1</code>) — none of the 23 vendor > models has an adapter in this offline / stdlib-only / no-API-key SEED > harness, by design; (ii) <code>harness/run.py</code> LOADERS does not register > <code>parse-intent-inhouse-v1</code> (the in-house parse-intent corpus is not in > this repository); (iii) the attested source <code>benchmark.xlsx</code> sheet 1 > carries only <strong>aggregate</strong> F1 / WER per model — no per-document score > vector exists in the attested source, so the bootstrap CI cannot be > derived without fabricating per-doc scores (which we refuse). The > attested numbers above are therefore <strong>not contradicted</strong>, only > <strong>un-re-derivable under this offline harness today</strong>; they remain in > their documented "in-house-run, user-attested 2026-05-18 (source: > benchmark.xlsx); NOT factory-harness-reproduced" provenance tier > (Appendix D). <code>ci95</code> stays <code>null</code> (§5 statistical-integrity banner; > Pillar 7 <code>ci95=null</code> policy). Closing this W6 slice green (per-doc > scores + CIs) requires the W7 / W9 dependencies (a regenerable > source-traceable parse-intent corpus + adapter shapes for hosted-API > vendor models — <code>plan/SCALE-TO-100.md</code>); this is the path documented > in §10 R1/R6, not asserted as done.</p>
+
+<h4>5.1.2 SAVIOR-Bench OCR (DC-000, dataset <code>savior-bench-v1</code>, n=509) — Recall ↑ / Precision ↑ / PaIRS ↑</h4>
+
+<p><code>cat</code> = PaIRS category: <strong>PC</strong> = prompt-controlled (PaIRS comparable); <strong>NPC</strong> = non-prompt-controlled (PaIRS = format-compatibility proxy, not directly comparable to PC PaIRS).</p>
+
+<table>
+<tr><th>Rank (by Recall)</th><th>Model</th><th>Recall ↑</th><th>Precision ↑</th><th>PaIRS ↑</th><th>cat</th><th>Setting</th></tr>
+<tr><td>1</td><td>Qwen2.5-VL-7B-F <code>[FT]</code></td><td><strong>0.9294</strong></td><td>0.9157</td><td>0.7066</td><td>NPC</td><td>fine-tuned</td></tr>
+<tr><td>2</td><td>Textract</td><td>0.9233</td><td>0.8902</td><td>0.5117</td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>3</td><td>Azure-DI</td><td>0.9202</td><td>0.8978</td><td>0.5025</td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>4</td><td>Qwen2.5-VL-3B-F <code>[FT]</code></td><td>0.9167</td><td>0.9101</td><td>0.7068</td><td>NPC</td><td>fine-tuned</td></tr>
+<tr><td>5</td><td>Gemini-2.5-Flash</td><td>0.9144</td><td>0.8967</td><td>0.6074</td><td>PC</td><td>zero-shot</td></tr>
+<tr><td>6</td><td>Qwen2.5-VL-7B-Instr.</td><td>0.9091</td><td>0.9145</td><td>0.5629</td><td>PC</td><td>zero-shot</td></tr>
+<tr><td>7</td><td>Nanonets-OCR-s</td><td>0.9039</td><td>0.5336</td><td>0.4354</td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>8</td><td>dots.ocr</td><td>0.8992</td><td>0.9290</td><td>0.5540</td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>9</td><td>GPT-4o</td><td>0.8854</td><td><strong>0.9322</strong></td><td>0.5826</td><td>PC</td><td>zero-shot</td></tr>
+<tr><td>10</td><td>Mistral OCR</td><td>0.8611</td><td>0.8986</td><td>0.5382</td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>11</td><td>Qwen2.5-VL-3B-Instr.</td><td>0.8547</td><td>0.9120</td><td>0.5764</td><td>PC</td><td>zero-shot</td></tr>
+<tr><td>12</td><td>Qwen3.6-35B-A3B</td><td>0.7843</td><td>0.9213</td><td>0.5492</td><td>PC</td><td>zero-shot</td></tr>
+<tr><td>13</td><td>DeepSeek-OCR</td><td>0.7706</td><td>0.9008</td><td>0.5034</td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>14</td><td>olmOCR-7B-0725-FP8</td><td>0.7463</td><td>0.9450</td><td>0.5864</td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>15</td><td>MinerU2.5-Pro-2604-1.2B</td><td>0.7339</td><td>0.8006</td><td>0.5437</td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>16</td><td>dots.mocr</td><td>0.7227</td><td>0.8563</td><td>0.8191</td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>17</td><td>PaddleOCR-VL-1.5</td><td>0.7220</td><td>0.7120</td><td><strong>0.8766</strong></td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>18</td><td>GLM-OCR</td><td>0.6530</td><td>0.8691</td><td>0.8687</td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>19</td><td>PaddleOCR-VL</td><td>0.5955</td><td>0.8194</td><td>0.4180</td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>20</td><td>Qianfan-OCR</td><td>0.5240</td><td>0.4563</td><td>0.5321</td><td>NPC</td><td>zero-shot</td></tr>
+<tr><td>21</td><td>DeepSeek-OCR-2</td><td>0.2380</td><td>0.1526</td><td>0.6531</td><td>NPC</td><td>zero-shot</td></tr>
+</table>
+
+<p>> <strong>Reading guidance.</strong> The recall leader is <strong>fine-tuned</strong>; the best > <strong>zero-shot</strong> recall is Textract (0.9233), within 0.0061 of the fine-tuned > top. On <strong>precision</strong>, the best system is zero-shot GPT-4o (0.9322), ahead > of both fine-tuned rows. On <strong>layout (PaIRS)</strong>, the leaders are zero-shot > PaddleOCR-VL-1.5 (0.8766) and dots.mocr (0.8191); the fine-tuned models > (0.7066 / 0.7068) do <strong>not</strong> lead layout. The fine-tune advantage is > recall-specific and modest, not universal.</p>
+
+<h4>5.1.3 Headline chart (faithful re-presentation of §5.1.1/§5.1.2 — no new data)</h4>
+
+<p>This is the single figure the paper leads with. It re-presents cells already in §5.1.1/§5.1.2 — <strong>it introduces no new number, slice, or estimate.</strong> It is specified here so any rendering is auditable against the attested tables above. It deliberately includes the two metric groups where fine-tuning <strong>loses</strong>; cropping those would misrepresent the result.</p>
+
+<table>
+<tr><th>Metric group</th><th>Best fine-tuned <code>[FT]</code></th><th>Best zero-shot</th><th>Delta</th><th>Source row</th></tr>
+<tr><td>OCR recall ↑</td><td>0.9294 (<code>Qwen2.5-VL-7B-F</code>)</td><td>0.9233 (Textract)</td><td><strong>+0.0061</strong> (FT leads, narrowly)</td><td>§5.1.2</td></tr>
+<tr><td>Parse-intent F1 ↑</td><td>0.8328 (<code>hyperapi-parse-intent</code>)</td><td>0.8102 (DocIntentOCR-3B)</td><td><strong>+0.0226</strong> (FT leads)</td><td>§5.1.1</td></tr>
+<tr><td>OCR precision ↑</td><td>0.9157 (<code>Qwen2.5-VL-7B-F</code>)</td><td>0.9322 (GPT-4o)</td><td><strong>−0.0165</strong> (zero-shot leads)</td><td>§5.1.2</td></tr>
+<tr><td>Layout / PaIRS ↑</td><td>0.7066 (<code>Qwen2.5-VL-7B-F</code>)</td><td>0.8766 (PaddleOCR-VL-1.5)</td><td><strong>−0.1700</strong> (zero-shot leads)</td><td>§5.1.2</td></tr>
+</table>
+
+<p>> <strong>Mandatory chart caption (renders verbatim under the figure).</strong> > Fine-tuned rows are LoRA fine-tunes of an open backbone on SAVIOR-Train > (Hyperbots-IP); the "best zero-shot" value in each group is the strongest > zero-shot system <em>for that metric</em> — not the same system across groups. > Model OCR/parse performance, not product accuracy. In-house-run, > user-attested 2026-05-18; not factory-reproduced (Appendix D). The > parse-intent "best zero-shot" shown (0.8102, DocIntentOCR-3B) is a > marginally-higher but under-documented panel row; the well-documented > modesty anchor is GPT-4o (0.8052) — fine-tune gap +0.0276 F1 (§5.1.1). PaIRS > comparability is PC-only (§2.2): the layout group's zero-shot leader is an > NPC proxy and the group is illustrative of the <em>direction</em> of the > fine-tune effect, not a ranked PC claim. Public-copy renderings use > category labels in place of competitor names (naming exception is > artifact-scoped, §1).</p>
+
+<p>The honest reading: fine-tuning buys a narrow recall/F1 edge and <strong>loses</strong> on precision and layout. A figure showing only the first two rows would be the dishonest one; both losing rows are retained by design.</p>
+
+<h4>5.1.4 Extraction facet — OCR edit-distance leaderboard (DC-000, dataset <code>ocr-edit-distance-v1</code>, 31 systems) — Edit distance ↓</h4>
+
+<p>This is the <strong>extraction facet's OCR text-recognition</strong> data point: a 31-system OCR leaderboard scored by <strong>normalized edit distance</strong> (Levenshtein, <strong>↓ better</strong>).</p>
+
+<p>> <strong>INTEGRITY — externally-sourced / attested (read before any cell).</strong> This > table is a <strong>user-provided OCR edit-distance leaderboard</strong> (provided > 2026-05-22). It was <strong>NOT run by this factory's harness</strong> and is <strong>NOT</strong> > in-house-run. Every cell is transcribed <strong>verbatim</strong>, tagged > <code>attested=true, factory_reproduced=false, externally_sourced=true, &gt; ci95=null</code>, provenance = the provided table. It is <strong>not</strong> presented as a > factory-run cell. No number is fabricated. The model <code>Type</code> column is > recorded as a per-cell tag. Ingested by > <code>harness/ingest_ocr_edit_distance.py</code> → <code>results/DC-000__ocr-edit-distance- &gt; v1__*.json</code> (31 cells). Row 12, <strong><code>HyperAPI PaddleOCR OURS</code> (0.061)</strong>, is > the Hyperbots entry.</p>
+
+<table>
+<tr><th>Rank</th><th>Model</th><th>Edit distance ↓</th><th>Type</th></tr>
+<tr><td>1</td><td>GLM-OCR</td><td>0.019</td><td>Specialist VLM</td></tr>
+<tr><td>2</td><td>GPT-4o</td><td>0.020</td><td>General VLM</td></tr>
+<tr><td>3</td><td>MinerU-2.5</td><td>0.023</td><td>Pipeline</td></tr>
+<tr><td>4</td><td>Qwen3-VL-235B</td><td>0.025</td><td>General VLM</td></tr>
+<tr><td>5</td><td>PaddleOCR-VL-1.5</td><td>0.031</td><td>Specialist VLM</td></tr>
+<tr><td>6</td><td>Mathpix</td><td>0.033</td><td>Pipeline (Commercial)</td></tr>
+<tr><td>7</td><td>GOT-OCR-2.0</td><td>0.041</td><td>Specialist VLM</td></tr>
+<tr><td>8</td><td>Surya</td><td>0.057</td><td>Pipeline</td></tr>
+<tr><td>9</td><td>MinerU-0.9</td><td>0.058</td><td>Pipeline</td></tr>
+<tr><td>10</td><td>Gemini-1.5-Pro</td><td>0.058</td><td>General VLM</td></tr>
+<tr><td>11</td><td>Qwen3.5-2B-FT</td><td>0.059</td><td>Finetuned VLM</td></tr>
+<tr><td>12</td><td><strong>HyperAPI PaddleOCR OURS</strong></td><td><strong>0.061</strong></td><td>Pipeline Tools</td></tr>
+<tr><td>13</td><td>OpenOCR</td><td>0.070</td><td>Pipeline</td></tr>
+<tr><td>14</td><td>PaddleOCR-v4</td><td>0.071</td><td>Pipeline</td></tr>
+<tr><td>15</td><td>Qwen2-VL-72B</td><td>0.072</td><td>General VLM</td></tr>
+<tr><td>16</td><td>InternVL2-76B</td><td>0.074</td><td>General VLM</td></tr>
+<tr><td>17</td><td>Gemini-1.5-Flash</td><td>0.087</td><td>General VLM</td></tr>
+<tr><td>18</td><td>Tesseract-OCR</td><td>0.096</td><td>Pipeline</td></tr>
+<tr><td>19</td><td>InternVL2-26B</td><td>0.118</td><td>General VLM</td></tr>
+<tr><td>20</td><td>GPT-4o-mini</td><td>0.134</td><td>General VLM</td></tr>
+<tr><td>21</td><td>Qwen2-VL-7B</td><td>0.146</td><td>General VLM</td></tr>
+<tr><td>22</td><td>InternVL2-8B</td><td>0.189</td><td>General VLM</td></tr>
+<tr><td>23</td><td>DocOwl2</td><td>0.251</td><td>Specialist VLM</td></tr>
+<tr><td>24</td><td>EasyOCR</td><td>0.260</td><td>Pipeline</td></tr>
+<tr><td>25</td><td>mPLUG-DocOwl1.5</td><td>0.272</td><td>Specialist VLM</td></tr>
+<tr><td>26</td><td>Fox</td><td>0.282</td><td>Specialist VLM</td></tr>
+<tr><td>27</td><td>TextMonkey</td><td>0.293</td><td>Specialist VLM</td></tr>
+<tr><td>28</td><td>LLaVA-1.6-34B</td><td>0.312</td><td>General VLM</td></tr>
+<tr><td>29</td><td>Vary-toy</td><td>0.323</td><td>Specialist VLM</td></tr>
+<tr><td>30</td><td>Marker-1.0</td><td>0.382</td><td>Pipeline</td></tr>
+<tr><td>31</td><td>Nougat-0.1.0</td><td>0.401</td><td>Specialist VLM</td></tr>
+</table>
+
+<p>> <strong>Reading guidance.</strong> <code>ocr_edit_distance</code> is <strong>lower-is-better</strong>; the table > is ranked ascending. This is an <strong>externally-sourced attested</strong> leaderboard > — it is reported as a transcribed data point for the extraction facet, not > as a factory-reproduced ranking, and carries no CI (the source gives point > estimates only). The 31 rows are reported as-attested with <code>Rank</code> and > <code>Type</code> exactly as provided; no row is re-ordered, dropped, or re-scored.</p>
+
+<h4>5.1.5 Layout-awareness and bounding-box facets — defined, not measured</h4>
+
+<p>The §2.2 facet definitions name a metric and a scoring method for the <strong>layout-awareness</strong> facet (layout-element accuracy, reading-order accuracy, PaIRS) and the <strong>bounding-box</strong> facet (bbox IoU, field-to-region grounding accuracy). <strong>Neither facet has a result table in this paper:</strong> no layout-awareness ground-truth (gold layout trees / reading-order sequences) and no bounding-box ground-truth (gold field boxes) is in scope for SAVIOR-Bench v1.</p>
+
+<p>> <strong>Status for both facets: "Not yet measured — facet defined, awaiting > data."</strong> No number is fabricated for either facet. This is the same > honesty discipline applied to the attested cells: a facet without data is > <em>defined and named</em>, never <em>filled with invented numbers</em>. Closing these > facets requires a layout-annotated and a box-annotated corpus — tracked in > §10 (R8/R9) as evidence work not yet done.</p>
+
+<h3>5.2 Pillar 2 — Datasets + document classes</h3>
+
+<p>See §2.1. Five corpora, six document classes, IAA 0.761 over 187 double- annotated pairs. Sample crops in the PDF; access on request. The annotation process and an audit of our own ground truth are in Appendix B.</p>
+
+<h3>5.3 Pillar 3 — Accuracy by field type AND document quality</h3>
+
+<p><strong>Honest limit:</strong> the attested source (<code>benchmark.xlsx</code>) provides <strong>corpus-level aggregate</strong> Recall/Precision/PaIRS and F1/WER per model over all 509 documents. It does <strong>not</strong> provide a per-document or per-class / per-quality / per-field breakdown for the OCR or parse-intent tables. The PDF states the <strong>source-corpus mix</strong> (the table in §2.1), which fixes the <em>stratification the benchmark could support</em>, but the attested numerical cells are not sliced by class × quality × field. <strong>We therefore do not report a by-class / by-quality / by-field accuracy table — generating one would require fabricating splits the attested data does not contain.</strong> This slice is deferred to a factory-harness re-run that emits per-document scores (tracked in §10 as a strengthening item, not a publication gate).</p>
+
+<h3>5.4 Pillar 4 — Latency distributions</h3>
+
+<p>From <code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code> (in-repo verbatim extract of the Hyperbots-provided <code>Benchmark-VLM_OCR.pdf</code>; SAVIOR-Train fine-tuned inference path):</p>
+
+<ul>
+<li><strong>p50 latency: 2,548 ms</strong></li>
+<li><strong>p99 latency: 3,319 ms</strong></li>
+<li><strong>Failure rate: 3%</strong> (KV-cache-bound; a 2-GPU path is noted as the</li>
+</ul>
+<p>  mitigation).</p>
+
+<p>These are the only distribution points the attested source provides (p50, p99, fail rate). No full histogram or p90/p999 is asserted (not in source).</p>
+
+<h3>5.5 Pillar 5 — Cost-per-call AND cost-per-correct</h3>
+
+<p>From the PDF, on an <strong>A100 40 GB at ~$2/hr</strong> (SAVIOR-Train inference path):</p>
+
+<ul>
+<li><strong>Cost per attempted call: $0.000186</strong></li>
+<li><strong>Cost per successful call: $0.000191</strong></li>
+<li><strong>≈ $0.19 per 1,000 successful calls</strong></li>
+</ul>
+
+<p>The gap between attempted and successful reflects the 3% failure rate. Cost figures are infrastructure-derived from the PDF; they are not a price quote.</p>
+
+<h3>5.6 Pillar 6 — Failure modes (ours / competitors / residual)</h3>
+
+<p>From the PDF:</p>
+
+<ul>
+<li><strong>Ours (SAVIOR-Train fine-tuned):</strong> multilingual documents; ambiguous</li>
+</ul>
+<p>  very-dense layouts.</p>
+<ul>
+<li><strong>Competitors / zero-shot panel:</strong> vertical text; fine print; multi-column</li>
+</ul>
+<p>  layouts; logo-embedded text; degraded scans; handwriting; structured   headers; bold-styled text.</p>
+<ul>
+<li><strong>Residual:</strong> the multilingual + very-dense-layout cluster persists even</li>
+</ul>
+<p>  after fine-tuning — fine-tuning narrows but does not eliminate it.</p>
+
+<p>The formalized failure taxonomy (classes, definitions, and the explicit "no per-class counts available" disclosure) is in Appendix C.</p>
+
+<h3>5.7 Pillar 7 — Methodology · rubric · reproducibility</h3>
+
+<ul>
+<li>Rubric and decoding: §2.2 and <code>harness/tasks.json</code> DC-000.</li>
+<li><strong>Fine-tuning recipe (LoRA appendix):</strong> see Appendix A.</li>
+<li><strong>Reproducibility status:</strong> the cells in this paper are **in-house-run,</li>
+</ul>
+<p>  user-attested 2026-05-18<strong>, </strong>not factory-harness-reproduced<strong>. The factory   invariant (deterministic harness, pinned env, <code>rerun_command</code> +   <code>repro_check</code> per published leaderboard cell) is </strong>defined and in place<strong>   (<code>harness/PINS.txt</code>, <code>harness/repro_check.py</code>), and factory re-reproduction   is the planned strengthening path — but per the 2026-05-18 attestation it   is </strong>optional, not a publication gate**. Every cell carries its provenance   string, <code>reproduced_by_factory: false</code>, and a <code>rerun_command</code> that honestly   states "in-house run; user-attested 2026-05-18 — not reproduced by the   factory harness". Full detail + the explicit status box: Appendix D.</p>
+
+<hr/>
+
+<h2>6. Analysis</h2>
+
+<p>This section reads the §5 numbers; it introduces no new data.</p>
+
+<ol>
+<li><strong>The fine-tune advantage is narrow and metric-specific, not universal.</strong></li>
+</ol>
+<p>   On parse-intent, <code>hyperapi-parse-intent</code> <code>[FT]</code> leads the best    well-documented zero-shot system by <strong>+0.0276 F1</strong> (0.8328 vs GPT-4o    0.8052; +0.0226 vs the under-documented DocIntentOCR-3B 0.8102) with a    large WER reduction. On OCR recall the fine-tuned <code>Qwen2.5-VL-7B-F</code> <code>[FT]</code> leads    the best zero-shot system (Textract) by only <strong>+0.0061</strong> (0.9294 vs    0.9233). On OCR <strong>precision</strong> and <strong>PaIRS</strong>, zero-shot systems lead (GPT-4o    precision 0.9322; PaddleOCR-VL-1.5 PaIRS 0.8766). Fine-tuning buys a small    recall/F1 edge, not a layout or precision edge.</p>
+<ol>
+<li><strong>Recall and layout decouple.</strong> PaddleOCR-VL-1.5 is near the bottom on</li>
+</ol>
+<p>   recall (0.7220, rank 17) yet first on PaIRS (0.8766); Textract is second    on recall (0.9233) but mid-pack on PaIRS (0.5117). High transcription    recall does not imply faithful reading order — which is exactly why the    benchmark scores both, and why PaIRS is reported separately.</p>
+<ol>
+<li><strong>WER and F1 are not monotone on parse-intent.</strong> PaddleOCR-VL-1.5 reaches</li>
+</ol>
+<p>   F1 0.7260 (rank 5) with WER 2.9641; DeepSeek-OCR-2 reaches WER 12.3541 at    F1 0.3430. Systems that hallucinate verbose output can score moderate    field-F1 while transcription WER explodes — a pattern visible only because    both metrics are reported.</p>
+<ol>
+<li><strong>PC vs NPC is a comparability boundary, not a quality ranking.</strong> The</li>
+</ol>
+<p>   PaIRS leaders among PC models (Gemini-2.5-Flash 0.6074, Qwen2.5-VL-7B-Instr.    0.5629) are not directly comparable to NPC PaIRS proxies. The matrix in §3    marks our lack of per-track slices ✗; analysis here stays at the    corpus-aggregate level the attested data supports and does not infer    slice-level conclusions.</p>
+
+<p>No claim in this section exceeds what the attested aggregate cells support; where a finer cut would be needed it is deferred to §10, not asserted.</p>
+
+<hr/>
+
+<h2>7. Case Studies</h2>
+
+<p>Worked examples drawn <strong>only from the existing attested data and the failure modes documented in <code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code> (← the Hyperbots-provided <code>Benchmark-VLM_OCR.pdf</code>)</strong>. These are honest readings of data already in the paper — <strong>no new measurements, no per-document scores (none exist in the attested source), no invented numbers.</strong> Each case states explicitly which numbers are attested and which are qualitative observations from the PDF's documented failure modes.</p>
+
+<h3>Case Study 1 — Fine-tune narrows but does not close the multilingual / very-dense cluster</h3>
+
+<p><strong>Attested basis:</strong> Pillar 6 (PDF) lists "multilingual documents; ambiguous very-dense layouts" as the residual failure cluster <em>for the fine-tuned SAVIOR-Train models themselves</em>; the PDF states the cluster "persists even after fine-tuning." <strong>Observation:</strong> the fine-tuned OCR leader's recall edge over the best zero-shot system is only +0.0061 (0.9294 vs Textract 0.9233), consistent with fine-tuning improving the common case while a hard residual cluster caps the headroom. <strong>What is NOT claimed:</strong> no per-language or per-density accuracy number is given — the attested source has no such slice; this is a qualitative reading, flagged as such.</p>
+
+<h3>Case Study 2 — High recall, weak layout (transcription ≠ structure)</h3>
+
+<p><strong>Attested basis:</strong> Textract recall 0.9233 (rank 2) with PaIRS 0.5117; PaddleOCR-VL-1.5 recall 0.7220 (rank 17) with PaIRS 0.8766 (rank 1). <strong>Observation:</strong> a system can recover almost all tokens yet emit them in a poor reading order (Textract), while another recovers fewer tokens but preserves spatial structure (PaddleOCR-VL-1.5). For downstream table parsing, PaIRS captures a failure mode that recall alone hides. <strong>What is NOT claimed:</strong> PaIRS comparability is PC-only; both rows here are NPC, so their PaIRS is a format-compatibility proxy (see §2.2 / §8) — the contrast is illustrative of the metric's purpose, not a ranked claim.</p>
+
+<h3>Case Study 3 — Verbose hallucination inflates WER while F1 survives</h3>
+
+<p><strong>Attested basis:</strong> parse-intent — PaddleOCR-VL-1.5 F1 0.7260 / WER 2.9641; DeepSeek-OCR-2 F1 0.3430 / WER 12.3541; contrast GPT-4o F1 0.8052 / WER 0.4232. <strong>Observation:</strong> field-level F1 can remain moderate even when the transcription is heavily padded with hallucinated tokens (WER ≫ 1). Reporting WER alongside F1 exposes systems whose structured output looks acceptable but whose raw transcription is unreliable. <strong>What is NOT claimed:</strong> no per-document error inspection (the attested source is aggregate only).</p>
+
+<h3>Case Study 4 — Fine-tuning does not buy precision or layout</h3>
+
+<p><strong>Attested basis:</strong> OCR precision leader is zero-shot GPT-4o (0.9322), ahead of both fine-tuned rows (<code>Qwen2.5-VL-7B-F</code> 0.9157, <code>Qwen2.5-VL-3B-F</code> 0.9101); PaIRS leaders are zero-shot (PaddleOCR-VL-1.5 0.8766, dots.mocr 0.8191) vs fine-tuned 0.7066 / 0.7068. <strong>Observation:</strong> the SAVIOR-Train objective improves recall/F1 but not precision or reading-order fidelity — a candid counter-result that the fine-tune-first framing must not obscure. <strong>What is NOT claimed:</strong> nothing beyond the attested aggregate cells.</p>
+
+<hr/>
+
+<h2>8. Limitations</h2>
+
+<ol>
+<li><strong>Fine-tuned vs zero-shot (primary).</strong> <code>hyperapi-parse-intent</code>,</li>
+</ol>
+<p>   <code>Qwen2.5-VL-7B-F</code>, <code>Qwen2.5-VL-3B-F</code> are fine-tuned on SAVIOR-Train;    every other row is zero-shot native. Cross-setting comparisons are not    apples-to-apples. The fine-tune advantage observed is recall/F1-specific    and modest (parse-intent +0.0276 F1 over best well-documented zero-shot    GPT-4o; OCR recall +0.0061 over best zero-shot Textract; no fine-tune    lead on OCR precision or PaIRS).</p>
+<ol>
+<li><strong>PaIRS is PC-only.</strong> PaIRS is directly comparable only among prompt-</li>
+</ol>
+<p>   controlled models. NPC systems' PaIRS is a format-compatibility proxy and    must not be ranked against PC PaIRS.</p>
+<ol>
+<li><strong>Attested, not factory-reproduced.</strong> All numbers are in-house-run and</li>
+</ol>
+<p>   user-attested (2026-05-18), not re-derived under the deterministic factory    harness. No CI is available (<code>ci95=null</code>) — intervals are "reported (no    CI)", never fabricated. See the explicit status box in Appendix D.</p>
+<ol>
+<li><strong>No accuracy slices.</strong> The attested source is corpus-level aggregate</li>
+</ol>
+<p>   only; by-class / by-quality / by-field accuracy is not reported because    the underlying per-document scores are not in the attested data. The §3    matrix marks this ✗ and §10 names the work to close it.</p>
+<ol>
+<li><strong>No degradation / robustness tracks.</strong> SAVIOR-Bench v1 has no</li>
+</ol>
+<p>   systematically degraded variants; robustness is not measured (✗ in §3).</p>
+<ol>
+<li><strong><code>n</code> asymmetry.</strong> OCR table is <code>n=509</code>; the parse-intent table has no <code>n</code></li>
+</ol>
+<p>   in the attested source — reported as unknown, not assumed.</p>
+<ol>
+<li><strong>Not a regenerable corpus.</strong> The corpus is a static attested set with</li>
+</ol>
+<p>   mixed-source licensing; it is not source-traceable / regenerable in the    PureDocBench sense (✗ in §3). The fixture audit (Appendix B) covers our    own ground truth only, not a third-party benchmark.</p>
+<ol>
+<li><strong>Single benchmark version.</strong> SAVIOR-Bench v1 only; dated 2026-05-18.</li>
+</ol>
+<p>   Model versions are as named/dated in the tables.</p>
+
+<hr/>
+
+<h2>9. Conclusion & Future Work</h2>
+
+<p>SAVIOR-Bench v1 is a provenance-tagged, expert-annotated financial-document benchmark that scores OCR transcription, layout fidelity, and parse-intent extraction on identical inputs with a frozen prompt and pinned decoding, across a broad named panel — with the fine-tune-vs-zero-shot distinction surfaced first. Its empirical findings are deliberately modest: fine-tuning buys a narrow, metric-specific recall/F1 edge, recall and layout decouple, and the multilingual / very-dense cluster is a hard residual.</p>
+
+<p>The honest position of this paper is that it has <strong>format parity but not evidence-depth parity</strong> with the deepest public document-AI benchmarks. The related-work matrix (§3) marks every dimension we do not yet satisfy with ✗. Future work is <strong>not</strong> to imitate the shape of a deeper benchmark but to do the underlying evidence work named in §10 — factory re-reproduction, per-category / per-quality / per-field slices, degradation tracks, a regenerable source-traceable corpus, and broader per-model-documented coverage.</p>
+
+<hr/>
+
+<h2>10. Path to PureDocBench-depth (the named gap roadmap)</h2>
+
+<p>This is the honest way to "be that deep": name the gap and the path, do not cosplay the shape. Each item below is <strong>evidence work not yet done</strong>; none of it is claimed as done anywhere in this paper.</p>
+
+<table>
+<tr><th>#</th><th>Gap (✗ in §3)</th><th>Work that would close it</th><th>Status</th></tr>
+<tr><td>R1</td><td>Attested-not-reproduced</td><td>Re-run every published cell under the deterministic factory harness (<code>harness/run.py</code>, pinned env <code>harness/PINS.txt</code>); <code>repro_check.py</code> green; flip <code>reproduced_by_factory: true</code> only then</td><td><strong>not done</strong> — attested only</td></tr>
+<tr><td>R2</td><td>No confidence intervals (<code>ci95=null</code>)</td><td>Bootstrap CIs (resamples 2000, seed 20260516 per PINS) over per-document scores once those exist</td><td><strong>not done</strong> — needs per-doc scores</td></tr>
+<tr><td>R3</td><td>No per-category / per-quality / per-field slices</td><td>Emit per-document scores from the factory re-run; stratify by the §2.1 corpus mix × document class × quality × field</td><td><strong>not done</strong> — would be fabrication today</td></tr>
+<tr><td>R4</td><td>No degradation / robustness tracks</td><td>Construct systematically degraded variants (blur, noise, rotation, compression) and report per-track</td><td><strong>not done</strong> — no degraded corpus exists</td></tr>
+<tr><td>R5</td><td>Not a regenerable corpus</td><td>Build a source-traceable generation pipeline for the synthetic share; document licensing-clean regeneration for public shares</td><td><strong>not done</strong> — static attested corpus</td></tr>
+<tr><td>R6</td><td>Model panel breadth / per-model configs</td><td>Document per-model configs for every panel row; widen the panel with pinned revisions in <code>harness/models.json</code></td><td><strong>partial</strong> — configs exist for some rows only</td></tr>
+<tr><td>R7</td><td>No third-party benchmark audit</td><td>(Deliberately out of scope) — we audit only our own fixtures (Appendix B); a public-benchmark audit is <strong>not</strong> planned and must never be claimed</td><td><strong>out of scope by design</strong></td></tr>
+<tr><td>R8</td><td><code>parse</code> layout-awareness facet not measured (§2.2 facet 2, §5.1.5)</td><td>Build/obtain a layout-annotated corpus (gold layout trees + reading-order sequences); score <code>layout_element_accuracy</code> + <code>reading_order_accuracy</code> under the pinned harness</td><td><strong>not done</strong> — facet defined, awaiting data</td></tr>
+<tr><td>R9</td><td><code>parse</code> bounding-box facet not measured (§2.2 facet 3, §5.1.5)</td><td>Build/obtain a box-annotated corpus (gold field/region boxes); score <code>bbox_iou</code> + <code>field_to_region_grounding_accuracy</code> under the pinned harness</td><td><strong>not done</strong> — facet defined, awaiting data</td></tr>
+</table>
+
+<p>Closing R1–R6 is the substantive path to PureDocBench-grade depth. Until then this paper claims format discipline and honest disclosure, not evidence-depth parity.</p>
+
+<h3>10.1 Explicit OPEN-QUESTIONS (data not available today; flagged, NOT fabricated)</h3>
+
+<p>These are items the W2 self-consistency audit (per <code>plan/BENCHMARK-WORKSTREAMS-2026-05-20.md</code>) could <strong>not</strong> resolve without new data. Each is named here — silent edits or invented placeholders are explicitly forbidden by I-inv-4.</p>
+
+<ul>
+<li><strong>OPEN-QUESTION-1 (G4 — <code>DocIntentOCR-3B</code> provenance).</strong> The #2</li>
+</ul>
+<p>  parse-intent row (<code>DocIntentOCR-3B</code>, F1 0.8102 / WER 0.5622) has no   recoverable vendor / checkpoint / config / publication-URL in   <code>benchmark.xlsx</code> or <code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code>. The   paper already softens its modesty framing by anchoring on the   well-documented GPT-4o (0.8052) instead (§5.1.1 reading-guidance box,   §5.1.3 chart caption), and the row is explicitly flagged   "under-documented panel row" inline. <strong>Status: OPEN; the row stays   as-attested with explicit under-documented framing; closure requires   the vendor/checkpoint metadata to be added to the attested source —   not inferred here.</strong></p>
+<ul>
+<li><strong>OPEN-QUESTION-2 (G10 — partial per-model configs, §10 R6).</strong> Per-model</li>
+</ul>
+<p>  configs (vendor, version, checkpoint hash, decoding overrides where   any) exist for the SAVIOR-Train fine-tuned rows (Appendix A LoRA recipe)   and for the frontier-LLM rows visible in <code>harness/models.json</code>, but not   for every panel row (notably <code>DocIntentOCR-3B</code>,   <code>Logics-Parsing-v2</code>, <code>Qianfan-OCR</code>, <code>FireRed-OCR</code>, <code>Youtu-Parsing</code>,   <code>Mistral-Large-3-675B</code>, <code>Qwen3.6-35B-A3B</code>, <code>Qwen3-VL-32B-Instruct</code>).   R6 is correctly marked <strong>partial</strong> in §10. <strong>Status: OPEN; closure   requires per-row config curation under W9 once factory re-runs (W6)   begin emitting <code>harness/models.json</code>-resolved provenance — not   fabricated here.</strong></p>
+<ul>
+<li><strong>OPEN-QUESTION-3 (G11 — parse-intent <code>n</code> asymmetry).</strong> The OCR table is</li>
+</ul>
+<p>  <code>n=509</code>; the parse-intent table has no <code>n</code> in the attested source   (<code>benchmark.xlsx</code> sheet <code>intent</code> carries the F1/WER pair per model   only, with no per-model denominator). The paper reports this honestly   in §8 limitation #6 and as "n not reported in the attested source" on   the table itself. <strong>Status: OPEN; closure requires the per-document   parse-intent labels to be re-published with denominators — not   inferred here.</strong></p>
+
+<hr/>
+
+<h2>Appendix A — Fine-tuning (LoRA) recipe</h2>
+
+<p>From <code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code> (in-repo verbatim extract of the Hyperbots-provided <code>Benchmark-VLM_OCR.pdf</code>):</p>
+
+<ul>
+<li><strong>Method:</strong> LoRA, <strong>rank 32, α 64</strong>, applied to the vision-encoder final</li>
+</ul>
+<p>  layer + the language decoder.</p>
+<ul>
+<li><strong>Backbones:</strong> Qwen2.5-VL-3B-Instruct and Qwen2.5-VL-7B-Instruct</li>
+</ul>
+<p>  (open-source; fine-tuned by Hyperbots → "Hyperbots-IP").</p>
+<ul>
+<li><strong>Learning rates:</strong> 1e-4 (vision) / 5e-4 (language).</li>
+<li><strong>Batching:</strong> batch size 1, gradient accumulation 10.</li>
+<li><strong>Epochs:</strong> 7 (3B) / 5 (7B).</li>
+<li><strong>Hardware:</strong> 2× H100 80 GB, CUDA 12.3.</li>
+<li><strong>Inference:</strong> top-p 0.9, temperature 0.1; frozen 10-step layout prompt.</li>
+<li><strong>Baselines:</strong> native settings, no fine-tune.</li>
+</ul>
+
+<hr/>
+
+<h2>Appendix B — Fixture / annotation audit (OUR ground truth only)</h2>
+
+<p>> <strong>Scope guard (mandatory).</strong> This appendix audits <strong>SAVIOR-Bench's own > annotations</strong> — our ground truth. It is <strong>NOT</strong> an audit of any > third-party or public benchmark, and nothing here may be cited as one. We > have not audited PureDocBench or any other external benchmark; that is > explicitly out of scope (§10, R7).</p>
+
+<h3>B.1 Annotation protocol</h3>
+
+<ul>
+<li><strong>Corpus:</strong> 509 financial documents across five source corpora (§2.1).</li>
+<li><strong>Double-annotation:</strong> <strong>187</strong> of the 509 documents were independently</li>
+</ul>
+<p>  annotated by two annotators (the double-annotated pair set).</p>
+<ul>
+<li><strong>Agreement metric:</strong> <strong>fuzzy string similarity</strong> between the two</li>
+</ul>
+<p>  independent transcriptions/field sets, aggregated over the 187 pairs.</p>
+<ul>
+<li><strong>Reported IAA: 0.761.</strong> This is the single agreement number the attested</li>
+</ul>
+<p>  source provides; it is reported as-is, not recomputed or decomposed.</p>
+
+<h3>B.2 Mismatch analysis (qualitative — bounded by attested data)</h3>
+
+<p>The attested source provides the <strong>aggregate</strong> IAA (0.761) and the document classes / failure modes, but <strong>does not provide a per-pair mismatch table or per-class disagreement counts</strong>. We therefore characterize disagreement <strong>qualitatively</strong>, mapped to the document classes and the documented failure modes (§5.6 / Appendix C), and we explicitly do <strong>not</strong> assert per-class mismatch counts:</p>
+
+<table>
+<tr><th>Likely disagreement driver (qualitative)</th><th>Mapped to</th><th>Per-pair count</th></tr>
+<tr><td>Dense-layout token ordering / segmentation ambiguity</td><td>very-dense layouts (residual cluster)</td><td><strong>not available in attested source</strong></td></tr>
+<tr><td>Multilingual / non-Latin script transcription variance</td><td>multilingual docs (residual cluster)</td><td><strong>not available in attested source</strong></td></tr>
+<tr><td>Fine print / low-quality scan legibility</td><td>low-quality PDFs, degraded scans</td><td><strong>not available in attested source</strong></td></tr>
+<tr><td>Logo-embedded / stylized text inclusion decisions</td><td>logo-embedded, bold-styled text</td><td><strong>not available in attested source</strong></td></tr>
+</table>
+
+<p><strong>Honest statement:</strong> an IAA of 0.761 indicates substantial but imperfect agreement; the residual ~0.24 disagreement is consistent with the documented hard classes (dense layouts, multilingual, degraded scans) but <strong>per-class disagreement counts are not available in the attested source and are not fabricated here.</strong> Producing a numeric mismatch breakdown would require the per-pair annotation records, which are not in the attested data.</p>
+
+<hr/>
+
+<h2>Appendix C — Failure taxonomy (formalized from Pillar 6)</h2>
+
+<p>Formalization of the §5.6 / PDF failure modes into named classes. **Counts are given only where the attested data supports them; every class is marked "no per-class counts available" because the attested source provides documented failure <em>modes</em> but not per-class incidence counts.**</p>
+
+<table>
+<tr><th>Class</th><th>Definition</th><th>Affects</th><th>Per-class count</th></tr>
+<tr><td>F1 — Vertical / rotated text</td><td>Text not in standard horizontal reading orientation</td><td>zero-shot panel</td><td>no per-class counts available</td></tr>
+<tr><td>F2 — Fine print / low legibility</td><td>Sub-threshold font size or low contrast</td><td>zero-shot panel</td><td>no per-class counts available</td></tr>
+<tr><td>F3 — Multi-column / complex layout</td><td>Column or table structure breaking reading order</td><td>zero-shot panel</td><td>no per-class counts available</td></tr>
+<tr><td>F4 — Logo-embedded text</td><td>Text overlapping or inside graphical marks</td><td>zero-shot panel</td><td>no per-class counts available</td></tr>
+<tr><td>F5 — Degraded scan</td><td>Noise, blur, compression artifacts, skew</td><td>zero-shot panel</td><td>no per-class counts available</td></tr>
+<tr><td>F6 — Handwriting</td><td>Handwritten content</td><td>zero-shot panel</td><td>no per-class counts available</td></tr>
+<tr><td>F7 — Structured headers</td><td>Header/label vs value disambiguation</td><td>zero-shot panel</td><td>no per-class counts available</td></tr>
+<tr><td>F8 — Bold / stylized text</td><td>Weight/style variation causing recognition error</td><td>zero-shot panel</td><td>no per-class counts available</td></tr>
+<tr><td>F9 — Multilingual (residual)</td><td>Non-English / mixed-script content</td><td><strong>also affects fine-tuned SAVIOR-Train</strong></td><td>no per-class counts available</td></tr>
+<tr><td>F10 — Very-dense layout (residual)</td><td>Extreme token density / minimal whitespace</td><td><strong>also affects fine-tuned SAVIOR-Train</strong></td><td>no per-class counts available</td></tr>
+</table>
+
+<p><strong>Residual cluster.</strong> F9 and F10 are the documented residual: the PDF states this cluster "persists even after fine-tuning." All other classes are attributed to the zero-shot panel per the PDF. <strong>No per-class incidence, frequency, or error-count is asserted — the attested source documents the failure modes, not their counts. A counted taxonomy is deferred to a per-document factory re-run (§10, R3).</strong></p>
+
+<hr/>
+
+<h2>Appendix D — Reproducibility</h2>
+
+<h3>D.1 Method / decoding pins</h3>
+
+<ul>
+<li><strong>Frozen decoding (DC-000):</strong> temperature 0.1, top-p 0.9,</li>
+</ul>
+<p>  max_tokens 2048, decoding seed 20260516.</p>
+<ul>
+<li><strong>One frozen prompt template per task family</strong>; model chat-formatting</li>
+</ul>
+<p>  confined to adapters (<code>harness/tasks.json</code>).</p>
+<ul>
+<li><strong>Bootstrap pins (for CIs once per-doc scores exist):</strong> resamples 2000,</li>
+</ul>
+<p>  seed 20260516 (<code>harness/PINS.txt</code>).</p>
+<ul>
+<li><strong>Per-model configs:</strong> documented for the rows where the attested source /</li>
+</ul>
+<p>  <code>harness/models.json</code> provides them; <strong>not all panel rows have per-model   configs documented</strong> (honest gap; §10, R6).</p>
+<ul>
+<li><strong>Seed harness:</strong> stdlib-only, offline by design (<code>harness/PINS.txt</code>),</li>
+</ul>
+<p>  reproducible bit-for-bit on CPython 3.10+; scale-up deps pinned separately.</p>
+
+<h3>D.2 Reproduction status box (explicit, not hidden)</h3>
+
+<pre><code class="lang-">
++------------------------------------------------------------------+
+|  REPRODUCTION STATUS: ATTESTED — NOT FACTORY-REPRODUCED          |
++------------------------------------------------------------------+
+|  Every cell in this paper:                                       |
+|    provenance        : in-house-run, user-attested 2026-05-18    |
+|    source            : benchmark.xlsx + SOURCE-EXTRACT-          |
+|                         Benchmark-VLM-OCR.md (in-repo verbatim    |
+|                         extract of the Hyperbots-provided         |
+|                         Benchmark-VLM_OCR.pdf, source-of-record)  |
+|    reproduced_by_factory : false                                 |
+|    ci95              : null  (shown &quot;reported (no CI)&quot;)          |
+|    rerun_command     : &quot;in-house run; user-attested 2026-05-18   |
+|                         - not reproduced by the factory harness&quot; |
+|                                                                  |
+|  The deterministic factory harness, pinned env, and repro_check  |
+|  are DEFINED and IN PLACE (harness/PINS.txt,                     |
+|  harness/repro_check.py) but have NOT been run against these     |
+|  cells. Factory re-reproduction is OPTIONAL / STRENGTHENING,     |
+|  NOT a publication gate (per the 2026-05-18 attestation).        |
+|  No cell is asserted as factory-verified. (§10, R1)              |
++------------------------------------------------------------------+
+</code></pre>
+
+<h3>D.3 What reproduction would entail</h3>
+
+<p>See §10 R1–R2: re-run every cell under <code>harness/run.py</code> with the pinned environment, pass <code>harness/repro_check.py</code> (metric + git-commit match), emit per-document scores, then bootstrap CIs. Only after that may any cell flip <code>reproduced_by_factory: true</code> or carry a non-null <code>ci95</code>. This paper does <strong>not</strong> do that and does not claim it.</p>
+
+<h3>D.4 Per-cell provenance string (verbatim — what every cell carries)</h3>
+
+<p>Every published cell carries this exact <code>rerun_command</code> string so no reader can mistake attested for reproduced:</p>
+
+<pre><code class="lang-">
+rerun_command: &quot;in-house run; user-attested 2026-05-18 — NOT reproduced by
+                the factory harness. Reproduce via:
+                python harness/run.py --task DC-000 --dataset &lt;id&gt; \
+                  --pins harness/PINS.txt &amp;&amp; python harness/repro_check.py
+                Flip reproduced_by_factory:true ONLY on a green check.&quot;
+</code></pre>
+
+<h3>D.5 How to cite the gap honestly (for downstream users)</h3>
+
+<p>If you cite SAVIOR-Bench, cite it as <strong>"SAVIOR-Bench v1 (Hyperbots, 2026), attested 2026-05-18, not factory-reproduced; fine-tune-vs-zero-shot disclosed; no CIs"</strong>. Do not cite it as a reproduced or sliced benchmark — it is neither, and §3/§10 say so. The honest citation is the one that carries the caveats; any citation that drops them misrepresents the artifact.</p>
+
+<hr/>
+
+<h2>Sources</h2>
+
+<ul>
+<li>Provided <code>~/Desktop/benchmark.xlsx</code> — sheet 1: parse-intent F1/WER (23</li>
+</ul>
+<p>  models); sheets 2/3: SAVIOR-Bench Recall/PaIRS/Precision (21 models).</p>
+<ul>
+<li><code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code> — in-repo recoverable</li>
+</ul>
+<p>  extract transcribed <strong>verbatim</strong> from the Hyperbots-provided   <code>Benchmark-VLM_OCR.pdf</code> (2026-05-18; the PDF is the Hyperbots   source-of-record and is not redistributed). Covers SAVIOR-Bench v1   methodology, dataset composition + IAA, latency (p50/p99/fail), cost,   failure modes, and the LoRA recipe — i.e. every non-leaderboard number   the xlsx does not contain. Contact: niyati.chhaya@hyprbots.com.</p>
+<ul>
+<li><code>results/DC-000__savior-bench-v1__*.json</code> (21 cells, n=509) and</li>
+</ul>
+<p>  <code>results/DC-000__parse-intent-inhouse-v1__*.json</code> (23 cells) — ingested by   <code>harness/ingest_savior_xlsx.py</code> with explicit provenance, fine-tune flags,   <code>ci95=null</code>.</p>
+<ul>
+<li><code>results/DC-000__ocr-edit-distance-v1__*.json</code> (31 cells) — the</li>
+</ul>
+<p>  extraction-facet OCR edit-distance leaderboard, <strong>externally-sourced /   attested</strong>, transcribed verbatim from a user-provided OCR edit-distance   leaderboard table (2026-05-22); ingested by   <code>harness/ingest_ocr_edit_distance.py</code> with <code>attested=true,   factory_reproduced=false, externally_sourced=true, ci95=null</code>.</p>
+<ul>
+<li><code>datasets/registry/registry.json</code> — dataset <code>ocr-edit-distance-v1</code></li>
+</ul>
+<p>  registered as <code>external-attested</code> for the DC-000 extraction facet.</p>
+<ul>
+<li><code>harness/tasks.json</code> (DC-000 frozen prompt + pinned decoding),</li>
+</ul>
+<p>  <code>harness/PINS.txt</code>, <code>harness/repro_check.py</code>.</p>
+<ul>
+<li>arXiv 2605.07492 (PureDocBench) — public abstract + structural fetch only</li>
+</ul>
+<p>  (WebFetched 2026-05-18); used for the §3 positioning matrix, <strong>not</strong>   independently re-verified or audited by us.</p>
+<ul>
+<li><code>plan/FORMAT-CALIBRATION-vs-PureDocBench.md</code> (governs P2.5 scope),</li>
+</ul>
+<p>  <code>plan/PLAN-SAVIOR-BENCH-PAPER.md</code>, <code>plan/LEADERBOARD-SPEC.md</code>,   <code>plan/PLAN-benchmark-factory.md</code>, <code>plan/SCALE-TO-100.md</code>,   <code>plan/TECH-QA-v1.md</code>.</p>
+<ul>
+<li>cto-org <code>.claude/agents/benchmark-format-steward.md</code> (governing agent).</li>
+</ul>
+
+<h2>Open assumptions</h2>
+
+<ul>
+<li><code>parse</code> (DC-000) is a <strong>three-facet task</strong> — extraction + layout awareness</li>
+</ul>
+<p>  + bounding box. Only the <strong>extraction</strong> facet has data: in-house-attested   SAVIOR-Bench OCR + parse-intent cells, and the externally-sourced 31-model   OCR edit-distance leaderboard. The <strong>layout-awareness</strong> and <strong>bounding-box</strong>   facets are <strong>defined (metric named + scoring described) but not yet   measured</strong> — no ground-truth data is in scope; their result status is "Not   yet measured — facet defined, awaiting data." No number is fabricated for   an unmeasured facet (§2.2, §5.1.5, §10 R8/R9).</p>
+<ul>
+<li>The 31-model OCR edit-distance leaderboard (§5.1.4) is **externally-sourced</li>
+</ul>
+<p>  / attested** — a user-provided table transcribed verbatim, NOT run by this   factory's harness; tagged <code>attested=true, factory_reproduced=false,   externally_sourced=true, ci95=null</code>. It is not presented as a factory-run   cell.</p>
+<ul>
+<li>The in-house SAVIOR-Bench OCR + parse-intent numbers are **in-house-run,</li>
+</ul>
+<p>  user-attested 2026-05-18<strong>, </strong>not factory-harness-reproduced<strong>; factory   reproduction is optional/strengthening, </strong>not a publication gate** (per   attestation). No cell is fabricated or asserted as factory-verified.</p>
+<ul>
+<li>Fine-tuned (SAVIOR-Train / Hyperbots-IP) rows are disclosed inline with</li>
+</ul>
+<p>  <code>[FT]</code> and in the abstract (fine-tune-vs-zero-shot stays first-block).</p>
+<ul>
+<li><code>ci95=null</code> everywhere → shown as "reported (no CI)"; no interval invented.</li>
+<li>Parse-intent table <code>n</code> is not in the attested source → reported as unknown.</li>
+<li>Per-class / per-quality / per-field slices, degradation tracks, and a</li>
+</ul>
+<p>  regenerable corpus are <strong>not</strong> reported because the attested source does   not contain them; they are named as gaps (§3, §10), not faked.</p>
+<ul>
+<li>The §3 related-work matrix marks ✗ honestly on every unsatisfied</li>
+</ul>
+<p>  dimension; non-SAVIOR cells are <em>as publicly described</em>, not a   third-party audit. The fixture audit (Appendix B) covers our own ground   truth only.</p>
+<ul>
+<li>Competitor naming is a scoped scientific-benchmark exception, limited to</li>
+</ul>
+<p>  this artifact; neutral, evidenced, dated, versioned.</p>
+<ul>
+<li>HF dataset/model card upload and the live blog stay <strong>human-gated</strong>; this</li>
+</ul>
+<p>  draft is internal only. P2.5 produced DRAFTS only.</p>
+
+</body></html>

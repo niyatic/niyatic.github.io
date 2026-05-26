@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8" />
+<title>Hyperbots Benchmark Report — SAVIOR-Bench v1 (snapshot 2026-05-20)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root {
+    --bg: #0d1117;
+    --panel: #161b22;
+    --panel-2: #1c232c;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --border: #21262d;
+    --accent: #7ee787;
+    --warn: #f0883e;
+    --bad: #f85149;
+    --good: #56d364;
+    --link: #58a6ff;
+    --ft: #d2a8ff;
+  }
+  html, body { background: var(--bg); color: var(--text); margin: 0; padding: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14.5px; line-height: 1.55; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, pre { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.8px; }
+  pre { background: #010409; border: 1px solid var(--border); padding: 12px 14px;
+    border-radius: 6px; overflow-x: auto; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 28px 28px 64px 28px; }
+  .banner { border: 1px solid var(--border); border-radius: 10px; padding: 22px 26px;
+    background: linear-gradient(180deg, #11181f 0%, #0d1117 100%); margin-bottom: 26px; }
+  .banner h1 { margin: 0 0 6px 0; font-size: 26px; color: var(--text); }
+  .banner .sub { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
+  .banner .oneliner { color: var(--text); font-size: 14px; border-left: 3px solid var(--accent);
+    padding: 8px 14px; background: #0a1117; border-radius: 0 6px 6px 0; }
+  h2 { color: var(--accent); border-bottom: 1px solid var(--border); padding-bottom: 6px;
+    margin-top: 36px; font-size: 18px; }
+  h3 { color: var(--text); margin-top: 22px; font-size: 15.5px; }
+  h4 { color: var(--muted); margin-top: 18px; font-size: 13px; text-transform: uppercase;
+    letter-spacing: 0.06em; }
+  p, li { color: var(--text); }
+  .muted { color: var(--muted); font-size: 12.5px; }
+  .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11.5px;
+    border: 1px solid var(--border); color: var(--muted); background: #0a1117;
+    margin-right: 4px; }
+  .pill.ok { color: var(--good); border-color: #2c5733; }
+  .pill.warn { color: var(--warn); border-color: #5a3a17; }
+  .pill.bad  { color: var(--bad);  border-color: #5a2222; }
+  .pill.ft   { color: var(--ft);   border-color: #4a3a6a; }
+  .pill.zs   { color: var(--link); border-color: #1c3a5e; }
+  .grid { display: grid; gap: 14px; }
+  .grid.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid.cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  @media (max-width: 900px) { .grid.cols-4, .grid.cols-3 { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) { .grid.cols-4, .grid.cols-3, .grid.cols-2 { grid-template-columns: 1fr; } }
+  .kpi { background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px 16px; }
+  .kpi .label { color: var(--muted); font-size: 11.5px; text-transform: uppercase;
+    letter-spacing: 0.06em; margin-bottom: 6px; }
+  .kpi .value { color: var(--text); font-size: 22px; font-weight: 600; line-height: 1.1; }
+  .kpi .value .small { font-size: 13px; color: var(--muted); font-weight: 400; }
+  .kpi .src { color: var(--muted); font-size: 11px; margin-top: 8px; }
+  .kpi .src a { color: var(--muted); border-bottom: 1px dotted var(--muted); }
+  .panel { background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 16px 18px; margin: 14px 0; }
+  .panel.warn-box { border-left: 3px solid var(--warn); }
+  .panel.bad-box  { border-left: 3px solid var(--bad); }
+  .panel.good-box { border-left: 3px solid var(--good); }
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 8px 0; font-size: 13.2px; }
+  th, td { border: 1px solid var(--border); padding: 6px 10px; text-align: left;
+    vertical-align: top; }
+  th { background: var(--panel-2); color: var(--muted); font-weight: 600;
+    text-transform: uppercase; font-size: 11.5px; letter-spacing: 0.04em; }
+  tr:nth-child(even) td { background: #10161d; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.lead { color: var(--good); font-weight: 600; }
+  .tag-ft { color: var(--ft); font-weight: 600; }
+  .tag-zs { color: var(--muted); }
+  .pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  @media (max-width: 800px) { .pillars { grid-template-columns: 1fr; } }
+  .pillar { background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 12px 14px; }
+  .pillar h4 { color: var(--accent); margin: 0 0 4px 0; text-transform: none;
+    letter-spacing: 0; font-size: 14px; }
+  .pillar p { margin: 4px 0; font-size: 13.2px; color: var(--text); }
+  .pillar .lk { font-size: 11.5px; color: var(--muted); }
+  ul.cklist { list-style: none; padding-left: 0; }
+  ul.cklist li { padding: 4px 0; border-bottom: 1px dashed var(--border); }
+  ul.cklist li::before { content: "[ ]  "; color: var(--warn); font-weight: 700; }
+  .links { background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px;
+    padding: 14px 18px; }
+  .links h4 { color: var(--accent); margin: 14px 0 6px 0; text-transform: none;
+    font-size: 13px; letter-spacing: 0; }
+  .links ul { margin: 0 0 6px 0; padding-left: 18px; }
+  .links li { font-size: 12.5px; padding: 1px 0; }
+  .note { color: var(--muted); font-size: 12px; margin-top: 8px; }
+  .hr { border-top: 1px solid var(--border); margin: 26px 0; }
+  .small { font-size: 12px; color: var(--muted); }
+  .src-line { font-size: 11px; color: var(--muted); margin-top: 6px; }
+  .src-line a { color: var(--muted); border-bottom: 1px dotted var(--muted); }
+</style>
+</head>
+<body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<div class="wrap">
+
+<section class="banner">
+  <h1>Hyperbots Benchmark Report &mdash; SAVIOR-Bench v1</h1>
+  <div class="sub">
+    <span class="pill">snapshot 2026-05-20</span>
+    <span class="pill warn">DRAFT &mdash; internal review</span>
+    <span class="pill bad">attested &middot; NOT factory-reproduced</span>
+    <span class="pill ft">3 rows fine-tuned &middot; all others zero-shot</span>
+    <span class="pill">competitor-naming exception: artifact-scoped only</span>
+  </div>
+  <div class="oneliner">
+    <strong>Honest one-liner.</strong> SAVIOR-Bench v1 is a 509-document, expert-annotated
+    financial-document benchmark with <strong>attested in-house FY2026 results</strong> &mdash;
+    <strong>pending factory-harness reproduction</strong>. Three rows
+    (<span class="tag-ft">hyperapi-parse-intent</span>,
+    <span class="tag-ft">Qwen2.5-VL-7B-F</span>,
+    <span class="tag-ft">Qwen2.5-VL-3B-F</span>) are <strong>LoRA fine-tunes on SAVIOR-Train
+    (Hyperbots-IP)</strong>; every other panel row is <strong>zero-shot in vendor-native
+    settings</strong>. Cross-setting comparisons are <strong>not apples-to-apples</strong>
+    and are tagged <code>[FT]</code> inline. Numbers are <strong>model OCR/parse
+    performance</strong>, not product accuracy (any product-accuracy figure would be cited
+    only "per apis.hyperbots.com").
+  </div>
+</section>
+
+<h2>2 &middot; Headline KPIs &mdash; every cell has a source</h2>
+<p class="muted">Every number is transcribed from a file in the repo. The link
+under each KPI resolves to the verbatim source line; no figure on this page was
+synthesized, rounded, or interpolated. Confidence intervals are
+<code>ci95 = null</code> everywhere ("reported (no CI)") &mdash; no interval is fabricated.</p>
+
+<h3>Parse-intent (DC-000 &middot; dataset <code>parse-intent-inhouse-v1</code> &middot; n not reported in source)</h3>
+<div class="grid cols-4">
+  <div class="kpi">
+    <div class="label">Best Parse-intent F1 &uarr; <span class="pill ft">FT</span></div>
+    <div class="value">0.8328 <span class="small">hyperapi-parse-intent</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.1.1</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Best Parse-intent WER &darr; <span class="pill ft">FT</span></div>
+    <div class="value">0.2589 <span class="small">hyperapi-parse-intent</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.1.1</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Best well-documented zero-shot F1 <span class="pill zs">ZS</span></div>
+    <div class="value">0.8052 <span class="small">GPT-4o (WER 0.4232)</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.1.1</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">FT &minus; ZS (well-doc anchor) F1 gap</div>
+    <div class="value">+0.0276 <span class="small">narrow, recall/F1-specific</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md Abstract / &sect;5.1.3</a></div>
+  </div>
+</div>
+
+<h3>SAVIOR-Bench OCR (DC-000 &middot; dataset <code>savior-bench-v1</code> &middot; n = 509)</h3>
+<div class="grid cols-4">
+  <div class="kpi">
+    <div class="label">Best OCR Recall &uarr; <span class="pill ft">FT</span></div>
+    <div class="value">0.9294 <span class="small">Qwen2.5-VL-7B-F</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.1.2</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Best zero-shot Recall <span class="pill zs">ZS</span></div>
+    <div class="value">0.9233 <span class="small">Textract</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.1.2</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">FT &minus; ZS Recall gap</div>
+    <div class="value">+0.0061 <span class="small">narrow lead</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.1.3</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Best OCR Precision &uarr; <span class="pill zs">ZS</span></div>
+    <div class="value">0.9322 <span class="small">GPT-4o (zero-shot WINS)</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.1.2</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Best PaIRS (layout) &uarr; <span class="pill zs">ZS</span></div>
+    <div class="value">0.8766 <span class="small">PaddleOCR-VL-1.5 (zero-shot WINS)</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.1.2</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Best FT PaIRS (no FT lead) <span class="pill ft">FT</span></div>
+    <div class="value">0.7068 <span class="small">Qwen2.5-VL-3B-F</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.1.2</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">FT &minus; ZS Layout (PaIRS) gap</div>
+    <div class="value">&minus;0.1700 <span class="small">zero-shot LEADS layout</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.1.3</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Inter-annotator agreement (IAA)</div>
+    <div class="value">0.761 <span class="small">187 double-annotated pairs</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SOURCE-EXTRACT-Benchmark-VLM-OCR.html">paper/SOURCE-EXTRACT &sect;2</a></div>
+  </div>
+</div>
+
+<h3>Operational properties (SAVIOR-Train fine-tuned inference path)</h3>
+<div class="grid cols-4">
+  <div class="kpi">
+    <div class="label">Latency p50</div>
+    <div class="value">2,548 ms</div>
+    <div class="src">source: <a href="/benchmarks/studies/SOURCE-EXTRACT-Benchmark-VLM-OCR.html">SOURCE-EXTRACT &sect;3</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Latency p99</div>
+    <div class="value">3,319 ms</div>
+    <div class="src">source: <a href="/benchmarks/studies/SOURCE-EXTRACT-Benchmark-VLM-OCR.html">SOURCE-EXTRACT &sect;3</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Failure rate <span class="small">(KV-cache bound)</span></div>
+    <div class="value">3 % <span class="small">2-GPU path noted</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SOURCE-EXTRACT-Benchmark-VLM-OCR.html">SOURCE-EXTRACT &sect;3</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Cost / attempted call</div>
+    <div class="value">$0.000186 <span class="small">A100 40 GB &middot; ~$2/hr</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SOURCE-EXTRACT-Benchmark-VLM-OCR.html">SOURCE-EXTRACT &sect;4</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Cost / successful call</div>
+    <div class="value">$0.000191 <span class="small">&asymp; $0.19 per 1,000 successful calls</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SOURCE-EXTRACT-Benchmark-VLM-OCR.html">SOURCE-EXTRACT &sect;4</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Panel size</div>
+    <div class="value">21 OCR &middot; 23 parse-intent</div>
+    <div class="src">source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;4</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Corpus size</div>
+    <div class="value">509 docs <span class="small">5 corpora &middot; 6 doc classes</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SOURCE-EXTRACT-Benchmark-VLM-OCR.html">SOURCE-EXTRACT &sect;1</a></div>
+  </div>
+  <div class="kpi">
+    <div class="label">Confidence intervals</div>
+    <div class="value">ci95 = null <span class="small">"reported (no CI)"</span></div>
+    <div class="src">source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md Appendix D.2</a></div>
+  </div>
+</div>
+
+<h2>3 &middot; The seven HuggingFace-grade pillars</h2>
+<div class="pillars">
+  <div class="pillar">
+    <h4>1. Vendor parity &mdash; side-by-side on identical inputs/prompts/scoring</h4>
+    <p>~21 OCR + 23 parse-intent systems spanning cloud document-AI APIs, frontier
+       multimodal LLMs, and open-source OCR/VLM stacks. One frozen prompt template
+       per task family; model chat-formatting confined to adapters. Three rows
+       are SAVIOR-Train fine-tunes (Hyperbots-IP); every other row is zero-shot
+       vendor-native. <code>[FT]</code> labelling is inline and non-removable.</p>
+    <p class="lk">&rarr; <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.1</a></p>
+  </div>
+
+  <div class="pillar">
+    <h4>2. Datasets + document classes</h4>
+    <p>509 expert-annotated financial documents across UCSF Industry Documents
+       (46.95 %), in-house synthetic (17.88 %), misc. public financial (17.49 %),
+       Inv3D (9.04 %), FUNSD (8.64 %). Classes: invoices, packing slips, forms,
+       multilingual scans, low-quality PDFs, complex tables. IAA 0.761 over 187
+       double-annotated pairs. Mixed-source license &mdash; access on request.</p>
+    <p class="lk">&rarr; <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;2.1</a></p>
+  </div>
+
+  <div class="pillar">
+    <h4>3. Accuracy by field type AND document quality</h4>
+    <p><strong>Honest limit:</strong> the attested source is corpus-level
+       aggregate only. The PDF gives the source-corpus mix that fixes the
+       stratification the benchmark <em>could</em> support, but per-document /
+       per-class / per-quality / per-field scores are <strong>not</strong> in
+       the attested data. Producing one would be fabrication &mdash; deferred to a
+       factory re-run (&sect;10 R3).</p>
+    <p class="lk">&rarr; <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.3</a></p>
+  </div>
+
+  <div class="pillar">
+    <h4>4. Latency distributions</h4>
+    <p>From the Hyperbots source-of-record PDF, SAVIOR-Train fine-tuned inference
+       path: <strong>p50 2,548 ms</strong>, <strong>p99 3,319 ms</strong>,
+       <strong>3 % failure rate</strong> (KV-cache bound; 2-GPU mitigation
+       noted). No p90/p999/full-histogram is asserted &mdash; the source provides
+       only these three points.</p>
+    <p class="lk">&rarr; <a href="/benchmarks/studies/SOURCE-EXTRACT-Benchmark-VLM-OCR.html">SOURCE-EXTRACT &sect;3</a></p>
+  </div>
+
+  <div class="pillar">
+    <h4>5. Cost-per-call AND cost-per-correct</h4>
+    <p>A100 40 GB at ~$2/hr (infrastructure-derived, <em>not</em> a price quote):
+       cost per attempted call <strong>$0.000186</strong>, cost per successful
+       call <strong>$0.000191</strong> (&asymp; <strong>$0.19 per 1,000 successful
+       calls</strong>). The attempted-vs-successful gap reflects the 3 %
+       failure rate.</p>
+    <p class="lk">&rarr; <a href="/benchmarks/studies/SOURCE-EXTRACT-Benchmark-VLM-OCR.html">SOURCE-EXTRACT &sect;4</a></p>
+  </div>
+
+  <div class="pillar">
+    <h4>6. Failure modes (ours / competitors / residual)</h4>
+    <p><strong>Ours (FT):</strong> multilingual docs, ambiguous very-dense
+       layouts. <strong>Competitors (ZS panel):</strong> vertical text, fine
+       print, multi-column layouts, logo-embedded text, degraded scans,
+       handwriting, structured headers, bold-styled text. <strong>Residual:</strong>
+       multilingual + very-dense cluster persists even after fine-tuning. No
+       per-class incidence count is asserted (Appendix C explicitly flags
+       "no per-class counts available").</p>
+    <p class="lk">&rarr; <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.6 + Appendix C</a></p>
+  </div>
+
+  <div class="pillar">
+    <h4>7. Methodology &middot; rubric &middot; reproducibility</h4>
+    <p>Word-level multiset recall + precision (whole-token, not char-level);
+       PaIRS layout (PC-only; NPC = format-compat proxy); parse-intent F1
+       (&uarr;) / WER (&darr;). Decoding pinned: temp 0.1, top-p 0.9, max_tokens 2048,
+       seed 20260516 (<code>harness/tasks.json</code> DC-000). One frozen prompt
+       per family. Reproduction status box (Appendix D.2): <em>attested &mdash; not
+       factory-reproduced</em>. Factory harness, pinned env, repro_check are
+       <em>defined and in place</em> but not yet run against these cells.</p>
+    <p class="lk">&rarr; <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;2.2 / &sect;5.7 / Appendix D</a></p>
+  </div>
+
+  <div class="pillar">
+    <h4>+ Format calibration vs PureDocBench (honest depth audit)</h4>
+    <p>Standalone reviewer note governing P2.5: SAVIOR-Bench matches
+       PureDocBench's <strong>format discipline</strong> but does <strong>not</strong>
+       match its <strong>evidence depth</strong> (no per-track/-category slices,
+       no degradation tracks, no CI, not regenerable, attested-not-reproduced).
+       The related-work matrix in &sect;3 of the paper marks &#10007; on every dimension
+       not satisfied. &sect;10 is the named gap roadmap (R1&ndash;R7).</p>
+    <p class="lk">&rarr; <a href="/benchmarks/studies/papers/plan/FORMAT-CALIBRATION-vs-PureDocBench.html">plan/FORMAT-CALIBRATION-vs-PureDocBench.md</a></p>
+  </div>
+</div>
+
+<h2>4 &middot; Results &mdash; every row labelled fine-tuned vs zero-shot</h2>
+
+<div class="panel warn-box">
+  <strong>Reading rule (mandatory).</strong> <code>[FT]</code> rows are LoRA
+  fine-tunes of an open backbone on SAVIOR-Train (Hyperbots-IP) &mdash; not
+  apples-to-apples vs the zero-shot rows. Where a fine-tuned row beats a
+  zero-shot row, the comparison is between a model trained on this
+  document distribution and a model that has never seen it; the modesty
+  anchor in the paper is GPT-4o (best <em>well-documented</em> zero-shot
+  parse-intent). PaIRS comparability is PC-only; NPC PaIRS is a
+  format-compatibility proxy, not a directly comparable layout-quality
+  ranking.
+</div>
+
+<h3>4a. Parse-intent (DC-000 &middot; dataset <code>parse-intent-inhouse-v1</code>) &mdash; F1 &uarr; / WER &darr;</h3>
+<p class="muted">Source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.1.1</a>
+&middot; <code>n</code> not reported in attested source. 23 systems.</p>
+<table>
+  <thead><tr><th>Rank</th><th>Model</th><th class="num">F1 &uarr;</th><th class="num">WER &darr;</th><th>Setting</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><span class="tag-ft">hyperapi-parse-intent [FT]</span></td><td class="num lead">0.8328</td><td class="num lead">0.2589</td><td><span class="pill ft">fine-tuned</span></td></tr>
+    <tr><td>2</td><td>DocIntentOCR-3B <span class="small">(under-documented)</span></td><td class="num">0.8102</td><td class="num">0.5622</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>3</td><td>GPT-4o <span class="small">(well-doc anchor)</span></td><td class="num">0.8052</td><td class="num">0.4232</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>4</td><td>o3</td><td class="num">0.7686</td><td class="num">0.4869</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>5</td><td>PaddleOCR-VL-1.5</td><td class="num">0.7260</td><td class="num">2.9641</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>6</td><td>GLM-OCR</td><td class="num">0.7150</td><td class="num">1.5400</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>7</td><td>dots.mocr</td><td class="num">0.6963</td><td class="num">1.6317</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>8</td><td>Gemini 2.5 Flash</td><td class="num">0.6653</td><td class="num">1.3306</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>9</td><td>Qwen2.5-VL-3B-Inst</td><td class="num">0.6563</td><td class="num">0.7404</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>10</td><td>Qwen2.5-VL-7B-Inst</td><td class="num">0.6485</td><td class="num">0.8172</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>11</td><td>Gemini 2.5 Pro</td><td class="num">0.6351</td><td class="num">0.6009</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>12</td><td>GPT-4.1</td><td class="num">0.6261</td><td class="num">0.9058</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>13</td><td>Mistral-Large-3-675B</td><td class="num">0.6077</td><td class="num">0.9840</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>14</td><td>Claude Sonnet 4.6</td><td class="num">0.5974</td><td class="num">0.9308</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>15</td><td>Qwen3.6-35B-A3B</td><td class="num">0.5643</td><td class="num">2.5460</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>16</td><td>Qwen3-VL-32B-Instruct</td><td class="num">0.5414</td><td class="num">1.2720</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>17</td><td>Logics-Parsing-v2</td><td class="num">0.5241</td><td class="num">6.1980</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>18</td><td>Llama-3.2-90B-Vision</td><td class="num">0.4982</td><td class="num">1.0986</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>19</td><td>MinerU2.5-Pro-2604-1.2B</td><td class="num">0.4705</td><td class="num">1.1708</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>20</td><td>FireRed-OCR</td><td class="num">0.4408</td><td class="num">4.5847</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>21</td><td>Youtu-Parsing</td><td class="num">0.4277</td><td class="num">5.3630</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>22</td><td>Qianfan-OCR</td><td class="num">0.3640</td><td class="num">6.6560</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>23</td><td>DeepSeek-OCR-2</td><td class="num">0.3430</td><td class="num">12.3541</td><td><span class="pill zs">zero-shot</span></td></tr>
+  </tbody>
+</table>
+<p class="src-line">All cells: <em>in-house-run, user-attested 2026-05-18 &mdash; NOT
+factory-reproduced</em>. <code>ci95 = null</code>. Provenance:
+<a href="/benchmarks/studies/SOURCE-EXTRACT-Benchmark-VLM-OCR.html">paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</a>
++ <code>~/Desktop/benchmark.xlsx</code> (sheet <code>intent</code>).</p>
+
+<h3>4b. SAVIOR-Bench OCR (DC-000 &middot; dataset <code>savior-bench-v1</code> &middot; n = 509) &mdash; Recall &uarr; / Precision &uarr; / PaIRS &uarr;</h3>
+<p class="muted">Source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.1.2</a>.
+21 systems. <code>cat</code>: <strong>PC</strong> = prompt-controlled (PaIRS comparable);
+<strong>NPC</strong> = non-prompt-controlled (PaIRS = format-compat proxy).</p>
+<table>
+  <thead><tr><th>Rank</th><th>Model</th><th class="num">Recall &uarr;</th><th class="num">Precision &uarr;</th><th class="num">PaIRS &uarr;</th><th>cat</th><th>Setting</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><span class="tag-ft">Qwen2.5-VL-7B-F [FT]</span></td><td class="num lead">0.9294</td><td class="num">0.9157</td><td class="num">0.7066</td><td>NPC</td><td><span class="pill ft">fine-tuned</span></td></tr>
+    <tr><td>2</td><td>Textract</td><td class="num">0.9233</td><td class="num">0.8902</td><td class="num">0.5117</td><td>NPC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>3</td><td>Azure-DI</td><td class="num">0.9202</td><td class="num">0.8978</td><td class="num">0.5025</td><td>NPC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>4</td><td><span class="tag-ft">Qwen2.5-VL-3B-F [FT]</span></td><td class="num">0.9167</td><td class="num">0.9101</td><td class="num">0.7068</td><td>NPC</td><td><span class="pill ft">fine-tuned</span></td></tr>
+    <tr><td>5</td><td>Gemini-2.5-Flash</td><td class="num">0.9144</td><td class="num">0.8967</td><td class="num">0.6074</td><td>PC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>6</td><td>Qwen2.5-VL-7B-Instr.</td><td class="num">0.9091</td><td class="num">0.9145</td><td class="num">0.5629</td><td>PC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>7</td><td>Nanonets-OCR-s</td><td class="num">0.9039</td><td class="num">0.5336</td><td class="num">0.4354</td><td>NPC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>8</td><td>dots.ocr</td><td class="num">0.8992</td><td class="num">0.9290</td><td class="num">0.5540</td><td>NPC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>9</td><td>GPT-4o</td><td class="num">0.8854</td><td class="num lead">0.9322</td><td class="num">0.5826</td><td>PC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>10</td><td>Mistral OCR</td><td class="num">0.8611</td><td class="num">0.8986</td><td class="num">0.5382</td><td>NPC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>11</td><td>Qwen2.5-VL-3B-Instr.</td><td class="num">0.8547</td><td class="num">0.9120</td><td class="num">0.5764</td><td>PC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>12</td><td>Qwen3.6-35B-A3B</td><td class="num">0.7843</td><td class="num">0.9213</td><td class="num">0.5492</td><td>PC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>13</td><td>DeepSeek-OCR</td><td class="num">0.7706</td><td class="num">0.9008</td><td class="num">0.5034</td><td>NPC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>14</td><td>olmOCR-7B-0725-FP8</td><td class="num">0.7463</td><td class="num">0.9450</td><td class="num">0.5864</td><td>NPC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>15</td><td>MinerU2.5-Pro-2604-1.2B</td><td class="num">0.7339</td><td class="num">0.8006</td><td class="num">0.5437</td><td>NPC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>16</td><td>dots.mocr</td><td class="num">0.7227</td><td class="num">0.8563</td><td class="num">0.8191</td><td>NPC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>17</td><td>PaddleOCR-VL-1.5</td><td class="num">0.7220</td><td class="num">0.7120</td><td class="num lead">0.8766</td><td>NPC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>18</td><td>GLM-OCR</td><td class="num">0.6530</td><td class="num">0.8691</td><td class="num">0.8687</td><td>NPC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>19</td><td>PaddleOCR-VL</td><td class="num">0.5955</td><td class="num">0.8194</td><td class="num">0.4180</td><td>NPC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>20</td><td>Qianfan-OCR</td><td class="num">0.5240</td><td class="num">0.4563</td><td class="num">0.5321</td><td>NPC</td><td><span class="pill zs">zero-shot</span></td></tr>
+    <tr><td>21</td><td>DeepSeek-OCR-2</td><td class="num">0.2380</td><td class="num">0.1526</td><td class="num">0.6531</td><td>NPC</td><td><span class="pill zs">zero-shot</span></td></tr>
+  </tbody>
+</table>
+<p class="src-line">All cells: <em>in-house-run, user-attested 2026-05-18 &mdash; NOT
+factory-reproduced</em>. <code>ci95 = null</code>. Provenance:
+<a href="/benchmarks/studies/SOURCE-EXTRACT-Benchmark-VLM-OCR.html">paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</a>
++ <code>~/Desktop/benchmark.xlsx</code> (sheet <code>vlm-ocr</code>). Full panel
+also rendered (HTML, no build) at the hosted leaderboard:
+<a href="/benchmarks/studies/papers/leaderboard/index.html">leaderboard/index.html</a>.</p>
+
+<h3>4c. Headline-chart spec (faithful re-presentation &mdash; introduces no new data)</h3>
+<table>
+  <thead><tr><th>Metric group</th><th>Best FT <span class="pill ft">[FT]</span></th><th>Best ZS <span class="pill zs">ZS</span></th><th class="num">Delta</th><th>Direction</th></tr></thead>
+  <tbody>
+    <tr><td>OCR recall &uarr;</td><td>0.9294 (Qwen2.5-VL-7B-F)</td><td>0.9233 (Textract)</td><td class="num lead">+0.0061</td><td>FT leads, narrowly</td></tr>
+    <tr><td>Parse-intent F1 &uarr;</td><td>0.8328 (hyperapi-parse-intent)</td><td>0.8102 (DocIntentOCR-3B, under-doc) / 0.8052 (GPT-4o, anchor)</td><td class="num lead">+0.0226 / +0.0276</td><td>FT leads</td></tr>
+    <tr><td>OCR precision &uarr;</td><td>0.9157 (Qwen2.5-VL-7B-F)</td><td>0.9322 (GPT-4o)</td><td class="num" style="color:var(--bad);">&minus;0.0165</td><td><strong>ZS leads</strong></td></tr>
+    <tr><td>Layout / PaIRS &uarr;</td><td>0.7066 (Qwen2.5-VL-7B-F)</td><td>0.8766 (PaddleOCR-VL-1.5)</td><td class="num" style="color:var(--bad);">&minus;0.1700</td><td><strong>ZS leads</strong></td></tr>
+  </tbody>
+</table>
+<p class="src-line">The two ZS-leading rows are retained by design &mdash; cropping
+them would misrepresent the result.
+Source: <a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md &sect;5.1.3</a>.</p>
+
+<h2>5 &middot; Tabular-reasoning addendum &mdash; TR-000 (REGISTERED-NOT-YET-RUN)</h2>
+
+<div class="panel bad-box">
+  <strong>TR-000 status: REGISTERED-NOT-YET-RUN.</strong>
+  <code>harness/metrics.py</code> <code>score_item("TR-000")</code> raises
+  <code>NotImplementedError</code> by design &mdash; the no-faked-cell enforcement.
+  <code>harness/tabular_metrics.py</code> is a typed scaffold with
+  <code>NotImplementedError</code> bodies. The <code>harness/tasks.json</code>
+  entry has <code>_status = "REGISTERED-NOT-YET-RUN"</code>. <strong>No TR-000
+  number exists anywhere in this repo</strong>, and none is asserted on this page.
+</div>
+
+<p>TR-000 is the Table Structure Recognition (TSR) benchmark stream:
+predict full table grid (rows / cols / spanning cells / cell text) as HTML on
+a curated very-hard enterprise slice + public hard-table anchors (FinTabNet /
+PubTabNet / PubTables-1M / SciTSR / ICDAR cTDaR). Primary metric
+<code>teds</code>; secondary <code>grits</code>, <code>cell_f1</code>. Frozen
+decoding: temperature 0.0, top-p 1.0, max_tokens 4096, seed 20260516.</p>
+
+<h4>Human-gated execution checklist (none of this may proceed in this environment)</h4>
+<ul class="cklist">
+  <li><strong>HUMAN-GATED &mdash; compute approval.</strong> Authorize GPU/serving spend; stand up inference for the OSS roster and provision hosted-API keys for the API inventory; re-verify every <code>model_id</code> before any run.</li>
+  <li><strong>HUMAN-GATED &mdash; annotators + IAA.</strong> Hire/assign annotators; execute the GROUNDTRUTH &sect;4b rubric + &sect;4c IAA protocol on the curated very-hard enterprise slice. Honest corpus ceiling stands at ~3.5k&ndash;6.8k &mdash; <em>10k is not asserted</em>.</li>
+  <li><strong>HUMAN-GATED &mdash; apis.hyperbots.com <code>tabular</code> provisioning.</strong> Provision the <code>tabular</code> op + live endpoint per API-HANDSHAKE; nothing is deployed/live-verified here.</li>
+  <li><strong>EXECUTION-PENDING &mdash; metric impls.</strong> Implement <code>harness/tabular_metrics.py</code> bodies against LITERATURE-SURVEY &sect;3.2; validate each metric vs a reference implementation; flip the skipped acceptance tests; pin third-party deps (html5 parser, scipy, Levenshtein) &mdash; to a SCALE-UP pin block, not stdlib-only <code>PINS.txt</code>.</li>
+  <li><strong>EXECUTION-PENDING &mdash; score_item wiring.</strong> Only after metrics validated, replace the <code>NotImplementedError</code> in <code>harness/metrics.py</code> <code>score_item("TR-000")</code> with the WIRING &sect;2 drop-in. Until then the raise stays.</li>
+  <li><strong>EXECUTION-PENDING &mdash; loader + repro.</strong> Implement <code>datasets/loaders/tabular_loader.py</code> + slice manifests; extend <code>repro_check</code> HARNESS_PATHS pins + metric-availability guard.</li>
+  <li><strong>EXECUTION-PENDING &mdash; run + report.</strong> Run the pinned harness; emit cells with provenance (provider / endpoint / model_id / run_date); bootstrap CI (<code>seed = 20260516</code>) or <code>null</code> (never a fabricated interval); mandatory FT-vs-ZS disclosure.</li>
+  <li><strong>HUMAN-GATED &mdash; external publish.</strong> Any leaderboard / paper release of TR-000 numbers is a separate human decision.</li>
+</ul>
+
+<p class="src-line">Sub-program reading order:
+<a href="/benchmarks/studies/papers/plan/TABULAR-INDEX.html">TABULAR-INDEX.md</a> &rarr;
+<a href="/benchmarks/studies/papers/plan/TABULAR-LITERATURE-SURVEY.html">TABULAR-LITERATURE-SURVEY.md</a> &rarr;
+<a href="/benchmarks/studies/papers/plan/TABULAR-BENCHMARK-WIRING.html">TABULAR-BENCHMARK-WIRING.md</a> &rarr;
+<a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/tabular_metrics.py</a> &rarr;
+<a href="/benchmarks/studies/papers/plan/TABULAR-GROUNDTRUTH-DATA.html">TABULAR-GROUNDTRUTH-DATA.md</a> &rarr;
+<a href="/benchmarks/studies/papers/plan/TABULAR-MODELS-TO-BENCHMARK.html">TABULAR-MODELS-TO-BENCHMARK.md</a> +
+<a href="/benchmarks/studies/papers/plan/TABULAR-API-HANDSHAKE.html">TABULAR-API-HANDSHAKE.md</a>.</p>
+
+<h2>6 &middot; Methodology &amp; reproducibility summary</h2>
+<div class="grid cols-2">
+  <div class="panel">
+    <h4>Rubric (in code, not prose)</h4>
+    <ul>
+      <li><strong>Word-level recall / precision</strong> &mdash; multiset over whole tokens. Char-level CER deliberately rejected; downstream LLM extraction consumes whole tokens (<code>Totl</code> &ne; <code>Total</code> &rarr; full penalty).</li>
+      <li><strong>PaIRS</strong> &mdash; quadratic spatial penalty over pairwise token-position relationships, z-scored. <strong>Reported only for prompt-controlled (PC) models.</strong> NPC rows show PaIRS as a format-compatibility proxy, not a comparable ranking.</li>
+      <li><strong>Parse-intent F1 / WER</strong> &mdash; structured-parse variant: F1 over extracted intent fields (&uarr;); WER over the transcription (&darr;).</li>
+      <li><strong>TR-000 (registered-not-yet-run):</strong> primary <code>teds</code>; secondary <code>grits</code>, <code>cell_f1</code>.</li>
+    </ul>
+  </div>
+
+  <div class="panel">
+    <h4>Decoding pins (DC-000 &mdash; frozen)</h4>
+    <pre>temperature : 0.1
+top_p       : 0.9
+max_tokens  : 2048
+stop        : []
+seed        : 20260516
+
+prompt template (ONE per task family — identical across every model;
+model chat-formatting confined to adapters):
+
+"Transcribe the document below preserving reading order and layout.
+ Output the full text only. Document:
+ ---
+ {input_text}
+ ---
+ Transcription:"</pre>
+    <p class="src-line">&rarr; <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/tasks.json</a>
+    &middot; <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/PINS.txt</a>
+    &middot; <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/repro_check.py</a></p>
+  </div>
+
+  <div class="panel">
+    <h4>Reproduction status box (verbatim, Appendix D.2)</h4>
+    <pre>REPRODUCTION STATUS: ATTESTED — NOT FACTORY-REPRODUCED
+
+Every cell in this paper:
+  provenance        : in-house-run, user-attested 2026-05-18
+  source            : benchmark.xlsx + SOURCE-EXTRACT-
+                       Benchmark-VLM-OCR.md (in-repo verbatim
+                       extract of the Hyperbots-provided
+                       Benchmark-VLM_OCR.pdf, source-of-record)
+  reproduced_by_factory : false
+  ci95              : null   (shown "reported (no CI)")
+  rerun_command     : "in-house run; user-attested 2026-05-18
+                       - not reproduced by the factory harness"
+
+The deterministic factory harness, pinned env, and repro_check
+are DEFINED and IN PLACE (harness/PINS.txt,
+harness/repro_check.py) but have NOT been run against these
+cells. Factory re-reproduction is OPTIONAL / STRENGTHENING,
+NOT a publication gate (per the 2026-05-18 attestation).
+No cell is asserted as factory-verified. (paper §10, R1)</pre>
+  </div>
+
+  <div class="panel">
+    <h4>Harness contract (factory invariant)</h4>
+    <ul>
+      <li>Stdlib-only seed harness; offline by design; reproducible bit-for-bit on CPython 3.10+. Scale-up deps pinned separately.</li>
+      <li>Per-cell <code>rerun_command</code> string carried on every published cell &mdash; no reader can mistake attested for reproduced.</li>
+      <li><code>harness/repro_check.py</code> enforces metric + git-commit match; flip <code>reproduced_by_factory: true</code> only on a green check.</li>
+      <li>Bootstrap CI pins (for the day per-doc scores exist): resamples 2000, seed 20260516.</li>
+      <li>Frozen prompt template per task family; model chat-formatting confined to adapters.</li>
+    </ul>
+    <p class="src-line">&rarr; <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/run.py</a>
+    &middot; <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/metrics.py</a>
+    &middot; <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/models.json</a></p>
+  </div>
+</div>
+
+<h2>7 &middot; Honest limitations (in-body, not footnoted)</h2>
+
+<div class="panel bad-box">
+  <ol>
+    <li><strong>Fine-tuned vs zero-shot (primary).</strong> Three rows
+    (<span class="tag-ft">hyperapi-parse-intent</span>,
+    <span class="tag-ft">Qwen2.5-VL-7B-F</span>,
+    <span class="tag-ft">Qwen2.5-VL-3B-F</span>) are LoRA fine-tunes on
+    SAVIOR-Train; every other row is zero-shot vendor-native. Cross-setting
+    comparisons are not apples-to-apples. The fine-tune advantage is narrow,
+    metric-specific, and modest: parse-intent +0.0276 F1 vs best
+    well-documented zero-shot (GPT-4o); OCR recall +0.0061 vs Textract; no
+    fine-tune lead on OCR precision or PaIRS.</li>
+
+    <li><strong>Attested, not factory-reproduced.</strong> All cells are
+    in-house-run, user-attested 2026-05-18 &mdash; <em>not</em> re-derived under
+    the deterministic factory harness. The harness, pinned env, and
+    repro_check exist (<code>harness/PINS.txt</code>,
+    <code>harness/repro_check.py</code>) but have not been run against these
+    cells. Per the 2026-05-18 attestation factory reproduction is
+    optional/strengthening, <em>not</em> a publication gate.</li>
+
+    <li><strong>No confidence intervals.</strong> <code>ci95 = null</code>;
+    reported as "no CI". CIs require per-document scores that do not yet
+    exist. No interval is fabricated.</li>
+
+    <li><strong>No per-class / per-quality / per-field slices.</strong> The
+    attested source is corpus-level aggregate. The paper's &sect;3 related-work
+    matrix marks this dimension &#10007;; &sect;10 R3 names the work to close it.
+    Generating a slice today would be fabrication.</li>
+
+    <li><strong>PaIRS is PC-only.</strong> Layout fidelity is directly
+    comparable only among prompt-controlled models. NPC PaIRS is a
+    format-compatibility proxy, not a quality ranking.</li>
+
+    <li><strong>Tabular-reasoning honest ceiling.</strong> TR-000's
+    very-hard-enterprise corpus target is <strong>~3.5k&ndash;6.8k</strong> docs,
+    not 10k. The 10k figure is explicitly NOT asserted anywhere in the
+    program; the program's own <code>TABULAR-INDEX.md</code> states this.</li>
+
+    <li><strong>Format-parity, not evidence-depth-parity vs PureDocBench.</strong>
+    SAVIOR-Bench matches PureDocBench on disclosure discipline (IAA reported,
+    own-fixture audit, FT/ZS disclosure, frozen decoding) but is strictly
+    behind on evidence depth (no per-category / -degradation slices, no
+    regenerable corpus, attested-not-reproduced). The paper's &sect;3 matrix
+    marks &#10007; on every unsatisfied dimension; &sect;10 is the named roadmap.</li>
+
+    <li><strong>n asymmetry.</strong> OCR table is n = 509; parse-intent
+    table <code>n</code> is not reported in the attested source &mdash; reported
+    as unknown, not assumed.</li>
+
+    <li><strong>Single benchmark version.</strong> SAVIOR-Bench v1 only,
+    dated 2026-05-18. Model versions are as named/dated in the tables &mdash;
+    competitors improve; the comparison is timestamped, not eternal.</li>
+
+    <li><strong>No degradation / robustness tracks.</strong> No
+    systematically degraded variants; robustness is not measured (&sect;3 &#10007;,
+    &sect;10 R4).</li>
+
+    <li><strong>Not a regenerable corpus.</strong> Mixed-source licensing;
+    the corpus is static and attested, not source-traceable / regenerable
+    in the PureDocBench sense (&sect;3 &#10007;, &sect;10 R5). The Appendix B fixture audit
+    covers our own ground truth only &mdash; never a third-party benchmark audit.</li>
+  </ol>
+</div>
+
+<h2>8 &middot; All data links (absolute local paths, click-through-able)</h2>
+
+<div class="links">
+  <h4>paper/ &mdash; research artifact</h4>
+  <ul>
+    <li><a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md</a> &mdash; full paper P2.5 (&sect;1 motivation &middot; &sect;2 construction &middot; &sect;3 related-work matrix &middot; &sect;5 results &middot; &sect;6 analysis &middot; &sect;7 case studies &middot; &sect;8 limitations &middot; &sect;10 roadmap &middot; Appendices A&ndash;D)</li>
+    <li><a href="/benchmarks/studies/papers/HF-CARD.html">paper/HF-CARD.md</a> &mdash; HF dataset / model card draft (human-gated upload)</li>
+    <li><a href="/benchmarks/studies/SOURCE-EXTRACT-Benchmark-VLM-OCR.html">paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</a> &mdash; verbatim in-repo extract from the Hyperbots-provided <code>Benchmark-VLM_OCR.pdf</code> (PDF not redistributed; mixed-source licensing)</li>
+  </ul>
+
+  <h4>launch/ &mdash; go-to-market drafts (DO NOT POST)</h4>
+  <ul>
+    <li><a href="/benchmarks/studies/papers/launch/POST.html">launch/POST.md</a> &mdash; Hacker News / X / LinkedIn variants + headline-chart spec</li>
+    <li><a href="/benchmarks/studies/papers/launch/BLOG.html">launch/BLOG.md</a> &mdash; long-form blog draft (category labels only; named comparison stays in the linked paper)</li>
+    <li><a href="/benchmarks/studies/papers/launch/FUNNEL.html">launch/FUNNEL.md</a> &mdash; distribution plan, pre-launch gates, honest funnel instrumentation, 24h iterate loop</li>
+  </ul>
+
+  <h4>plan/ &mdash; methodology / governance / audit</h4>
+  <ul>
+    <li><a href="/benchmarks/studies/papers/plan/PLAN-SAVIOR-BENCH-PAPER.html">plan/PLAN-SAVIOR-BENCH-PAPER.md</a> &mdash; paper &middot; blog &middot; leaderboard plan (technical-research-writer brief)</li>
+    <li><a href="/benchmarks/studies/papers/plan/FORMAT-CALIBRATION-vs-PureDocBench.html">plan/FORMAT-CALIBRATION-vs-PureDocBench.md</a> &mdash; honest format-vs-evidence-depth audit vs PureDocBench (arXiv 2605.07492)</li>
+    <li><a href="/benchmarks/studies/papers/plan/LEADERBOARD-SPEC.html">plan/LEADERBOARD-SPEC.md</a> &mdash; public leaderboard product spec, repro contract, trust / anti-gaming / contamination policy</li>
+    <li><a href="/benchmarks/studies/papers/plan/PLAN-benchmark-factory.html">plan/PLAN-benchmark-factory.md</a> &mdash; DocumentAI Benchmark Factory CTO plan</li>
+    <li><a href="/benchmarks/studies/papers/plan/BENCHMARK-AUDIT-REVIEW.html">plan/BENCHMARK-AUDIT-REVIEW.md</a> &mdash; Tier-1 reviewer audit (integrity risks + ship verdicts per artifact)</li>
+    <li><a href="/benchmarks/studies/papers/plan/SCALE-TO-100.html">plan/SCALE-TO-100.md</a> &middot; <a href="/benchmarks/studies/papers/plan/TECH-QA-v1.html">plan/TECH-QA-v1.md</a> &mdash; adjacent program docs</li>
+  </ul>
+
+  <h4>harness/ &mdash; pinned harness + invariants</h4>
+  <ul>
+    <li><a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/tasks.json</a> &mdash; DC-000 (parse, SAVIOR-Bench) + TR-000 (tabular, REGISTERED-NOT-YET-RUN) + DE/DV/DC seed-family tasks; one frozen prompt, pinned decoding</li>
+    <li><a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/PINS.txt</a> &middot; <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/repro_check.py</a> &middot; <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/run.py</a> &middot; <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/metrics.py</a> &middot; <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/models.json</a></li>
+    <li><a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/ingest_savior_xlsx.py</a> &mdash; provenance-tagged xlsx &rarr; results JSON ingest (n=509 + parse-intent panel; fine-tune flags; ci95=null)</li>
+    <li><a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/tabular_metrics.py</a> &mdash; TR-000 typed scaffold (NotImplementedError bodies &mdash; no number can leak)</li>
+  </ul>
+
+  <h4>leaderboard/ &mdash; interactive table (hosted, no build)</h4>
+  <ul>
+    <li><a href="/benchmarks/studies/papers/leaderboard/index.html">leaderboard/index.html</a> &mdash; single static HTML with embedded <code>DATA</code>, filterable by task / dataset / model family; per-cell drill-down to pins + rerun command</li>
+    <li><a href="https://github.com/niyatic/niyatic.github.io" title="source-pending">leaderboard/build.py</a> &mdash; builder</li>
+  </ul>
+
+  <h4>plan/TABULAR-* &mdash; sub-program (registered-not-yet-run)</h4>
+  <ul>
+    <li><a href="/benchmarks/studies/papers/plan/TABULAR-INDEX.html">plan/TABULAR-INDEX.md</a> &mdash; single entry point, per-doc status table, human-gated execution checklist</li>
+    <li><a href="/benchmarks/studies/papers/plan/TABULAR-LITERATURE-SURVEY.html">plan/TABULAR-LITERATURE-SURVEY.md</a> &mdash; problem framing, metric defs (&sect;3.1), engineer-implementable algorithm spec (&sect;3.2)</li>
+    <li><a href="/benchmarks/studies/papers/plan/TABULAR-MODELS-TO-BENCHMARK.html">plan/TABULAR-MODELS-TO-BENCHMARK.md</a> &mdash; prompted-OSS roster, hosted-API inventory, per-model prompt / decoding / invocation</li>
+    <li><a href="/benchmarks/studies/papers/plan/TABULAR-GROUNDTRUTH-DATA.html">plan/TABULAR-GROUNDTRUTH-DATA.md</a> &mdash; downloads, public anchors, curation pipeline, annotation rubric (&sect;4b), IAA protocol (&sect;4c). Honest ceiling ~3.5k&ndash;6.8k (10k NOT asserted).</li>
+    <li><a href="/benchmarks/studies/papers/plan/TABULAR-API-HANDSHAKE.html">plan/TABULAR-API-HANDSHAKE.md</a> &mdash; request/response/auth/error/versioning contract; <code>tabular</code> op endpoint NOT provisioned (human-gated)</li>
+    <li><a href="/benchmarks/studies/papers/plan/TABULAR-BENCHMARK-WIRING.html">plan/TABULAR-BENCHMARK-WIRING.md</a> &mdash; harness inventory, loader contract, metric signatures, repro_check contract, adapter hook</li>
+  </ul>
+</div>
+
+<h2>9 &middot; Final note &mdash; external publish stays HUMAN-GATED</h2>
+<div class="panel warn-box">
+  <p>Nothing in this report is published. <strong>HF upload, the live blog,
+  the viral post, and the leaderboard URL all remain human-gated</strong>
+  (externally visible). Drafts only.</p>
+  <ul>
+    <li><strong>HF dataset / model card</strong> (<code>paper/HF-CARD.md</code>) &mdash; draft, not uploaded.</li>
+    <li><strong>Live blog</strong> (<code>launch/BLOG.md</code>) &mdash; draft, not published. Category labels only outside the paper artifact.</li>
+    <li><strong>Viral post</strong> (<code>launch/POST.md</code>) &mdash; HN / X / LinkedIn variants pre-staged but unposted. Zero astroturf, zero bought engagement.</li>
+    <li><strong>TR-000</strong> &mdash; stays REGISTERED-NOT-YET-RUN; no result cell exists.</li>
+    <li><strong>Named-competitor exception</strong> is artifact-scoped (this report + the paper + the leaderboard). Marketing / social / blog copy outside these artifacts uses category labels.</li>
+  </ul>
+  <p class="muted">This file is local at <code>/Users/niyati/Desktop/hyperapi-benchmark-report.html</code> only &mdash; no commit, no push, no external publish.</p>
+</div>
+
+<div class="hr"></div>
+
+<h2>Sources</h2>
+<ul>
+  <li><a href="/benchmarks/studies/SAVIOR-Bench.html">paper/SAVIOR-Bench.md</a> &mdash; primary paper artifact; abstract, &sect;1&ndash;&sect;10, Appendices A&ndash;D.</li>
+  <li><a href="/benchmarks/studies/papers/HF-CARD.html">paper/HF-CARD.md</a> &mdash; HF dataset / model card draft.</li>
+  <li><a href="/benchmarks/studies/SOURCE-EXTRACT-Benchmark-VLM-OCR.html">paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</a> &mdash; in-repo verbatim extract from the Hyperbots-provided <code>Benchmark-VLM_OCR.pdf</code> source-of-record; covers IAA, latency, cost, LoRA recipe, failure modes, corpus mix.</li>
+  <li><a href="/benchmarks/studies/papers/launch/POST.html">launch/POST.md</a>, <a href="/benchmarks/studies/papers/launch/BLOG.html">launch/BLOG.md</a>, <a href="/benchmarks/studies/papers/launch/FUNNEL.html">launch/FUNNEL.md</a> &mdash; go-to-market drafts (DO NOT POST).</li>
+  <li><a href="/benchmarks/studies/papers/plan/PLAN-SAVIOR-BENCH-PAPER.html">plan/PLAN-SAVIOR-BENCH-PAPER.md</a>, <a href="/benchmarks/studies/papers/plan/FORMAT-CALIBRATION-vs-PureDocBench.html">plan/FORMAT-CALIBRATION-vs-PureDocBench.md</a>, <a href="/benchmarks/studies/papers/plan/LEADERBOARD-SPEC.html">plan/LEADERBOARD-SPEC.md</a>, <a href="/benchmarks/studies/papers/plan/PLAN-benchmark-factory.html">plan/PLAN-benchmark-factory.md</a>, <a href="/benchmarks/studies/papers/plan/BENCHMARK-AUDIT-REVIEW.html">plan/BENCHMARK-AUDIT-REVIEW.md</a>.</li>
+  <li><a href="/benchmarks/studies/papers/plan/TABULAR-INDEX.html">plan/TABULAR-INDEX.md</a> + the six TABULAR-* docs; <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/tabular_metrics.py</a> (NotImplementedError scaffold).</li>
+  <li><a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/tasks.json</a> (DC-000 + TR-000), <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/PINS.txt</a>, <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/repro_check.py</a>, <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/metrics.py</a>, <a href="https://github.com/niyatic/niyatic.github.io" title="source-on-github-pending">harness/models.json</a>.</li>
+  <li><a href="/benchmarks/studies/papers/leaderboard/index.html">leaderboard/index.html</a> &mdash; hosted leaderboard (no build, no network).</li>
+</ul>
+
+<h2>Open assumptions</h2>
+<ol>
+  <li>Every numeric on this page is transcribed verbatim from
+      <code>paper/SAVIOR-Bench.md</code>, <code>paper/HF-CARD.md</code>, or
+      <code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code>. No figure was
+      synthesized, rounded, or interpolated. Where the source is silent
+      (e.g. parse-intent <code>n</code>, p90/p999, per-class slices), this
+      report is silent too.</li>
+  <li>All cells are <strong>in-house-run, user-attested 2026-05-18</strong>,
+      <strong>not factory-harness-reproduced</strong>. Factory re-reproduction is
+      optional/strengthening per the 2026-05-18 attestation &mdash; not a publication
+      gate. No cell is asserted as factory-verified.</li>
+  <li>Fine-tuned (SAVIOR-Train / Hyperbots-IP) rows are disclosed inline with
+      <code>[FT]</code> and surfaced before any cross-row comparison.</li>
+  <li><code>ci95 = null</code> everywhere &mdash; shown as "reported (no CI)". No
+      interval is invented.</li>
+  <li>TR-000 (tabular reasoning) is <strong>REGISTERED-NOT-YET-RUN</strong>;
+      <code>score_item("TR-000")</code> raises <code>NotImplementedError</code>;
+      the corpus ceiling is honest ~3.5k&ndash;6.8k, not 10k.</li>
+  <li>Named-competitor exception is scoped to this artifact, the paper, the
+      HF card, and the leaderboard. Marketing / social / blog copy outside
+      these artifacts uses category labels (no named competitor).</li>
+  <li>This report is a <strong>local draft</strong> &mdash; no commit, no push, no
+      external publish. HF upload, live blog, and viral post stay
+      human-gated.</li>
+</ol>
+
+</div>
+</body>
+</html>

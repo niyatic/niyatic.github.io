@@ -1,0 +1,236 @@
+<!doctype html><html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BLOG — Hyperbots</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing: border-box; }
+body { font: 15px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background: var(--grey-2); color: var(--grey-12); margin: 0 auto;
+  max-width: 920px; padding: 28px 24px 56px; -webkit-font-smoothing: antialiased; }
+h1,h2,h3,h4,h5,h6 { color: var(--brand-9); font-weight: 600; letter-spacing: -0.005em; margin: 1.5em 0 0.5em; }
+h1 { font-size: 22px; margin-top: 0; padding-bottom: 8px; border-bottom: 2px solid var(--brand-4); }
+h2 { font-size: 18px; margin-top: 1.8em; padding-bottom: 6px; border-bottom: 1px solid var(--brand-4); }
+h3 { font-size: 15px; color: var(--grey-11); text-transform: uppercase; letter-spacing: 0.04em; }
+h4 { font-size: 14px; color: var(--brand-8); }
+p { margin: 0.7em 0; }
+ul, ol { margin: 0.5em 0 0.8em 1.4em; padding: 0; }
+li { margin: 0.25em 0; }
+a { color: var(--brand-7); text-decoration: none; }
+a:hover { text-decoration: underline; color: var(--brand-9); }
+code { font-family: "SF Mono",ui-monospace,Menlo,monospace; font-size: 13px; background: var(--brand-2); padding: 1px 6px; border-radius: 4px; color: var(--grey-12); }
+pre { background: #1a1f33; color: #e6e8ee; padding: 14px 18px; border-radius: 8px; overflow-x: auto; font-size: 12.5px; line-height: 1.5; }
+pre code { background: transparent; color: inherit; padding: 0; }
+table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13px; background: #fff; border: 1px solid var(--grey-4); border-radius: 6px; overflow: hidden; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--grey-4); }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+hr { border: 0; border-top: 1px solid var(--grey-4); margin: 24px 0; }
+strong { color: var(--grey-12); font-weight: 600; }
+.back { color: var(--grey-10); font-size: 13px; text-decoration: none; display: inline-block; margin-bottom: 16px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+.fm { background: var(--brand-2); border-left: 3px solid var(--brand-7); padding: 10px 14px; border-radius: 6px; margin: 0 0 18px; font-size: 12.5px; color: var(--grey-11); font-family: ui-monospace,Menlo,monospace; white-space: pre-wrap; }
+</style>
+</head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<a class="back" href="/benchmarks/studies/savior-bench-report.html">← back</a>
+
+<h1>The fine-tune edge was smaller than we expected — and that's the useful finding</h1>
+
+<p><em>A technical walkthrough of SAVIOR-Bench v1: 509 expert-annotated financial documents, 45 OCR/VLM systems, one frozen prompt, and a deliberately modest result.</em></p>
+
+<p>> ## EXTERNAL-PUBLISH HUMAN-GATE (W5 — non-waivable) > > <strong>DRAFT — external publish requires explicit human approval; nothing > auto-published; named competitors scoped to <code>paper/</code> artifact only.</strong> > > Recorded approval line (required before any external post): > <code>approved-by: &lt;human-name&gt; · date: &lt;YYYY-MM-DD&gt; · against-commit: &lt;sha&gt;</code> > — appended only when a human signs off in PR. Until that line exists > against a green pre-launch readiness gate (<code>launch/FUNNEL.md</code> §1 > G1–G8), this file is a draft and remains unpublished.</p>
+
+<p>> <strong>Status: DRAFT. Not published.</strong> External publication is human-gated > (externally visible). This is a one-click-ready draft. Numbers are > model OCR/parse performance, in-house-run and user-attested 2026-05-18, > <strong>not yet factory-reproduced</strong> — stated here, not footnoted. No competitor > is named in this blog (category labels only); the named comparison is in > the linked benchmark paper. Product accuracy is never claimed here.</p>
+
+<hr/>
+
+<h2>TL;DR</h2>
+
+<p>We build document-AI for finance. We wanted an honest answer to: <em>how much does fine-tuning an open vision-language model on financial documents actually buy you over the best zero-shot system?</em> So we built a benchmark, ran ~45 systems through it, and measured.</p>
+
+<p>The answer: <strong>+0.0061 OCR recall</strong> and <strong>+0.0276 parse-intent F1</strong> over the best <em>well-documented</em> zero-shot system (+0.0226 against a marginally-higher but under-documented panel row — see below). On OCR precision and layout fidelity, zero-shot systems <em>won</em>. Fine-tuning bought a narrow, metric-specific edge — not a universal one.</p>
+
+<p>We're publishing the small number because it's the true one, and because it's more useful than "our model wins": it tells you exactly where fine-tuning helps and where it doesn't. And it explains why we still ship an API-native pipeline instead of telling people to go fine-tune their own model.</p>
+
+<hr/>
+
+<h2>Why we built SAVIOR-Bench</h2>
+
+<p>Generic OCR benchmarks under-measure two things that matter for financial documents:</p>
+
+<ol>
+<li><strong>Whole-token fidelity.</strong> Downstream LLM extraction needs <code>Total</code>, not</li>
+</ol>
+<p>   <code>Totl</code>. A one-character edit that char-level CER barely penalizes still    breaks a downstream key match. So we score <em>word-level multiset</em> recall    and precision: <code>Totl</code> ≠ <code>Total</code>, full penalty, not partial.</p>
+
+<ol>
+<li><strong>Layout fidelity.</strong> Reading order and spatial structure determine</li>
+</ol>
+<p>   whether a table parses at all. A model can recover every token and still    emit them in an order that makes the table un-parseable. So we score a    pairwise spatial-relationship metric (PaIRS) separately from    transcription.</p>
+
+<p>SAVIOR-Bench v1 is <strong>509 expert-annotated financial documents</strong> across five corpora — UCSF Industry Documents (46.95%), in-house synthetic (17.88%), misc. public financial (17.49%), Inv3D (9.04%), FUNSD (8.64%) — covering invoices, packing slips, forms, multilingual scans, low-quality PDFs, and complex tables. Inter-annotator agreement is <strong>0.761</strong> (fuzzy string similarity over 187 double-annotated pairs).</p>
+
+<p>We evaluate two task families on identical inputs, one frozen prompt per family, and pinned decoding (temperature 0.1, top-p 0.9, max_tokens 2048, seed 20260516):</p>
+
+<ul>
+<li><strong>OCR transcription + layout</strong> — word-level recall/precision + PaIRS.</li>
+<li><strong>Parse-intent extraction</strong> — F1 (↑) and word error rate (↓).</li>
+</ul>
+
+<p>The panel: ~21 OCR systems and 23 parse-intent systems spanning leading cloud document-AI APIs, frontier multimodal LLMs, and open-source OCR/VLM stacks. The named systems live in the benchmark paper (naming measured systems is a scientific-benchmark norm and is scoped to that artifact); this blog uses category labels.</p>
+
+<hr/>
+
+<h2>The honest disclosure, first</h2>
+
+<p>Three rows are <strong>fine-tuned</strong>: two OCR backbones and the parse-intent system are LoRA fine-tunes (rank 32, α 64) of open Qwen2.5-VL-Instruct backbones on our training split — Hyperbots-IP, open-source backbones fine-tuned by us. <strong>Every other row is zero-shot in the vendor's native settings.</strong> These are <em>not apples-to-apples comparisons</em>; they are tagged <code>[FT]</code> everywhere they appear in the paper, and the disclosure is the first block of the abstract — not an appendix.</p>
+
+<p>We lead with this because the entire value of the result depends on reading it correctly.</p>
+
+<hr/>
+
+<h2>The result</h2>
+
+<h3>OCR transcription (recall ↑)</h3>
+
+<p>The fine-tuned model leads OCR recall at <strong>0.9294</strong>. The best <em>zero-shot</em> system reaches <strong>0.9233</strong> — a gap of <strong>+0.0061</strong>. The next zero-shot system is at 0.9202. Three systems within ~0.01 recall of a fine-tuned model that was specifically trained on this document distribution.</p>
+
+<h3>Parse-intent (F1 ↑ / WER ↓)</h3>
+
+<p>The fine-tuned parse-intent system leads at <strong>F1 0.8328 / WER 0.2589</strong>. We anchor the gap on the best <em>well-documented</em> zero-shot system (<strong>0.8052</strong> / WER 0.4232): a <strong>+0.0276 F1</strong> edge with a large WER reduction (0.2589 vs 0.4232). One panel row posts a marginally higher 0.8102 but is <strong>under-documented</strong> (no recorded vendor / checkpoint / config); against it the gap is the more conservative +0.0226 F1 — reported as-attested, not used as the anchor. Named systems live in the linked paper. Either way this is where fine-tuning pays off most: structured intent extraction, not raw transcription.</p>
+
+<h3>Where fine-tuning <em>loses</em></h3>
+
+<p>This is the part a marketing post would crop. We won't.</p>
+
+<ul>
+<li><strong>OCR precision:</strong> the best system is <strong>zero-shot</strong> at 0.9322, *ahead of</li>
+</ul>
+<p>  both fine-tuned rows* (0.9157, 0.9101).</p>
+<ul>
+<li><strong>Layout (PaIRS):</strong> the leaders are <strong>zero-shot</strong> (0.8766, 0.8191); the</li>
+</ul>
+<p>  fine-tuned models (0.7066, 0.7068) do not lead layout at all.</p>
+
+<p>Fine-tuning on SAVIOR-Train improves recall and parse-F1. It does not improve precision or reading-order fidelity. That's a candid counter-result, and it's in the paper's conclusion, not hidden.</p>
+
+<hr/>
+
+<h2>Two findings we didn't expect</h2>
+
+<p><strong>1. Recall and layout decouple — hard.</strong> One open-source system is near the bottom on recall (rank 17 of 21) yet <em>first</em> on layout fidelity. A leading cloud API is second on recall but mid-pack on layout. High transcription recall does not imply faithful reading order. This is the entire reason we score both metrics separately rather than collapsing them — a single OCR number would have hidden this.</p>
+
+<p><strong>2. Verbose hallucination wrecks WER while F1 survives.</strong> On parse-intent, a system can hold a moderate field-F1 (0.7260) while its transcription WER explodes to 2.96 — or reach WER 12.35 at F1 0.34. Systems that pad output with hallucinated tokens can look acceptable on structured F1 while their raw transcription is unreliable. Reporting WER <em>alongside</em> F1 exposes this; reporting either alone hides it.</p>
+
+<hr/>
+
+<h2>What this is <em>not</em> (said plainly, not footnoted)</h2>
+
+<p>A benchmark's credibility is its disclosure discipline. Ours:</p>
+
+<ul>
+<li><strong>Attested, not yet factory-reproduced.</strong> Every cell is in-house-run and</li>
+</ul>
+<p>  user-attested (2026-05-18). The deterministic factory harness, pinned   environment, and repro-check exist and are in place — but they have <em>not</em>   yet been run against these cells. Factory re-reproduction is the next   hardening step, and we say exactly that in the paper's reproduction-status   box. No cell is asserted as factory-verified.</p>
+<ul>
+<li><strong>No confidence intervals.</strong> <code>ci95=null</code>. We report "no CI" rather than</li>
+</ul>
+<p>  fabricate an interval. CIs require per-document scores we don't yet emit.</p>
+<ul>
+<li><strong>No per-class slices.</strong> The attested source is corpus-level aggregate.</li>
+</ul>
+<p>  We do <em>not</em> report a by-class/by-quality/by-field table because generating   one would mean fabricating splits the data doesn't contain. We mark that   gap explicitly.</p>
+<ul>
+<li><strong>PaIRS is prompt-controlled-only.</strong> Layout fidelity is directly</li>
+</ul>
+<p>  comparable only among prompt-controllable models; for fixed-schema APIs   it's a format-compatibility proxy, labelled as such.</p>
+
+<p>The paper includes a related-work matrix that marks <strong>every dimension we do not yet satisfy with an ✗</strong> — no per-category slices, no degradation tracks, no confidence intervals, not yet a regenerable corpus, not yet factory-reproduced. We named the gaps instead of papering over them, and the paper's §10 is the explicit roadmap to close them.</p>
+
+<hr/>
+
+<h2>So why do we still ship an API?</h2>
+
+<p>If the fine-tune edge over the best zero-shot model is only +0.0061 recall, why not just tell people to use a strong zero-shot system, or fine-tune their own?</p>
+
+<p>Because the leaderboard delta is not where the production value is:</p>
+
+<ul>
+<li><strong>Latency:</strong> p50 2,548 ms / p99 3,319 ms on the fine-tuned inference path.</li>
+<li><strong>Cost:</strong> ≈ <strong>$0.19 per 1,000 successful calls</strong> (A100 40 GB at ~$2/hr;</li>
+</ul>
+<p>  infrastructure-derived, not a price quote).</p>
+<ul>
+<li><strong>The parse-intent layer:</strong> the +0.0276 F1 (vs the best well-documented</li>
+</ul>
+<p>  zero-shot system; +0.0226 vs the under-documented row) / lower-WER edge is on   <em>structured extraction</em>, which is what an integration actually consumes —   not raw transcription.</p>
+
+<p>These are infrastructure and integration properties, not a benchmark number. The benchmark's honest job is to tell you the model gap is small; the product's job is the latency, cost, and parse-intent reliability around it. Conflating the two would be the dishonest move.</p>
+
+<hr/>
+
+<h2>Reproduce / inspect / try it</h2>
+
+<ul>
+<li><strong>Paper</strong> (full method, named panel, related-work matrix, reproducibility</li>
+</ul>
+<p>  roadmap, appendices A–D): <PAPER_URL></p>
+<ul>
+<li><strong>Leaderboard</strong> (every cell, frozen prompt, pinned decoding):</li>
+</ul>
+<p>  <LEADERBOARD_URL></p>
+<ul>
+<li><strong>Benchmark repo</strong> (harness, scoring, pins): <REPO_URL></li>
+<li><strong>Benchmark access</strong> (corpus on request, mixed-source licensing):</li>
+</ul>
+<p>  niyati.chhaya@hyprbots.com</p>
+<ul>
+<li><strong>Try the hosted pipeline on your own documents:</strong> <SIGNUP_URL></li>
+</ul>
+
+<p>Methodology questions — the scoring rubric, the PC/NPC PaIRS comparability boundary, the LoRA recipe, and exactly what factory re-reproduction + slicing would entail — are all answered in the paper. We'd rather you poke holes in it than take the number on faith.</p>
+
+<hr/>
+
+<h2>Sources</h2>
+<ul>
+<li><code>paper/SAVIOR-Bench.md</code> (Abstract; §1 motivation; §2 construction; §3</li>
+</ul>
+<p>  related-work matrix; §5.1.1/§5.1.2 result tables; §5.4 latency; §5.5 cost;   §6 analysis; §8 limitations; §10 roadmap; Appendix A LoRA recipe; Appendix   D reproduction-status box).</p>
+<ul>
+<li><code>paper/HF-CARD.md</code>; <code>leaderboard/index.html</code>.</li>
+<li><code>.claude/agents/{research-comms-lead,technical-content-strategist,launch-pr-strategist,benchmark-format-steward}.md</code>;</li>
+</ul>
+<p>  user directive 2026-05-19/20.</p>
+
+<h2>Open assumptions</h2>
+<ul>
+<li>Numbers are model OCR/parse performance, in-house-run and user-attested</li>
+</ul>
+<p>  2026-05-18, not yet factory-reproduced (stated in-body).</p>
+<ul>
+<li>Fine-tune-vs-zero-shot disclosed before any result; <code>[FT]</code> rows are LoRA</li>
+</ul>
+<p>  fine-tunes of OSS backbones (Hyperbots-IP).</p>
+<ul>
+<li>No competitor named in this blog (category labels); the named comparison</li>
+</ul>
+<p>  is in the linked paper artifact only.</p>
+<ul>
+<li>Product accuracy never claimed here; latency/cost are</li>
+</ul>
+<p>  infrastructure-derived from the attested source, not a price quote.</p>
+<ul>
+<li>DRAFT only — external publication and URL resolution are human-gated;</li>
+</ul>
+<p>  nothing auto-published; zero astroturf/bought engagement.</p>
+<ul>
+<li>Viral + ~1000 signups in 24h is an aspirational reach target reported</li>
+</ul>
+<p>  honestly, never guaranteed or simulated.</p>
+
+</body></html>
