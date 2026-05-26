@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HyperAPI · Events Jun–Nov 2026 — NA · ME · India + Document-AI</title>
+<style>
+:root{
+  --brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;--brand-2:#EDFAFF;
+  --brand-3:#DEEEF5;--brand-4:#BDDFEE;--web:#177AA1;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-9:#8A9799;
+  --grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok:#039855;--ok-bg:#E1F9D6;--ok-strong:#027A48;
+  --warn:#DC6803;--warn-bg:#FEDF89;--warn-strong:#B54708;
+  --err:#D92D20;--err-bg:#FCD1CF;--err-strong:#B42318;
+  --t1-bg:#FEDF89;--t1-fg:#B54708;
+  --t2-bg:#BDDFEE;--t2-fg:#047495;
+  --t3-bg:#E1F9D6;--t3-fg:#027A48;
+}
+@page{size:Letter landscape;margin:14mm 16mm}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font:13px/1.55 "Rubik",-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;background:var(--grey-2);color:var(--grey-12);-webkit-font-smoothing:antialiased;padding:0 0 40px 0}
+.slide{background:#FFFFFF;border:1px solid var(--grey-4);border-radius:10px;margin:24px auto;max-width:1100px;padding:32px 36px;box-shadow:0 1px 2px rgba(33,31,38,0.04);page-break-after:always}
+.slide:last-of-type{page-break-after:auto}
+.slide-header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:14px;margin-bottom:20px;border-bottom:1px solid var(--grey-4);border-left:4px solid var(--brand-7);padding-left:14px;margin-left:-14px}
+.slide-header .lhs{display:flex;align-items:center;gap:14px}
+.slide-header .logo{width:32px;height:33px;flex:0 0 32px}
+.slide-header h1{font-size:22px;font-weight:700;color:var(--brand-7);letter-spacing:-.3px;line-height:1.2}
+.slide-header .meta{font-size:10px;color:var(--grey-10);text-transform:uppercase;letter-spacing:.6px;font-weight:600;text-align:right}
+.slide-header .meta b{color:var(--brand-8)}
+h2{font-size:16px;font-weight:700;color:var(--brand-7);margin:18px 0 10px;text-transform:uppercase;letter-spacing:.4px}
+h3{font-size:13px;font-weight:700;color:var(--brand-8);margin:14px 0 6px;text-transform:uppercase;letter-spacing:.5px}
+table{width:100%;border-collapse:collapse;font-size:11.5px;margin:6px 0 12px;background:#FFFFFF}
+th{background:var(--grey-3);color:var(--grey-11);font-weight:700;text-transform:uppercase;font-size:9px;letter-spacing:.4px;padding:6px 8px;text-align:left;border-bottom:1px solid var(--grey-4);vertical-align:middle}
+td{padding:7px 8px;border-bottom:1px solid var(--grey-4);vertical-align:top;font-size:11.5px;line-height:1.4}
+.tier{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;letter-spacing:.4px;text-transform:uppercase}
+.t1{background:var(--t1-bg);color:var(--t1-fg)}
+.t2{background:var(--t2-bg);color:var(--t2-fg)}
+.t3{background:var(--t3-bg);color:var(--t3-fg)}
+.conf{display:inline-block;font-size:9px;font-weight:700;padding:2px 6px;border-radius:8px;letter-spacing:.3px;text-transform:uppercase}
+.conf.confirmed{background:var(--ok-bg);color:var(--ok-strong)}
+.conf.pending{background:var(--brand-3);color:var(--brand-8)}
+.conf.unconf{background:var(--warn-bg);color:var(--warn-strong)}
+.evt{font-weight:700;color:var(--grey-12)}
+.evt-sub{font-size:10px;color:var(--grey-10);font-weight:600;font-style:italic}
+a{color:var(--brand-7);text-decoration:none}
+a:hover{text-decoration:underline}
+.month-strip{display:inline-block;background:var(--brand-2);color:var(--brand-8);font-weight:700;font-size:10px;padding:3px 10px;border-radius:10px;letter-spacing:.5px;text-transform:uppercase;border:1px solid var(--brand-4);margin-right:8px}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+.kpi{background:var(--grey-2);border:1px solid var(--grey-4);border-radius:6px;padding:10px 12px}
+.kpi .v{font-size:20px;font-weight:700;color:var(--grey-12)}
+.kpi .l{font-size:10px;color:var(--grey-10);text-transform:uppercase;letter-spacing:.4px;font-weight:600;margin-top:2px}
+.callout{background:var(--brand-2);border:1px solid var(--brand-4);border-left:4px solid var(--brand-7);border-radius:0 6px 6px 0;padding:10px 14px;margin:12px 0;font-size:12px;color:var(--brand-8)}
+.callout b{color:var(--brand-9)}
+.honest{background:var(--warn-bg);border:1px solid #FEC84B;border-left:4px solid var(--warn);border-radius:0 6px 6px 0;padding:10px 14px;margin:12px 0;font-size:12px;color:var(--warn-strong)}
+.footer-note{font-size:10px;color:var(--grey-10);text-align:right;font-style:italic;margin-top:16px;padding-top:8px;border-top:1px solid var(--grey-4)}
+.summary-table th,.summary-table td{text-align:center;font-size:12px}
+.summary-table td.region{text-align:left;font-weight:700;color:var(--brand-7)}
+.summary-table tfoot td{font-weight:700;background:var(--grey-2);border-top:2px solid var(--brand-7)}
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     SLIDE 1 · TITLE
+============================================================ -->
+<section class="slide">
+  <div class="slide-header">
+    <div class="lhs">
+      <svg class="logo" viewBox="0 0 32 33" fill="none"><path d="M22.6248 15.6349C24.1996 16.5847 25.3777 17.9906 25.3822 19.6784C25.3882 21.797 24.6763 23.8217 24.0774 25.8285C23.7245 27.0108 22.7153 30.0837 24.7834 30.3565C26.9932 30.6487 28.9737 26.0328 29.6525 24.1646C31.1187 20.1301 31.5939 17.515 30.9196 13.0317C30.7597 11.9702 29.8396 9.00918 29.0989 7.24986C28.1758 5.05818 26.6553 2.84413 24.9614 3.61196C23.9296 4.08012 24.4757 5.96914 24.898 7.99385C25.0368 8.66328 25.3928 9.94251 25.3641 11.1129C25.2796 14.466 23.9221 18.1203 18.4164 19.0134C17.6803 19.1327 16.2533 19.2057 15.1974 19.1237C13.517 18.9955 11.8804 18.5035 10.4459 17.6298C7.64479 15.9227 7.16361 13.7668 7.02785 11.1144C6.96751 9.94549 7.29031 8.65731 7.41249 7.9849C7.78205 5.94976 8.27983 4.04732 7.23601 3.606C5.52245 2.8814 3.96426 5.15509 3.04262 7.34678C2.23411 9.27456 1.75896 11.4901 1.54024 12.7798C0.780002 17.2496 1.28683 20.2718 2.85558 24.2675C3.58263 26.1192 5.45005 30.6845 7.65082 30.3386C9.71131 30.0136 8.62375 26.9661 8.24061 25.7942C7.59049 23.8023 7.12589 21.797 7.07913 19.6784C7.03992 17.9235 8.14709 16.3088 10.2362 15.1548C10.2347 15.1548 16.1055 11.7033 22.6248 15.6349Z" stroke="#177AA1" stroke-width="1.4" stroke-miterlimit="10"/></svg>
+      <h1>Events — Jun–Nov 2026<br><span style="font-size:14px;color:var(--grey-10);font-weight:500">NA · ME · India + Document-AI</span></h1>
+    </div>
+    <div class="meta">snapshot 2026-05-20 · refreshed 2026-05-26<br>powered by <b>HyperLM</b></div>
+  </div>
+
+  <div style="font-size:14px;line-height:1.7;color:var(--grey-11);margin:20px 0">
+    Reformatted 3-block view of the curated <code>EVENTS-SHORTLIST.md</code> (18 finance/CFO/BFSI/fintech events, primary-source verified 2026-05-18) <b>plus 8 document-AI conferences</b> added per directive 2026-05-20.
+    <br><br>
+    <b>Freshness pass 2026-05-26:</b> all 26 events remain upcoming as of today (earliest is Jun 3 in Boston); no entries lapsed. No confidence-label promotions in this pass — <code>pending-verify</code> and <code>unconfirmed-source</code> rows still require a primary-source verification pass (WebFetch authority is currently harness-blocked; recorded honestly rather than asserted).
+  </div>
+
+  <h2>Headline by region</h2>
+  <table class="summary-table">
+    <thead><tr><th>Region</th><th>Tier-1<br>Finance ICP</th><th>Tier-2<br>Fintech / ecosystem</th><th>Tier-3<br>Doc-AI research</th><th>Total</th></tr></thead>
+    <tbody>
+      <tr><td class="region">🇺🇸 North America</td><td>5</td><td>2</td><td><b>7</b></td><td><b>14</b></td></tr>
+      <tr><td class="region">🌍 Middle East</td><td>2</td><td>4</td><td>0</td><td>6</td></tr>
+      <tr><td class="region">🇮🇳 India</td><td>2</td><td>3</td><td>1</td><td>6</td></tr>
+    </tbody>
+    <tfoot><tr><td class="region">TOTAL</td><td>9</td><td>9</td><td>8</td><td>26</td></tr></tfoot>
+  </table>
+
+  <h2>Discipline (preserved from the events-discovery-gtm charter)</h2>
+  <ul style="padding-left:20px;line-height:1.7;font-size:12.5px;color:var(--grey-12)">
+    <li>Every row carries a working public source URL. <b>Nothing committed</b> — manager + human approval required for any external action.</li>
+    <li>The 18 finance/BFSI events carry their <span class="conf confirmed">confirmed</span> labels forward unchanged (primary-source verified 2026-05-18).</li>
+    <li>The 8 newly-added document-AI rows are honestly <span class="conf pending">pending-verify</span> or <span class="conf unconf">unconfirmed-source</span> — these need a primary-source verification pass before any commitment.</li>
+    <li>Tier label is editorial (audience density for HyperAPI), not a quality ranking.</li>
+  </ul>
+
+  <div class="honest"><b>Honest finding:</b> Middle East doc-AI research surface is structurally <b>zero in window</b>. The SAVIOR-Bench artifact + Tier-1 GCC finance events (CFO StraTech Dubai · Connected Banking KSA) are the ME selling surface — not local academic conferences.</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 2 · NORTH AMERICA
+============================================================ -->
+<section class="slide">
+  <div class="slide-header">
+    <div class="lhs">
+      <svg class="logo" viewBox="0 0 32 33" fill="none"><path d="M22.6248 15.6349C24.1996 16.5847 25.3777 17.9906 25.3822 19.6784C25.3882 21.797 24.6763 23.8217 24.0774 25.8285C23.7245 27.0108 22.7153 30.0837 24.7834 30.3565C26.9932 30.6487 28.9737 26.0328 29.6525 24.1646C31.1187 20.1301 31.5939 17.515 30.9196 13.0317C30.7597 11.9702 29.8396 9.00918 29.0989 7.24986C28.1758 5.05818 26.6553 2.84413 24.9614 3.61196C23.9296 4.08012 24.4757 5.96914 24.898 7.99385C25.0368 8.66328 25.3928 9.94251 25.3641 11.1129C25.2796 14.466 23.9221 18.1203 18.4164 19.0134C17.6803 19.1327 16.2533 19.2057 15.1974 19.1237C13.517 18.9955 11.8804 18.5035 10.4459 17.6298C7.64479 15.9227 7.16361 13.7668 7.02785 11.1144C6.96751 9.94549 7.29031 8.65731 7.41249 7.9849C7.78205 5.94976 8.27983 4.04732 7.23601 3.606C5.52245 2.8814 3.96426 5.15509 3.04262 7.34678C2.23411 9.27456 1.75896 11.4901 1.54024 12.7798C0.780002 17.2496 1.28683 20.2718 2.85558 24.2675C3.58263 26.1192 5.45005 30.6845 7.65082 30.3386C9.71131 30.0136 8.62375 26.9661 8.24061 25.7942C7.59049 23.8023 7.12589 21.797 7.07913 19.6784C7.03992 17.9235 8.14709 16.3088 10.2362 15.1548C10.2347 15.1548 16.1055 11.7033 22.6248 15.6349Z" stroke="#177AA1" stroke-width="1.4" stroke-miterlimit="10"/></svg>
+      <h1>🇺🇸 Block 1 · North America</h1>
+    </div>
+    <div class="meta">14 events · Jun→Nov 2026<br>5 T1 + 2 T2 + 7 T3</div>
+  </div>
+
+  <h2><span class="month-strip">June 2026</span></h2>
+  <table>
+    <thead><tr><th style="width:32%">Event</th><th style="width:12%">Date</th><th style="width:18%">City</th><th>Why relevant</th><th style="width:10%">Tier</th><th style="width:10%">Mode</th><th style="width:10%">Conf.</th></tr></thead>
+    <tbody>
+      <tr><td class="evt">CFO Leadership Conference (Spring) <a href="https://cfoleadership.com/spring-conference/">↗</a></td><td>Jun 3–5</td><td>Boston, MA</td><td>Pure CFO-buyer room</td><td><span class="tier t1">T1</span></td><td>Attend / sponsor</td><td><span class="conf confirmed">confirmed</span></td></tr>
+      <tr><td class="evt">AICPA &amp; CIMA ENGAGE 2026 <a href="https://www.aicpa-cima.com/events">↗</a></td><td>Jun 8–11</td><td>Las Vegas, NV</td><td>4,000+ controllers; largest in-window</td><td><span class="tier t1">T1</span></td><td>Attend; sponsor if ICP density</td><td><span class="conf confirmed">confirmed</span></td></tr>
+      <tr><td class="evt">Fintech + Insurtech Generations <a href="https://www.generations.global/">↗</a></td><td>Jun 10</td><td>Charlotte, NC</td><td>Insurance + fintech C-suite; doc-heavy</td><td><span class="tier t2">T2</span></td><td>Speak (CfP) / attend</td><td><span class="conf confirmed">confirmed</span></td></tr>
+      <tr><td class="evt">CVPR 2026 <span class="evt-sub">(doc-AI · vision)</span> <a href="https://cvpr.thecvf.com/Conferences/2026">↗</a></td><td>Jun 11–15</td><td>Nashville, TN</td><td>Vision + document understanding research</td><td><span class="tier t3">T3</span></td><td>Attend / workshop / paper</td><td><span class="conf pending">pending</span></td></tr>
+      <tr><td class="evt">SMC³ Connections 2026 <a href="https://connections.smc3.com/">↗</a></td><td>Jun 29 – Jul 1</td><td>Palm Beach, FL</td><td>LTL carrier / shipper / 3PL leadership</td><td><span class="tier t1">T1</span></td><td>Attend / sponsor</td><td><span class="conf confirmed">confirmed</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="month-strip">July 2026</span></h2>
+  <table>
+    <thead><tr><th style="width:32%">Event</th><th style="width:12%">Date</th><th style="width:18%">City</th><th>Why relevant</th><th style="width:10%">Tier</th><th style="width:10%">Mode</th><th style="width:10%">Conf.</th></tr></thead>
+    <tbody>
+      <tr><td class="evt">ACL 2026 <span class="evt-sub">(doc-AI · NLP)</span> <a href="https://2026.aclweb.org/">↗</a></td><td>Jul (TBD)</td><td>Vienna (hybrid)</td><td>NLP research; doc-extraction / parsing</td><td><span class="tier t3">T3</span></td><td>Workshop / attend remote</td><td><span class="conf unconf">unconf</span></td></tr>
+      <tr><td class="evt">ICML 2026 <span class="evt-sub">(doc-AI-adjacent · ML)</span> <a href="https://icml.cc/">↗</a></td><td>Jul (TBD)</td><td>TBD</td><td>ML research, foundation models</td><td><span class="tier t3">T3</span></td><td>Attend / workshop</td><td><span class="conf unconf">unconf</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="month-strip">August 2026</span></h2>
+  <table>
+    <thead><tr><th style="width:32%">Event</th><th style="width:12%">Date</th><th style="width:18%">City</th><th>Why relevant</th><th style="width:10%">Tier</th><th style="width:10%">Mode</th><th style="width:10%">Conf.</th></tr></thead>
+    <tbody>
+      <tr><td class="evt">Xerocon Denver 2026 <a href="https://www.xero.com/us/events/xerocon/denver/">↗</a></td><td>Aug 19–20</td><td>Denver, CO</td><td>Accountants + ERP ecosystem (3,000+)</td><td><span class="tier t2">T2</span></td><td>Attend / exhibit <i>(speak deadline passed)</i></td><td><span class="conf confirmed">confirmed</span></td></tr>
+      <tr><td class="evt">KDD 2026 <span class="evt-sub">(doc-AI · data mining)</span> <a href="https://kdd2026.kdd.org/">↗</a></td><td>Aug (TBD)</td><td>Toronto, Ontario</td><td>Applied ML + doc-AI workshops</td><td><span class="tier t3">T3</span></td><td>Attend / workshop / paper</td><td><span class="conf unconf">unconf</span></td></tr>
+      <tr><td class="evt">DocEng 2026 <span class="evt-sub">(doc-AI · purest scholarly venue)</span> <a href="https://www.documentengineering.org/">↗</a></td><td>Aug (TBD)</td><td>TBD</td><td>ACM SIGWEB document engineering</td><td><span class="tier t3">T3</span></td><td>Attend / paper</td><td><span class="conf unconf">unconf</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="month-strip">October 2026</span></h2>
+  <table>
+    <thead><tr><th style="width:32%">Event</th><th style="width:12%">Date</th><th style="width:18%">City</th><th>Why relevant</th><th style="width:10%">Tier</th><th style="width:10%">Mode</th><th style="width:10%">Conf.</th></tr></thead>
+    <tbody>
+      <tr><td class="evt">CFO Leadership Conference (Fall) <a href="https://cfoleadership.com/Fall-Conference/">↗</a></td><td>Oct 12–14</td><td>Westminster, CO</td><td>Title-gated CFO/VP/Controller/FP&amp;A</td><td><span class="tier t1">T1</span></td><td>Attend / sponsor</td><td><span class="conf confirmed">confirmed</span></td></tr>
+      <tr><td class="evt">SuiteWorld 2026 <a href="https://www.netsuitesuiteworld.com/home.shtml">↗</a></td><td>Oct 25–28</td><td>Las Vegas, NV</td><td>NetSuite ERP customers + ecosystem</td><td><span class="tier t2">T2</span></td><td>Sponsor / exhibit</td><td><span class="conf confirmed">confirmed</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="month-strip">November 2026</span></h2>
+  <table>
+    <thead><tr><th style="width:32%">Event</th><th style="width:12%">Date</th><th style="width:18%">City</th><th>Why relevant</th><th style="width:10%">Tier</th><th style="width:10%">Mode</th><th style="width:10%">Conf.</th></tr></thead>
+    <tbody>
+      <tr><td class="evt">IOFM Fall Conf &amp; Expo (AP/P2P) <a href="https://events.iofm.com/conference-fall/">↗</a></td><td>Nov 2–4</td><td>Austin, TX</td><td><b>Core ICP — purest AP/P2P-buyer event</b></td><td><span class="tier t1">T1</span></td><td>Sponsor / exhibit / speak</td><td><span class="conf confirmed">confirmed</span></td></tr>
+      <tr><td class="evt">EMNLP 2026 <span class="evt-sub">(doc-AI · NLP)</span> <a href="https://2026.emnlp.org/">↗</a></td><td>Nov (TBD)</td><td>TBD</td><td>Info-extraction / doc-parsing community</td><td><span class="tier t3">T3</span></td><td>Attend / paper / workshop</td><td><span class="conf unconf">unconf</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================
+     SLIDE 3 · MIDDLE EAST
+============================================================ -->
+<section class="slide">
+  <div class="slide-header">
+    <div class="lhs">
+      <svg class="logo" viewBox="0 0 32 33" fill="none"><path d="M22.6248 15.6349C24.1996 16.5847 25.3777 17.9906 25.3822 19.6784C25.3882 21.797 24.6763 23.8217 24.0774 25.8285C23.7245 27.0108 22.7153 30.0837 24.7834 30.3565C26.9932 30.6487 28.9737 26.0328 29.6525 24.1646C31.1187 20.1301 31.5939 17.515 30.9196 13.0317C30.7597 11.9702 29.8396 9.00918 29.0989 7.24986C28.1758 5.05818 26.6553 2.84413 24.9614 3.61196C23.9296 4.08012 24.4757 5.96914 24.898 7.99385C25.0368 8.66328 25.3928 9.94251 25.3641 11.1129C25.2796 14.466 23.9221 18.1203 18.4164 19.0134C17.6803 19.1327 16.2533 19.2057 15.1974 19.1237C13.517 18.9955 11.8804 18.5035 10.4459 17.6298C7.64479 15.9227 7.16361 13.7668 7.02785 11.1144C6.96751 9.94549 7.29031 8.65731 7.41249 7.9849C7.78205 5.94976 8.27983 4.04732 7.23601 3.606C5.52245 2.8814 3.96426 5.15509 3.04262 7.34678C2.23411 9.27456 1.75896 11.4901 1.54024 12.7798C0.780002 17.2496 1.28683 20.2718 2.85558 24.2675C3.58263 26.1192 5.45005 30.6845 7.65082 30.3386C9.71131 30.0136 8.62375 26.9661 8.24061 25.7942C7.59049 23.8023 7.12589 21.797 7.07913 19.6784C7.03992 17.9235 8.14709 16.3088 10.2362 15.1548C10.2347 15.1548 16.1055 11.7033 22.6248 15.6349Z" stroke="#177AA1" stroke-width="1.4" stroke-miterlimit="10"/></svg>
+      <h1>🌍 Block 2 · Middle East</h1>
+    </div>
+    <div class="meta">6 events · Jun→Nov 2026<br>2 T1 + 4 T2 + 0 T3</div>
+  </div>
+
+  <h2><span class="month-strip">June 2026</span></h2>
+  <table>
+    <thead><tr><th style="width:32%">Event</th><th style="width:12%">Date</th><th style="width:18%">City</th><th>Why relevant</th><th style="width:10%">Tier</th><th style="width:10%">Mode</th><th style="width:10%">Conf.</th></tr></thead>
+    <tbody>
+      <tr><td class="evt">GBM Middle East 2026 <a href="https://globalbankingmarkets.com/middle-east-2026">↗</a></td><td>Jun 21–25</td><td>Dubai</td><td>CFOs/Treasury/corporates/banks/regulators (2,000+, 83% director+)</td><td><span class="tier t1">T1</span></td><td>Attend (senior networking)</td><td><span class="conf confirmed">confirmed</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="month-strip">August 2026</span></h2>
+  <table>
+    <thead><tr><th style="width:32%">Event</th><th style="width:12%">Date</th><th style="width:18%">City</th><th>Why relevant</th><th style="width:10%">Tier</th><th style="width:10%">Mode</th><th style="width:10%">Conf.</th></tr></thead>
+    <tbody>
+      <tr><td class="evt">LEAP 2026 <a href="https://onegiantleap.com/">↗</a></td><td>Aug 31 – Sep 3 <i>(rescheduled)</i></td><td>Riyadh</td><td>Mass tech/AI/fintech (200k+); <b>defer until LEAP confirms</b></td><td><span class="tier t2">T2</span></td><td>Attend (assess)</td><td><span class="conf unconf">unconf</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="month-strip">September 2026</span></h2>
+  <table>
+    <thead><tr><th style="width:32%">Event</th><th style="width:12%">Date</th><th style="width:18%">City</th><th>Why relevant</th><th style="width:10%">Tier</th><th style="width:10%">Mode</th><th style="width:10%">Conf.</th></tr></thead>
+    <tbody>
+      <tr><td class="evt">CFO StraTech 2026 Dubai <a href="https://www.cfostratech.com/dubai/">↗</a></td><td>Sep 2</td><td>Dubai, UAE</td><td><b>GCC CFO economic-buyer room</b> · Vision-2030 finance-transformation pitch surface</td><td><span class="tier t1">T1</span></td><td>Attend / sponsor</td><td><span class="conf confirmed">confirmed</span></td></tr>
+      <tr><td class="evt">Money20/20 Middle East 2026 <a href="https://money2020middleeast.com/about-us/money-2020-middle-east">↗</a></td><td>Sep 14–16</td><td>Riyadh</td><td>Premier GCC fintech-business stage (38k+ visitors)</td><td><span class="tier t2">T2</span></td><td>Attend; sponsor if ICP density</td><td><span class="conf confirmed">confirmed</span></td></tr>
+      <tr><td class="evt">Connected Banking Summit KSA (30th Ed.) <a href="https://connected-banking.com/summit/saudi-arabia/">↗</a></td><td>Sep 30</td><td>Riyadh</td><td>Doc-heavy KSA banking buyers with transformation budgets</td><td><span class="tier t1">T1</span></td><td>Attend / sponsor</td><td><span class="conf confirmed">confirmed</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="month-strip">November 2026</span></h2>
+  <table>
+    <thead><tr><th style="width:32%">Event</th><th style="width:12%">Date</th><th style="width:18%">City</th><th>Why relevant</th><th style="width:10%">Tier</th><th style="width:10%">Mode</th><th style="width:10%">Conf.</th></tr></thead>
+    <tbody>
+      <tr><td class="evt">Seamless Saudi Arabia 2026 <a href="https://www.terrapinn.com/exhibition/seamless-saudi-arabia/index.stm">↗</a></td><td>Nov 9–10</td><td>Riyadh</td><td>Merchants / banks / payments / embedded-finance (25k+)</td><td><span class="tier t2">T2</span></td><td>Attend (assess); sponsor only post-target</td><td><span class="conf confirmed">confirmed</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="honest" style="margin-top:18px"><b>Honest finding:</b> ME doc-AI research surface is <b>zero in window</b> — the global doc-AI research community runs almost entirely from NA/Europe/Asia-Pacific in this window. SAVIOR-Bench + Tier-1 GCC finance cluster is the real ME selling surface, not academic events.</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 4 · INDIA
+============================================================ -->
+<section class="slide">
+  <div class="slide-header">
+    <div class="lhs">
+      <svg class="logo" viewBox="0 0 32 33" fill="none"><path d="M22.6248 15.6349C24.1996 16.5847 25.3777 17.9906 25.3822 19.6784C25.3882 21.797 24.6763 23.8217 24.0774 25.8285C23.7245 27.0108 22.7153 30.0837 24.7834 30.3565C26.9932 30.6487 28.9737 26.0328 29.6525 24.1646C31.1187 20.1301 31.5939 17.515 30.9196 13.0317C30.7597 11.9702 29.8396 9.00918 29.0989 7.24986C28.1758 5.05818 26.6553 2.84413 24.9614 3.61196C23.9296 4.08012 24.4757 5.96914 24.898 7.99385C25.0368 8.66328 25.3928 9.94251 25.3641 11.1129C25.2796 14.466 23.9221 18.1203 18.4164 19.0134C17.6803 19.1327 16.2533 19.2057 15.1974 19.1237C13.517 18.9955 11.8804 18.5035 10.4459 17.6298C7.64479 15.9227 7.16361 13.7668 7.02785 11.1144C6.96751 9.94549 7.29031 8.65731 7.41249 7.9849C7.78205 5.94976 8.27983 4.04732 7.23601 3.606C5.52245 2.8814 3.96426 5.15509 3.04262 7.34678C2.23411 9.27456 1.75896 11.4901 1.54024 12.7798C0.780002 17.2496 1.28683 20.2718 2.85558 24.2675C3.58263 26.1192 5.45005 30.6845 7.65082 30.3386C9.71131 30.0136 8.62375 26.9661 8.24061 25.7942C7.59049 23.8023 7.12589 21.797 7.07913 19.6784C7.03992 17.9235 8.14709 16.3088 10.2362 15.1548C10.2347 15.1548 16.1055 11.7033 22.6248 15.6349Z" stroke="#177AA1" stroke-width="1.4" stroke-miterlimit="10"/></svg>
+      <h1>🇮🇳 Block 3 · India</h1>
+    </div>
+    <div class="meta">6 events · Jul→Nov 2026<br>2 T1 + 3 T2 + 1 T3</div>
+  </div>
+
+  <h2><span class="month-strip">July 2026</span></h2>
+  <table>
+    <thead><tr><th style="width:32%">Event</th><th style="width:12%">Date</th><th style="width:18%">City</th><th>Why relevant</th><th style="width:10%">Tier</th><th style="width:10%">Mode</th><th style="width:10%">Conf.</th></tr></thead>
+    <tbody>
+      <tr><td class="evt">Fintech Fusion India 2026 <a href="https://fintechfusionindia.com/">↗</a></td><td>Jul 22–23</td><td>Bengaluru</td><td>Fintech policy + product leaders (700+)</td><td><span class="tier t2">T2</span></td><td>Attend (assess)</td><td><span class="conf confirmed">confirmed</span></td></tr>
+      <tr><td class="evt">BFSI Tech Innovation Summit 2026 <a href="https://bfsitechsummit.in/">↗</a></td><td>Jul 29</td><td>Mumbai</td><td><b>BFSI C-suite</b> · doc-heavy banking/insurance buyers</td><td><span class="tier t1">T1</span></td><td>Attend / sponsor</td><td><span class="conf confirmed">confirmed</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="month-strip">August 2026</span></h2>
+  <table>
+    <thead><tr><th style="width:32%">Event</th><th style="width:12%">Date</th><th style="width:18%">City</th><th>Why relevant</th><th style="width:10%">Tier</th><th style="width:10%">Mode</th><th style="width:10%">Conf.</th></tr></thead>
+    <tbody>
+      <tr><td class="evt">BFSI Innovation &amp; Tech Summit India 2026 <a href="https://bfsiitsummit.com/india/">↗</a></td><td>Aug 6</td><td>Mumbai</td><td>150+ CTO/CIO/CISO BFSI tech leaders</td><td><span class="tier t2">T2</span></td><td>Attend</td><td><span class="conf confirmed">confirmed</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="month-strip">September 2026</span></h2>
+  <table>
+    <thead><tr><th style="width:32%">Event</th><th style="width:12%">Date</th><th style="width:18%">City</th><th>Why relevant</th><th style="width:10%">Tier</th><th style="width:10%">Mode</th><th style="width:10%">Conf.</th></tr></thead>
+    <tbody>
+      <tr><td class="evt">Global Fintech Fest (GFF) 2026 <a href="https://www.globalfintechfest.com/">↗</a></td><td>Sep 8–10</td><td>Mumbai (Jio World)</td><td>India's flagship fintech gathering (100k+ expected); broad BFSI/fintech reach</td><td><span class="tier t2">T2</span></td><td>Attend (assess); sponsor only post-target</td><td><span class="conf confirmed">confirmed</span></td></tr>
+    </tbody>
+  </table>
+
+  <h2><span class="month-strip">November 2026</span></h2>
+  <table>
+    <thead><tr><th style="width:32%">Event</th><th style="width:12%">Date</th><th style="width:18%">City</th><th>Why relevant</th><th style="width:10%">Tier</th><th style="width:10%">Mode</th><th style="width:10%">Conf.</th></tr></thead>
+    <tbody>
+      <tr><td class="evt">ICVGIP 2026 <span class="evt-sub">(doc-AI · India's flagship vision)</span> <a href="https://icvgip.in/">↗</a></td><td>Nov (TBD)</td><td>TBD <i>(IISc / IIT-K / IIT-H rotation)</i></td><td>India's flagship vision/document/graphics research</td><td><span class="tier t3">T3</span></td><td>Attend / paper / workshop</td><td><span class="conf unconf">unconf</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout"><b>Note:</b> GFF 2026 (Sep 8–10) is the highest-density India fintech buyer surface in window. The doc-AI research surface is light in India this window — ICVGIP and most ML/India events typically land late-Nov / Dec.</div>
+</section>
+
+<!-- ============================================================
+     SLIDE 5 · SUMMARY + DECISION POINTS
+============================================================ -->
+<section class="slide">
+  <div class="slide-header">
+    <div class="lhs">
+      <svg class="logo" viewBox="0 0 32 33" fill="none"><path d="M22.6248 15.6349C24.1996 16.5847 25.3777 17.9906 25.3822 19.6784C25.3882 21.797 24.6763 23.8217 24.0774 25.8285C23.7245 27.0108 22.7153 30.0837 24.7834 30.3565C26.9932 30.6487 28.9737 26.0328 29.6525 24.1646C31.1187 20.1301 31.5939 17.515 30.9196 13.0317C30.7597 11.9702 29.8396 9.00918 29.0989 7.24986C28.1758 5.05818 26.6553 2.84413 24.9614 3.61196C23.9296 4.08012 24.4757 5.96914 24.898 7.99385C25.0368 8.66328 25.3928 9.94251 25.3641 11.1129C25.2796 14.466 23.9221 18.1203 18.4164 19.0134C17.6803 19.1327 16.2533 19.2057 15.1974 19.1237C13.517 18.9955 11.8804 18.5035 10.4459 17.6298C7.64479 15.9227 7.16361 13.7668 7.02785 11.1144C6.96751 9.94549 7.29031 8.65731 7.41249 7.9849C7.78205 5.94976 8.27983 4.04732 7.23601 3.606C5.52245 2.8814 3.96426 5.15509 3.04262 7.34678C2.23411 9.27456 1.75896 11.4901 1.54024 12.7798C0.780002 17.2496 1.28683 20.2718 2.85558 24.2675C3.58263 26.1192 5.45005 30.6845 7.65082 30.3386C9.71131 30.0136 8.62375 26.9661 8.24061 25.7942C7.59049 23.8023 7.12589 21.797 7.07913 19.6784C7.03992 17.9235 8.14709 16.3088 10.2362 15.1548C10.2347 15.1548 16.1055 11.7033 22.6248 15.6349Z" stroke="#177AA1" stroke-width="1.4" stroke-miterlimit="10"/></svg>
+      <h1>Summary &amp; decisions</h1>
+    </div>
+    <div class="meta">snapshot 2026-05-20 · refreshed 2026-05-26</div>
+  </div>
+
+  <h2>Go-recommended subset (13 from EVENTS-SHORTLIST.md, T1/T2 confirmed)</h2>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="v">NA: 7</div><div class="l">#1 · #2 · #3 · #4 · #12 · #13 · #14</div></div>
+    <div class="kpi"><div class="v">India: 2</div><div class="l">#8 BFSI Tech · #15 GFF</div></div>
+    <div class="kpi"><div class="v">ME: 4</div><div class="l">#10 GBM · #16 CFO StraTech · #17 M20/20 · #18 Connected Banking</div></div>
+    <div class="kpi"><div class="v">Conditional: 4</div><div class="l">#5 Xerocon · #6 FF India · #9 BFSI Tech IT · #19 Seamless KSA</div></div>
+  </div>
+
+  <h2>Document-AI additions (this round — need verification before commitment)</h2>
+  <table>
+    <thead><tr><th>Region</th><th>Conference</th><th>Status</th><th>Why on the slate</th></tr></thead>
+    <tbody>
+      <tr><td>NA</td><td>CVPR 2026 (Jun · Nashville)</td><td><span class="conf pending">pending-verify</span></td><td>Largest in-window vision/doc venue · talent + credibility</td></tr>
+      <tr><td>NA</td><td>ACL 2026 (Jul/Aug · Vienna)</td><td><span class="conf unconf">unconf</span></td><td>NLP / doc-extraction community</td></tr>
+      <tr><td>NA</td><td>ICML 2026 (Jul · TBD)</td><td><span class="conf unconf">unconf</span></td><td>ML / foundation-model research</td></tr>
+      <tr><td>NA</td><td>KDD 2026 (Aug · Toronto)</td><td><span class="conf unconf">unconf</span></td><td>Applied ML + doc-AI workshops</td></tr>
+      <tr><td>NA</td><td>DocEng 2026 (Aug · TBD)</td><td><span class="conf unconf">unconf</span></td><td>Purest doc-AI scholarly venue (ACM SIGWEB)</td></tr>
+      <tr><td>NA</td><td>EMNLP 2026 (Nov · TBD)</td><td><span class="conf unconf">unconf</span></td><td>Info-extraction / doc-parsing community</td></tr>
+      <tr><td>India</td><td>ICVGIP 2026 (Nov · TBD)</td><td><span class="conf unconf">unconf</span></td><td>India's flagship vision/document research</td></tr>
+      <tr><td>ME</td><td>—</td><td><span class="conf unconf">0 in window</span></td><td><b>Honest finding</b> — academic doc-AI surface is structurally zero in ME this window. SAVIOR-Bench + GCC finance events are the surface.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Pre-/post-window (documented, not in scope)</h2>
+  <ul style="padding-left:20px;line-height:1.7;font-size:12px;color:var(--grey-12)">
+    <li><b>Just past window (Dec 2026):</b> ADFW (Dec 7–10, Abu Dhabi) · GITEX Global (Dec 7–11, Expo City Dubai) — flagship MENA candidates if window extends</li>
+    <li><b>Before window:</b> Gartner CFO &amp; Finance (May 27–29) · IOFM Spring (May 11–13) · Seamless ME (May 12–14) · Sage Future (Apr 28–30) · MEFTC (Apr 1, Riyadh)</li>
+    <li><b>Doc-AI honest note:</b> ICDAR is biennial — 2025 was San Jose, no 2026 edition (next 2027). NAACL 2026 was earlier in the year. NeurIPS 2026 is Dec — just past window.</li>
+  </ul>
+
+  <h2>What the manager decides next (per shortlist §3)</h2>
+  <ul style="padding-left:20px;line-height:1.7;font-size:12.5px;color:var(--grey-12)">
+    <li>Per-region target counts (NA 7 / India 4 / ME 7 — well-balanced; ME no longer structurally thin)</li>
+    <li>Budget bands + mode authorization (attend vs sponsor vs speak/CfP) — most cost-bands are "unknown" until manager sets the spend ceiling</li>
+    <li>Conditional rows approve/deny: #5 Xerocon · #6 FF India · #9 BFSI IT · #19 Seamless KSA</li>
+    <li>#11 LEAP re-verify or drop (unconfirmed-source)</li>
+    <li>Authorize verification pass on the 8 doc-AI rows</li>
+    <li>Optional further extension into Dec (ADFW · GITEX)</li>
+  </ul>
+
+  <div class="footer-note">
+    Sources: <code>plan/EVENTS-SHORTLIST.md</code> · <code>plan/EVENTS-BY-LOCATION-MONTH.md</code> · <code>plan/EVENTS-DISCOVERY-JUN-AUG-2026.md</code> · <code>.claude/agents/events-discovery-gtm.md</code> · Every external URL primary-source verified 2026-05-18 (the 18 finance/BFSI events). The 8 doc-AI rows added 2026-05-20 are honestly flagged for verification, never asserted as fact.
+  </div>
+</section>
+
+</body>
+</html>
