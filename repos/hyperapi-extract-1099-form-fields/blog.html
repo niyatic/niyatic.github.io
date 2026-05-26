@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stop hand-keying 1099 boxes: typed JSON in one call (TIN masked) · Hyperbots HyperAPI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#1d1f23;max-width:760px;margin:2rem auto;padding:0 1.2rem;}
+header{display:flex;align-items:center;gap:.7rem;border-bottom:1px solid #e3e6ea;padding-bottom:.8rem;margin-bottom:1.6rem;}
+header img{height:28px;width:auto;}
+header span{font-weight:600;color:#222;}
+h1{font-size:1.55rem;line-height:1.25;margin:.5rem 0 1rem;}
+h2{font-size:1.15rem;margin-top:1.8rem;color:#0a3d62;}
+code,pre{background:#f4f6f8;padding:.1rem .3rem;border-radius:3px;font-size:.92em;}
+a{color:#0a66c2;}
+.meta{font-size:.85rem;color:#5b6470;margin-bottom:1.6rem;}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #e3e6ea;font-size:.82rem;color:#7a818c;}
+</style>
+</head>
+<body>
+<script src="/gate.js"></script>
+<header>
+<img src="/assets/hyperbots-logo.svg" alt="Hyperbots">
+<span>Hyperbots · HyperAPI quickstart blog</span>
+</header>
+<article>
+<div class="meta">repo: <code>hyperapi-extract-1099-form-fields</code> · bucket: <code>tax-1099</code> · reviewer: <code>cfo-agents-shepherd</code> · round-21 review: <code>approved</code></div>
+<h1>Stop hand-keying 1099 boxes: typed JSON in one call (TIN masked)</h1>
+<p>Every vendor-tax pipeline starts at the same wall: a PDF or a phone photo of a 1099, and a handful of boxes a human is currently re-typing — the variant, the tax year, payer and recipient, the reported amount, federal and state withholding. <code>hyperapi-extract-1099-form-fields</code> turns that into one function call that returns a typed, validated object with a confidence score on every field — and the TIN already masked to its last four digits.</p>
+<h2>The hard part isn't OCR</h2>
+<p>It's that NEC, MISC, INT and DIV lay their boxes out differently, amounts print with <code>$</code> and thousands separators, and a taxpayer identification number must never land in a log. The library normalises numbers to <code>Decimal</code>, coerces the variant and tax year, masks every TIN on the way in, runs a deterministic <code>fed + state ≤ reported</code> check, and surfaces the service's per-field confidence verbatim.</p>
+<h2>No queue, just a flag</h2>
+<p>A weak first pass is <strong>automatically re-extracted</strong> on a higher-resolution profile; the stronger pass is kept. Documents that stay weak come back <code>trustworthy=false</code> with the weak fields named, for your automation to route by rule. Routing stays in your automation, end to end.</p>
+<h2>Five lines</h2>
+<p>``<code>python from hyperapi_extract_1099_form_fields import extract_file r = extract_file("form1099.pdf") print(r.form.form_variant, r.form.reported_amount, r.trustworthy) </code>``</p>
+<p>Accuracy is published at apis.hyperbots.com. The extraction model is an open-source document model fine-tuned by Hyperbots (Hyperbots IP); this repo is the typed client around it.</p>
+<h2>Sources</h2>
+<ul>
+<li>HyperAPI <code>extract</code> primitive: <a href="https://apis.hyperbots.com">https://apis.hyperbots.com</a></li>
+</ul>
+<h2>Open assumptions</h2>
+<p>1. Endpoint/field shapes per the repo's test fixtures.</p>
+</article>
+<footer>
+Published from <code>hyperapi-extract-1099-form-fields</code> · Accuracy figures are published at <a href="https://apis.hyperbots.com">apis.hyperbots.com</a> and are not restated here.
+</footer>
+</body>
+</html>

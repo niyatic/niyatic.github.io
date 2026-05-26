@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Score the scan before you trust the extraction · Hyperbots HyperAPI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#1d1f23;max-width:760px;margin:2rem auto;padding:0 1.2rem;}
+header{display:flex;align-items:center;gap:.7rem;border-bottom:1px solid #e3e6ea;padding-bottom:.8rem;margin-bottom:1.6rem;}
+header img{height:28px;width:auto;}
+header span{font-weight:600;color:#222;}
+h1{font-size:1.55rem;line-height:1.25;margin:.5rem 0 1rem;}
+h2{font-size:1.15rem;margin-top:1.8rem;color:#0a3d62;}
+code,pre{background:#f4f6f8;padding:.1rem .3rem;border-radius:3px;font-size:.92em;}
+a{color:#0a66c2;}
+.meta{font-size:.85rem;color:#5b6470;margin-bottom:1.6rem;}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #e3e6ea;font-size:.82rem;color:#7a818c;}
+</style>
+</head>
+<body>
+<script src="/gate.js"></script>
+<header>
+<img src="/assets/hyperbots-logo.svg" alt="Hyperbots">
+<span>Hyperbots · HyperAPI quickstart blog</span>
+</header>
+<article>
+<div class="meta">repo: <code>hyperapi-classify-document-quality</code> · bucket: <code>classify-misc</code> · reviewer: <code>comparative-study</code> · round-5 review: <code>approved</code></div>
+<h1>Score the scan before you trust the extraction</h1>
+<p>Bad scans are the silent tax on every document pipeline. A blurry receipt extracts to plausible-but-wrong numbers, and you find out in the ledger.</p>
+<p><code>hyperapi-classify-document-quality</code> classifies the scan *first*. It takes HyperAPI's per-defect quality signals (blur, resolution, glare, skew, cropping, contrast), reduces them to a single <code>Decimal</code>-exact quality score, and routes the document: <code>good</code> (extract now), <code>reextract</code> (automated enhanced retry), or <code>reject</code> (re-capture upstream).</p>
+<p>``<code>python from hyperapi_classify_document_quality import classify_file r = classify_file("scan.pdf") print(r.route.value, r.quality_score, r.primary_defect) </code>``</p>
+<p>The score is a transparent, deterministic weighted penalty — same payload, same route, safe to diff in CI. A low-confidence first pass is automatically re-classified, no queue. The CLI exits with a distinct code per route, so it drops straight into an ingest pipeline as a capture gate. Defect detection runs on open-source models fine-tuned by Hyperbots (Hyperbots IP); accuracy is published at apis.hyperbots.com.</p>
+</article>
+<footer>
+Published from <code>hyperapi-classify-document-quality</code> · Accuracy figures are published at <a href="https://apis.hyperbots.com">apis.hyperbots.com</a> and are not restated here.
+</footer>
+</body>
+</html>

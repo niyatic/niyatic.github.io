@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Escrow document: escrow document type in one call · Hyperbots HyperAPI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#1d1f23;max-width:760px;margin:2rem auto;padding:0 1.2rem;}
+header{display:flex;align-items:center;gap:.7rem;border-bottom:1px solid #e3e6ea;padding-bottom:.8rem;margin-bottom:1.6rem;}
+header img{height:28px;width:auto;}
+header span{font-weight:600;color:#222;}
+h1{font-size:1.55rem;line-height:1.25;margin:.5rem 0 1rem;}
+h2{font-size:1.15rem;margin-top:1.8rem;color:#0a3d62;}
+code,pre{background:#f4f6f8;padding:.1rem .3rem;border-radius:3px;font-size:.92em;}
+a{color:#0a66c2;}
+.meta{font-size:.85rem;color:#5b6470;margin-bottom:1.6rem;}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #e3e6ea;font-size:.82rem;color:#7a818c;}
+</style>
+</head>
+<body>
+<script src="/gate.js"></script>
+<header>
+<img src="/assets/hyperbots-logo.svg" alt="Hyperbots">
+<span>Hyperbots · HyperAPI quickstart blog</span>
+</header>
+<article>
+<div class="meta">repo: <code>hyperapi-classify-escrow-document-type</code> · bucket: <code>classify-misc</code> · reviewer: <code>comparative-study</code> · round-6 review: <code>approved</code></div>
+<h1>Escrow document: escrow document type in one call</h1>
+<p>Plenty of treasury workflows still start with someone reading a escrow document off the page. <code>hyperapi-classify-escrow-document-type</code> turns that into one function call that returns escrow document type as a typed, validated object.</p>
+<h2>The hard part</h2>
+<p>The hard part is the borderline document -- a low-confidence first read. This package gates on confidence and <strong>automatically re-runs</strong> on a stronger profile when the first pass is weak.</p>
+<h2>Fails safe, never a queue</h2>
+<p>When the model genuinely cannot decide, the result <strong>fails safe</strong> to the deterministic fail-safe outcome -- a routable value. Documents that stay weak come back <code>trustworthy=false</code> with full detail, for your automation to route by rule. Never queued to a person.</p>
+<h2>Five lines</h2>
+<p>``<code>python from hyperapi_classify_escrow_document_type import classify_file r = classify_file("document.pdf") print(r.trustworthy) </code>``</p>
+<p>Accuracy is published at apis.hyperbots.com. The model is open-source, fine-tuned by Hyperbots (Hyperbots IP); this repo is the typed client (a bespoke httpx client, no vendor SDK).</p>
+<h2>Sources</h2>
+<ul>
+<li>HyperAPI <code>classify</code> primitive: <a href="https://apis.hyperbots.com">https://apis.hyperbots.com</a></li>
+</ul>
+<h2>Open assumptions</h2>
+<p>1. Endpoint/response shapes per the repo's test fixtures.</p>
+</article>
+<footer>
+Published from <code>hyperapi-classify-escrow-document-type</code> · Accuracy figures are published at <a href="https://apis.hyperbots.com">apis.hyperbots.com</a> and are not restated here.
+</footer>
+</body>
+</html>

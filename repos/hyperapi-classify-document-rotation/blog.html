@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The cheapest OCR accuracy win: fix the rotation first · Hyperbots HyperAPI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#1d1f23;max-width:760px;margin:2rem auto;padding:0 1.2rem;}
+header{display:flex;align-items:center;gap:.7rem;border-bottom:1px solid #e3e6ea;padding-bottom:.8rem;margin-bottom:1.6rem;}
+header img{height:28px;width:auto;}
+header span{font-weight:600;color:#222;}
+h1{font-size:1.55rem;line-height:1.25;margin:.5rem 0 1rem;}
+h2{font-size:1.15rem;margin-top:1.8rem;color:#0a3d62;}
+code,pre{background:#f4f6f8;padding:.1rem .3rem;border-radius:3px;font-size:.92em;}
+a{color:#0a66c2;}
+.meta{font-size:.85rem;color:#5b6470;margin-bottom:1.6rem;}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #e3e6ea;font-size:.82rem;color:#7a818c;}
+</style>
+</head>
+<body>
+<script src="/gate.js"></script>
+<header>
+<img src="/assets/hyperbots-logo.svg" alt="Hyperbots">
+<span>Hyperbots · HyperAPI quickstart blog</span>
+</header>
+<article>
+<div class="meta">repo: <code>hyperapi-classify-document-rotation</code> · bucket: <code>classify-misc</code> · reviewer: <code>comparative-study</code> · round-5 review: <code>approved</code></div>
+<h1>The cheapest OCR accuracy win: fix the rotation first</h1>
+<p>Every finance-document pipeline has a silent accuracy leak nobody profiles: scans that arrive sideways or upside-down. A page rotated 90° doesn't OCR badly — it OCRs *wrong*, and the error propagates through extraction, classification, and matching as if the data were real.</p>
+<h2>One pre-flight question</h2>
+<p><code>hyperapi-classify-document-rotation</code> answers exactly one question, per page: which way is up? It returns the detected rotation (0 / 90 / 180 / 270) and the exact clockwise angle to apply to correct it, as typed JSON with a confidence score on every page. Feed the corrections to your PDF library, then run the rest of your pipeline on upright pages.</p>
+<h2>No queue, just a flag</h2>
+<p>A weak first pass is <strong>automatically re-classified</strong> on a higher-resolution profile; the stronger pass is kept. Scans that stay weak come back <code>trustworthy=false</code> with the weak pages named, for your automation to route by rule. Routing stays in your automation, end to end.</p>
+<h2>Two lines</h2>
+<p>``<code>python from hyperapi_classify_document_rotation import classify_file r = classify_file("scan.pdf") print(r.to_dict()["corrections"], r.trustworthy) </code>``</p>
+<p>Accuracy is published at apis.hyperbots.com. The orientation model is an open-source document model fine-tuned by Hyperbots (Hyperbots IP); this repo is the typed client around it.</p>
+<h2>Sources</h2>
+<ul>
+<li>HyperAPI <code>classify</code> primitive: <a href="https://apis.hyperbots.com">https://apis.hyperbots.com</a></li>
+</ul>
+<h2>Open assumptions</h2>
+<p>1. Endpoint/field shapes per the repo's test fixtures.</p>
+</article>
+<footer>
+Published from <code>hyperapi-classify-document-rotation</code> · Accuracy figures are published at <a href="https://apis.hyperbots.com">apis.hyperbots.com</a> and are not restated here.
+</footer>
+</body>
+</html>
