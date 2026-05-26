@@ -29,114 +29,141 @@ ul{margin:6px 0}li{margin:5px 0}a{color:#0b5cad}.meta{color:#748081;font-size:13
 .queue .fmt.social{background:#f0e7fc;color:#6941c6}
 .queue .ttl{font-weight:600;color:#211F26}
 .queue .nt{color:#596263;font-size:13px;margin-top:3px;line-height:1.45}
+.queue .status{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 7px;border-radius:4px;margin-left:8px;vertical-align:middle}
+.queue .status.green{background:#e6f4ea;color:#1a7f37}
+.queue .status.yellow{background:#fdf0e0;color:#b25e09}
+.queue .status.red{background:#fde7e7;color:#b42318}
+.queue .audit{color:#596263;font-size:12px;margin-top:6px;padding:6px 10px;background:#F6F9F9;border-left:3px solid #748081;border-radius:4px;line-height:1.5}
+.queue .audit b{color:#211F26}
 .flag.needs{background:#FEF3E2;color:#DC6803;margin-top:6px;display:block;padding:6px 10px;font-size:12.5px;border-radius:4px}
 </style>
 
+<div style="background:#FEF3E2;border-left:4px solid #DC6803;padding:14px 18px;border-radius:6px;margin:14px 0 18px;font-size:13.5px;line-height:1.55;color:#211F26">
+<div style="font-weight:700;color:#DC6803;margin-bottom:4px">📋 Readiness audit — 2026-05-26</div>
+<div><span style="background:#e6f4ea;color:#1a7f37;padding:2px 7px;border-radius:4px;font-weight:700;font-size:11.5px">0 GREEN</span>
+&nbsp; <span style="background:#fdf0e0;color:#b25e09;padding:2px 7px;border-radius:4px;font-weight:700;font-size:11.5px">2 YELLOW</span>
+&nbsp; <span style="background:#fde7e7;color:#b42318;padding:2px 7px;border-radius:4px;font-weight:700;font-size:11.5px">11 RED</span>
+&nbsp; out of 13 items.</div>
+<div style="margin-top:6px;color:#596263">Most of the push is gated on missing competitor measurements (Textract-on-tables, Google DocAI, Nanonets at di-study depth), a tech-stack signal that doesn't exist in the ABM CSV, the HITL-framing brand guardrail (item 9, never-waived), and legal review on 7 of 13 items. <strong>Honest deliverable this week: ~2 items (item 4, item 8) + 1 conditional (item 1).</strong> Items 7, 9, 12, 13 recommend KILL from this week's list. Full report: <code>/tmp/abm-13-item-readiness-2026-05-26.md</code>.</div>
+</div>
 <div class="queue">
   <div class="n">1</div><div class="fmt video">Video</div>
-  <div><div class="ttl">Table Extraction Fail — side-by-side: Textract vs HyperAPI</div>
+  <div><div class="ttl">Table Extraction Fail — side-by-side: Textract vs HyperAPI</div> <span class="status red">RED</span>
     <div class="nt">Recorded screen-capture of the same invoice through both extractors, with per-line diff overlay. The "Textract" half lands cleanly on Reddit/HN dev audiences; the comparison half is the credibility hook.</div>
+    <div class="audit"><b>Audit (2026-05-26 · RED):</b> No Textract-on-tables measurement on disk; only Azure DI long-invoice anchor exists. Needs ~3 days + legal.</div>
     <span class="flag needs">⚠ Needs: a real invoice that breaks Textract (table-continuation or merged-cell case); competitor-named → legal sign-off before publish.</span>
   </div>
 </div>
 
 <div class="queue">
   <div class="n">2</div><div class="fmt blog">Blog</div>
-  <div><div class="ttl">The Table Problem — visual breakdown of RAG failure on parsed tables</div>
+  <div><div class="ttl">The Table Problem — visual breakdown of RAG failure on parsed tables</div> <span class="status red">RED</span>
     <div class="nt">Why retrieval over poorly-parsed tables hallucinates: column-row drift, header loss, sub-total misclassification. Diagrams &gt; prose. Pairs with item #1 video as the long-form companion.</div>
+    <div class="audit"><b>Audit (2026-05-26 · RED):</b> No RAG/embedding pipeline on disk. Re-frame as "parse → wrong answer" using Azure DI doc 3 (88→2,150 row fragmentation) or hold.</div>
     <span class="flag needs">⚠ Needs: 2–3 worked examples (real, anonymized) showing the parse → embed → wrong-answer chain.</span>
   </div>
 </div>
 
 <div class="queue">
   <div class="n">3</div><div class="fmt video">Video</div>
-  <div><div class="ttl">Watch me fix this broken invoice in 30 seconds</div>
+  <div><div class="ttl">Watch me fix this broken invoice in 30 seconds</div> <span class="status red">RED</span>
     <div class="nt">Tight demo loop — paste in a broken extraction, show the human-in-the-loop correction, show the model learning. 30s cut for X/LI.</div>
+    <div class="audit"><b>Audit (2026-05-26 · RED):</b> No shootable HITL UI in vera-frontend (only Actions/Active/Chat/Files/Prompts/Today views).</div>
     <span class="flag needs">⚠ Needs: a real broken-then-fixed case from production; HITL UI in shootable state.</span>
   </div>
 </div>
 
 <div class="queue">
   <div class="n">4</div><div class="fmt video">Video</div>
-  <div><div class="ttl">Handwriting parsing — "the DocAI killer"</div>
+  <div><div class="ttl">Handwriting parsing — "the DocAI killer"</div> <span class="status yellow">YELLOW</span>
     <div class="nt">Capability video. Show short-by-3 annotations, marginalia, handwritten line items on a packing slip, and the parse output. Lead with the failure case, then show HyperAPI handling it.</div>
+    <div class="audit"><b>Audit (2026-05-26 · YELLOW):</b> Existing 17MB handwriting demo at ~/Desktop/hyperbots_complexinvoices_handwritten.mp4. Re-cut feasible in 1 day. <strong>Push hardest.</strong></div>
     <span class="flag needs">⚠ Needs: real handwritten samples (dataset_95 has packing-slip examples).</span>
   </div>
 </div>
 
 <div class="queue">
   <div class="n">5</div><div class="fmt blog">Blog</div>
-  <div><div class="ttl">Engineering Diary — improving latency</div>
+  <div><div class="ttl">Engineering Diary — improving latency</div> <span class="status red">RED</span>
     <div class="nt">Internal-flavor engineering post: the OCR latency journey, model choice, batching, GPU path, caching. Pairs with the P-2 customer-case piece (different audience: dev/eng, not buyer).</div>
+    <div class="audit"><b>Audit (2026-05-26 · RED):</b> F-2 OCR-latency optimized-side is STUB-PENDING-CEO-DATA. Methodology + baseline exist; "after" number does not.</div>
     <span class="flag needs">⚠ Needs: real before/after numbers + the engineering specifics (no fabricated metrics).</span>
   </div>
 </div>
 
 <div class="queue">
   <div class="n">6</div><div class="fmt video">Video</div>
-  <div><div class="ttl">Handwriting Takedown — targeting Google DocAI users</div>
+  <div><div class="ttl">Handwriting Takedown — targeting Google DocAI users</div> <span class="status red">RED</span>
     <div class="nt">Competitive video. Same flow as #1 but Google DocAI vs HyperAPI on handwriting-heavy docs. Distribution target: subreddits + LinkedIn where Google DocAI users complain about handwriting.</div>
+    <div class="audit"><b>Audit (2026-05-26 · RED):</b> Zero Google DocAI runs on disk anywhere. Multi-day backfill (DocAI provisioning + measurement + legal).</div>
     <span class="flag needs">⚠ Needs: Google DocAI on-disk measurement; competitor-named → legal sign-off.</span>
   </div>
 </div>
 
 <div class="queue">
   <div class="n">7</div><div class="fmt email">Email</div>
-  <div><div class="ttl">Usage Report with "Switch from Google" offer</div>
+  <div><div class="ttl">Usage Report with "Switch from Google" offer</div> <span class="status red">RED</span>
     <div class="nt">Outbound to identified Google DocAI users (use ABM list filtered by tech-stack signal). Personalized usage benchmark + concrete switch incentive. ABM channel, not broadcast.</div>
+    <div class="audit"><b>Audit (2026-05-26 · RED):</b> ABM CSV has no tech-stack column; cannot filter to Google DocAI users. 1–2 week Clay/BuiltWith enrichment project.</div>
     <span class="flag needs">⚠ Needs: confirmed Google-DocAI-using subset of target accounts; offer structure approved; legal review on competitor-named outbound copy.</span>
   </div>
 </div>
 
 <div class="queue">
   <div class="n">8</div><div class="fmt social">Social</div>
-  <div><div class="ttl">Share screenshots of "Nice work" comments on LinkedIn posts</div>
+  <div><div class="ttl">Share screenshots of "Nice work" comments on LinkedIn posts</div> <span class="status yellow">YELLOW</span>
     <div class="nt">Lightweight social-proof loop: screenshot positive comments on viral blog 1–3 posts, repost as carousel/quote. No new content production needed — just curation.</div>
+    <div class="audit"><b>Audit (2026-05-26 · YELLOW):</b> Wave-01 of 4 LinkedIn posts scheduled 2026-05-19; analytics shown are LOCAL EXPORT stub, not real LinkedIn. Operator must confirm posts actually published + collect screenshots.</div>
     <span class="flag needs">⚠ Needs: ~6–10 quality comments on LinkedIn posts to curate from (depends on viral blog rollout).</span>
   </div>
 </div>
 
 <div class="queue">
   <div class="n">9</div><div class="fmt blog">Blog</div>
-  <div><div class="ttl">Why 'Human-in-the-Loop' is still necessary (and how we automate it)</div>
+  <div><div class="ttl">Why 'Human-in-the-Loop' is still necessary (and how we automate it)</div> <span class="status red">RED</span>
     <div class="nt">Thought-leadership piece. Anti-hype: HITL isn't a weakness, it's the integrity floor. Show the workflow + how the system learns from each correction.</div>
+    <div class="audit"><b>Audit (2026-05-26 · RED):</b> <strong>Brand guardrail conflict</strong> — cto-org/data-privacy-compliance.md: "no HITL/manual-review framing" (never waived). LinkedIn linter rejects this language. Needs strategic decision, not a writer.</div>
     <span class="flag needs">⚠ Needs: HITL workflow screenshots or diagrams; one concrete correction-then-learning example.</span>
   </div>
 </div>
 
 <div class="queue">
   <div class="n">10</div><div class="fmt landing">Landing</div>
-  <div><div class="ttl">"Nanonets vs HyperAPI" + "Textract vs HyperAPI" comparison pages</div>
+  <div><div class="ttl">"Nanonets vs HyperAPI" + "Textract vs HyperAPI" comparison pages</div> <span class="status red">RED</span>
     <div class="nt">Two dedicated comparison landings. Same depth as Azure DI study (14 dimensions, n=5,000 design when possible, owned losses where applicable). SEO-target for buyers actively comparing.</div>
+    <div class="audit"><b>Audit (2026-05-26 · RED):</b> Only Azure DI is at di-study depth. Textract + Nanonets sit at single-metric SAVIOR-Bench word-recall baselines (NOT factory-reproduced). Multi-week each.</div>
     <span class="flag needs">⚠ Needs: real measured numbers on both comparisons; competitor-named → legal review; same anti-hype guardrails as P-3.</span>
   </div>
 </div>
 
 <div class="queue">
   <div class="n">11</div><div class="fmt blog">Blog</div>
-  <div><div class="ttl">Keeping Legal Data Secure</div>
+  <div><div class="ttl">Keeping Legal Data Secure</div> <span class="status red">RED</span>
     <div class="nt">Security/compliance piece for legal-team buyers. SOC2 status, data residency, on-prem option, audit-trail, retention policy. Honest about what's certified vs in-progress.</div>
+    <div class="audit"><b>Audit (2026-05-26 · RED):</b> Zero SOC2/cert/retention/residency evidence on disk; CTO posture doc must exist before writer can draft.</div>
     <span class="flag needs">⚠ Needs: current compliance posture (certifications, audit status); legal review on every claim of certification.</span>
   </div>
 </div>
 
 <div class="queue">
   <div class="n">12</div><div class="fmt landing">Landing</div>
-  <div><div class="ttl">The "Pepsi Challenge" (public) — "We bet $50 we can parse your doc"</div>
+  <div><div class="ttl">The "Pepsi Challenge" (public) — "We bet $50 we can parse your doc"</div> <span class="status red">RED</span>
     <div class="nt">Viral landing. Drop a doc → get an extraction. If it fails, $50. Promotional via X/LI. Designed to manufacture real-world tough cases for the corpus + earn trust through public exposure.</div>
+    <div class="audit"><b>Audit (2026-05-26 · RED):</b> No ToS, no abuse design, no upload flow, no payout mechanism. Pure design-from-zero exercise — cannot ship a public bet on 5 days notice.</div>
     <span class="flag needs">⚠ Needs: legal review on the bet structure + ToS + payout mechanism; rate-limit/abuse design; clear scope (which doc types qualify).</span>
   </div>
 </div>
 
 <div class="queue">
   <div class="n">13</div><div class="fmt video">Video</div>
-  <div><div class="ttl">The HyperAPI Enterprise Dashboard — compliance features</div>
+  <div><div class="ttl">The HyperAPI Enterprise Dashboard — compliance features</div> <span class="status red">RED</span>
     <div class="nt">Walkthrough of the dashboard: audit trail, access controls, data residency, retention, export. Sales-enablement asset for legal/compliance review calls.</div>
+    <div class="audit"><b>Audit (2026-05-26 · RED):</b> Compliance views don't exist in vera-frontend (zero hits for audit/SOC/retention/residency). Brief says "don't show mocks" — nothing shippable today.</div>
     <span class="flag needs">⚠ Needs: dashboard in shootable state; compliance features actually shipped (don't show mocks); brand review on enterprise positioning.</span>
   </div>
 </div>
 
-<p class="meta" style="margin-top:14px"><strong>Format mix:</strong> 6 Video · 3 Blog · 2 Landing · 1 Email · 1 Social. <strong>Gates:</strong> 7 of 13 are competitor-named or customer-named → require legal sign-off. <strong>Target:</strong> 2026-05-31 (end of week 2026-05-26 → 2026-05-31).</p>
+<p class="meta" style="margin-top:14px"><strong>Format mix:</strong> 6 Video · 3 Blog · 2 Landing · 1 Email · 1 Social. <strong>Gates:</strong> 7 of 13 are competitor-named or customer-named → require legal sign-off. <strong>Readiness (2026-05-26):</strong> 0 green · 2 yellow · 11 red. <strong>Realistic ship target:</strong> 2 items (4, 8) + 1 conditional (1). <strong>Recommended kill from this week:</strong> 7, 9, 12, 13.</p>
 
 <h2>P-1 · 500 line items on one invoice — extracted accurately</h2>
 <p class="meta">Depth 6/10 · Audience: AP leaders, finance-ops engineers · <span class="tag draft">DRAFT (pointers)</span></p>
