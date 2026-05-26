@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>The AP mistake that double-pays a vendor: posting a statement as an invoice · Hyperbots HyperAPI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#1d1f23;max-width:760px;margin:2rem auto;padding:0 1.2rem;}
+header{display:flex;align-items:center;gap:.7rem;border-bottom:1px solid #e3e6ea;padding-bottom:.8rem;margin-bottom:1.6rem;}
+header img{height:28px;width:auto;}
+header span{font-weight:600;color:#222;}
+h1{font-size:1.55rem;line-height:1.25;margin:.5rem 0 1rem;}
+h2{font-size:1.15rem;margin-top:1.8rem;color:#0a3d62;}
+code,pre{background:#f4f6f8;padding:.1rem .3rem;border-radius:3px;font-size:.92em;}
+a{color:#0a66c2;}
+.meta{font-size:.85rem;color:#5b6470;margin-bottom:1.6rem;}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #e3e6ea;font-size:.82rem;color:#7a818c;}
+</style>
+</head>
+<body>
+<script src="/gate.js"></script>
+<header>
+<img src="/assets/hyperbots-logo.svg" alt="Hyperbots">
+<span>Hyperbots · HyperAPI quickstart blog</span>
+</header>
+<article>
+<div class="meta">repo: <code>hyperapi-classify-statement-vs-invoice</code> · bucket: <code>invoice</code> · reviewer: <code>abm-content-marketing</code> · round-33 review: <code>approved</code></div>
+<h1>The AP mistake that double-pays a vendor: posting a statement as an invoice</h1>
+<p>Cross-vendor framing: prebuilt invoice/extract models from large vendors typically collapse on the long tail (continuation pages, layout drift, multi-language) — the deterministic pass/fail approach below is rendered against that backdrop, with measured rates published at apis.hyperbots.com.</p>
+<p><strong>Audience</strong>: AP / AR / GL operations leaders (sub-ledger owners) · 5 min read</p>
+<p>Every accounts-payable inbox gets two documents that look identical to a rule: a single invoice, and a month-end *vendor statement* that summarises every invoice already on your ledger. Pay the statement and you pay every one of those invoices twice. <code>hyperapi-classify-statement-vs-invoice</code> turns the routing decision into one deterministic, auditable call.</p>
+<h2>Why a model alone isn't the answer here</h2>
+<p>You want the *decision* to be explainable to an auditor. So the model does the reading — OCR, layout, the document-type hint, the aging table, the distinct invoice references — and a <strong>pure, fixed signal battery</strong> does the deciding: a signed score, positive toward statement, negative toward invoice, with a band around zero that returns <code>unknown</code> instead of guessing.</p>
+<h2>Never a coin-flip</h2>
+<p>A genuinely ambiguous document (say, a one-page summary with a single open invoice and a balance line) lands in <code>unknown</code>, with every fired signal and the score in the JSON, for your automation to branch on. Money is <code>Decimal</code> end to end; an echoed total never decides the label on its own.</p>
+<h2>Five lines</h2>
+<p>``<code>python from hyperapi_classify_statement_vs_invoice import classify_file r = classify_file("doc.pdf") print(r.label.value, r.score, r.is_statement) </code>``</p>
+<p>A weak first extraction is <strong>automatically re-extracted</strong> on a stronger pass; nothing is queued to a person. Accuracy of the underlying extraction is published at apis.hyperbots.com; the model is an open-source document model fine-tuned by Hyperbots (Hyperbots IP).</p>
+<h2>Sources</h2>
+<ul>
+<li>HyperAPI <code>extract</code> primitive: <a href="https://apis.hyperbots.com">https://apis.hyperbots.com</a></li>
+</ul>
+<h2>Open assumptions</h2>
+<p>1. Endpoint/field shapes per the repo's test fixtures.</p>
+</article>
+<footer>
+Published from <code>hyperapi-classify-statement-vs-invoice</code> · Accuracy figures are published at <a href="https://apis.hyperbots.com">apis.hyperbots.com</a> and are not restated here.
+</footer>
+</body>
+</html>

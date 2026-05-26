@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>hyperapi-extract-letter-of-credit-amendment-fields: extract the key fields of an LC amendment advice as typed JSON · Hyperbots HyperAPI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#1d1f23;max-width:760px;margin:2rem auto;padding:0 1.2rem;}
+header{display:flex;align-items:center;gap:.7rem;border-bottom:1px solid #e3e6ea;padding-bottom:.8rem;margin-bottom:1.6rem;}
+header img{height:28px;width:auto;}
+header span{font-weight:600;color:#222;}
+h1{font-size:1.55rem;line-height:1.25;margin:.5rem 0 1rem;}
+h2{font-size:1.15rem;margin-top:1.8rem;color:#0a3d62;}
+code,pre{background:#f4f6f8;padding:.1rem .3rem;border-radius:3px;font-size:.92em;}
+a{color:#0a66c2;}
+.meta{font-size:.85rem;color:#5b6470;margin-bottom:1.6rem;}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #e3e6ea;font-size:.82rem;color:#7a818c;}
+</style>
+</head>
+<body>
+<script src="/gate.js"></script>
+<header>
+<img src="/assets/hyperbots-logo.svg" alt="Hyperbots">
+<span>Hyperbots · HyperAPI quickstart blog</span>
+</header>
+<article>
+<div class="meta">repo: <code>hyperapi-extract-letter-of-credit-amendment-fields</code> · bucket: <code>extract-misc</code> · reviewer: <code>abm-content-marketing</code> · round-33 review: <code>approved</code></div>
+<h1>hyperapi-extract-letter-of-credit-amendment-fields: extract the key fields of an LC amendment advice as typed JSON</h1>
+<p>Cross-vendor framing: prebuilt invoice/extract models from large vendors typically collapse on the long tail (continuation pages, layout drift, multi-language) — the deterministic pass/fail approach below is rendered against that backdrop, with measured rates published at apis.hyperbots.com.</p>
+<p><strong>Audience</strong>: AP / AR / GL operations leaders (sub-ledger owners) · 5 min read</p>
+<p>This is the step where finance automation usually stalls: someone reads a letter-of-credit amendment advice and makes the call. <code>hyperapi-extract-letter-of-credit-amendment-fields</code> is a small, typed Python client around the HyperAPI <code>extract</code> primitive that does the OCR/layout/decision work server-side and hands back a validated, ordered decision over a closed vocabulary (<code>complete</code>, <code>partial</code>, <code>low_confidence</code>, <code>extraction_failed</code>).</p>
+<p>It is honest about its edges. A confident-but-ambiguous first pass (<code>0.53</code> vs <code>0.44</code>) triggers an automatic re-extractification on a stronger profile -- no queue, no reviewer. A document that stays weak comes back <code>trustworthy=false</code> with the full ranking for the caller's automation to route. A genuinely undecidable document fails safe to <code>extraction_failed</code> -- the highest scrutiny, never less.</p>
+<p>The model is an open-source document model fine-tuned by Hyperbots (Hyperbots IP); accuracy is published at apis.hyperbots.com. The repo is the typed client: a bespoke httpx client (no vendor SDK dependency), closed ordered-vocabulary validation, fail-safe selection, and a confidence/margin gate.</p>
+<h2>Sources</h2>
+<ul>
+<li>HyperAPI <code>extract</code> primitive and published accuracy: <a href="https://apis.hyperbots.com">https://apis.hyperbots.com</a></li>
+</ul>
+<h2>Open assumptions</h2>
+<p>1. Endpoint and label shapes follow <code>tests/fixtures/responses/</code>. 2. The <code>0.80</code>/<code>0.15</code> floors are conservative defaults, not SLAs.</p>
+</article>
+<footer>
+Published from <code>hyperapi-extract-letter-of-credit-amendment-fields</code> · Accuracy figures are published at <a href="https://apis.hyperbots.com">apis.hyperbots.com</a> and are not restated here.
+</footer>
+</body>
+</html>

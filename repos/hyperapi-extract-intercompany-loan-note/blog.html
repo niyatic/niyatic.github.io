@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Stop hand-keying intercompany loan notes: typed JSON in one call · Hyperbots HyperAPI</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;color:#1d1f23;max-width:760px;margin:2rem auto;padding:0 1.2rem;}
+header{display:flex;align-items:center;gap:.7rem;border-bottom:1px solid #e3e6ea;padding-bottom:.8rem;margin-bottom:1.6rem;}
+header img{height:28px;width:auto;}
+header span{font-weight:600;color:#222;}
+h1{font-size:1.55rem;line-height:1.25;margin:.5rem 0 1rem;}
+h2{font-size:1.15rem;margin-top:1.8rem;color:#0a3d62;}
+code,pre{background:#f4f6f8;padding:.1rem .3rem;border-radius:3px;font-size:.92em;}
+a{color:#0a66c2;}
+.meta{font-size:.85rem;color:#5b6470;margin-bottom:1.6rem;}
+footer{margin-top:3rem;padding-top:1rem;border-top:1px solid #e3e6ea;font-size:.82rem;color:#7a818c;}
+</style>
+</head>
+<body>
+<script src="/gate.js"></script>
+<header>
+<img src="/assets/hyperbots-logo.svg" alt="Hyperbots">
+<span>Hyperbots · HyperAPI quickstart blog</span>
+</header>
+<article>
+<div class="meta">repo: <code>hyperapi-extract-intercompany-loan-note</code> · bucket: <code>extract-misc</code> · reviewer: <code>abm-content-marketing</code> · round-33 review: <code>approved</code></div>
+<h1>Stop hand-keying intercompany loan notes: typed JSON in one call</h1>
+<p>Cross-vendor framing: prebuilt invoice/extract models from large vendors typically collapse on the long tail (continuation pages, layout drift, multi-language) — the deterministic pass/fail approach below is rendered against that backdrop, with measured rates published at apis.hyperbots.com.</p>
+<p><strong>Audience</strong>: AP / AR / GL operations leaders (sub-ledger owners) · 5 min read</p>
+<p>Intercompany loan notes are low-volume but high-consequence: they drive transfer-pricing interest, group eliminations, and the related-party disclosures auditors test first. Yet the terms are still re-typed off signed PDFs and scans — note reference, lender, borrower, principal, dates, rate, repayment. <code>hyperapi-extract-intercompany-loan-note</code> turns that into one function call that returns a typed, validated object with a confidence score on every field.</p>
+<h2>The hard part isn't OCR</h2>
+<p>It's that a mis-read principal or rate looks just as confident as a correct one. The library normalises numbers, dates, and percents to <code>Decimal</code>/<code>date</code>, then <strong>re-derives the simple interest locally</strong> (<code>principal × rate × days/365</code>, exact <code>Decimal</code>) and cross-checks it against the figure the note states. A note where the maths doesn't close is flagged even when every field scored high.</p>
+<h2>No queue, just a flag</h2>
+<p>A weak first pass — or one whose terms don't self-check — is <strong>automatically re-extracted</strong> on a higher-resolution profile; the stronger pass is kept. Documents that stay weak come back <code>trustworthy=false</code> with the weak fields named, for your automation to route by rule. Routing stays in your automation, end to end.</p>
+<h2>Five lines</h2>
+<p>``<code>python from hyperapi_extract_intercompany_loan_note import extract_file r = extract_file("loan_note.pdf") print(r.loan_note.principal, r.loan_note.terms_consistent()) </code>``</p>
+<p>Accuracy is published at apis.hyperbots.com. The extraction model is an open-source document model fine-tuned by Hyperbots (Hyperbots IP); the interest re-derivation is this repo.</p>
+<h2>Sources</h2>
+<ul>
+<li>HyperAPI <code>extract</code> primitive: <a href="https://apis.hyperbots.com">https://apis.hyperbots.com</a></li>
+</ul>
+<h2>Open assumptions</h2>
+<p>1. Endpoint/field shapes per the repo's test fixtures.</p>
+</article>
+<footer>
+Published from <code>hyperapi-extract-intercompany-loan-note</code> · Accuracy figures are published at <a href="https://apis.hyperbots.com">apis.hyperbots.com</a> and are not restated here.
+</footer>
+</body>
+</html>
