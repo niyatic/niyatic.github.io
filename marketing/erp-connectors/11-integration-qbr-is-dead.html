@@ -1,0 +1,152 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hyperbots</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="meta"></div><h1>The &#x27;integration QBR&#x27; is dead: an agent does what a 4-week SI engagement used to — plan</h1>
+<h2>1. Headline + hook</h2>
+<p>Hook: **&quot;The quarterly business review on the integration project — the</p>
+<p>slide deck about what was scoped vs what shipped, the change orders, the</p>
+<p>&#x27;we need another two weeks&#x27; — is the ritual that the connector framework</p>
+<p>plus an agent ends. The agent&#x27;s work is exit-code-gated. The conformance</p>
+<p>kit is the QBR. Status is `posted / dead_letter / unresolved /</p>
+<p>skipped_dup / failed / audit`, not a slide.&quot;**</p>
+<p>This is the <strong>GTM-leaning provocation</strong> of the set. It is highest-risk</p>
+<p>for placeholder slip; it also lands hardest if it ships clean.</p>
+<h2>2. Audience + intent</h2>
+<ul>
+<li>Primary: heads of IT + heads of finance-systems; secondary: SI</li>
+</ul>
+<p>  partners (this is a confrontational piece for them — frame it as</p>
+<p>  re-allocating, not eliminating, their value).</p>
+<ul>
+<li>Reader takeaway: *&quot;the integration project becomes integration</li>
+</ul>
+<p>  configuration — the QBR ritual goes with it.&quot;*</p>
+<ul>
+<li>CTA: a 30-minute architecture conversation.</li>
+</ul>
+<h2>3. The two-layer pitch (REQUIRED)</h2>
+<h3>3.1 Speed</h3>
+<ul>
+<li>The agent&#x27;s wall-clock work replaces the SI engagement&#x27;s</li>
+</ul>
+<p>  *implementation* phase. [PLACEHOLDER, ~hours vs [PLACEHOLDER, ~4</p>
+<p>  weeks].]</p>
+<ul>
+<li>The conformance kit&#x27;s machine-readable output replaces the QBR slide</li>
+</ul>
+<p>  deck.</p>
+<h3>3.2 Depth</h3>
+<ul>
+<li>**The SI engagement&#x27;s actual deliverables: descriptor, normalizer,</li>
+</ul>
+<p>  idempotency choice, secrets wiring, conformance pass.** Each is</p>
+<p>  framework-shaped; the framework constrains the work.</p>
+<ul>
+<li><strong>The QBR&#x27;s actual function: surface status.</strong> The six typed sinks +</li>
+</ul>
+<p>  the count invariant + the exit-code gate do that, deterministically,</p>
+<p>  every run.</p>
+<ul>
+<li>**What the SI still does: tenant master-data, customer-side IT</li>
+</ul>
+<p>  sign-off, change-management of bespoke fields.** Name this honestly —</p>
+<p>  the post is not &quot;no SI, ever&quot;; it is &quot;the SI&#x27;s value moves up the</p>
+<p>  stack.&quot;</p>
+<h2>4. Outline</h2>
+<ul>
+<li>P-1. The QBR ritual — what it actually is.</li>
+<li>P-2. What&#x27;s automatable vs what isn&#x27;t.</li>
+<li>P-3. The framework as the new contract.</li>
+<li>P-4. The agent&#x27;s work, end-to-end.</li>
+<li>P-5. The SI&#x27;s new role (re-framing, not elimination).</li>
+<li>P-6. CTA.</li>
+</ul>
+<h2>5. Required evidence before publish</h2>
+<ul>
+<li>A measured customer integration time (consent-gated) — the speed</li>
+</ul>
+<p>  claim is the entire post; this one cannot ship without it.</p>
+<ul>
+<li>A bespoke baseline citation (named SI quote or public RFP).</li>
+<li>An ABM-team review for tone — the SI-facing framing must not read as</li>
+</ul>
+<p>  contempt.</p>
+<h2>6. Placeholders to fill</h2>
+<ul>
+<li>[PLACEHOLDER-time-bespoke]</li>
+<li>[PLACEHOLDER-time-hyperapi]</li>
+<li>[PLACEHOLDER-customer-case] (REQUIRED — no shipping without it)</li>
+<li>[PLACEHOLDER-si-quote] (the bespoke baseline)</li>
+</ul>
+<h2>7. Competitor positioning</h2>
+<ul>
+<li>Workato, MuleSoft, Boomi — all sell *to* SI partners; this post is</li>
+</ul>
+<p>  not anti-them, it is anti the *ritual*. Naming any of them in body</p>
+<p>  copy needs careful editorial review. **First-draft policy: do not</p>
+<p>  name any of them.**</p>
+<ul>
+<li>The SI primes (Accenture, Deloitte, etc.): not named.</li>
+</ul>
+<h2>8. Sources / provenance</h2>
+<ul>
+<li>skill: <code>connector-framework</code></li>
+<li><code>connector-framework/src/hyperapi_connector/result.py</code> (the exit-code</li>
+</ul>
+<p>  gate; the six sinks)</p>
+<ul>
+<li>skill: <code>enterprise-scale-governance</code> (for the &quot;closing the loop&quot;</li>
+</ul>
+<p>  framing)</p>
+<ul>
+<li>The bespoke baseline source (must be cited)</li>
+</ul>
+<h2>Z. Internal-only</h2>
+<ul>
+<li>Cost: ~6 hours + the ABM-team review.</li>
+<li>Dependencies: the customer case is the gate. Until one lands, this</li>
+</ul>
+<p>  post is plan-only.</p>
+<ul>
+<li>Risk: highest placeholder risk in the set. Two ways to mitigate:</li>
+</ul>
+<p>  (a) wait for a real customer case; (b) re-frame as</p>
+<p>  &quot;what an integration QBR will become&quot; — speculative, lower risk,</p>
+<p>  lower wedge.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

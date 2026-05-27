@@ -1,0 +1,134 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hyperbots</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="meta"></div><h1>Workday HCM + Financials: connecting payroll docs without losing context — plan</h1>
+<h2>1. Headline + hook</h2>
+<p>Hook: **&quot;Payroll documents don&#x27;t live in one Workday module — they span</p>
+<p>HCM (the employee, the cost center, the manager) and Financials (the GL</p>
+<p>mapping, the period, the company). A bespoke integration usually picks</p>
+<p>one side and writes glue for the other. The connector framework&#x27;s</p>
+<p>descriptor pattern carries the cross-module context as policy, not glue.&quot;**</p>
+<p>Honest framing: as of today the connector framework does <strong>not</strong> ship a</p>
+<p>Workday descriptor. This is a *framework-extension* post — same caveat as</p>
+<p>blog #4 (Oracle). The two-layer pitch works because the *pattern* is what</p>
+<p>sells; the speed claim is deferred until the descriptor lands.</p>
+<h2>2. Audience + intent</h2>
+<ul>
+<li>Primary: Workday-shop finance + people-ops engineers.</li>
+<li>Reader takeaway: *&quot;the cross-module context is a descriptor field, not</li>
+</ul>
+<p>  a project.&quot;*</p>
+<ul>
+<li>CTA: scoping (gated by Workday being on the roadmap; confirm with</li>
+</ul>
+<p>  product).</p>
+<h2>3. The two-layer pitch (REQUIRED)</h2>
+<h3>3.1 Speed (claim deferred)</h3>
+<p>Until a Workday descriptor exists, no wall-clock number is named. The</p>
+<p>post can describe the *shape* of the agent&#x27;s work — pick the HCM lookup,</p>
+<p>pick the Financials descriptor, wire the cross-module resolver — without</p>
+<p>a speed headline.</p>
+<h3>3.2 Depth</h3>
+<ul>
+<li><strong>Cross-module master key.</strong> <code>master_key_resolver</code> returns a tuple:</li>
+</ul>
+<p>  (employee_id_HCM, cost_center_HCM, gl_account_Financials). One lookup</p>
+<p>  call, one policy.</p>
+<ul>
+<li><strong>Sign / FX / grain per module.</strong> Payroll postings to Financials have</li>
+</ul>
+<p>  a fixed sign convention per company; descriptor encodes it.</p>
+<ul>
+<li>**Idempotency keyed to the *event* (pay-run + employee + period),</li>
+</ul>
+<p>  not the file.** `BusinessKey([&quot;pay_run_id&quot;, &quot;employee_id&quot;,</p>
+<p>  &quot;period&quot;])` lines up with Workday Financials&#x27; own uniqueness.</p>
+<ul>
+<li><strong>No HITL on low-confidence employee match.</strong> Low-confidence resolver</li>
+</ul>
+<p>  output dead-letters with the raw lookup response.</p>
+<h2>4. Outline</h2>
+<ul>
+<li>P-1. The Workday reality — HCM and Financials are one mental model,</li>
+</ul>
+<p>  two API surfaces.</p>
+<ul>
+<li>P-2. The bespoke pain — glue code that owns the cross-module lookup</li>
+</ul>
+<p>  but no contract.</p>
+<ul>
+<li>P-3. The descriptor pattern for cross-module context.</li>
+<li>P-4. The honesty — descriptor not built yet; this is the pattern.</li>
+<li>P-5. CTA.</li>
+</ul>
+<h2>5. Required evidence before publish</h2>
+<ul>
+<li>Confirm Workday is on the roadmap (product sign-off).</li>
+<li>A descriptor sketch (paper-only).</li>
+<li>A drawn cross-module resolver example.</li>
+</ul>
+<h2>6. Placeholders to fill</h2>
+<ul>
+<li>[PLACEHOLDER-roadmap-confirm]</li>
+<li>[PLACEHOLDER-descriptor-sketch]</li>
+<li>[PLACEHOLDER-customer-case]</li>
+</ul>
+<h2>7. Competitor positioning</h2>
+<ul>
+<li>Workato Workday connectors — NOT-FETCHED. Hypothesis: per-module, with</li>
+</ul>
+<p>  recipes bridging.</p>
+<ul>
+<li>MuleSoft Workday — NOT-FETCHED.</li>
+<li>Boomi Workday — NOT-FETCHED.</li>
+</ul>
+<h2>8. Sources / provenance</h2>
+<ul>
+<li>skill: <code>connector-framework</code>, <code>architect-finance-microservices</code></li>
+<li>No on-disk Workday descriptor (recorded honestly)</li>
+<li>Competitor URLs (must be fetched)</li>
+</ul>
+<h2>Z. Internal-only</h2>
+<ul>
+<li>Cost: ~5 hours (thought-leadership; lighter than a built case).</li>
+<li>Dependencies: product roadmap sign-off.</li>
+<li>Risk: same as blog #4 — if framing slips into &quot;we have it&quot;, do not</li>
+</ul>
+<p>  publish.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

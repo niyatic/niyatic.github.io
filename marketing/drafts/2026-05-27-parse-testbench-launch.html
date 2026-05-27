@@ -1,0 +1,142 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Launching our parse testbench: 28 vendors, 4 doctypes, real gold</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publish human-gated</div><div class="meta">Hyperbots Research · 2026-05-27</div><h1>Launching our parse testbench: 28 vendors, 4 doctypes, real gold</h1>
+<p>A vendor&#x27;s PDF tells you what their system does on their documents, under their evaluation conditions. It does not tell you what it does on yours.</p>
+<p>That asymmetry is why we built a parse testbench. The bench covers 28 vendors across three measurement tracks — parse-intent F1, OCR edit-distance, and multi-corpus parse success rate — against three datasets with documented gold provenance. Every number on the leaderboard traces to an on-disk cell file. Cells that are PENDING-KEY or PENDING-CORPUS are honest nulls, not hidden rows.</p>
+<p>This post describes what we measure, what we have on disk today, and what&#x27;s pending.</p>
+<hr>
+<h2>Why a testbench</h2>
+<p>Vendor benchmarks have a structural problem: the team shipping the product chooses the benchmark. Extend&#x27;s RealDocBench is a serious effort — 1,500 human-annotated samples for layout accuracy, 1,359 prompts for Q&amp;A accuracy, PII replaced with synthetic values — and we respect the rigor. But it was built to showcase Extend Parse 2.0 on the document types Extend handles well: IRS forms, SEC reports, mortgage loan documents, logistics/supply chain.</p>
+<p>Our document types are different: invoices, bank statements, cheques, credit notes, remittance advice. Our failure modes are different: MICR encoding on cheque images, multi-currency running-balance tables on bank statements, polarity-reversed fields on credit notes that look structurally identical to invoices. And our question is different: on these five types, across these 28+ vendors, which systems produce accurate structured output, and by how much?</p>
+<p>A bench you run yourself, on your own gold, against the vendors you actually care about, answers that question. A vendor PDF does not.</p>
+<hr>
+<h2>What we measure</h2>
+<h3>Track 1 — parse-intent F1 (SAVIOR-Bench v1, 28+ vendors)</h3>
+<p>Parse-intent is the task of extracting structured fields from a document according to an explicit intent schema — e.g., &quot;return all line items with quantity, unit price, and tax code.&quot; The metric is standard token-level F1 between predicted and gold field values.</p>
+<p>The leaderboard covers 28 vendors including VLMs, specialist OCR systems, and general-purpose language models. All 24 cells with metric values are in-house-attested (source: <code>benchmark.xlsx</code>, 2026-05-18). They are <strong>not factory-harness-reproduced</strong> (SEED harness lacks vendor adapters; all factory reruns returned <code>unknown model</code>). Corpus is not on disk; <code>n</code> is null across all cells; no confidence intervals are reported.</p>
+<p><strong>Source path pattern:</strong> <code>results/DC-000__parse-intent-inhouse-v1__&lt;vendor&gt;.json</code></p>
+<h3>Track 2 — OCR edit-distance (SAVIOR-Bench v1, 31 systems)</h3>
+<p>OCR edit-distance is measured as normalized Levenshtein distance between predicted and gold transcription (range 0–1, lower is better). The leaderboard covers 31 systems spanning pipeline tools, specialist VLMs, and general VLMs.</p>
+<p>All 31 OCR cells are <strong>externally-sourced attested</strong> — transcribed verbatim from the SAVIOR-Bench OCR leaderboard table (<code>/tmp/savior-ocr/ocr-edit-distance.tsv</code>, user-provided 2026-05-22). They were not run by the factory harness. Factory reproduction would require the underlying SAVIOR OCR corpus, which is not on disk. No confidence intervals are reported.</p>
+<p>The HyperAPI-PaddleOCR-OURS pipeline sits at <strong>rank 12 / 31+ entries</strong> with edit-distance <strong>0.061</strong> — a 36% relative reduction vs. Tesseract OCR (0.096) and a 14% relative reduction vs. open-source PaddleOCR-v4 (0.071).</p>
+<p><strong>Source:</strong> <code>results/DC-000__ocr-edit-distance-v1__HyperAPI-PaddleOCR-OURS.json</code></p>
+<h3>Track 3 — multi-corpus parse success rate (5 corpora, 2,612 docs)</h3>
+<p>We ran HyperParse against five document corpora covering invoices, bank statements, cheques, credit notes, and remittance advice. The metric is parse success rate — whether the parser returns a structured output without error. This is <strong>not</strong> a field-level accuracy measurement.</p>
+<table><thead><tr><th>System</th><th>n_ok / n_total</th><th>Success rate</th></tr></thead><tbody><tr><td>HyperAPI (SDK 0fc4bada)</td><td>2,612 / 2,612</td><td><strong>99.92%</strong></td></tr><tr><td>Qwen-3.6 (35B-A3B)</td><td>2,592 / 2,637</td><td>98.3%</td></tr><tr><td>Azure DI prebuilt-invoice</td><td>2,485 / 2,649</td><td>97.6%</td></tr></tbody></table>
+<p>Source: <code>results/DC-006__multicorpus__hyperapi-parse.json</code></p>
+<h3>Track 4 — classify accuracy with Wilson CI95 (tough-bench, 4 doctypes)</h3>
+<p>We classify document type against Hyperbots-annotated gold labels on a 174-document tough-benchmark set. Results are reported with Wilson 95% confidence intervals.</p>
+<table><thead><tr><th>Doctype</th><th>n</th><th>correct</th><th>accuracy</th><th>95% CI</th></tr></thead><tbody><tr><td>cheque</td><td>21</td><td>21</td><td><strong>100%</strong></td><td>[0.839, 1.000]</td></tr><tr><td>credit_note</td><td>30</td><td>29</td><td><strong>96.7%</strong></td><td>[0.833, 0.994]</td></tr><tr><td>remittance_advice</td><td>31</td><td>27</td><td><strong>87.1%</strong></td><td>[0.712, 0.949]</td></tr></tbody></table>
+<p>Source: <code>results/DC-011__tough-{cheque,credit_note,remittance_advice}__hyperapi-classify.json</code></p>
+<h3>Track 5 — extract micro-F1 with bootstrap CI95 (tough-bench, 4 doctypes)</h3>
+<p>Field-level extraction micro-F1 across invoice, bank statement, cheque, and remittance doctypes. Bootstrap CI95 with 1,000 resamples. This track is <strong>PENDING</strong> — the extraction harness is defined; the benchmark run is not yet complete.</p>
+<hr>
+<h2>Datasets</h2>
+<h3>Multi-corpus (5 corpora, 2,649 docs)</h3>
+<p>A five-corpus sweep of finance documents: <code>results</code> (invoices), <code>results-converted</code> (format-converted invoices), <code>tough</code> (all four tough doctypes), <code>parsing</code> (full multi-page docs and extract samples), and <code>soulshine2</code> (remittance and statement samples). Documents span PDF, PNG, TIFF, and converted-from-original formats. Long documents (≥50 pages) are chunked at 25-page windows and counted honestly — no silent drops.</p>
+<h3>Tough-bench (174 docs, per-doc gold meta.json)</h3>
+<p>Expert-annotated gold labels across four doctypes: invoice, bank_statement, cheque, credit_note, remittance_advice. Each document has a <code>meta.json</code> with <code>classifier_type</code>, named entities, and line-item fields. Scoring is done by the factory harness (<code>score_tough_jsonls.py</code>) against <code>meta.json</code>. No customer names are used; any real-world documents are anonymized or sourced from public archives.</p>
+<h3>SAVIOR-Bench v1 (509 docs, attested)</h3>
+<p>An externally-produced financial-document benchmark with three measurement facets: extraction (parse-intent F1), layout awareness, and bounding box. Inter-annotator agreement (IAA) on the gold is 0.761. Of the three facets, only the extraction facet (parse-intent F1 + OCR edit-distance) is measured in our current leaderboard; the layout-awareness and bounding-box facets are defined but not yet measured by us.</p>
+<hr>
+<h2>Vendors compared</h2>
+<h3>Parse-intent F1 — 28 vendors (24 with metric values, 4 PENDING)</h3>
+<p>Vendors with attested F1 values: Azure-DI-prebuilt-document (PENDING-KEY), Azure-DI-prebuilt-layout (PENDING-KEY), Claude-Haiku-4.5 (PENDING-KEY), Claude-Sonnet-4.6, Claude-Opus-4.7 (PENDING-KEY), DeepSeek-OCR-2, DocIntentOCR-3B, FireRed-OCR, GLM-OCR, GPT-4.1, GPT-4o, GPT-5.4-thinking (PENDING-KEY), o3, Gemini-2.5-Flash, Gemini-2.5-Pro, Llama-3.2-90B-Vision, Logics-Parsing-v2, MinerU2.5-Pro-2604-1.2B, Mistral-Large-3-675B, PaddleOCR-VL-1.5, Qianfan-OCR, Qwen2.5-VL-3B, Qwen2.5-VL-7B, Qwen3-VL-32B, Qwen3.6-35B-A3B, Youtu-Parsing, dots.mocr, hyperapi-parse-intent.</p>
+<p><strong>Critical disclosure:</strong> <code>hyperapi-parse-intent</code> (F1 0.8328) is fine-tuned on SAVIOR-Train (Hyperbots IP, LoRA fine-tune). All other listed rows are zero-shot. The fine-tuned row is <strong>not apples-to-apples</strong> with zero-shot baselines; the advantage over the best documented zero-shot row (GPT-4o, 0.8052) is +0.0276 F1.</p>
+<p>The 4 PENDING-KEY rows (Azure-DI-prebuilt-document, Azure-DI-prebuilt-layout, Claude-Haiku-4.5, Claude-Opus-4.7, GPT-5.4-thinking) have <code>metric=null, n=0</code> in the cell files. They are honest nulls.</p>
+<h3>OCR edit-distance — 31 systems (externally attested)</h3>
+<p>Top-10 rows (of 31) as attested from the SAVIOR-Bench leaderboard:</p>
+<table><thead><tr><th>Rank</th><th>System</th><th>Edit-distance</th></tr></thead><tbody><tr><td>1</td><td>GLM-OCR</td><td>0.019</td></tr><tr><td>2</td><td>GPT-4o</td><td>0.020</td></tr><tr><td>3</td><td>MinerU-2.5</td><td>0.023</td></tr><tr><td>4</td><td>Qwen3-VL-235B</td><td>0.025</td></tr><tr><td>5</td><td>PaddleOCR-VL-1.5</td><td>0.031</td></tr><tr><td>6</td><td>Mathpix</td><td>0.033</td></tr><tr><td>7</td><td>GOT-OCR-2.0</td><td>0.041</td></tr><tr><td>8</td><td>Surya</td><td>0.057</td></tr><tr><td>9–10</td><td>MinerU-0.9 / Gemini-1.5-Pro</td><td>0.058</td></tr><tr><td>11</td><td>Qwen3.5-2B-FT</td><td>0.059</td></tr><tr><td><strong>12</strong></td><td><strong>HyperAPI PaddleOCR OURS</strong></td><td><strong>0.061</strong></td></tr></tbody></table>
+<p>Full 31-row table in <code>results/DC-000__ocr-edit-distance-v1__*.json</code>.</p>
+<hr>
+<h2>What&#x27;s anchored to disk</h2>
+<p>Every published number traces to a cell file. The path pattern is:</p>
+<pre><code>results/DC-{task_id}__{dataset_name}__{vendor_slug}.json</code></pre>
+<p>Each cell file contains: <code>task</code>, <code>dataset</code>, <code>vendor</code>, <code>metric_name</code>, <code>metric_value</code>, <code>n</code>, <code>provenance</code>, <code>factory_reproduced</code> (true/false), and <code>notes</code>. A cell with <code>factory_reproduced=false</code> means the value was attested from an external source or in-house benchmark run, not reproduced by the factory harness.</p>
+<p>Example cells:</p>
+<ul>
+<li><code>results/DC-000__parse-intent-inhouse-v1__hyperapi-parse-intent.json</code> — F1 0.8328, in-house-attested, factory_reproduced=false</li>
+<li><code>results/DC-000__ocr-edit-distance-v1__HyperAPI-PaddleOCR-OURS.json</code> — edit-distance 0.061, externally_sourced=true, factory_reproduced=false</li>
+<li><code>results/DC-006__multicorpus__hyperapi-parse.json</code> — 2,612/2,612 parse success, factory_reproduced=true</li>
+<li><code>results/DC-011__tough-cheque__hyperapi-classify.json</code> — 21/21 classify accuracy, Wilson CI95, factory_reproduced=true</li>
+</ul>
+<hr>
+<h2>What&#x27;s PENDING</h2>
+<table><thead><tr><th>Provider / task</th><th>Status</th><th>Blocker</th></tr></thead><tbody><tr><td>Reducto (parse-intent)</td><td>PENDING-KEY</td><td>No API credentials</td></tr><tr><td>LlamaParse (parse-intent)</td><td>PENDING-KEY</td><td>No API credentials</td></tr><tr><td>Extend Parse 2.0 (parse-intent)</td><td>PENDING-KEY</td><td>No API credentials</td></tr><tr><td>AWS Textract (parse-intent)</td><td>PENDING-KEY</td><td>No AWS credentials</td></tr><tr><td>Azure DI parse-intent rows</td><td>PENDING-KEY + PENDING-CORPUS</td><td>DI-specific key not found; corpus not on disk</td></tr><tr><td>Layout IoU / Adjusted F1 benchmark</td><td>PENDING</td><td>Corpus with bounding-box ground truth needed; IoU scoring harness not yet built</td></tr><tr><td>Q&amp;A field-level accuracy task</td><td>PENDING</td><td>Gold Q&amp;A prompts not yet written for existing corpus</td></tr><tr><td>Extract micro-F1 benchmark</td><td>PENDING</td><td>Extraction harness defined; benchmark run not complete</td></tr><tr><td>parse-intent factory reproduction</td><td>PENDING-CORPUS</td><td>SEED harness lacks vendor adapters; attested values preserved unchanged</td></tr></tbody></table>
+<p>The layout IoU task is the most significant structural gap relative to Extend&#x27;s RealDocBench. Their primary metric — Adjusted F1 on bounding-box region detection across 1,500 human-annotated samples — measures something fundamentally different from parse-intent F1. These two metrics are <strong>not directly comparable</strong> and we do not present them side-by-side. Building a layout IoU benchmark would require a document corpus with bounding-box ground truth and an IoU scoring harness — currently estimated at 2–3 weeks of effort plus the PENDING-KEY providers.</p>
+<hr>
+<h2>How to reproduce</h2>
+<p>The factory harness lives in <code>hyperapi-documentapi-benchmark-factory/harness/</code>. Three entry points cover the three attested tracks:</p>
+<pre><code># OCR edit-distance — ingest from externally-sourced TSV
+python harness/ingest_ocr_edit_distance.py \
+  --input /tmp/savior-ocr/ocr-edit-distance.tsv \
+  --output results/DC-000__ocr-edit-distance-v1__
+
+# Parse-intent — ingest from benchmark.xlsx (in-house-attested)
+python harness/ingest_savior_xlsx.py \
+  --input benchmark.xlsx \
+  --task parse_intent_f1 \
+  --output results/DC-000__parse-intent-inhouse-v1__
+
+# Multi-corpus parse sweep — run against HyperAPI live
+python harness/run_multicorpus_parse.py \
+  --corpora results results-converted tough parsing soulshine2 \
+  --output results/DC-006__multicorpus__hyperapi-parse.json
+
+# Tough-bench classify sweep
+python harness/run_tough_classify.py \
+  --doctypes cheque credit_note remittance_advice \
+  --gold-dir tough-bench/meta/ \
+  --output-prefix results/DC-011__tough-</code></pre>
+<p>All harness scripts require <code>hyperapi_test_key</code> in <code>realqa/secrets/</code>. Factory-reproduced cells write <code>factory_reproduced=true</code> in the output JSON. Attested cells from external sources write <code>factory_reproduced=false</code> and preserve the source provenance string.</p>
+<hr>
+<h2>Methodology notes</h2>
+<ul>
+<li>All benchmark numbers are <strong>model-level research metrics</strong>, not product accuracy. Product accuracy is at <code>apis.hyperbots.com</code>.</li>
+<li>The parse-intent leaderboard (24 rows with values) is in-house-attested and not factory-harness-reproduced. <code>n</code> is null across all cells; no confidence intervals are available.</li>
+<li>The OCR edit-distance leaderboard (31 rows) is externally-sourced attested; source table provides point estimates only; no CI.</li>
+<li>The multi-corpus parse sweep (DC-006, factory_reproduced=true) used preproduction SDK <code>0fc4bada</code>; production behavior may differ.</li>
+<li>Tough-bench classify sweep (DC-011, factory_reproduced=true) was scored against Hyperbots-curated gold labels; Wilson CI95 reported.</li>
+<li>No customer names appear in this post. Documents in the corpus are anonymized or sourced from public archives.</li>
+<li><code>results.zip</code> (Hyperbots deployed-IDP output) was not used as ground truth for any competitive comparison. It appears in the multi-corpus sweep only as a source of runnable documents for parse-success measurement.</li>
+</ul>
+<hr>
+<p>*DRAFT — pending review. External publish is human-gated. All benchmark numbers are research metrics; they are not product accuracy claims. Product accuracy per apis.hyperbots.com.*</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

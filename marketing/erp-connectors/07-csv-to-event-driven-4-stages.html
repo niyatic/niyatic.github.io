@@ -1,0 +1,166 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hyperbots</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="meta"></div><h1>From CSV to event-driven: an evolving integration in 4 stages — plan</h1>
+<h2>1. Headline + hook</h2>
+<p>Hook: **&quot;Real integrations evolve. You start by dropping CSVs in a folder</p>
+<p>because that&#x27;s what the ERP team will accept this quarter. Six months</p>
+<p>later you&#x27;re posting to an API. A year in, you want batches with</p>
+<p>back-pressure. Eventually, you want webhooks and exactly-once replay.</p>
+<p>With the connector framework, each stage is hours of agent work — and the</p>
+<p>artifact at each stage is byte-identical when re-run.&quot;**</p>
+<p>The post is the <strong>journey</strong> narrative — time-compressed; it threads the</p>
+<p>two-layer pitch through a multi-stage adoption arc.</p>
+<p>Honest framing: framework v0 ships the FileSink (stage 1) and ApiSink</p>
+<p>(stage 2). Stage 3 (batched + back-pressure) is partially covered by the</p>
+<p>ApiSink&#x27;s &quot;batch cap, <code>Retry-After</code> honored, jittered backoff&quot; surface;</p>
+<p>stage 4 (event-driven webhooks with replay) is <strong>roadmap</strong>, recorded in</p>
+<p><code>plan/PLAN-next-steps.md</code>. The post must mark stage 4 as roadmap.</p>
+<h2>2. Audience + intent</h2>
+<ul>
+<li>Primary: integration leads + heads of platform.</li>
+<li>Reader takeaway: *&quot;each integration stage is a descriptor change, not</li>
+</ul>
+<p>  a new project.&quot;*</p>
+<ul>
+<li>CTA: scoping for the customer&#x27;s current stage.</li>
+</ul>
+<h2>3. The two-layer pitch (REQUIRED)</h2>
+<h3>3.1 Speed — stage by stage</h3>
+<ul>
+<li><strong>Stage 1: CSV emit (live today).</strong> Agent picks <code>FileSink</code>, drops to</li>
+</ul>
+<p>  the ERP team&#x27;s intake folder. *[PLACEHOLDER, ~1-2 hours.]*</p>
+<ul>
+<li><strong>Stage 2: API post (live today).</strong> Agent swaps <code>FileSink</code> for</li>
+</ul>
+<p>  <code>ApiSink</code>; same descriptor, same normalizer, same idempotency key.</p>
+<p>  Re-run is a no-op. *[PLACEHOLDER, ~2-4 hours.]*</p>
+<ul>
+<li><strong>Stage 3: Batched + back-pressure (live today).</strong> ApiSink&#x27;s batch cap</li>
+</ul>
+<p>  + <code>Retry-After</code> + bounded retry → dead-letter. *[PLACEHOLDER,</p>
+<p>  ~hours.]* Mostly config, not code.</p>
+<ul>
+<li><strong>Stage 4: Event-driven webhooks with replay (ROADMAP).</strong> Plan</li>
+</ul>
+<p>  surfaces it; framework lands the webhook-source pattern with the same</p>
+<p>  <code>SourceBytesKey</code> contract so a re-delivered webhook is a <code>skipped_dup</code>.</p>
+<p>  *[PLACEHOLDER pending framework v1.]*</p>
+<h3>3.2 Depth</h3>
+<ul>
+<li><strong>One descriptor, four sinks.</strong> The descriptor changes minimally</li>
+</ul>
+<p>  across stages — schema_version, master_key resolution, sign / FX /</p>
+<p>  grain stay the same. The sink (and the source, at stage 4) is what</p>
+<p>  changes.</p>
+<ul>
+<li><strong>Same idempotency key across stages.</strong> Byte-hash default; the same</li>
+</ul>
+<p>  CSV bytes re-ingested at stage 2 dedups against the stage-1 record.</p>
+<ul>
+<li><strong>Same conformance kit.</strong> Replay-safety, count invariant, lineage —</li>
+</ul>
+<p>  every stage passes the same suite.</p>
+<ul>
+<li><strong>Same exit-code gate.</strong> Stage 4 webhooks honor the same gate.</li>
+</ul>
+<h2>4. Outline</h2>
+<ul>
+<li>P-1. The reality — integrations evolve; they aren&#x27;t designed once.</li>
+<li>P-2. Stage 1: CSV emit. What the agent did; what the descriptor looks</li>
+</ul>
+<p>  like.</p>
+<ul>
+<li>P-3. Stage 2: API post. The diff — one sink change.</li>
+<li>P-4. Stage 3: Batched + back-pressure. The ApiSink&#x27;s existing surface.</li>
+<li>P-5. Stage 4: Event-driven webhooks (roadmap). What the framework</li>
+</ul>
+<p>  needs to land.</p>
+<ul>
+<li>P-6. The connecting thread — descriptor / normalizer / idempotency</li>
+</ul>
+<p>  stays put.</p>
+<ul>
+<li>P-7. CTA.</li>
+</ul>
+<h2>5. Required evidence before publish</h2>
+<ul>
+<li>Confirm FileSink + ApiSink + batch / retry surface on disk.</li>
+<li>Read <code>plan/PLAN-next-steps.md</code> for the v1 webhook surface and confirm</li>
+</ul>
+<p>  what is recorded (don&#x27;t promise more).</p>
+<ul>
+<li>A runnable diff between stage 1 and stage 2 (one customer-shaped</li>
+</ul>
+<p>  fixture).</p>
+<h2>6. Placeholders to fill</h2>
+<ul>
+<li>[PLACEHOLDER-time-per-stage] (all four stages)</li>
+<li>[PLACEHOLDER-stage-4-status]: confirm what <code>PLAN-next-steps.md</code></li>
+</ul>
+<p>  records about webhooks</p>
+<ul>
+<li>[PLACEHOLDER-customer-journey-case] (consent-gated)</li>
+</ul>
+<h2>7. Competitor positioning</h2>
+<ul>
+<li>Workato / MuleSoft / Boomi — NOT-FETCHED. Hypothesis: all support all</li>
+</ul>
+<p>  four stages individually; the *evolution* narrative is the wedge —</p>
+<p>  HyperAPI&#x27;s story is &quot;same descriptor&quot;, others usually rebuild.</p>
+<h2>8. Sources / provenance</h2>
+<ul>
+<li><code>connector-framework/README.md</code> (FileSink + ApiSink references)</li>
+<li><code>plan/PLAN-next-steps.md</code> (the v0/v1 boundary)</li>
+<li><code>docs/IDEMPOTENCY.md</code></li>
+<li>skill: <code>connector-framework</code></li>
+</ul>
+<h2>Z. Internal-only</h2>
+<ul>
+<li>Cost: ~6 hours.</li>
+<li>Dependencies: a real customer journey (consent-gated) or an</li>
+</ul>
+<p>  internal scripted journey across the 3 live stages.</p>
+<ul>
+<li>Risk: stage 4 implies more than ships today; the post must tag it</li>
+</ul>
+<p>  ROADMAP in body copy, not just in the plan. If product disagrees with</p>
+<p>  the roadmap framing, drop stage 4 and rename the post to &quot;3 stages.&quot;</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

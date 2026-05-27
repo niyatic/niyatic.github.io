@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ERP-connector blogs — Hyperbots content hub</title>
+<style>
+:root { --brand-7:#1B7DA7; --brand-9:#07658D; --brand-2:#EDFAFF; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-4:#E2ECEE; --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26; }
+* { box-sizing:border-box; margin:0; padding:0; }
+body { font:15px/1.6 "Rubik",-apple-system,system-ui,sans-serif; background:var(--grey-2);
+  color:var(--grey-12); max-width:980px; margin:0 auto; padding:28px 24px 56px; -webkit-font-smoothing:antialiased; }
+.back { color:var(--grey-10); font-size:13px; text-decoration:none; display:inline-block; margin-bottom:14px; }
+.back:hover { color:var(--brand-7); text-decoration:underline; }
+.hero { background:#fff; border:1px solid var(--grey-4); border-radius:12px;
+  border-left:5px solid var(--brand-7); padding:18px 22px; margin-bottom:18px;
+  display:flex; align-items:center; gap:14px; box-shadow:0 1px 3px rgba(33,31,38,.06); }
+.hero img { width:36px; height:37px; }
+.hero h1 { font-size:21px; font-weight:600; }
+.hero .sub { color:var(--grey-10); font-size:13px; margin-top:3px; }
+.hero .tag { font-size:11px; padding:3px 10px; background:var(--brand-2); color:var(--brand-9);
+  border-radius:11px; font-weight:600; letter-spacing:.04em; text-transform:uppercase; margin-left:auto; }
+h2 { font-size:17px; color:var(--brand-9); font-weight:600; margin:28px 0 10px;
+  padding-bottom:8px; border-bottom:2px solid var(--brand-4); }
+p.lead { color:var(--grey-11); font-size:13.5px; line-height:1.65; margin:0 0 12px; }
+.cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:10px; margin:10px 0; }
+.card { background:#fff; border:1px solid var(--grey-4); border-radius:10px;
+  padding:14px 16px; text-decoration:none; color:inherit; box-shadow:0 1px 2px rgba(33,31,38,.04);
+  transition:box-shadow .15s; display:block; }
+.card:hover { box-shadow:0 4px 12px rgba(33,31,38,.10); }
+.card .icon { font-size:18px; }
+.card .title { font-weight:600; color:var(--brand-7); font-size:14px; margin:4px 0 4px; }
+.card .desc { color:var(--grey-10); font-size:12.5px; line-height:1.5; }
+.card .meta { color:var(--grey-11); font-size:11.5px; margin-top:5px; font-style:italic; }
+</style>
+</head>
+<body>
+<a class="back" href="/marketing/">← back to marketing</a>
+
+<header class="hero">
+  <img src="/assets/hyperbots-logo.svg" alt="Hyperbots"/>
+  <div>
+    <h1>ERP-connector blog plans</h1>
+    <div class="sub">12 connector-focused blog plans (SAP · NetSuite · Dynamics · Oracle · QuickBooks · Workday + cross-cutting patterns). Plans, not finished posts — each carries methodology + the customer angle.</div>
+  </div>
+  <span class="tag">private · password-gated · DRAFT</span>
+</header>
+
+<h2>🏗️ Framework</h2>
+<p class="lead">The umbrella framing for the connector content track — how each post fits the GTM motion and what evidence each one needs to land.</p>
+<div class="cards">
+  <a class="card" href="/marketing/erp-connectors/framework-2026-05-25.html"><div class="icon">🏗️</div><div class="title">ERP-connector content framework (2026-05-25)</div><div class="desc">Umbrella plan: angle / audience / evidence / ICP fit for the 12-post series.</div></a>
+</div>
+
+<h2>📝 12 connector-blog plans (DRAFT)</h2>
+<p class="lead">Each plan is a thesis + the evidence needed before it ships. Two of these (plan 05 — idempotency, plan 12 — observability) are flagged ship-eligible after the 2026-05-25 readiness audit. The rest need either a measured speed number, a normalizer audit, a customer case, or descriptor work.</p>
+<div class="cards">
+  <a class="card" href="/marketing/erp-connectors/01-hours-not-weeks-sap-connector.html"><div class="icon">📝</div><div class="title">01 · Hours, not weeks — the SAP connector</div><div class="desc">SAP-specific time-to-stand-up; angle = SI displacement.</div></a>
+  <a class="card" href="/marketing/erp-connectors/02-netsuite-rest-vs-suitetalk-17-edge-cases.html"><div class="icon">📝</div><div class="title">02 · NetSuite REST vs SuiteTalk — 17 edge cases</div><div class="desc">The integration-discipline angle: which API surface, when, and what breaks.</div></a>
+  <a class="card" href="/marketing/erp-connectors/03-dynamics-365-gp-bc-three-erps-one-agent.html"><div class="icon">📝</div><div class="title">03 · Dynamics 365 / GP / BC — three ERPs, one agent</div><div class="desc">Microsoft ERP topology + the unified agent pattern.</div></a>
+  <a class="card" href="/marketing/erp-connectors/04-oracle-ebs-to-fusion-migration-aware.html"><div class="icon">📝</div><div class="title">04 · Oracle EBS → Fusion migration-aware</div><div class="desc">Migration-aware connector design; the dual-write pattern.</div></a>
+  <a class="card" href="/marketing/erp-connectors/05-idempotency-for-invoices.html"><div class="icon">📝</div><div class="title">05 · Idempotency for invoices</div><div class="desc">Ship-eligible (anchored). The replay-safety pattern every invoice connector needs.</div><div class="meta">flagged ship-eligible</div></a>
+  <a class="card" href="/marketing/erp-connectors/06-schema-drift-in-production-custom-field.html"><div class="icon">📝</div><div class="title">06 · Schema drift in production — the custom-field problem</div><div class="desc">How real ERPs drift; what a robust connector tolerates.</div></a>
+  <a class="card" href="/marketing/erp-connectors/07-csv-to-event-driven-4-stages.html"><div class="icon">📝</div><div class="title">07 · CSV to event-driven — 4 stages</div><div class="desc">The migration story: from batch to streaming.</div></a>
+  <a class="card" href="/marketing/erp-connectors/08-9-reasons-sap-integrations-fail.html"><div class="icon">📝</div><div class="title">08 · 9 reasons SAP integrations fail</div><div class="desc">The hardened-failure-mode catalogue.</div></a>
+  <a class="card" href="/marketing/erp-connectors/09-workday-hcm-financials-payroll-docs.html"><div class="icon">📝</div><div class="title">09 · Workday HCM + Financials + Payroll docs</div><div class="desc">Workday connector + the doc-AI side for HCM payroll output.</div></a>
+  <a class="card" href="/marketing/erp-connectors/10-quickbooks-online-vs-desktop-smb-upgrade.html"><div class="icon">📝</div><div class="title">10 · QuickBooks Online vs Desktop — the SMB upgrade</div><div class="desc">SMB segment: the QBO/QBD migration angle.</div></a>
+  <a class="card" href="/marketing/erp-connectors/11-integration-qbr-is-dead.html"><div class="icon">📝</div><div class="title">11 · Integration QBR is dead</div><div class="desc">POV piece on the standing-QBR model vs continuous integration health.</div></a>
+  <a class="card" href="/marketing/erp-connectors/12-observability-for-connectors-what-sre-needs.html"><div class="icon">📝</div><div class="title">12 · Observability for connectors — what SRE needs</div><div class="desc">Ship-eligible (anchored). Per-primitive observability for connector pipelines.</div><div class="meta">flagged ship-eligible</div></a>
+</div>
+
+</body>
+</html>

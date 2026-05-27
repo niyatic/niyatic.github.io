@@ -1,0 +1,140 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hyperbots</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="meta"></div><h1>The 9 reasons SAP integrations fail (and how the agent handles each) — plan</h1>
+<h2>1. Headline + hook</h2>
+<p>Hook: **&quot;SAP integrations fail in 9 ways. Not 50. Not 200. Nine. They</p>
+<p>look different because the symptoms differ (a posting goes to the wrong</p>
+<p>company code, a foreign-currency invoice posts in the wrong sign, a batch</p>
+<p>hits the RFC RPS ceiling and silently retries past the closing window),</p>
+<p>but the root causes cluster. Here is the list, and here is what the</p>
+<p>connector framework&#x27;s descriptor encodes for each.&quot;**</p>
+<p>Listicle-deep — short headers, dense bodies. Each of the 9 is either</p>
+<p>source-backed (from <code>connector-framework/</code> or the <code>erp-sap-s4hana-connector</code></p>
+<p>skill body) or tagged [PLACEHOLDER — depth claim needs source].</p>
+<h2>2. Audience + intent</h2>
+<ul>
+<li>Primary: SAP-shop platform engineers who have lived through at least</li>
+</ul>
+<p>  one bad integration; secondary: controllers.</p>
+<ul>
+<li>Reader takeaway: *&quot;the failure modes are known and encoded.&quot;*</li>
+<li>CTA: a depth conversation.</li>
+</ul>
+<h2>3. The two-layer pitch (REQUIRED)</h2>
+<h3>3.1 Speed</h3>
+<ul>
+<li>The agent&#x27;s job at each of the 9: a descriptor field. The agent is</li>
+</ul>
+<p>  fast because the depth is pre-encoded. *[PLACEHOLDER — full</p>
+<p>  end-to-end hours.]*</p>
+<h3>3.2 Depth — the 9 (each backed or [PLACEHOLDER])</h3>
+<p>1. <strong>Wrong company code</strong> (<code>BUKRS</code>). Descriptor: <code>master_key_resolver</code></p>
+<p>   keyed on tenant + BUKRS; cross-BUKRS posts dead-letter.</p>
+<p>2. <strong>Wrong fiscal year</strong> (<code>GJAHR</code>). Descriptor: posting-date → fiscal-year</p>
+<p>   mapping per company-code&#x27;s calendar.</p>
+<p>3. <strong>FX-sign inversion on credit memos.</strong> Descriptor: explicit <code>sign</code></p>
+<p>   convention; <code>apply_sign</code> is representation-only, magnitude preserved.</p>
+<p>4. <strong>RFC / OData RPS ceiling.</strong> Descriptor: <code>RPM budget</code>,</p>
+<p>   <code>Retry-After</code> honored, bounded retry → dead-letter.</p>
+<p>5. <strong><code>invalid_grant</code> token churn.</strong> Secrets boundary: hard-stop on</p>
+<p>   <code>invalid_grant</code>, not retry; rotation honors the cross-worker write</p>
+<p>   lock.</p>
+<p>6. <strong>Tax-code mismatch.</strong> [PLACEHOLDER — depth claim needs source from</p>
+<p>   skill body.]</p>
+<p>7. <strong>Vendor master mismatch.</strong> <code>master_key_resolver</code> lambda against the</p>
+<p>   tenant&#x27;s <code>Lifnr</code> / <code>BusinessPartner</code> table.</p>
+<p>8. <strong>Posting-period closed.</strong> <code>dead_letter</code> with raw response;</p>
+<p>   the closed-period error class lands cleanly, not as a generic</p>
+<p>   failure.</p>
+<p>9. <strong>Idempotency on retry.</strong> <code>BusinessKey([&quot;BUKRS&quot;, &quot;BELNR&quot;, &quot;GJAHR&quot;])</code></p>
+<p>   lines up with SAP&#x27;s own uniqueness; retries are <code>skipped_dup</code>.</p>
+<p>(If the audit cuts or merges any of the 9, update the headline number;</p>
+<p>never inflate.)</p>
+<h2>4. Outline</h2>
+<ul>
+<li>P-1. The 9-failure pattern.</li>
+<li>P-2-10. One header per failure mode, with: the symptom, the bespoke</li>
+</ul>
+<p>  failure, the descriptor field that pre-handles it.</p>
+<ul>
+<li>P-11. The agent&#x27;s role — pick the descriptor; the 9 are done.</li>
+<li>P-12. CTA.</li>
+</ul>
+<h2>5. Required evidence before publish</h2>
+<ul>
+<li>Audit each of the 9 against <code>connectors/erp/sap_s4hana.py</code> source +</li>
+</ul>
+<p>  the <code>erp-sap-s4hana-connector</code> skill. Anything not source-backed gets</p>
+<p>  the [PLACEHOLDER] tag explicitly.</p>
+<ul>
+<li>One real failure-mode story (consent-gated) per cluster ideally.</li>
+</ul>
+<h2>6. Placeholders to fill</h2>
+<ul>
+<li>[PLACEHOLDER-N]: real count after audit</li>
+<li>[PLACEHOLDER-tax-code-source]</li>
+<li>[PLACEHOLDER-customer-stories] (consent-gated; optional)</li>
+</ul>
+<h2>7. Competitor positioning</h2>
+<ul>
+<li>Workato SAP — NOT-FETCHED.</li>
+<li>MuleSoft SAP IDoc connector — NOT-FETCHED; the strongest competitive</li>
+</ul>
+<p>  surface; the post&#x27;s framing of &quot;failure modes encoded in descriptor&quot;</p>
+<p>  is the wedge.</p>
+<h2>8. Sources / provenance</h2>
+<ul>
+<li>skill: <code>erp-sap-s4hana-connector</code></li>
+<li><code>connector-framework/src/hyperapi_connector/secrets.py</code> (token /</li>
+</ul>
+<p>  invalid_grant)</p>
+<ul>
+<li><code>docs/IDEMPOTENCY.md</code> (the BusinessKey pattern)</li>
+<li>Competitor URLs (must be fetched)</li>
+</ul>
+<h2>Z. Internal-only</h2>
+<ul>
+<li>Cost: ~6-8 hours (the per-failure audit is the gating work).</li>
+<li>Dependencies: the audit.</li>
+<li>Risk: claiming &quot;9&quot; before the audit is brittle. Title can flex to</li>
+</ul>
+<p>  &quot;the failure modes encoded in the SAP descriptor&quot; if the audit lands a</p>
+<p>  different N.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

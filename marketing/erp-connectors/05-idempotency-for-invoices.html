@@ -1,0 +1,166 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hyperbots</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="meta"></div><h1>Idempotency for invoices: how the connector survives retries — plan</h1>
+<h2>1. Headline + hook</h2>
+<p>Hook: **&quot;An invoice posted twice is a vendor dispute; an invoice not</p>
+<p>posted is a closing miss. The connector framework&#x27;s replay contract is the</p>
+<p>formal statement that neither happens — re-running on the same source</p>
+<p>bytes posts zero, skips all, and emits a byte-identical artifact. Here is</p>
+<p>the proof.&quot;**</p>
+<p>This is the <strong>highest-on-disk-evidence</strong> post in the set. Every claim</p>
+<p>points to a file in <code>hyperapi-connector-framework/</code>. It is the depth</p>
+<p>anchor — the one that earns the speed claims in the other 11.</p>
+<h2>2. Audience + intent</h2>
+<ul>
+<li>Primary: AP / GL engineers; secondary: SRE-leaning finance-platform</li>
+</ul>
+<p>  owners.</p>
+<ul>
+<li>Reader takeaway: *&quot;the framework&#x27;s replay-safety isn&#x27;t a hope, it&#x27;s a</li>
+</ul>
+<p>  formal contract verified by the conformance kit on every connector.&quot;*</p>
+<ul>
+<li>CTA: read <code>docs/IDEMPOTENCY.md</code>; run the conformance kit on a fork.</li>
+</ul>
+<h2>3. The two-layer pitch (REQUIRED)</h2>
+<h3>3.1 Speed</h3>
+<p>The agent picks the idempotency strategy per descriptor — <code>SourceBytesKey</code></p>
+<p>default, <code>BusinessKey([...])</code> opt-in — in <strong>one line of config</strong>. That&#x27;s</p>
+<p>the speed claim, modest but real: the agent does not author the dedup</p>
+<p>logic; it picks a strategy.</p>
+<h3>3.2 Depth — the formal contract</h3>
+<p>Lifted directly from <code>docs/IDEMPOTENCY.md</code>:</p>
+<blockquote>&quot;For a fixed connector + fixed config, replaying any subset of</blockquote>
+<blockquote>already-processed sources produces zero net change in the target and a</blockquote>
+<blockquote>byte-identical emit artifact. A re-seen idempotency key is a successful</blockquote>
+<blockquote>skip recorded in <code>skipped_dup</code> — never an error, never a second write.&quot;</blockquote>
+<p>The post unpacks this in five movements:</p>
+<p>1. <strong>Byte-hash default is the safe default.</strong> <code>SourceBytesKey</code> = SHA-256</p>
+<p>   over source bytes, optionally salted by target scope. Same source bytes</p>
+<p>   in =&gt; same key =&gt; no-op skip. Re-issued credit memo arrives as new</p>
+<p>   bytes and is correctly processed — never silently skipped.</p>
+<p>2. <strong><code>BusinessKey</code> is the opt-in override.</strong> Deterministic composite over</p>
+<p>   target-scoped business fields. Used where the target enforces its own</p>
+<p>   uniqueness rule.</p>
+<p>3. <strong>Two lines of dedup.</strong> Framework <code>SeenKeyStore</code> + the target&#x27;s own</p>
+<p>   duplicate rejection. Both resolve to <code>skipped_dup</code>. Belt + braces.</p>
+<p>4. <strong><code>check_replay_safety</code> is non-optional.</strong> The conformance kit fails</p>
+<p>   the build if replay isn&#x27;t a no-op + byte-identical.</p>
+<p>5. <strong>The exit-code gate.</strong> <code>count(sources) == sum(counts(sinks))</code> or the</p>
+<p>   process exits non-zero. Idempotency is a property of the *gate*, not</p>
+<p>   just the code.</p>
+<p>Code excerpts from the byte-exact sample in <code>README.md</code>:</p>
+<pre><code>sink_counts: {&#x27;posted&#x27;: 2, &#x27;dead_letter&#x27;: 0, &#x27;unresolved&#x27;: 0,
+              &#x27;skipped_dup&#x27;: 0, &#x27;failed&#x27;: 0, &#x27;audit&#x27;: 3}
+invariant_holds: True
+exit_code: 0</code></pre>
+<p>Re-run on the same sources:</p>
+<pre><code>sink_counts: {&#x27;posted&#x27;: 0, &#x27;dead_letter&#x27;: 0, &#x27;unresolved&#x27;: 0,
+              &#x27;skipped_dup&#x27;: 2, &#x27;failed&#x27;: 0, &#x27;audit&#x27;: 3}
+invariant_holds: True
+exit_code: 0</code></pre>
+<p>Byte-identical emit artifact across the two runs — that is what the</p>
+<p>replay contract means in production.</p>
+<h2>4. Outline</h2>
+<ul>
+<li>P-1. The two failure modes — double-post and missing-post — both</li>
+</ul>
+<p>  expensive.</p>
+<ul>
+<li>P-2. The replay contract (verbatim).</li>
+<li>P-3. Byte-hash vs business-key (decision tree).</li>
+<li>P-4. The two lines of dedup.</li>
+<li>P-5. The conformance kit as the gate.</li>
+<li>P-6. The exit-code gate.</li>
+<li>P-7. What this lets the agent do — one-line config, hours not weeks.</li>
+<li>P-8. CTA.</li>
+</ul>
+<h2>5. Required evidence before publish</h2>
+<ul>
+<li>Confirm <code>docs/IDEMPOTENCY.md</code> still ships the verbatim contract.</li>
+<li>Confirm the byte-exact sample in <code>README.md</code> still matches the current</li>
+</ul>
+<p>  source (re-run <code>examples/run_invoices_to_csv.py</code>).</p>
+<ul>
+<li>One screenshot of the conformance-kit failure when replay-safety is</li>
+</ul>
+<p>  violated.</p>
+<h2>6. Placeholders to fill</h2>
+<ul>
+<li>[PLACEHOLDER-conformance-failure-screenshot]: an intentionally broken</li>
+</ul>
+<p>  connector + the conformance-kit red output</p>
+<p>(No customer / competitor placeholders required — this is the depth</p>
+<p>anchor; it lands without either.)</p>
+<h2>7. Competitor positioning</h2>
+<ul>
+<li>Workato — NOT-FETCHED. Hypothesis: idempotency is workflow-level, not</li>
+</ul>
+<p>  contract-level.</p>
+<ul>
+<li>MuleSoft — NOT-FETCHED. Hypothesis: strong on protocol; replay safety</li>
+</ul>
+<p>  is left to the user.</p>
+<ul>
+<li>n8n / Make — NOT-FETCHED. Hypothesis: workflow-step level only.</li>
+</ul>
+<p>The Hyperbots framing: *the framework is the gate*. The agent doesn&#x27;t</p>
+<p>&quot;do idempotency well&quot;; it can&#x27;t bypass the gate.</p>
+<h2>8. Sources / provenance</h2>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/docs/IDEMPOTENCY.md</code></li>
+</ul>
+<p>  (the verbatim contract)</p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/README.md</code></li>
+</ul>
+<p>  (byte-exact sample)</p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/src/hyperapi_connector/conformance/kit.py</code></li>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/src/hyperapi_connector/result.py</code></li>
+<li>skill: <code>idempotency-replay-engineer</code></li>
+</ul>
+<h2>Z. Internal-only</h2>
+<ul>
+<li>Cost: ~4 hours to draft (lowest of the 12 — every claim is on disk).</li>
+<li>Dependencies: none external. This is the easiest to ship.</li>
+<li>Risk: lowest in the set; this is the credibility floor.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

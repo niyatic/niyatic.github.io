@@ -1,0 +1,133 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Command-center additions — 12 new blog entries for blogs-status.md</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — staged for the blogs-status ledger; no on-disk artifact yet; the human approval gate before any publish</div><div class="meta">Agent 12 (abm-gtm content orchestrator) · 2026-05-25</div><h1>Command-center additions — 12 new blog entries for <code>blogs-status.md</code></h1>
+<blockquote><strong>DRAFT.</strong> These rows are proposed for the canonical</blockquote>
+<blockquote><code>~/Desktop/hyperapi-gtm-hub/blogs-status/blogs-status.md</code> ledger when the</blockquote>
+<blockquote>12 blog plans below convert to authored drafts. **No file in</blockquote>
+<blockquote><code>blogs-status/</code> is modified by this turn.** Schema below matches the</blockquote>
+<blockquote>existing ledger&#x27;s column order.</blockquote>
+<p>&gt;</p>
+<blockquote>All 12 entries are marked <strong>DRAFT</strong> with &quot;publication pending plans +</blockquote>
+<blockquote>reviews + human gate.&quot; None has a <code>Path</code> on disk yet (these are *planned*</blockquote>
+<blockquote>blogs — the plans are in <code>BLOG-PLANS-2026-05-25.md</code> and</blockquote>
+<blockquote><code>NEW-BENCHMARK-POSTS-2026-05-25.md</code>; the authored .md/.html artifacts do</blockquote>
+<blockquote>not exist).</blockquote>
+<h2>Ledger schema (matches existing <code>blogs-status.md</code>)</h2>
+<pre><code>| Title | Path | Format | DRAFT / Published | Light-theme HTML present? | Word count | One-line topic | Open {{placeholder}} |</code></pre>
+<h2>The 12 planned entries (CEO blogs A–E + NB-1…NB-7)</h2>
+<table><thead><tr><th>Title</th><th>Path</th><th>Format</th><th>DRAFT / Published</th><th>Light-theme HTML present?</th><th>Word count</th><th>One-line topic</th><th>Open <code>{{placeholder}}</code></th></tr></thead><tbody><tr><td>500 line items on a single invoice — what it takes to extract every row without hallucinating one</td><td><code>~/Desktop/hyperapi-gtm-hub/content-strategy/blogs/{{TBD}}-500-line-items.md</code> (planned)</td><td>md (planned)</td><td><strong>DRAFT — publication pending plans + reviews + human gate</strong></td><td>No (not authored)</td><td>0 (not authored)</td><td>Why off-the-shelf extractors lose rows at 500-line scale; HyperAPI row-F1 and the four fixes</td><td><code>{{row_F1_number_PENDING_MEASUREMENT}}</code>, <code>{{customer_artifact_PENDING_DESIGN_PARTNER_PERMISSION}}</code></td></tr><tr><td>0.5 seconds per page — how we got OCR latency down on financial documents</td><td><code>~/Desktop/hyperapi-gtm-hub/content-strategy/blogs/{{TBD}}-ocr-0.5s.md</code> (planned)</td><td>md (planned)</td><td><strong>DRAFT — publication pending plans + reviews + human gate</strong></td><td>No (not authored)</td><td>0 (not authored)</td><td>What &quot;0.5 s&quot; measures, what hardware, the four optimizations</td><td><code>{{latency_p50_PENDING_MEASUREMENT}}</code>, <code>{{hardware_pin_PENDING}}</code>, <code>{{customer_case_PENDING_DESIGN_PARTNER_PERMISSION}}</code></td></tr><tr><td>Azure DI vs HyperAPI on SAVIOR-Bench v1: an honest read of two numbers that look comparable but aren&#x27;t</td><td><code>~/Desktop/hyperapi-gtm-hub/content-strategy/blogs/{{TBD}}-azure-di-methodology.md</code> (planned)</td><td>md (planned)</td><td><strong>DRAFT — publication pending plans + reviews + human gate</strong></td><td>No (not authored)</td><td>0 (not authored)</td><td>Methodology post; Azure DI 0.9202 on n=509 attested; results.zip is prod-ref not gold</td><td><code>{{legal_review_PENDING_named_competitor}}</code></td></tr><tr><td>9,000 payment-terms variants on real invoices — why discount capture breaks at the long tail</td><td><code>~/Desktop/hyperapi-gtm-hub/content-strategy/blogs/{{TBD}}-payment-terms-9k.md</code> (planned)</td><td>md (planned)</td><td><strong>DRAFT — publication pending plans + reviews + human gate</strong></td><td>No (not authored)</td><td>0 (not authored)</td><td>The long-tail distribution of payment terms and why classifier+regex fails</td><td><code>{{taxonomy_count_PENDING_MEASUREMENT}}</code>, <code>{{discount_capture_$_PENDING_DESIGN_PARTNER_PERMISSION}}</code></td></tr><tr><td>The account-number mismatch problem — 7 reconciliation rules our model learned</td><td><code>~/Desktop/hyperapi-gtm-hub/content-strategy/blogs/{{TBD}}-account-number-mismatch.md</code> (planned)</td><td>md (planned)</td><td><strong>DRAFT — publication pending plans + reviews + human gate</strong></td><td>No (not authored)</td><td>0 (not authored)</td><td>Why exact-match-or-reject leaks AP exceptions; the 7 rules and the conformance map</td><td><code>{{exception_rate_PENDING_MEASUREMENT}}</code>, <code>{{erp_examples_PENDING_DESIGN_PARTNER_PERMISSION}}</code></td></tr><tr><td>What 31 OCR engines actually do on financial documents (and why the leaderboard is misleading)</td><td><code>~/Desktop/hyperapi-gtm-hub/content-strategy/blogs/{{TBD}}-31-ocr-engines.md</code> (planned)</td><td>md (planned)</td><td><strong>DRAFT — publication pending plans + reviews + human gate</strong></td><td>No (not authored)</td><td>0 (not authored)</td><td>The 31-cell ocr-edit-distance-v1 spread; all attested point estimates</td><td><code>{{honest_framing_attested_not_factory_reproduced}}</code></td></tr><tr><td>FinancePSS-205 page-stream segmentation: what 12 model families actually score</td><td><code>~/Desktop/hyperapi-gtm-hub/content-strategy/blogs/{{TBD}}-financepss-doc-f1.md</code> (planned)</td><td>md (planned)</td><td><strong>DRAFT — publication pending plans + reviews + human gate</strong></td><td>No (not authored)</td><td>0 (not authored)</td><td>doc_f1 on FinancePSS-205 across 12 model families, config-tagged</td><td><code>{{config_tags_chart_PENDING_PRODUCTION}}</code></td></tr><tr><td>Zero-shot is not enough: the 21-model SAVIOR-Bench v1 read on parse</td><td><code>~/Desktop/hyperapi-gtm-hub/content-strategy/blogs/{{TBD}}-savior-bench-21-models.md</code> (planned)</td><td>md (planned)</td><td><strong>DRAFT — publication pending plans + reviews + human gate</strong></td><td>No (not authored)</td><td>0 (not authored)</td><td>savior_word_recall across the 21 attested models; W6 audit context</td><td><code>{{w6_audit_note_PENDING_VERBATIM_INCLUDE}}</code></td></tr><tr><td>Page-level reasoning on/off: a config-sensitivity study on FinancePSS-205</td><td><code>~/Desktop/hyperapi-gtm-hub/content-strategy/blogs/{{TBD}}-config-sensitivity.md</code> (planned)</td><td>md (planned)</td><td><strong>DRAFT — publication pending plans + reviews + human gate</strong></td><td>No (not authored)</td><td>0 (not authored)</td><td>Same model, two configs, score-swing chart; config disclosure is the integrity argument</td><td>None expected</td></tr><tr><td>Classify Document Type with n=60 and a pinned harness: what factory-reproduced actually looks like</td><td><code>~/Desktop/hyperapi-gtm-hub/content-strategy/blogs/{{TBD}}-factory-reproduced-discipline.md</code> (planned)</td><td>md (planned)</td><td><strong>DRAFT — publication pending plans + reviews + human gate</strong></td><td>No (not authored)</td><td>0 (not authored)</td><td>The 12 factory-reproduced classify cells; ci95 1.0/1.0; the pinning discipline as the asset</td><td><code>{{synthetic_fixture_caveat_explicit}}</code></td></tr><tr><td>Parse-intent: where do general-purpose LLMs sit on a finance-OCR task?</td><td><code>~/Desktop/hyperapi-gtm-hub/content-strategy/blogs/{{TBD}}-parse-intent-llms.md</code> (planned)</td><td>md (planned)</td><td><strong>DRAFT — publication pending plans + reviews + human gate</strong></td><td>No (not authored)</td><td>0 (not authored)</td><td>The 23-cell parse-intent-inhouse-v1 read with W6-retry honesty footnote</td><td><code>{{w6_retry_attempted_not_green_PENDING_VERBATIM_INCLUDE}}</code></td></tr><tr><td>The fine-tune line: when does in-domain fine-tuning beat the next-best zero-shot model?</td><td><code>~/Desktop/hyperapi-gtm-hub/content-strategy/blogs/{{TBD}}-fine-tune-line.md</code> (planned)</td><td>md (planned)</td><td><strong>DRAFT — publication pending plans + reviews + human gate</strong></td><td>No (not authored)</td><td>0 (not authored)</td><td>Matched FT-vs-Instr cells across Qwen2.5-VL-3B/7B and Qwen3.5-2B-FT</td><td>None expected</td></tr></tbody></table>
+<h2>Notes for the <code>blogs-status</code> agent (when the ledger is updated)</h2>
+<ul>
+<li>All 12 rows are <strong>planned</strong> — they appear in this command-center</li>
+</ul>
+<p>  addition file but **do not yet exist as files in any <code>content/blog/</code> or</p>
+<p>  <code>content-strategy/blogs/</code> directory**. The <code>Path</code> column carries the</p>
+<p>  proposed location with <code>{{TBD}}</code> for the eventual date prefix.</p>
+<ul>
+<li>All 12 carry the same hard-blocker status: &quot;publication pending plans +</li>
+</ul>
+<p>  reviews + human gate.&quot; The plans landed today (2026-05-25); the reviews</p>
+<p>  and the human approval gate are downstream.</p>
+<ul>
+<li>The four <code>{{...PENDING_MEASUREMENT}}</code> and four</li>
+</ul>
+<p>  <code>{{...PENDING_DESIGN_PARTNER_PERMISSION}}</code> placeholders match the risk</p>
+<p>  registers in <code>BLOG-PLANS-2026-05-25.md</code>; they are the hard blockers for</p>
+<p>  the corresponding rows.</p>
+<ul>
+<li>When a row converts to a real .md draft, its placeholders must be either</li>
+</ul>
+<p>  resolved (with the on-disk cell or the design-partner approval) or the</p>
+<p>  claim cut from the post — never silently filled.</p>
+<ul>
+<li>Light-theme HTML render (<code>--bg:#FFFFFF</code>) is mandatory before publish, per</li>
+</ul>
+<p>  the existing ledger pattern; flag as <strong>No</strong> until rendered.</p>
+<ul>
+<li>When publishable, the row flips from DRAFT to &quot;approved-by · date ·</li>
+</ul>
+<p>  against-commit&quot; — only the human approval gate flips this flag.</p>
+<h2>What this adds to the existing ledger</h2>
+<p>Today the ledger lists <strong>13 artifacts</strong>, all DRAFT, 0 published. Adding</p>
+<p>these 12 planned entries brings the projected pipeline to <strong>25 entries</strong>,</p>
+<p>still 0 published. The 12 new rows are the next-quarter content backlog</p>
+<p>that the proposed <code>content-strategy</code> agent (see <code>AGENT-COVERAGE-AUDIT.md</code>,</p>
+<p>Gap C-1) would own end-to-end.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/blogs-status/blogs-status.md</code></li>
+</ul>
+<p>  (existing ledger schema; the 13 current artifacts).</p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/content-strategy/2026-05-25/BLOG-PLANS-2026-05-25.md</code></li>
+</ul>
+<p>  (the 5 CEO blogs — A through E).</p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/content-strategy/2026-05-25/NEW-BENCHMARK-POSTS-2026-05-25.md</code></li>
+</ul>
+<p>  (NB-1 through NB-7).</p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/content-strategy/2026-05-25/REVIEW-MATRIX.md</code></li>
+</ul>
+<p>  (the gate map for all 12 entries).</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>The proposed <code>Path</code> for each blog (<code>content-strategy/blogs/{{TBD}}-*.md</code>)</li>
+</ul>
+<p>  is a placeholder; the canonical home may be either the</p>
+<p>  <code>hyperapi-gtm-hub/content-strategy/blogs/</code> tree or per-repo</p>
+<p>  <code>content/blog/</code> directories — that placement is the <code>abm-manager-approver</code></p>
+<p>  call when the drafts are authored.</p>
+<ul>
+<li>The 12 placeholders enumerated above are the minimum; the actual</li>
+</ul>
+<p>  authored drafts may surface more (e.g., specific charts that need</p>
+<p>  PENDING data callouts).</p>
+<ul>
+<li>Adding these rows to the live <code>blogs-status.md</code> ledger is a separate</li>
+</ul>
+<p>  step gated by the <code>blogs-status</code> agent + the human approval gate; this</p>
+<p>  file is the staging, not the update.</p>
+<ul>
+<li>No file in <code>hyperapi-gtm-hub/blogs-status/</code>, <code>hyperapi-abm-team/</code>,</li>
+</ul>
+<p>  <code>hyperapi-documentapi-benchmark-factory/</code> was modified by this turn —</p>
+<p>  per the orchestrator&#x27;s hard rule.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

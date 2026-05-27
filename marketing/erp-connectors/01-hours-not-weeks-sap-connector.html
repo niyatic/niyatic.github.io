@@ -1,0 +1,202 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hyperbots</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="meta"></div><h1>Hours, not weeks: the SAP connector that builds itself — plan</h1>
+<h2>1. Headline + hook (TEMPLATE — numbers placeholder)</h2>
+<p>Hook: **&quot;The SAP integration that used to be [PLACEHOLDER-time-bespoke,</p>
+<p>e.g. 6-week] of bespoke ABAP / IDoc / BAPI engineering now ships in</p>
+<p>[PLACEHOLDER-time-hyperapi, e.g. ~4 hours] of agent-driven configuration.</p>
+<p>Here is what the agent actually does, what the framework guarantees, and why</p>
+<p>the depth underneath is what makes it survivable.&quot;**</p>
+<p>The hook lands the wedge in the first paragraph; the rest of the post is the</p>
+<p>depth that earns the right to make the claim.</p>
+<h2>2. Audience + intent</h2>
+<ul>
+<li>Primary: SAP-shop IT directors + finance-systems owners evaluating</li>
+</ul>
+<p>  AP / invoice automation; secondary: SI partners.</p>
+<ul>
+<li>Reader takeaway in one sentence: *&quot;the connector contract — descriptor +</li>
+</ul>
+<p>  normalizer + idempotency + conformance — is what the agent configures; the</p>
+<p>  agent is fast because the contract is constrained.&quot;*</p>
+<ul>
+<li>CTA: book a 30-minute architecture walk-through; route via gtm-hub.</li>
+</ul>
+<h2>3. The two-layer pitch (REQUIRED)</h2>
+<h3>3.1 Speed — concrete agent steps with PLACEHOLDER times</h3>
+<p>The agent&#x27;s actual configuration sequence (read from the framework, not</p>
+<p>invented):</p>
+<p>1. <strong>Pick descriptor</strong> (<code>connectors/erp/sap_s4hana.py</code>) — <code>target=&quot;sap_s4hana&quot;</code>,</p>
+<p>   <code>doc_type=&quot;invoice&quot;</code>, fiscal-year + company-code + posting-date policy.</p>
+<p>   *Agent-time: [PLACEHOLDER, ~10 min].*</p>
+<p>2. <strong>Wire master-key resolver</strong> — vendor lookup against the tenant&#x27;s <code>Lifnr</code> /</p>
+<p>   <code>BusinessPartner</code> table. *[PLACEHOLDER, ~30 min including dry-run].*</p>
+<p>3. <strong>Set idempotency strategy</strong> — byte-hash default, then opt into</p>
+<p>   <code>BusinessKey([&quot;BUKRS&quot;, &quot;BELNR&quot;, &quot;GJAHR&quot;])</code> because S/4HANA itself enforces</p>
+<p>   uniqueness on those. *[PLACEHOLDER, ~15 min].*</p>
+<p>4. <strong>Configure ToS posture</strong> — RPM budget on the SAP destination, <code>Retry-After</code></p>
+<p>   honored, bounded retry → <code>dead_letter</code>. *[PLACEHOLDER, ~20 min].*</p>
+<p>5. <strong>Wire OAuth / destination</strong> — Azure-tenant for BTP destination, or</p>
+<p>   on-prem Cloud Connector handoff; secrets via env, never logged.</p>
+<p>   *[PLACEHOLDER, ~60 min including the tenant&#x27;s IT sign-off — gates the</p>
+<p>   wall-clock claim].*</p>
+<p>6. <strong>Run conformance kit</strong> — replay-safety, count invariant, confidence gate,</p>
+<p>   determinism, secrets hygiene, ToS posture, lineage. *[PLACEHOLDER,</p>
+<p>   ~20 min].*</p>
+<p>7. <strong>First mocked end-to-end</strong> — <code>httpx.MockTransport</code>, byte-exact JSON</p>
+<p>   compare. *[PLACEHOLDER, ~30 min].*</p>
+<p>**Total agent-driven config (PLACEHOLDER, needs measurement on a real</p>
+<p>customer or internal benchmark): ~3-4 hours.**</p>
+<h3>3.2 Depth — connector expertise behind the speed</h3>
+<p>The depth pitch is *why* this is hours, not weeks:</p>
+<ul>
+<li><strong>OData v4 vs BAPI shapes</strong> — the descriptor abstracts the wire-format</li>
+</ul>
+<p>  choice; the agent picks <code>target=&quot;sap_s4hana_odata&quot;</code> vs <code>..._bapi</code> from the</p>
+<p>  registry without touching the wire code.</p>
+<ul>
+<li><strong>Master-key resolution as policy, not code</strong> — <code>master_key_resolver</code> is a</li>
+</ul>
+<p>  lambda on the descriptor (<code>docs/USAGE.md</code>); the agent supplies the lookup,</p>
+<p>  not the protocol.</p>
+<ul>
+<li><strong>Idempotency keyed to SAP&#x27;s own uniqueness</strong> — `BusinessKey([&quot;BUKRS&quot;,</li>
+</ul>
+<p>  &quot;BELNR&quot;, &quot;GJAHR&quot;])` lines the framework&#x27;s first line of dedup up with</p>
+<p>  SAP&#x27;s second line; both resolve to <code>skipped_dup</code>, never an error.</p>
+<ul>
+<li><strong>Replay-safety formally proven</strong> — re-run on same source bytes posts 0</li>
+</ul>
+<p>  and emits a byte-identical artifact (<code>check_replay_safety</code>).</p>
+<ul>
+<li><strong>No HITL</strong> — low-confidence records dead-letter with raw response; never</li>
+</ul>
+<p>  a human queue (<code>docs/LIMITS.md</code>).</p>
+<h2>4. Outline</h2>
+<ul>
+<li>P-1. <strong>Cold open</strong> — a finance-systems owner who has lived through one</li>
+</ul>
+<p>  SAP integration. The mental cost of weeks-long custom IDoc handlers.</p>
+<ul>
+<li>P-2. <strong>The wedge</strong> — what the agent does in hours, end-to-end.</li>
+<li>P-3. <strong>Why this is fast</strong> — the connector contract (descriptor +</li>
+</ul>
+<p>  normalizer + idempotency + conformance kit). One screenshot of the</p>
+<p>  descriptor file; one of the conformance run output.</p>
+<ul>
+<li>P-4. <strong>Why this is survivable</strong> — the six typed sinks, the count</li>
+</ul>
+<p>  invariant, the replay contract, the secrets boundary. Each backed by a</p>
+<p>  path in the repo.</p>
+<ul>
+<li>P-5. <strong>The honest limit</strong> — what is *not* automated: the tenant&#x27;s IT</li>
+</ul>
+<p>  sign-off on the destination, the master-data resolver against the</p>
+<p>  tenant&#x27;s vendor table, the change-management of the bespoke fields.</p>
+<ul>
+<li>P-6. <strong>CTA</strong> — architecture walk-through.</li>
+</ul>
+<h2>5. Required evidence before publish</h2>
+<ul>
+<li>Measured integration time on a real customer (consent-gated) <strong>or</strong> a</li>
+</ul>
+<p>  documented internal benchmark on a clean repo clone.</p>
+<ul>
+<li>Bespoke baseline citation (named SI quote, public RFP, or a Hyperbots</li>
+</ul>
+<p>  customer who tried both — never an invented number).</p>
+<ul>
+<li>Code / config excerpt from <code>connectors/erp/sap_s4hana.py</code> (compiled</li>
+</ul>
+<p>  descriptor exists; source must be confirmed at publish time).</p>
+<ul>
+<li>Conformance-kit output sample on the SAP descriptor.</li>
+</ul>
+<h2>6. Placeholders to fill</h2>
+<ul>
+<li>[PLACEHOLDER-customer]: anonymized customer name (consent-gated)</li>
+<li>[PLACEHOLDER-time-bespoke]: bespoke baseline in weeks (with source)</li>
+<li>[PLACEHOLDER-time-hyperapi]: HyperAPI agent time in hours (measured)</li>
+<li>[PLACEHOLDER-error-rate-baseline]: baseline error/retry rate</li>
+<li>[PLACEHOLDER-error-rate-hyperapi]: HyperAPI error/retry rate</li>
+<li>[PLACEHOLDER-test-coverage]: edge cases covered (count + list)</li>
+<li>[PLACEHOLDER-conformance-output]: actual conformance-kit run output</li>
+<li>[PLACEHOLDER-screenshot]: descriptor file screenshot</li>
+</ul>
+<h2>7. Competitor positioning</h2>
+<ul>
+<li>Workato comparable post: https://www.workato.com/the-connector/erp-integration/ — <strong>NOT-FETCHED, hypothesis only</strong></li>
+<li>MuleSoft comparable: https://www.mulesoft.com/resources/esb/erp-integration — <strong>NOT-FETCHED</strong></li>
+<li>Boomi: https://boomi.com/solutions/erp-integration/ — <strong>NOT-FETCHED</strong></li>
+<li>Why Hyperbots wins (hypothesis): contract-typed conformance kit vs</li>
+</ul>
+<p>  recipe / scenario / process model. The agent configures a *contract*, not</p>
+<p>  a workflow graph.</p>
+<ul>
+<li>Where Hyperbots concedes: no built-in scheduler, no HITL queue (which is</li>
+</ul>
+<p>  a feature, not a bug, but some buyers want one — name it honestly).</p>
+<h2>8. Sources / provenance</h2>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/src/hyperapi_connector/connectors/erp/__pycache__/sap_s4hana.cpython-311.pyc</code> (compiled descriptor exists)</li>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/docs/IDEMPOTENCY.md</code></li>
+<li><code>/Users/niyati/Desktop/hyperapi-connector-framework/docs/USAGE.md</code></li>
+<li>skill: <code>erp-sap-s4hana-connector</code> (S/4HANA OData v4 + BAPI authority)</li>
+<li>Competitor URLs above (must be fetched before publish)</li>
+<li>Customer case: [PLACEHOLDER, consent-gated]</li>
+</ul>
+<h2>Z. Internal-only</h2>
+<ul>
+<li><strong>Cost to write + ship</strong>: ~6 engineer-hours to draft + 1 internal</li>
+</ul>
+<p>  benchmark run + 1 ABM review. The benchmark run is the gating item.</p>
+<ul>
+<li><strong>Dependencies</strong>: a runnable SAP example beyond the compiled descriptor;</li>
+</ul>
+<p>  the internal benchmark; the SAP-customer consent ask.</p>
+<ul>
+<li><strong>Risk register</strong>:</li>
+</ul>
+<p>  - Speed-number drift between draft and publish (mitigated by internal</p>
+<p>    benchmark immediately before publish).</p>
+<p>  - Competitor mention (none in v1 body copy until §4 is fetched).</p>
+<p>  - Per [[agent10-no-broadcast]]: do not name internal stack-fit</p>
+<p>    customers; consent gate is explicit.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>
