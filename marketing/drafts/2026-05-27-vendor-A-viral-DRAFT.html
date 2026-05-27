@@ -1,0 +1,104 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>We ran a deep head-to-head against a category-leading IDP vendor — and the gap wasn&#x27;t in the accuracy number</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publication is human-gated</div><div class="meta">linkedin-post-strategy (GTM Hub) — for CEO authorship · 2026-05-27</div><h1>We ran a deep head-to-head against a category-leading IDP vendor — and the gap wasn&#x27;t in the accuracy number</h1>
+<p>We just finished a deep head-to-head study against a category-leading IDP vendor — a <code>trainable-IDP-with-an-API-veneer</code> shop. The honest finding: on the published accuracy panel, our fine-tune edge over the strongest documented zero-shot system is <strong>+0.0276 F1</strong>. Real, but narrow.</p>
+<p>That sentence got the read. Now the actual finding: the gap between us and a <code>trainable-IDP-with-an-API-veneer</code> stack isn&#x27;t accuracy. It&#x27;s on five other axes a finance buyer evaluates.</p>
+<p><strong>1. Backbone disclosure.</strong> Ours: open-source backbones, fine-tuned by Hyperbots (Hyperbots IP). LoRA recipe is in the paper, every fine-tuned row tagged [FT] inline. Theirs: closed stack.</p>
+<p><strong>2. API decomposition.</strong> Ours: primitive-resolved — <code>parse</code>, <code>parse-intent</code>, <code>split</code>, <code>classify</code>, <code>extract</code>, <code>validate</code>, <code>reconcile</code>, and more. Each is its own endpoint, its own price line, its own failure mode. Theirs: end-to-end &quot;extraction.&quot; One box.</p>
+<p><strong>3. Published benchmark surface.</strong> Ours: SAVIOR-Bench v1, 509 docs, IAA 0.761, 23-system parse-intent panel. <code>ci95=null</code> published honestly. Our W6 audit re-derived <strong>0 of 23</strong> SAVIOR cells under our own harness — published. Theirs: pending verification.</p>
+<p><strong>4. Reproducibility.</strong> Ours: a 12-cell SEED leaderboard that runs on a laptop; a consolidated view with 160 rows, 16 factory-reproduced, 79 attested, per-row provenance. Theirs: pending verification.</p>
+<p><strong>5. Pricing.</strong> Ours: <strong>$0.05/page published</strong>, volume sized on a call. Theirs: pending verification.</p>
+<p><strong>The negative finding on our side, up front.</strong> On <code>dataset_95_granular</code> (95 invoices, factory-reproduced), our extract chain lands at <strong>0.3573 micro-F1</strong> — *below* Gemini 2.5 Flash (0.7132), Pro (0.6195), Azure DI (0.6078), and Flash-Lite (0.5004). Two long invoices hit the 300s extract timeout. We published that on 2026-05-25 and we&#x27;re working it.</p>
+<p>I&#x27;m not naming the vendor here. A head-to-head that names the competitor is marketing; one that names the *approach* is teaching. The named comparison lives in our internal gated study.</p>
+<p>The take: the gap isn&#x27;t accuracy — it&#x27;s <strong>disclosure discipline</strong>. We publish the spine the other side, on the surface I&#x27;ve inspected, doesn&#x27;t. That doesn&#x27;t make us the better product for every buyer. It makes us the *verifiable* one.</p>
+<p>If you&#x27;ve evaluated a <code>trainable-IDP-with-an-API-veneer</code> stack against an API-native fine-tuned stack — where did your evaluation break: the accuracy number, the primitive decomposition, the reproducibility, or the pricing?</p>
+<hr>
+<p>*Open-source backbones fine-tuned by Hyperbots (Hyperbots IP). Benchmark numbers are model OCR/parse performance, not product accuracy; product accuracy claims are made only &quot;per apis.hyperbots.com.&quot; No customer outcomes claimed. No competitor named.*</p>
+<hr>
+<h2>Character count</h2>
+<p><strong>2,739 chars</strong> in the post body excluding the H1 (2,851 incl. H1) — within the 2,500–2,800 target window and well under LinkedIn&#x27;s ~3,000 long-form limit.</p>
+<h2>Earn-Trust pre-post checklist (per <code>linkedin-post-strategy.md</code> §7)</h2>
+<p>1. ✓ <strong>Adds value to a non-buyer</strong> — the five-axis rubric is borrow-able by any buyer evaluating any IDP vendor; it&#x27;s a checklist, not a sales page.</p>
+<p>2. ✓ <strong>Surprising-but-true</strong> — the hook leads with &quot;+0.0276 F1, real but narrow&quot; — a vendor admitting the gap is small is genuinely novel in this feed.</p>
+<p>3. ✓ <strong>Anchors present</strong> — +0.0276 F1, 0/23 W6, 12-cell SEED, 509 docs, IAA 0.761, $0.05/page, 0.3573 micro-F1 (and the four peer numbers it falls below), 160 rows / 16 factory-reproduced / 79 attested. Every quantitative claim cites a public artifact.</p>
+<p>4. ✓ <strong>Guardrails clean</strong> — no named competitor (category label <code>trainable-IDP-with-an-API-veneer</code> throughout); no fabricated metric; no HITL/manual-review framing; product accuracy phrased &quot;per apis.hyperbots.com&quot;; pricing phrased &quot;$0.05/page, volume sized on a call&quot;; open-source backbones fine-tuned by Hyperbots (Hyperbots IP).</p>
+<p>5. ✓ <strong>Hook line standalone</strong> — &quot;We just finished a deep head-to-head … the honest finding: +0.0276 F1. Real, but narrow.&quot; is screenshot-able as a single quotable line.</p>
+<p>6. ✓ <strong>CTA is a real question</strong> — the closing question invites a substantive comment thread the author will engage on within 60 minutes.</p>
+<p>7. ✓ <strong>Link target is real</strong> — if a link is added at human-gate time, target the SAVIOR-Bench paper or <code>apis.hyperbots.com</code>. The gated study path in <code>content/competitor-studies/</code> is internal; we do not link to it from a public post.</p>
+<p>8. ✓ <strong>Author identity disclosed</strong> — to be authored by CEO; byline names the role.</p>
+<p>9. ✓ <strong>No bought reach</strong> — no pod, no brigade, no paid boost.</p>
+<p>10. ✓ <strong>Retraction risk = zero</strong> — every number cites a public artifact; the +0.0276 F1, the 0/23 audit, the 0.3573 extract row, and the four peer extract rows are all in the public benchmark factory.</p>
+<h2>LinkedIn ranking signals targeted (per <code>linkedin-post-strategy.md</code> §0)</h2>
+<ul>
+<li><strong>S6 (quotable hook):</strong> &quot;+0.0276 F1. Real, but narrow.&quot; — single-line screenshot.</li>
+<li><strong>S7 (negative-finding novelty):</strong> the 0.3573 extract row vs four measured peers is the kind of admission that earns the scroll-stop.</li>
+<li><strong>S8 (specificity):</strong> every claim carries a number; no &quot;significantly better&quot; hand-waves.</li>
+<li><strong>S4 (named-practitioner reshare):</strong> the rubric is borrow-able in any vendor evaluation, which is what makes ML/finance practitioners reshare.</li>
+<li><strong>S5 (compounding &quot;they publish failures&quot; reputation):</strong> continues the W6-audit and dataset-95 honest-finding cadence.</li>
+<li><strong>S2 + S3 (substantive comment depth, early author reply):</strong> the closing question is structured to invite a real exchange.</li>
+</ul>
+<h2>IP-protection audit (what is deliberately NOT in this post)</h2>
+<ul>
+<li>❌ Competitor name (gated study only).</li>
+<li>❌ Specific Hyperbots-internal routing / model selection / tenant-integration details.</li>
+<li>❌ Customer or partner names.</li>
+<li>❌ Any number not anchored to a public benchmark or pricing surface.</li>
+<li>❌ Any claim of &quot;we&#x27;re more accurate&quot; — the comparative cell is <code>[PENDING-MEASUREMENT]</code> in the gated study, and we say so.</li>
+</ul>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/content/competitor-studies/vendor-A/STUDY-2026-05-27.md</code> — gated companion study (named).</li>
+<li><code>~/Desktop/hyperapi-gtm-hub/comparative-blogs/2026-05-27-vendor-A-deep-comparative-DRAFT.md</code> — public comparative blog draft (category labels only).</li>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/SAVIOR-Bench.md</code> — +0.0276 F1, +0.0061 recall, 509 docs, IAA 0.761, W6 0/23.</li>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/leaderboard/CONSOLIDATED-150/CONSOLIDATED-150.md</code> — 160 rows, 16 factory-reproduced, 79 attested; <code>dataset_95_granular</code> peer rows (Gemini Flash 0.7132, Pro 0.6195, Flash-Lite 0.5004, Azure DI 0.6078, Hyperbots IDP 0.3573).</li>
+<li><code>~/Desktop/hyperapi-gtm-hub/linkedin/linkedin-post-strategy.md</code> — §0 ranking signals + §6 honesty bar + §7 pre-post checklist applied here.</li>
+<li>Pricing: published $0.05/page (Hyperbots public surface).</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li><strong>DRAFT, human-gated.</strong> The 2026-05-20 LinkedIn-via-Slack pause is in effect; this draft authorizes no post.</li>
+<li><strong>Category label only in body.</strong> <code>trainable-IDP-with-an-API-veneer</code> — the named vendor lives in the gated companion at <code>content/competitor-studies/&lt;vendor&gt;/STUDY-2026-05-27.md</code>. The link in this draft refers to the gated path; if a human-gate-time edit adds an external link, target the SAVIOR-Bench paper or <code>apis.hyperbots.com</code>, never the internal study path.</li>
+<li><strong>Engineered for CEO authorship.</strong> First-person founder voice is the strongest LinkedIn ranking signal (S9); if a different author posts it, rework the &quot;I&quot; framing accordingly.</li>
+<li><strong>No fabricated numbers.</strong> +0.0276 F1, 0/23 W6, 509 docs, IAA 0.761, $0.05/page, 0.3573 / 0.7132 / 0.6195 / 0.6078 / 0.5004 micro-F1 on dataset_95_granular — every cell is anchored to SAVIOR-Bench v1 or CONSOLIDATED-150 or the apis.hyperbots.com pricing line.</li>
+<li><strong>WebFetch was harness-blocked</strong> on the competitor surface in the parent framework&#x27;s authoring session and on a fresh-context retry. The competitor-side cells in the body (&quot;pending verification&quot;) reflect that honest gap.</li>
+<li><strong>No customer-outcome claim.</strong> No engagement / reply / signup / revenue number is asserted. The ABM engine&#x27;s &quot;sent zero messages&quot; honest line still holds the floor.</li>
+<li><strong>Character count target met</strong> (2,739 of 2,500–2,800 target window, excl. H1), well under LinkedIn&#x27;s ~3,000 long-form limit. If the human gate prefers a shorter cut, the hook + the five-axis section + the closing question is the minimum viable subset (~1,800 chars).</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

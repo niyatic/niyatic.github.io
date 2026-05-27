@@ -1,0 +1,190 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HyperAPI vs the document-AI category — a metric-coverage framework</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT</div><div class="meta">2026-05-22</div><blockquote><strong>DRAFT — competitive claims require legal review and verified benchmark data before publication.</strong></blockquote>
+<h1>HyperAPI vs the document-AI category — a metric-coverage framework</h1>
+<p>This post is a *framework*, not a scoreboard. It lays out the dimensions on which</p>
+<p>document-AI systems should be compared, and is explicit about which cells we can</p>
+<p>fill with a sourced number today and which are <code>PENDING MEASUREMENT</code>. We will not</p>
+<p>fabricate a single comparative number to make a cell look full.</p>
+<h2>The honest ground rules</h2>
+<p>1. Any cell that claims &quot;HyperAPI scores X&quot; must be a sourced SAVIOR-Bench cell</p>
+<p>   (attested tier, <code>ci95=null</code>) — and labelled as such.</p>
+<p>2. Any cell that claims &quot;competitor Y scores Z&quot; must be traceable to that</p>
+<p>   competitor&#x27;s own public documentation with a URL — or it is <code>PENDING</code>.</p>
+<p>3. There is <strong>no</strong> &quot;HyperAPI beats Reducto by N%&quot; cell anywhere in this post.</p>
+<p>   Producing one requires a head-to-head run on a shared dataset under a pinned</p>
+<p>   harness. That run has not happened. The honest label is <code>PENDING MEASUREMENT</code>.</p>
+<h2>The comparison dimensions</h2>
+<p>A document-AI system should be compared on these axes. For each, we state the</p>
+<p>metric and the current data status.</p>
+<h3>Dimension 1 — OCR transcription accuracy</h3>
+<ul>
+<li><strong>Metric:</strong> word-level multiset recall and precision.</li>
+<li><strong>HyperAPI / Hyperbots data:</strong> SAVIOR-Bench v1, <code>n = 509</code>. The fine-tuned</li>
+</ul>
+<p>  <code>Qwen2.5-VL-7B-F</code> row posts recall 0.9294, precision 0.9157 (attested</p>
+<p>  2026-05-18, <code>ci95=null</code>, fine-tuned <code>[FT]</code> — not apples-to-apples vs zero-shot).</p>
+<ul>
+<li><strong>Competitor (Reducto et al.) data:</strong> <code>PENDING MEASUREMENT</code>. Reducto&#x27;s public</li>
+</ul>
+<p>  materials describe an OCR/parsing pipeline; we have not verified a</p>
+<p>  word-level recall/precision number on a shared dataset. See <code>DATA-NEEDED.md</code>.</p>
+<h3>Dimension 2 — Layout fidelity</h3>
+<ul>
+<li><strong>Metric:</strong> PaIRS (pairwise spatial-relationship score). Comparable only</li>
+</ul>
+<p>  between prompt-controlled systems; a proxy otherwise.</p>
+<ul>
+<li><strong>HyperAPI / Hyperbots data:</strong> SAVIOR-Bench fine-tuned rows score PaIRS ~0.707;</li>
+</ul>
+<p>  strong zero-shot systems lead at ~0.877 (attested, <code>ci95=null</code>). Honest read:</p>
+<p>  fine-tuning did <strong>not</strong> win this dimension.</p>
+<ul>
+<li><strong>Competitor data:</strong> <code>PENDING MEASUREMENT</code>.</li>
+</ul>
+<h3>Dimension 3 — Structured / parse-intent extraction</h3>
+<ul>
+<li><strong>Metric:</strong> field-level F1 (↑), word error rate / WER (↓).</li>
+<li><strong>HyperAPI / Hyperbots data:</strong> <code>hyperapi-parse-intent</code> <code>[FT]</code> leads the</li>
+</ul>
+<p>  SAVIOR-Bench parse-intent panel at F1 0.8328 / WER 0.2589, vs a best documented</p>
+<p>  zero-shot anchor at F1 0.8052 / WER 0.4232 (attested, <code>n</code> not reported,</p>
+<p>  <code>ci95=null</code>). The F1 lead is +0.0276 — narrow; the WER reduction is the more</p>
+<p>  substantive part.</p>
+<ul>
+<li><strong>Competitor data:</strong> <code>PENDING MEASUREMENT</code>.</li>
+</ul>
+<h3>Dimension 4 — Line-item / table fidelity</h3>
+<ul>
+<li><strong>Metric:</strong> row-level F1 (a row is correct only if its cells are correct *and*</li>
+</ul>
+<p>  bound to the right logical row).</p>
+<ul>
+<li><strong>HyperAPI / Hyperbots data:</strong> <code>PENDING MEASUREMENT</code> as a standalone row-F1</li>
+</ul>
+<p>  cell — SAVIOR-Bench v1 does not isolate a published row-F1 column.</p>
+<ul>
+<li><strong>Competitor data:</strong> <code>PENDING MEASUREMENT</code>.</li>
+</ul>
+<h3>Dimension 5 — Document-quality robustness</h3>
+<ul>
+<li><strong>Metric:</strong> accuracy stratified by clean-digital / scanned-high / scanned-low /</li>
+</ul>
+<p>  mobile-capture / multilingual / handwritten-annotated.</p>
+<ul>
+<li><strong>HyperAPI / Hyperbots data:</strong> <code>PENDING MEASUREMENT</code> as a published stratified</li>
+</ul>
+<p>  grid — this is a convention for future ranking-grade runs.</p>
+<ul>
+<li><strong>Competitor data:</strong> <code>PENDING MEASUREMENT</code>.</li>
+</ul>
+<h3>Dimension 6 — Cost per correct extraction</h3>
+<ul>
+<li><strong>Metric:</strong> observed spend ÷ count of extractions that passed scoring.</li>
+<li><strong>HyperAPI / Hyperbots data:</strong> the comparative study reports an</li>
+</ul>
+<p>  infrastructure-derived <strong>~$0.19 per 1,000 successful calls</strong> for the</p>
+<p>  fine-tuned inference path (A100 40 GB at ~$2/hr). This is a model-serving cost,</p>
+<p>  not a Hyperbots product price. See post 09.</p>
+<ul>
+<li><strong>Competitor data:</strong> <code>PENDING MEASUREMENT</code> — competitor pricing is published</li>
+</ul>
+<p>  per-page/per-token but a cost-*per-correct-extraction* number requires running</p>
+<p>  their system on a shared dataset.</p>
+<h3>Dimension 7 — Reproducibility / evidence tier</h3>
+<ul>
+<li><strong>Metric:</strong> is every number backed by a rerunnable command on pinned</li>
+</ul>
+<p>  model/dataset/harness?</p>
+<ul>
+<li><strong>HyperAPI / Hyperbots data:</strong> SAVIOR-Bench v1 numbers are **attested, not</li>
+</ul>
+<p>  factory-reproduced** (W6 audit: 0/23 parse-intent cells re-derived, for</p>
+<p>  structural reasons). Honest tier: attested.</p>
+<ul>
+<li><strong>Competitor data:</strong> most vendor accuracy claims ship with no rerun path;</li>
+</ul>
+<p>  treat as unverified. See post 08.</p>
+<h2>The coverage matrix</h2>
+<table><thead><tr><th>Dimension</th><th>HyperAPI data status</th><th>Competitor data status</th></tr></thead><tbody><tr><td>OCR transcription</td><td>Sourced (SAVIOR-Bench, attested, <code>ci95=null</code>)</td><td>PENDING</td></tr><tr><td>Layout fidelity</td><td>Sourced (attested; fine-tune does <strong>not</strong> lead)</td><td>PENDING</td></tr><tr><td>Parse-intent F1/WER</td><td>Sourced (attested, no <code>n</code>, <code>ci95=null</code>)</td><td>PENDING</td></tr><tr><td>Line-item row-F1</td><td>PENDING</td><td>PENDING</td></tr><tr><td>Quality stratification</td><td>PENDING</td><td>PENDING</td></tr><tr><td>Cost per correct extraction</td><td>Partial (model-serving cost only)</td><td>PENDING</td></tr><tr><td>Reproducibility tier</td><td>Sourced (attested, not reproduced)</td><td>PENDING</td></tr></tbody></table>
+<p>Four of seven competitor cells are <code>PENDING</code>. That is the honest state of the</p>
+<p>evidence. The framework is publishable; the head-to-head scoreboard is not, until</p>
+<p>a shared-dataset run under a pinned harness exists.</p>
+<h2>What a real head-to-head would require</h2>
+<p>To turn the <code>PENDING</code> cells into sourced cells:</p>
+<p>1. A shared, held-out dataset (released after every model&#x27;s training cutoff).</p>
+<p>2. An adapter for each competitor system so the factory — not the vendor —</p>
+<p>   runs it.</p>
+<p>3. Identical decoding per task family across all systems.</p>
+<p>4. Per-document score vectors so a bootstrap 95% CI can be computed.</p>
+<p>5. A contamination audit per (system, dataset) pair.</p>
+<p>6. CI-overlap tie-bands instead of strict ranking.</p>
+<p>Until that exists, this post stays a framework. That is the discipline.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/comparative-study/comparative-study.md</code></li>
+</ul>
+<p>  — SAVIOR-Bench v1 cells (recall/precision/PaIRS/F1/WER), the cost figure, the</p>
+<p>  attested-not-reproduced tier, the W6 audit.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/.claude/skills/benchmark-factory/SKILL.md</code></li>
+</ul>
+<p>  — pinning, CI/tie-band, contamination, rerunnable-command discipline.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/cost-normalization.md</code></li>
+</ul>
+<p>  — cost-per-correct-extraction definition.</p>
+<ul>
+<li>Reducto public documentation — <strong>citation PENDING</strong>; competitor capability and</li>
+</ul>
+<p>  pricing claims must be sourced to <code>https://reducto.ai</code> / <code>https://docs.reducto.ai</code></p>
+<p>  before publication. See post 05 and <code>DATA-NEEDED.md</code>.</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT, internal, human-gated.</li>
+<li>No &quot;HyperAPI beats competitor by N%&quot; claim is made. Four of seven competitor</li>
+</ul>
+<p>  cells are explicitly <code>PENDING MEASUREMENT</code>.</p>
+<ul>
+<li>HyperBots numbers are attested SAVIOR-Bench v1 (user-attested 2026-05-18), not</li>
+</ul>
+<p>  factory-reproduced; <code>ci95=null</code>; fine-tuned rows are not apples-to-apples vs</p>
+<p>  zero-shot.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

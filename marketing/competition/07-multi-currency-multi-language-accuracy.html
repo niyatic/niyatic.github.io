@@ -1,0 +1,170 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Multi-currency and multi-language invoice accuracy — a coverage-gap analysis</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT</div><div class="meta">2026-05-22</div><blockquote><strong>DRAFT — competitive claims require legal review and verified benchmark data before publication.</strong></blockquote>
+<h1>Multi-currency and multi-language invoice accuracy — a coverage-gap analysis</h1>
+<p>A US-only invoice corpus is a comfortable benchmark. A global AP function does</p>
+<p>not have one. The moment your document mix includes EUR invoices with European</p>
+<p>number formatting, a Japanese vendor&#x27;s bilingual invoice, or a Brazilian nota</p>
+<p>fiscal, a whole class of failures appears that an English-clean-digital benchmark</p>
+<p>never measured. This post maps that coverage gap and how to measure it.</p>
+<h2>The two distinct problems</h2>
+<p>&quot;Multi-language / multi-currency&quot; is actually two separate failure surfaces.</p>
+<h3>Problem 1 — numeric and locale formatting</h3>
+<p>This is a *numeric_format_error* in the error taxonomy: the number is recognized</p>
+<p>but the locale or sign is mishandled.</p>
+<ul>
+<li><strong>Decimal/grouping inversion.</strong> <code>1.234,56</code> in a German locale is one-thousand;</li>
+</ul>
+<p>  a US-locale parser reads it as <code>1.234</code>. <code>EUR 1.234,56</code> mis-parsed is a</p>
+<p>  3-orders-of-magnitude posting error.</p>
+<ul>
+<li><strong>Currency symbol and code.</strong> <code>R$</code>, <code>kr</code>, <code>元</code>, <code>CHF</code>, and the position of the</li>
+</ul>
+<p>  symbol (before vs after the amount) all vary. A model that strips &quot;the currency</p>
+<p>  symbol&quot; assuming a leading <code>$</code> drops the wrong character elsewhere.</p>
+<ul>
+<li><strong>Negative-number conventions.</strong> <code>($125.00)</code>, <code>125.00-</code>, <code>-125.00</code>, and a red</li>
+</ul>
+<p>  font with no sign are all &quot;negative&quot; in different document traditions.</p>
+<ul>
+<li><strong>Date formats.</strong> <code>03/04/2026</code> is March 4 or April 3 depending on locale. A</li>
+</ul>
+<p>  date field that silently picks one is wrong half the time.</p>
+<h3>Problem 2 — script and language recognition</h3>
+<p>This is closer to an <code>ocr_character_error</code> plus a field-identification problem:</p>
+<ul>
+<li><strong>Non-Latin scripts</strong> — CJK, Cyrillic, Arabic (right-to-left), Devanagari —</li>
+</ul>
+<p>  each is a distinct OCR challenge.</p>
+<ul>
+<li><strong>Field-label identification across languages.</strong> The model has to know that</li>
+</ul>
+<p>  &quot;Rechnungsnummer&quot;, &quot;Numéro de facture&quot;, &quot;請求書番号&quot;, and &quot;Invoice number&quot; are</p>
+<p>  the same field. A pipeline that field-matches on English keyword strings fails</p>
+<p>  silently on a translated invoice.</p>
+<ul>
+<li><strong>Bilingual documents</strong> — many invoices carry two languages on one page;</li>
+</ul>
+<p>  reading-order and region segmentation get harder.</p>
+<h2>Why this is a benchmark coverage gap, not just a model gap</h2>
+<p>The deeper point: most published accuracy numbers were never *measured* on</p>
+<p>non-English, non-USD documents. The document-quality stratification convention</p>
+<p>makes <code>multilingual</code> an explicit stratum — a document whose primary language is</p>
+<p>not English, carrying a language code, tagged *before* any model runs. If a</p>
+<p>vendor&#x27;s benchmark has no <code>multilingual</code> stratum, their headline accuracy number</p>
+<p>simply does not describe your German or Japanese invoices. The number is not</p>
+<p>wrong; it is *silent* on your hardest documents.</p>
+<h2>Where the Hyperbots data stands</h2>
+<p>Honest status:</p>
+<ul>
+<li>SAVIOR-Bench v1 spans five corpora (UCSF Industry Documents, in-house</li>
+</ul>
+<p>  synthetic, misc. public financial, Inv3D, FUNSD). The published cells are</p>
+<p>  reported as <strong>aggregate</strong> OCR recall/precision/PaIRS and parse-intent F1/WER —</p>
+<p>  <strong>not</strong> broken out by a <code>multilingual</code> stratum or by currency locale.</p>
+<ul>
+<li>Therefore HyperAPI&#x27;s multi-currency and multi-language accuracy is</li>
+</ul>
+<p>  <code>PENDING MEASUREMENT</code> as a *stratified* number. We will not quote the aggregate</p>
+<p>  SAVIOR-Bench numbers as if they were a multilingual result — that would be</p>
+<p>  reading a number outside the population it was measured on.</p>
+<ul>
+<li>The <code>numeric_format_error</code> bucket exists in the factory&#x27;s error taxonomy</li>
+</ul>
+<p>  precisely because locale handling is a known, named failure mode — but a</p>
+<p>  measured per-locale rate is not yet published.</p>
+<p>And any &quot;HyperAPI handles multi-currency invoices better than Reducto&quot; claim is</p>
+<p><code>PENDING MEASUREMENT</code> — see <code>DATA-NEEDED.md</code>. Reducto&#x27;s multilingual coverage</p>
+<p>must be sourced to Reducto&#x27;s own public docs (<code>[SOURCE PENDING]</code>).</p>
+<h2>How to measure multi-currency / multi-language accuracy properly</h2>
+<p>1. <strong>Stratify by language and by currency-locale</strong> before running anything.</p>
+<p>   Report per-stratum F1 with <code>n</code> and 95% CI.</p>
+<p>2. Score numeric fields with a <strong>numeric-tolerance metric</strong> that is</p>
+<p>   locale-aware — <code>1.234,56</code> and <code>1,234.56</code> must both resolve to the same value</p>
+<p>   before comparison.</p>
+<p>3. Report a dedicated <strong><code>numeric_format_error</code> rate</strong> per locale.</p>
+<p>4. Test <strong>date disambiguation</strong> explicitly — DD/MM vs MM/DD is a coin-flip you</p>
+<p>   must measure, not assume.</p>
+<p>5. Include <strong>bilingual and RTL</strong> documents as their own strata.</p>
+<p>6. Never blend a multilingual result into a global aggregate as the headline —</p>
+<p>   the stratification convention puts the blended number in an appendix.</p>
+<h2>What to ask a vendor</h2>
+<ul>
+<li>&quot;Show me your <code>multilingual</code> stratum and your per-currency-locale numbers,</li>
+</ul>
+<p>  with <code>n</code>.&quot;</p>
+<ul>
+<li>&quot;What is your <code>numeric_format_error</code> rate on European-formatted amounts?&quot;</li>
+<li>&quot;How do you disambiguate DD/MM vs MM/DD dates — and what is the measured error</li>
+</ul>
+<p>  rate?&quot;</p>
+<ul>
+<li>&quot;Which scripts have you actually benchmarked, on how many documents?&quot;</li>
+</ul>
+<p>If the answer to any of these is a blended global number, the vendor has a</p>
+<p>coverage gap they have not measured — and on a global document mix, that gap is</p>
+<p>your production incident.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/document-quality-stratification.md</code></li>
+</ul>
+<p>  — <code>multilingual</code> stratum; pre-run tagging rule; per-stratum <code>n</code>/CI.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/error-mode-taxonomy.md</code></li>
+</ul>
+<p>  — <code>numeric_format_error</code>, <code>ocr_character_error</code> definitions.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/comparative-study/comparative-study.md</code></li>
+</ul>
+<p>  — SAVIOR-Bench v1 corpora; aggregate-only reporting status.</p>
+<ul>
+<li>Reducto multilingual capability — <code>[SOURCE PENDING]</code>, <code>https://docs.reducto.ai</code>.</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT, internal, human-gated.</li>
+<li>HyperAPI multi-currency / multi-language accuracy is <code>PENDING MEASUREMENT</code> as a</li>
+</ul>
+<p>  stratified number; aggregate SAVIOR-Bench numbers are not quoted as a</p>
+<p>  multilingual result.</p>
+<ul>
+<li>No comparative multilingual accuracy claim is made.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

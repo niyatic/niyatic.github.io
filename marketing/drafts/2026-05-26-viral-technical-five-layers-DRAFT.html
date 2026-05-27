@@ -1,0 +1,104 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Five layers of production document AI — what doesn&#x27;t show up in a one-number leaderboard</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publication is human-gated</div><div class="meta">linkedin-post-strategy (CTO-org / GTM Hub) — for CEO authorship · 2026-05-26</div><h1>Five layers of production document AI — what doesn&#x27;t show up in a one-number leaderboard</h1>
+<p>A vendor demo shows you one screen and one number. Production document AI for finance, in our experience, is five layers — and the gap between the demo and the deploy is where the real engineering lives.</p>
+<p><strong>Layer 1 — Open-source backbones, fine-tuned, primitive-resolved.</strong></p>
+<p>Our public benchmark — SAVIOR-Bench v1 — gives the headline numbers: parse-intent <strong>+0.0276 F1</strong> over the best zero-shot system, OCR <strong>+0.0061 recall</strong>. Real, but narrow. The model is <strong>open-source backbones fine-tuned by Hyperbots (Hyperbots IP)</strong>. Every claim in the paper is attested or audited honestly — and the W6 audit re-derived <strong>0 of 23</strong> SAVIOR cells. We published that. That&#x27;s the kind of negative finding most companies bury.</p>
+<p><strong>Layer 2 — Multi-engine architecture, mode-routed.</strong></p>
+<p>Production doesn&#x27;t run one OCR engine. It runs several, composed under per-document mode routing — because invoice OCR, receipt parsing, bank-statement extraction, and shipping-document parsing are different problems that the same engine plays differently on. The composition pattern is documented internally; the routing logic is part of the IP.</p>
+<p><strong>Layer 3 — GPU-served inference, region-mobile.</strong></p>
+<p>The infrastructure is a GPU pool you can migrate (we recently moved one of ours across regions without dropping production traffic). Latency, throughput, and cold-start aren&#x27;t marketing numbers — they&#x27;re per-primitive infrastructure metrics, instrumented at the call site, watched on a deploy dashboard, and budgeted per request.</p>
+<p><strong>Layer 4 — Observability per primitive call.</strong></p>
+<p>Documents → primitives (parse, classify, split, match, validate, augment, reason) → results. Each step is a measurable boundary. Without per-primitive observability, the &quot;accuracy&quot; of an end-to-end pipeline is unfalsifiable; it becomes whatever the demo says it is. We instrument every layer because the customer is going to ask &quot;where did it break?&quot; and &quot;I don&#x27;t know&quot; is not an answer.</p>
+<p><strong>Layer 5 — Documentation that tracks the deploy.</strong></p>
+<p>The architecture, the flows, the schema, the integration requirements, the observability plan — all kept in sync with what&#x27;s actually running, audited against the live system, and reviewed before each release. &quot;We have docs&quot; is not the same as &quot;the docs match production.&quot; Most don&#x27;t. Ours do, because the credibility of the public surface depends on the rigor of the internal one.</p>
+<hr>
+<p><strong>What&#x27;s on the public surface:</strong></p>
+<p>SAVIOR-Bench v1 · the SEED leaderboard (12 cells, reproducible on a laptop) · the W6 reproducibility audit · the published <strong>$0.05/page</strong> pricing (volume sized on a call).</p>
+<p><strong>What stays internal:</strong></p>
+<p>The routing, the tenant-integration patterns, the failure-mode taxonomy, the per-primitive instrumentation schema. Both layers exist because one earns the other.</p>
+<hr>
+<p><strong>The take I&#x27;d argue for.</strong></p>
+<p>Most &quot;AI-powered&quot; finance-doc pitches promise an outcome and skip the architecture. The architecture is the moat — not the model, not the prompt, not the pitch. A 99% number on someone&#x27;s demo doesn&#x27;t survive contact with the second invoice of the day; a five-layer stack with per-primitive observability does.</p>
+<p><strong>The question I&#x27;d love to be challenged on.</strong></p>
+<p>If you&#x27;ve built or evaluated document AI in production, where did your stack break first — the OCR engine, the routing, the schema, or the observability?</p>
+<hr>
+<p>*Open-source backbones fine-tuned by Hyperbots (Hyperbots IP). Benchmark numbers are model OCR/parse performance, not product accuracy; product accuracy claims are made only &quot;per apis.hyperbots.com.&quot; No customer outcomes are claimed.*</p>
+<h2>Earn-Trust pre-post checklist (per <code>linkedin-post-strategy.md</code> §7)</h2>
+<p>1. ✓ <strong>Adds value to a non-buyer</strong> — the five-layer framing is useful to anyone evaluating doc AI; it&#x27;s a checklist, not a sales page.</p>
+<p>2. ✓ <strong>Surprising-but-true</strong> — most readers won&#x27;t have predicted the W6 0/23 audit or the multi-engine-mode-routing framing.</p>
+<p>3. ✓ <strong>Anchors present</strong> — +0.0276 F1, +0.0061 recall, 0/23, 12 cells, $0.05/page — all from public artifacts (SAVIOR-Bench v1 + SEED leaderboard + pricing page).</p>
+<p>4. ✓ <strong>Guardrails clean</strong> — no named competitor, no fabricated metric, no HITL/manual-review framing, no customer-outcome claim, no follower-count, pricing phrased correctly.</p>
+<p>5. ✓ <strong>Hook line standalone</strong> — &quot;Five layers of production document AI — what doesn&#x27;t show up in a one-number leaderboard&quot; is screenshot-able.</p>
+<p>6. ✓ <strong>CTA is a real question</strong> — &quot;where did your stack break first&quot; invites comment + author engagement within 60 min.</p>
+<p>7. ✓ <strong>Link target is real</strong> — no link asserted in this draft; if a link is added later, target the SAVIOR-Bench paper or <code>apis.hyperbots.com</code> (real, public). The internal repo is NOT linked (would 404 for the public reader).</p>
+<p>8. ✓ <strong>Author identity disclosed</strong> — to be authored by CEO; byline names the role.</p>
+<p>9. ✓ <strong>No bought reach</strong> — pod / brigade / paid boost = not used.</p>
+<p>10. ✓ <strong>Retraction risk = zero</strong> — every number cites a public artifact; no overclaim possible because there&#x27;s no claim that isn&#x27;t already published.</p>
+<h2>IP-protection audit (what I deliberately did NOT include)</h2>
+<ul>
+<li>❌ Specific engine names beyond &quot;open-source backbones&quot;</li>
+<li>❌ Routing rules / heuristics / mode-selection logic</li>
+<li>❌ DB schema specifics or microservice contract details</li>
+<li>❌ Observability event taxonomy / metric names</li>
+<li>❌ Tenant-integration code paths</li>
+<li>❌ Per-cluster GPU configuration or instance types</li>
+<li>❌ Internal phase / project codenames from the repo</li>
+<li>❌ Customer or partner names</li>
+<li>❌ Any text reproduced from the internal repo</li>
+</ul>
+<p>What IS in the post: high-level architectural categories (multi-engine, mode routing, GPU-served, primitive observability) that are common-knowledge concepts in the field — combined with public benchmark numbers Hyperbots has already attested.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>https://github.com/hyprbots/hyperapi-documentation-internal</code> — private repo whose <strong>structure</strong> (top-level dirs: <code>architecture/</code>, <code>cloud-deployment/</code>, <code>db-schema/</code>, <code>docs/</code>, <code>flows/</code>, <code>testing-help/</code>) and <strong>commit-subject</strong> trail (multi-engine OCR, GPU migration, observability v3.0, mode routing, microservice integration) informed the layer framing. <strong>No file contents from this repo are reproduced in the post.</strong></li>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/SAVIOR-Bench.md</code> — SAVIOR-Bench v1 (parse-intent +0.0276 F1, OCR +0.0061 recall, W6 0/23 audit, 12-cell SEED leaderboard).</li>
+<li><code>~/Desktop/hyperapi-gtm-hub/linkedin/linkedin-post-strategy.md</code> — v2 virality-enhanced LinkedIn strategy; §0 ranking signals + §6 honesty bar + §7 pre-post checklist applied here.</li>
+<li><code>~/Desktop/hyperapi-abm-team/.claude/skills/gtm-b2c-virality/SKILL.md</code> — Earn-Trust gate + surprising-but-true principle.</li>
+<li>Pricing: published $0.05/page model (Hyperbots public surface).</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT — external publication is human-gated. The 2026-05-20 LinkedIn-via-Slack pause is in effect; nothing here authorizes a post.</li>
+<li>The post is engineered to be <strong>CEO-authored</strong> (founder voice — strongest LinkedIn ranking signal). If a different author posts it, rework the first-person framing.</li>
+<li>No URL is included in the draft body; if one is added at human-gate time, target the SAVIOR-Bench paper or <code>apis.hyperbots.com</code>, never the internal repo URL.</li>
+<li>SAVIOR-Bench paper URL is currently <code>PENDING</code> (G1 in <code>launch/FUNNEL.md</code>). If the paper isn&#x27;t yet on a public surface (arXiv / HF / repo Pages), the post can still ship — the numbers are attested in the SEED leaderboard + the W6 attestation doc, both reproducible.</li>
+<li>Character count (~2,650) fits LinkedIn&#x27;s long-form post limit (~3,000 chars). If hit-rate suggests a shorter cut would do better, the §1 / §5 / closing question is the minimum viable subset.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

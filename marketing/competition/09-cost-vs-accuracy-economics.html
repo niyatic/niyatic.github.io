@@ -1,0 +1,164 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cost vs accuracy — the operational economics of document-AI at scale</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT</div><div class="meta">2026-05-22</div><blockquote><strong>DRAFT — competitive claims require legal review and verified benchmark data before publication.</strong></blockquote>
+<h1>Cost vs accuracy — the operational economics of document-AI at scale</h1>
+<p>At 50 documents a month, document-AI cost is a rounding error. At 5 million a</p>
+<p>month, the pricing model *is* the decision. And cost cannot be evaluated apart</p>
+<p>from accuracy — a cheap API that fails 8% of documents is not cheap once you</p>
+<p>price the failures. This post is the operational-economics framework.</p>
+<h2>The three cost views — show them together</h2>
+<p>The cost-normalization convention requires three figures, always shown together.</p>
+<p>A single one in isolation is misleading.</p>
+<h3>1. Per-page</h3>
+<p>The vendor-documented unit price for a page-equivalent input. For token-priced</p>
+<p>LLM-vision approaches, this is *computed* from a documented tokens-per-page</p>
+<p>assumption, calibrated from the actual test corpus — inputs and outputs counted</p>
+<p>separately if priced separately. Per-page is what vendor pricing pages quote; it</p>
+<p>is the *least* decision-useful view on its own.</p>
+<h3>2. Per-call</h3>
+<p>Total observed spend ÷ number of API calls. This makes a page-priced approach and</p>
+<p>a token-priced approach comparable apples-to-apples — without it you cannot</p>
+<p>compare a hyperscaler doc-AI API to a frontier LLM-vision model at all.</p>
+<h3>3. Per-correct-extraction</h3>
+<p>Total observed spend ÷ count of extractions that <strong>passed the scoring rubric.</strong></p>
+<p>This is the most honest figure, because it penalizes approaches that need retries</p>
+<p>or produce errors. A 2-cent-per-page API with a 90% success rate has a</p>
+<p>*per-correct* cost of ~2.2 cents; a 3-cent API at 99% has a per-correct cost of</p>
+<p>~3.03 cents — and the gap narrows or inverts once you add the cost of handling</p>
+<p>the failures.</p>
+<p>A critical fairness rule: **no manual-review augmentation is assumed for any</p>
+<p>approach, including HyperAPI.** The per-correct figure is computed purely from</p>
+<p>scored automated output. A vendor that quotes accuracy &quot;after review&quot; is mixing a</p>
+<p>human-process cost into a model number.</p>
+<h2>The cost of a wrong extraction</h2>
+<p>Per-correct cost only captures the *direct* waste of a failed call. The real</p>
+<p>operational cost of an error is larger and depends on the error mode:</p>
+<ul>
+<li>A <code>refusal_no_output</code> is the cheapest failure — the document is simply routed</li>
+</ul>
+<p>  to manual review. Cost ≈ a human&#x27;s handling time.</p>
+<ul>
+<li>A <code>numeric_format_error</code> or <code>layout_misread</code> that is *caught* downstream</li>
+</ul>
+<p>  (e.g. by an arithmetic-reconciliation check) costs a review cycle.</p>
+<ul>
+<li>A <code>numeric_format_error</code> that is *not caught* — a wrong total posted to the</li>
+</ul>
+<p>  ledger — is the expensive one. The cost is the downstream correction, the</p>
+<p>  reconciliation effort, and the audit exposure.</p>
+<p>This is why accuracy and cost are one decision, not two. A model&#x27;s *error-mode</p>
+<p>mix* changes the true cost: a model that fails by refusing is cheaper to operate</p>
+<p>than one that fails by confidently posting a wrong number, even at the same</p>
+<p>headline accuracy.</p>
+<h2>Token-priced approaches: the variance problem</h2>
+<p>For LLM-vision approaches, token cost is reported *separately*, because the same</p>
+<p>prompt on a different document size produces wildly different unit economics. A</p>
+<p>dense 3-page statement can cost several times what a sparse 1-page invoice costs</p>
+<p>on the identical pipeline. Both list price and the bulk tier a typical enterprise</p>
+<p>qualifies for should be shown — the gap is large and material at volume. A</p>
+<p>per-page number that assumes an &quot;average&quot; document hides this variance.</p>
+<h2>Where the Hyperbots numbers stand</h2>
+<p>From the comparative study, on the fine-tuned inference path:</p>
+<ul>
+<li><strong>~$0.000191 per successful call</strong> — about **$0.19 per 1,000 successful</li>
+</ul>
+<p>  calls** — derived from an A100 40 GB at ~$2/hr.</p>
+<ul>
+<li>Latency p50 ~2,548 ms, p99 ~3,319 ms; a 3% failure rate (KV-cache-bound, with</li>
+</ul>
+<p>  a 2-GPU path as the noted mitigation).</p>
+<p>Three honesty flags on these numbers:</p>
+<p>1. This is an <strong>infrastructure-derived model-serving cost</strong>, not a Hyperbots</p>
+<p>   product price. Any HyperAPI product price would be cited only &quot;per</p>
+<p>   apis.hyperbots.com.&quot; Do not read $0.19/1k as a quote.</p>
+<p>2. It is a <strong>per-successful-call</strong> figure on the model path — adjacent to, but</p>
+<p>   not identical to, the per-correct-extraction metric, which requires the</p>
+<p>   scoring rubric to be applied to product output.</p>
+<p>3. The economic advantage the comparative study claims is the *package* — small</p>
+<p>   open backbones (3B/7B) are cheap to serve relative to frontier-scale</p>
+<p>   zero-shot systems — <strong>not</strong> a measured cost win over any named competitor.</p>
+<p>A &quot;HyperAPI is cheaper per correct extraction than Reducto&quot; claim is</p>
+<p><code>PENDING MEASUREMENT</code>. It requires running both systems on a shared dataset,</p>
+<p>applying one scoring rubric, and dividing observed spend by passed extractions.</p>
+<p>Competitor pricing must be sourced to the competitor&#x27;s public pricing page</p>
+<p>(<code>[SOURCE PENDING]</code>). See <code>DATA-NEEDED.md</code>.</p>
+<h2>The buyer&#x27;s cost worksheet</h2>
+<p>For each shortlisted vendor, on *your* document mix and volume:</p>
+<p>1. Get the <strong>per-page list price</strong> and the <strong>bulk tier</strong> you qualify for.</p>
+<p>2. Estimate <strong>per-call</strong> cost on your actual document size distribution — not an</p>
+<p>   &quot;average&quot; document.</p>
+<p>3. Measure the <strong>success rate</strong> on your documents and compute</p>
+<p>   <strong>per-correct-extraction</strong> cost.</p>
+<p>4. Estimate the <strong>cost per error</strong>, weighted by the vendor&#x27;s error-mode mix —</p>
+<p>   refusals are cheap, silent wrong-number postings are not.</p>
+<p>5. Total cost of ownership = per-correct cost × volume + (error rate × cost per</p>
+<p>   error × volume) + integration/engineering cost.</p>
+<p>The vendor with the lowest per-page price is frequently *not* the lowest total</p>
+<p>cost once steps 3–5 are done. That is the entire point of the framework.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/cost-normalization.md</code></li>
+</ul>
+<p>  — the three cost views; per-correct definition; no-manual-review rule;</p>
+<p>  token-cost-separate rule.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/error-mode-taxonomy.md</code></li>
+</ul>
+<p>  — error modes referenced in the cost-of-error analysis.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/comparative-study/comparative-study.md</code></li>
+</ul>
+<p>  — the ~$0.19/1,000-successful-calls figure, latency, 3% failure rate, and the</p>
+<p>  model-serving-cost-not-product-price caveat.</p>
+<ul>
+<li>Competitor pricing — <code>[SOURCE PENDING]</code> (e.g. <code>https://reducto.ai</code> pricing</li>
+</ul>
+<p>  page) — must be verified before any comparative cost statement.</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT, internal, human-gated.</li>
+<li>The Hyperbots cost figure is an infrastructure-derived model-serving cost</li>
+</ul>
+<p>  (attested), not a product price and not factory-reproduced.</p>
+<ul>
+<li>No comparative cost claim is asserted; competitor cost-per-correct is</li>
+</ul>
+<p>  <code>PENDING MEASUREMENT</code>.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>
