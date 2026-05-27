@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HyperAPI primitive pass-rate — Hyperbots content hub</title>
+<style>
+:root {
+  --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26;
+  --green:#039855; --amber:#DC6803; --red:#B42318;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  font: 15px/1.6 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background:var(--grey-2); color:var(--grey-12);
+  max-width: 980px; margin: 0 auto; padding: 28px 24px 56px;
+  -webkit-font-smoothing:antialiased;
+}
+.back { color:var(--grey-10); font-size:13px; text-decoration:none; display:inline-block; margin-bottom:14px; }
+.back:hover { color:var(--brand-7); text-decoration:underline; }
+.hero {
+  background:#fff; border:1px solid var(--grey-4); border-radius:12px;
+  border-left:5px solid var(--brand-7); padding:22px 26px; margin-bottom:22px;
+  box-shadow:0 1px 3px rgba(33,31,38,.06);
+}
+.hero h1 { font-size:24px; font-weight:600; color:var(--grey-12); margin:0 0 8px; }
+.hero .sub { color:var(--grey-10); font-size:14px; line-height:1.55; }
+.headline {
+  display:flex; align-items:baseline; gap:10px; margin: 18px 0 6px;
+}
+.headline .n { font-size:54px; font-weight:700; color:var(--brand-9); line-height:1; }
+.headline .lbl { font-size:14px; color:var(--grey-11); }
+.cite { font-size:12.5px; color:var(--grey-10); margin-bottom:18px; font-style:italic; }
+h2 { font-size:16px; color:var(--brand-9); font-weight:600; margin:24px 0 10px; padding-bottom:6px; border-bottom:2px solid var(--brand-4); }
+p { color:var(--grey-11); font-size:14px; line-height:1.65; margin:0 0 12px; }
+table { width:100%; border-collapse:collapse; margin:6px 0 18px; font-size:13.5px; }
+th, td { border:1px solid var(--grey-4); padding:8px 12px; text-align:left; }
+th { background:var(--grey-3); font-weight:600; color:var(--grey-12); }
+td.num { text-align:right; font-variant-numeric:tabular-nums; }
+.callout {
+  background:var(--brand-2); border:1px solid var(--brand-4); border-radius:8px;
+  padding:14px 18px; margin:14px 0; font-size:13.5px; color:var(--grey-12);
+}
+.callout strong { color:var(--brand-9); }
+ul { margin:8px 0 12px 22px; font-size:14px; color:var(--grey-11); line-height:1.65; }
+.foot { color:var(--grey-10); font-size:12px; margin-top:30px; padding-top:14px; border-top:1px solid var(--grey-4); }
+</style>
+</head>
+<body>
+  <a class="back" href="/benchmarks/">← Benchmarks dashboard</a>
+
+  <div class="hero">
+    <h1>HyperAPI primitives — schema-verified pass-rate</h1>
+    <div class="sub">SDK-functional correctness on the live <code>apis.hyperbots.com</code> endpoint, measured via the realqa runner across the 8-primitive surface.</div>
+  </div>
+
+  <div class="headline">
+    <span class="n">93.1%</span>
+    <span class="lbl">pass-rate · n = 10,307 schema-verified invocations</span>
+  </div>
+  <div class="cite">Per <code>apis.hyperbots.com</code> · snapshot 2026-05-27 20:00 IST · realqa runner</div>
+
+  <h2>The numbers</h2>
+  <table>
+    <thead><tr><th>Verdict</th><th class="num">Count</th><th class="num">Share</th></tr></thead>
+    <tbody>
+      <tr><td>verified pass</td><td class="num">9,595</td><td class="num">93.1%</td></tr>
+      <tr><td>acceptable-unverified-schema-miss</td><td class="num">298</td><td class="num">2.9%</td></tr>
+      <tr><td>acceptable-unverified-no-schema</td><td class="num">414</td><td class="num">excluded from denominator</td></tr>
+      <tr><td><strong>Total schema-verifiable</strong></td><td class="num"><strong>10,307</strong></td><td class="num"></td></tr>
+    </tbody>
+  </table>
+
+  <h2>What this measures</h2>
+  <p>For each of 4,744 generated repos with a canonical <code>schema/expected_fields.json</code>, the realqa runner invokes the repo's primitive (parse / split / classify / extract / detect / validate / reconcile / bundle) against sampled documents and checks whether the SDK response matches the expected schema. A <strong>verified pass</strong> means the SDK returned the schema. An <strong>acceptable-unverified-schema-miss</strong> means the SDK returned a response but the field-set did not match. Rows with no schema to compare against are excluded from the denominator.</p>
+
+  <div class="callout">
+    <strong>Distinct from the dataset_95 extract benchmark.</strong> The 0.36 micro-F1 on dataset_95 measures field-extraction accuracy on real-world invoices — a different axis. The 93.1% above measures SDK-functional correctness across the 8-primitive surface. Both are honest. Both refer to different things.
+  </div>
+
+  <h2>Methodology</h2>
+  <ul>
+    <li><strong>Endpoint</strong>: live <code>apis.hyperbots.com</code> (production, not a fork or a staging mirror).</li>
+    <li><strong>Sampling</strong>: stratified by document-type-hint (invoice / receipt / PO / bank_statement / credit_note / remittance_advice / unknown), weighted inverse-by-utilization so under-sampled docs catch up over iterations.</li>
+    <li><strong>Schema source</strong>: <code>generated/&lt;slug&gt;/schema/expected_fields.json</code> — derived from each repo's <code>rules.py</code> in PR #11 (2026-05-26).</li>
+    <li><strong>Pass criterion</strong>: SDK response contains the expected schema keys (no field-set mismatch).</li>
+    <li><strong>Excluded verdicts</strong>: <code>skipped-sdk-surface</code> (primitive not implemented in pinned SDK), <code>blocked-sdkbug-flap</code> (known upstream flap, recorded but not counted), <code>error-nonflap</code> (recorded separately).</li>
+  </ul>
+
+  <h2>Reproducibility</h2>
+  <p>Source: <code>hyperapi-repo-factory/realqa/scale/PROGRESS.jsonl</code>. To re-count: filter rows where <code>verdict ∈ {pass, acceptable-unverified-schema-miss}</code> — the pass-rate is <code>count(verdict='pass') ÷ that subset</code>. As of 2026-05-27 20:00 IST the ledger is 339,632 rows, growing at ~210/min as the runner continues to sample.</p>
+
+  <h2>What this is NOT</h2>
+  <ul>
+    <li><strong>NOT</strong> a comparative claim against Gemini / Azure DI / GPT — this measures only HyperAPI primitives against their own expected schemas.</li>
+    <li><strong>NOT</strong> a field-extraction-accuracy claim — see the dataset_95 row (0.36 F1) in the consolidated leaderboard.</li>
+    <li><strong>NOT</strong> a latency claim — see <code>ocr-latency</code> rows.</li>
+    <li><strong>NOT</strong> a customer-cited claim — no customer names are referenced (partner-PII gate v1).</li>
+  </ul>
+
+  <div class="foot">
+    Source row in CONSOLIDATED-150: <code>### realqa-primitive-pass-rate</code> · benchmark factory · last refreshed 2026-05-27 20:00 IST
+  </div>
+</body>
+</html>
