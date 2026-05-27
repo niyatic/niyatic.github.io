@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en"><head><script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LLM-only parsing APIs vs primitive-resolved finance IDP — a stack-level honest comparison — Hyperbots</title>
+<meta name="description" content="Where a single-call document-parsing API stops, and what the rest of a finance document stack actually needs">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:32px 24px 96px;}
+.topbar{display:flex;align-items:center;gap:14px;margin-bottom:24px;
+  padding-bottom:18px;border-bottom:1px solid var(--line);}
+.topbar img{width:36px;height:36px;}
+.topbar .back{color:var(--grey-10);font-size:13px;text-decoration:none;}
+.topbar .back:hover{color:var(--brand-7);text-decoration:underline;}
+.topbar .hub{font-size:13px;color:var(--grey-11);font-weight:500;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:9px 14px;border-radius:8px;margin-bottom:24px;text-align:center;}
+.flag{background:#FEF3C7;color:#92400E;font-size:13px;border:1px solid #FDE68A;
+  padding:11px 14px;border-radius:8px;margin:18px 0;}
+.flag strong{color:#92400E;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:32px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;font-weight:600;letter-spacing:-0.01em;}
+h2{font-size:22px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;font-weight:600;}
+h3{font-size:17px;color:var(--brand-9);margin:1.4em 0 .4em;font-weight:600;}
+h4{font-size:15px;color:var(--brand-9);margin:1.2em 0 .3em;font-weight:600;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul,ol{margin:.7em 0;padding-left:1.5em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+em{font-style:italic;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+.footer a{color:var(--brand-7);}
+</style>
+</head><body><div class="wrap">
+<div class="topbar">
+  <img src="/assets/hyperbots-logo.svg" alt="Hyperbots"/>
+  <a class="back" href="/marketing/competition/blogs/">← back to comparative blogs</a>
+  <span style="flex:1"></span>
+  <a class="back" href="/marketing/competition/">competition study ↗</a>
+</div>
+<div class="banner">DRAFT — pending review; external publication is human-gated</div>
+<div class="flag"><strong>Competitor-named draft — legal sign-off pending.</strong> This post references: vendor-B. External publication is human-gated until legal review and verified benchmark data clear it. The 2026-05-20 LinkedIn-via-Slack publication pause is in effect.</div>
+<div class="flag"><strong>Note on framing.</strong> Per Hyperbots brand guardrail, this post never proposes a human-in-the-loop / manual-review step as part of the Hyperbots product. Where the body mentions HITL or manual review, it is critiquing competitor framing or stating the methodology rule that <em>no manual-review augmentation is assumed for any approach</em>. The Hyperbots loop is <em>automated correction + learning</em>, not human review.</div>
+<div class="meta">comparative-blogs (hyperapi-gtm-hub) · 2026-05-27 · audience: AI/Data Strategy · ML practitioner · IT/CIO · Finance buyer evaluating doc-AI APIs</div>
+<h1>LLM-only parsing APIs vs primitive-resolved finance IDP — a stack-level honest comparison</h1>
+<blockquote>channel, pending review. External publication is human-gated. The 2026-05-20 LinkedIn-via-Slack publication pause is in effect; nothing here ships externally until that pause is lifted. The named comparison lives in an internal, password-gated study — this draft uses <strong>category labels only</strong>.</blockquote>
+<h1>LLM-only parsing APIs vs primitive-resolved finance IDP — a stack-level honest comparison</h1>
+<p>A new band of vendor is taking up shelf space in the doc-AI category: the <strong>LLM-only document-parsing API</strong>. The pitch is clean. Send a PDF. Get structured output back. Tables, layout, text, ready for retrieval. One endpoint, one bill, one mental model. For a developer wiring a RAG pipeline next Tuesday, that shape is a real win.</p>
+<p>For a finance team turning a folder of mixed PDFs into approved postings in a general ledger, that shape is <strong>one primitive of seven</strong>. This post is the honest map of where the LLM-only parsing band lands, where it stops, and what a finance doc-AI stack actually has to do.</p>
+<p>We do not name vendors in this post. The named comparison — vendor name, endpoint inventory, pricing structure, public-claim audit — lives in an internal gated study at <code>content/competitor-studies/vendor-B/STUDY-2026-05-27.md</code>. This post uses <strong>category labels only</strong>. The two labels that matter here:</p>
+<ul><li><strong>LLM-only document-parsing API</strong> — a developer-facing parsing API where the dominant call shape is a single &quot;parse this document&quot; call backed by an LLM or VLM, returning text + layout + tables + optional schema-driven extraction, shaped for downstream AI pipelines.</li><li><strong>API-native, finance-domain, primitive-resolved IDP</strong> — an API that exposes <code>parse</code>, <code>classify</code>, <code>split</code>, <code>match</code>, <code>validate</code>, <code>augment</code>, <code>reason</code> as named, addressable endpoints, with a model fine-tuned for financial documents.</li></ul>
+<p>The question this post answers: <strong>what does each band do, and where does the comparison actually live?</strong></p>
+<h2>1. Why &quot;send a PDF, get JSON back&quot; is a category, not just a product</h2>
+<p>The LLM-only document-parsing band did something useful for the category. It collapsed three things that used to need three vendors — OCR, layout analysis, table extraction — into one API call. It did this by riding the zero-shot capability of frontier vision-language models, which became good enough at general-purpose document reading that the classical OCR-plus-layout-plus-table pipeline could be replaced by a single model call.</p>
+<p>For workloads where the document is the input to <em>something else</em> — a retrieval index, an agent loop, a downstream extraction prompt — that collapse is the right shape. The developer&#x27;s job is &quot;documents in, chunks out.&quot; A single-call API hits that job description exactly.</p>
+<p>This is also where the category&#x27;s center of gravity sits today. The fastest-growing slice of the LLM-only parsing band is the <strong>RAG- ingestion</strong> workload: feed scientific papers, contracts, technical reports, or long PDFs into a retrieval pipeline that an LLM agent reads. The general-purpose nature of the band is its advantage; the band&#x27;s training is on a wide document distribution, and a wide document distribution is exactly what a developer&#x27;s RAG corpus looks like.</p>
+<h2>2. What the LLM-only band does well — said honestly</h2>
+<p>Before the gap, the honest acknowledgement. A vendor disagreement that doesn&#x27;t acknowledge the other side&#x27;s strengths is a sales page, not a comparison.</p>
+<ul><li><strong>Out-of-domain generality.</strong> A frontier-VLM-backed parsing API inherits zero-shot capability across document classes that a finance- domain-tuned model has never seen — research papers, legal exhibits, scientific PDFs, technical reports, long-form contracts. On the Hyperbots-published SAVIOR-Bench v1 panel, the <em>zero-shot</em> systems beat the fine-tuned ones on precision and layout dimensions. The fine-tune edge in our own published numbers is real but narrow — +0.0276 F1 on parse-intent, +0.0061 recall on OCR. The general-purpose models are not a punching bag.</li><li><strong>Time-to-first-call for a developer.</strong> A parsing API shaped around a single, well-documented endpoint is the right onboarding shape for an engineer building a retrieval pipeline. The developer-loop is fast.</li><li><strong>Embedding / chunking-ready output.</strong> A parsing API that produces retrieval-ready chunks, table-as-Markdown, and embedding-friendly text is doing useful work for the RAG band. That work is real and it is hard to do well.</li><li><strong>Frontier-model evolutionary inheritance.</strong> A wrapper on a frontier VLM inherits the next generation of that VLM for free. The trajectory is real.</li></ul>
+<p>The honest finding behind every Hyperbots benchmark post is that the LLM-only parsing band is <strong>better than the market gives it credit for on what it actually does</strong>, and <strong>wrong for the surface it does not expose</strong>. Both halves of that sentence matter.</p>
+<h2>3. Where the LLM-only band stops</h2>
+<p>The seven-primitive map of a finance doc-AI stack — <code>parse</code>, <code>classify</code>, <code>split</code>, <code>match</code>, <code>validate</code>, <code>augment</code>, <code>reason</code> — names where the band stops. This is the load-bearing section.</p>
+<h3>3.1 <code>parse</code> — primary surface, real strength</h3>
+<p>This is where the LLM-only band lives. A single-call API turning a PDF into structured layout + tables + text is doing the <code>parse</code> primitive&#x27;s job. Across most document classes, on most cases, the work is good. The known failure modes — line-item drift on long invoices, schema hallucination, spanning-header tables, the long-tail bilingual carrier document — show up on the hard cases, not the average case.</p>
+<p>For a finance buyer, the honest read is that an LLM-only parsing API serves the parse primitive <strong>as a primitive</strong>. On the average invoice, the average bill of lading, the average remittance, the work is real.</p>
+<h3>3.2 <code>classify</code> — possible at the prompt layer, not a named endpoint</h3>
+<p>Classification — assigning each input document to its doc-type label (PO, GRN, invoice, BoL, packing slip, credit note, debit note, freight, remittance, statement, dispute) — is something a downstream prompt can do over the parsing API&#x27;s output. It is not, in the LLM-only band, typically a <strong>named endpoint with a documented schema and a published metric</strong>. The Δ is not &quot;can it classify&quot; — it is &quot;is classify a first- class object the buyer can address.&quot;</p>
+<p>The right metric for classify is macro-F1 plus per-class P/R plus a confusion-matrix entropy view, not a single &quot;classification accuracy.&quot; A buyer who wants to know how the classifier handles the remittance-vs-statement confusion pair, or the freight-vs-supplier- invoice confusion pair, needs the metric exposed.</p>
+<h3>3.3 <code>split</code> — structurally weak in single-call shape</h3>
+<p>Split — cutting a bundle PDF (fifty pages of mixed documents emailed in by a supplier) into the right sub-documents at the right page boundaries — is the primitive that gets the least attention and the one that silently bottlenecks production.</p>
+<p>An LLM-only flow has no native sense of &quot;document boundary&quot;; it sees page tokens. Boundary-F1 and page-attribution accuracy are not metrics the band ships against. A buyer with bundle-PDF inputs is buying <em>around</em> this gap, not from it.</p>
+<h3>3.4 <code>match</code> — not a fit for the band&#x27;s shape</h3>
+<p>Match — tying one document to others (3-way / 2-way / N-way) by IDs, line items, totals, dates, parties — is a database operation against a corpus of POs and GRNs. An LLM-only parsing API has nowhere to put that corpus. Three-way match is what finance teams in P2P are actually paying for; cash application (the O2C match cell) is what finance teams in O2C are actually paying for. Both require a corpus, a tolerance policy as configuration, an FX cross-rate handling, a reason-code agreement metric.</p>
+<p>The honest sentence is <strong>three-way match is not a parsing problem</strong>, and a parsing API is not the right shape for it. A finance buyer who needs match is buying a different surface area.</p>
+<h3>3.5 <code>validate</code> — auditability gap</h3>
+<p>Validation against business rules — totals, tax, duplicate, date sanity, party allow-list — is doable in a prompt to an LLM. The auditability of that path is the gap. When the rule is &quot;tax = rate × base, tolerated to 0.01 absolute or 1% relative, with currency normalisation pinned to today&#x27;s FX table,&quot; and the rule lives as a string the model decides whether to honour, a finance controller cannot audit the rule catalogue as a first-class object.</p>
+<p>A primitive-resolved API exposes <code>validate</code> with per-rule coverage and <strong>false-block rate</strong> as a first-class metric. That is what a controller&#x27;s RFP asks for. The LLM-only band&#x27;s path here is workable on the demo and fragile in audit.</p>
+<h3>3.6 <code>augment</code> — plumbing, not parsing</h3>
+<p>Augment — enrichment via lookups against master data, tax registries, PO-line catalogues, FX rates, holiday calendars — is plumbing. The right metric is enrichment hit-rate, lookup precision, freshness (how stale is the FX rate?), and FX-error rate. An LLM-only parsing API is not the master-data store; integration with the master-data store lives elsewhere. The Δ is not &quot;the band can&#x27;t do augment&quot; — it is &quot;the band is not the augment primitive&#x27;s home, and the buyer pays for plumbing to land it.&quot;</p>
+<h3>3.7 <code>reason</code> — decisioning with a justification trace</h3>
+<p><code>reason</code> is the hardest primitive. The output is not a single right answer; the ground truth is a <em>distribution</em> of human decisions. The right metrics are decision-agreement-vs-human, off-distribution decision rate (cases where the system picks an option no human picked), and justification-trace fidelity (does the trace cite the fields, rules, and lookups that actually drove the modal human decision?).</p>
+<p>An LLM-only parsing API was never built for this. A decision-bearing endpoint with a citation-trace is a different product shape. The finance-domain primitive-resolved band ships this as a first-class primitive; the LLM-only parsing band does not.</p>
+<h2>4. The five real gaps a finance buyer should test</h2>
+<p>Independent of vendor name, five gaps separate the bands. Each is testable on the buyer&#x27;s own documents.</p>
+<h3>4.1 Endpoint inventory — addressable primitives, not &quot;one big call&quot;</h3>
+<p>Ask the candidate vendor for the named endpoint list. Count how many of the seven primitives are first-class — i.e. have a documented schema, a published metric, and a price line. A band that exposes <code>parse</code> (sometimes with an <code>extract</code> adjacency) and waves at the others is selling one primitive. A band that exposes all seven is selling the stack.</p>
+<p>This is the <strong>architectural Δ</strong> between the LLM-only band and the primitive-resolved finance band. It is structural, not a measurement question. It is observable in five minutes on the vendor&#x27;s docs page.</p>
+<h3>4.2 Pricing axis — predictability vs document size</h3>
+<p>Per-page pricing is structurally predictable to a finance buyer. A hundred invoices today, fifty tomorrow, two hundred Monday — the bill is the page count times the per-page rate. Per-token pricing scales with document length and with prompt size. For a finance buyer forecasting a budget over a quarter, that is a different shape of risk.</p>
+<p>The honest version of this section is: an LLM-only parsing API in practice often prices per-page or via a credit system, but the band&#x27;s underlying cost is per-token. Where the band&#x27;s pricing exposes that axis to the buyer, the buyer is taking the token-cost risk. Where it doesn&#x27;t, the buyer is taking the vendor&#x27;s risk and paying the spread.</p>
+<p>For reference, the published per-page price on the finance-domain primitive-resolved band&#x27;s side is <strong>$0.05/page</strong> — disclosed inline because it is the published anchor. Volume is sized on a call. We do not assert a Δ against the LLM-only band&#x27;s pricing here, because the named vendor&#x27;s pricing axis is verified inside the gated study, not in public copy.</p>
+<h3>4.3 Domain depth — finance-tuned vs general-purpose</h3>
+<p>A model fine-tuned on financial-document variance — supplier invoices with spanning-header tables, multi-leg bills of lading, remittance advices with line-by-line short-pays, bilingual carrier docs — is a different unit of work than a general-purpose VLM. Per the SAVIOR- Bench v1 panel, the fine-tune edge is <strong>+0.0276 F1 on parse-intent, +0.0061 recall on OCR</strong> vs the best zero-shot system. Real but narrow.</p>
+<p>The honest read of &quot;real but narrow&quot; is twofold:</p>
+<ol><li>Don&#x27;t expect the finance-tuned band to <em>blow out</em> the general- purpose band at the average-case parse on a financial document. The edge is small.</li><li>Do expect the gap to live on the <strong>long tail</strong> — the spanning-header table, the multi-leg BoL, the long supplier- invoice with sub-totals, the photographed delivery docket. That is where a finance-tuned backbone earns the bill.</li></ol>
+<p>A buyer should run their <strong>hardest 50 documents</strong> through both bands and measure F1 on those, not on the easy cases the demo covers.</p>
+<h3>4.4 Architecture — single engine vs multi-engine, mode-routed</h3>
+<p>An LLM-only parsing API is, by construction, a single-engine stack: the LLM is the engine. A primitive-resolved finance API can compose several engines under per-document mode routing — invoice OCR, receipt parsing, bank-statement extraction, and shipping-document parsing are different problems that the same engine plays differently on. The composition pattern is itself the architecture.</p>
+<p>A finance buyer&#x27;s production load is not one document class; it is a mix. A mode-routed multi-engine stack is shaped for that mix. A single-engine LLM stack is shaped for a single distribution.</p>
+<h3>4.5 Benchmark and audit discipline — reproducible, with a published failure</h3>
+<p>The last gap is methodological. Does the candidate vendor publish a <strong>reproducible</strong> benchmark — pinned dataset name + version + n, rerunnable command, point estimate + 95% CI, distinction between Missed / Spurious / Incorrect, an affiliation disclosure?</p>
+<p>For reference: the finance-domain primitive-resolved band&#x27;s published anchors include the SAVIOR-Bench v1 panel (509 docs, IAA 0.761), a SEED leaderboard (12 cells, designed to be reproducible on a laptop with stdlib-only deterministic primitives), and a W6 audit that re-derived <strong>0 of 23</strong> SAVIOR cells under the factory-reproduction harness — published <em>as the audit&#x27;s finding</em>, because the negative finding is the asset. Whether a candidate LLM-only parsing API publishes a comparably structured benchmark is itself a buyer-rubric question, and the answer for any specific vendor lives in the gated study.</p>
+<h2>5. The named comparison lives in the gated study</h2>
+<p>The vendor-name-by-vendor-name comparison, the endpoint-by-endpoint inventory, the public-claim audit against the ten depth-pattern questions, and the pricing-axis verification all live in an internal, password-gated study at <code>content/competitor-studies/vendor-B/STUDY-2026-05-27.md</code>. That file:</p>
+<ul><li>Names the vendor by name.</li><li>Carries <code>[PENDING-WEBFETCH-VERIFICATION]</code> on every competitor-specific capability, endpoint, and pricing line — because in this session the harness denied WebFetch and the discipline is to mark, not to invent.</li><li>Carries <code>[PENDING-MEASUREMENT]</code> on every Δ row of the fourteen- dimension D-axis — because no head-to-head measurement has been run yet.</li><li>Carries the rerunnable-command form for the head-to-head run that would close the cells.</li><li>Is gated by design. The named comparison is not for the public surface.</li></ul>
+<p>This split — category labels in public copy, named comparison gated — is the honest shape of vendor-vs-vendor content. The gated half lets the buyer&#x27;s deep work happen with names attached. The public half teaches the category without trading on a competitor&#x27;s name for reach.</p>
+<h2>6. What to do with this — for the buyer, for the practitioner</h2>
+<p>For a <strong>finance buyer</strong> evaluating both bands: the question is not &quot;which band has higher parse accuracy?&quot; — the difference is too narrow for that to be the decider. The question is <strong>which seven- primitive surface do you actually need?</strong> If your job is to feed documents into an LLM agent for downstream prompting, the LLM-only parsing band is built for you. If your job is to turn a folder of mixed PDFs into approved postings in a general ledger, with an audit trail and a three-way match, the LLM-only band serves one of seven primitives and you are buying around the other six.</p>
+<p>For an <strong>ML or platform practitioner</strong>: pick one of the seven primitives and run both bands against the same documents under identical scoring. The deep-study framework at <code>content/deep-study-framework/FRAMEWORK-2026-05-25.md</code> gives the fourteen-cell plan; pick a cell, take its plan as a template, run it. The asset is the methodology, not the result; the result is what publishes the cell.</p>
+<p>For a <strong>CIO or finance-tech executive</strong>: ask the candidate vendors to show their per-primitive resolution. A vendor that can only show &quot;parsing accuracy&quot; is selling one primitive and waving at six. That is not a stack — that is a feature.</p>
+<p>A vendor that can show seven addressable endpoints, with metrics per primitive, a pinned dataset, a rerunnable command, and a published audit that includes its own failures — <em>that</em> is a stack.</p>
+<h2>7. A note on what &quot;accuracy&quot; means in product copy</h2>
+<p>Product accuracy claims for HyperAPI are published only <strong>per <code>apis.hyperbots.com</code></strong>. Benchmark figures referenced anywhere in this post (parse-intent +0.0276 F1, OCR +0.0061 recall, W6 0/23, SAVIOR-Bench v1, IAA 0.761) are model OCR / parse performance under a stated panel, not product accuracy. The two are different objects and we keep them lexically separate to avoid the inflation pattern that does the category no favours.</p>
+<p>Likewise, the fine-tuned models referenced are <strong>open-source backbones fine-tuned by Hyperbots (Hyperbots IP)</strong> — we do not claim closed-source ownership of open weights, and the cell plans in the deep-study framework carry that disclosure in their §3.6 independence-and-disclosure block.</p>
+<hr/>
+<h2>Sources</h2>
+<ul><li><code>~/Desktop/hyperapi-gtm-hub/content/competitor-studies/vendor-B/STUDY-2026-05-27.md</code> — the internal, password-gated companion study where the named vendor-by-vendor comparison lives. This post links to that study by file path; this post does not name the vendor.</li><li><code>~/Desktop/hyperapi-gtm-hub/content/deep-study-framework/FRAMEWORK-2026-05-25.md</code> — the seven-primitive × two-domain framework, the fourteen- dimension D-axis, the eight-row data-status legend, the rerunnable-command form, the ten depth-pattern questions.</li><li><code>~/Desktop/hyperapi-gtm-hub/comparative-blogs/2026-05-26-deep-comparative-document-ai-stack.md</code> — the freshest stack-level comparative post in the series; voice and category-label discipline inherited from it. — the existing on-disk draft that maps the doc-AI landscape and carries the <code>[SOURCE PENDING]</code> discipline this post extends; the category framing (developer-facing parsing API, finance-tuned primitive-resolved API) inherits from it.</li><li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/SAVIOR-Bench.md</code> — the parse-intent +0.0276 F1, OCR +0.0061 recall, IAA 0.761 on 509 docs, fine-tune disclosure in Appendix A, ci95=null caveat.</li><li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/W6-attestation-2026-05-21.md</code> — the 0/23 audit anchor.</li><li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/CLAUDE.md</code> — the HyperAPI primitive inventory.</li><li><code>~/Desktop/hyperapi-gtm-hub/linkedin/2026-05-26-viral-technical-five-layers-DRAFT.md</code> — the multi-engine, mode-routed architecture framing inherited for §4.4.</li><li>Pricing: the published $0.05/page model on <code>apis.hyperbots.com</code> (volume sized on a call). The LLM-only band&#x27;s pricing axis is verified inside the gated study, not here.</li></ul>
+<h2>Open assumptions</h2>
+<ul><li><strong>DRAFT, human-gated.</strong> This is a draft for the GTM channel. The 2026-05-20 LinkedIn-via-Slack publication pause is in effect; external publication is human-gated and conditioned on review.</li><li><strong>Category labels only.</strong> The post uses &quot;LLM-only document- parsing API&quot; and &quot;API-native, finance-domain, primitive-resolved IDP&quot; as category labels. The vendor name lives only in the gated study at <code>content/competitor-studies/vendor-B/STUDY-2026-05-27.md</code>.</li><li><strong>Category-label fallback.</strong> If review prefers an alternate label for the developer-facing parsing band — e.g. &quot;VLM-orchestrator IDP&quot;, &quot;RAG-ingestion parsing API&quot;, &quot;developer-facing LLM parsing API&quot; — the label may swap at human-gate time. The post does not name a vendor regardless.</li><li><strong>No fabricated numbers.</strong> Every numeric reference in the body is either anchored to a named on-disk artifact (SAVIOR-Bench, W6, $0.05/page) or carries <code>[PENDING-MEASUREMENT]</code> / <code>[PENDING-WEBFETCH-VERIFICATION]</code> in the gated study.</li><li><strong>WebFetch was harness-blocked</strong> in the session that drafted this post and the gated study; the gated study&#x27;s competitor cells remain <code>[PENDING-WEBFETCH-VERIFICATION]</code>. The public copy does not depend on those cells being lifted — it characterizes the band, not the vendor.</li><li><strong>Hyperbots framing.</strong> Open-source backbones fine-tuned by Hyperbots (Hyperbots IP). No claim of closed-source ownership of open weights.</li><li><strong>Product accuracy is published only per <code>apis.hyperbots.com</code>.</strong> Benchmark figures referenced are model OCR / parse performance under a stated panel, not product accuracy.</li><li><strong>No HITL framing.</strong> Per [[no-hitl-framing]].</li><li><strong>The fine-tune edge is real but narrow.</strong> Stated honestly in §4.3 and inherited from the comparative-study artifact. The band-level comparison does not rest on a clean blowout that the data does not support.</li></ul>
+<div class="footer">Source: <code>2026-05-27-vendor-B-deep-comparative-DRAFT.md</code> · Generated 2026-05-27 · Hyperbots content hub — external publication is human-gated.</div>
+</div></body></html>

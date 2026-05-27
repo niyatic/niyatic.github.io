@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en"><head><script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Trainable-IDP-with-an-API-veneer vs API-native fine-tuned — the head-to-head, honestly — Hyperbots</title>
+<meta name="description" content="What a deep comparison of a category-leading IDP vendor looks like when nobody invents numbers">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:32px 24px 96px;}
+.topbar{display:flex;align-items:center;gap:14px;margin-bottom:24px;
+  padding-bottom:18px;border-bottom:1px solid var(--line);}
+.topbar img{width:36px;height:36px;}
+.topbar .back{color:var(--grey-10);font-size:13px;text-decoration:none;}
+.topbar .back:hover{color:var(--brand-7);text-decoration:underline;}
+.topbar .hub{font-size:13px;color:var(--grey-11);font-weight:500;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:9px 14px;border-radius:8px;margin-bottom:24px;text-align:center;}
+.flag{background:#FEF3C7;color:#92400E;font-size:13px;border:1px solid #FDE68A;
+  padding:11px 14px;border-radius:8px;margin:18px 0;}
+.flag strong{color:#92400E;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:32px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;font-weight:600;letter-spacing:-0.01em;}
+h2{font-size:22px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;font-weight:600;}
+h3{font-size:17px;color:var(--brand-9);margin:1.4em 0 .4em;font-weight:600;}
+h4{font-size:15px;color:var(--brand-9);margin:1.2em 0 .3em;font-weight:600;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul,ol{margin:.7em 0;padding-left:1.5em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+em{font-style:italic;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+.footer a{color:var(--brand-7);}
+</style>
+</head><body><div class="wrap">
+<div class="topbar">
+  <img src="/assets/hyperbots-logo.svg" alt="Hyperbots"/>
+  <a class="back" href="/marketing/competition/blogs/">← back to comparative blogs</a>
+  <span style="flex:1"></span>
+  <a class="back" href="/marketing/competition/">competition study ↗</a>
+</div>
+<div class="banner">DRAFT — pending review; external publication is human-gated</div>
+<div class="flag"><strong>Competitor-named draft — legal sign-off pending.</strong> This post references: Azure DI, Textract, vendor A, vendor-A. External publication is human-gated until legal review and verified benchmark data clear it. The 2026-05-20 LinkedIn-via-Slack publication pause is in effect.</div>
+<div class="flag"><strong>Note on framing.</strong> Per Hyperbots brand guardrail, this post never proposes a human-in-the-loop / manual-review step as part of the Hyperbots product. Where the body mentions HITL or manual review, it is critiquing competitor framing or stating the methodology rule that <em>no manual-review augmentation is assumed for any approach</em>. The Hyperbots loop is <em>automated correction + learning</em>, not human review.</div>
+<div class="meta">comparative-blogs (hyperapi-gtm-hub) · 2026-05-27 · audience: Finance buyer · CFO/Controller/AP director · IT/CIO · ML practitioner · AI/Data strategy</div>
+<h1>Trainable-IDP-with-an-API-veneer vs API-native fine-tuned — the head-to-head, honestly</h1>
+<blockquote>a single category-leading IDP vendor in the document-AI space. The named comparison lives in the gated internal companion study; this draft uses category labels only in the body. External publication is human-gated. The 2026-05-20 LinkedIn-via-Slack publication pause is in effect.</blockquote>
+<h1>Trainable-IDP-with-an-API-veneer vs API-native fine-tuned — the head-to-head, honestly</h1>
+<p>Most &quot;document-AI comparison&quot; blogs pick one vendor name, one accuracy percentage, and one screenshot, and rank competitors against them. We are going to do the opposite. We are going to compare <strong>approach against approach</strong> — <code>trainable-IDP-with-an-API-veneer</code> against <code>API-native fine-tuned</code> — on five axes a finance buyer actually evaluates, and we will name only the side of the comparison whose numbers we publish.</p>
+<p>The named comparison — vendor A — lives in our internal companion at <code>content/competitor-studies/&lt;vendor&gt;/STUDY-2026-05-27.md</code>. That artifact is gated and not externally distributed. This post is the public half of the same study, and we keep it honest by category-labeling the vendor and naming only the things we can anchor to a public artifact.</p>
+<p>If you are a buyer evaluating a category-leading IDP vendor against HyperAPI, this post tells you the <strong>structure</strong> of the comparison. The gated study fills in the names. The 2026-05-26 stack-level comparative companion (<code>comparative-blogs/2026-05-26-deep-comparative-document-ai-stack.md</code>) gives you the seven-primitive, fourteen-cell framework this post sits under.</p>
+<hr/>
+<h2>1. The two approaches, named by category</h2>
+<p>We need terms. From the 2026-05-26 stack-level comparative, the category breaks into five approach families:</p>
+<ol><li><strong>Rules-and-templates IDP</strong> — per-layout template definitions, regex plus position. The classic OCR-plus-rules stack.</li><li><strong>Legacy OCR-plus-rules layers</strong> — character recognition engine bolted to a workflow rules layer; mature, on-prem, regulated back office.</li><li><strong>LLM-only naïve extraction</strong> — send a PDF to a frontier vision-language model, ask in prose for the fields, parse the JSON.</li><li><strong>Trainable-IDP-with-an-API-veneer</strong> — a vendor portal where the customer labels example documents and the system trains a per-customer model, then exposes it behind an &quot;extraction&quot; endpoint. Better than fixed templates, weaker than category-trained models on rare layouts. The end-to-end &quot;extraction&quot; surface is the API; the internal pipeline (parse / classify / split / etc.) is not addressable separately.</li><li><strong>API-native, fine-tuned, finance-trained</strong> — small open-source backbones, fine-tuned on finance documents, exposed as <strong>primitive-resolved endpoints</strong> so a buyer addresses each primitive separately rather than as one extraction blob. This is where HyperAPI sits.</li></ol>
+<p>This post is the head-to-head between family 4 (the named category leader on our gated side, the vendor against whom this study was scoped) and family 5 (HyperAPI). The gated companion identifies the family-4 vendor by name; this post does not.</p>
+<hr/>
+<h2>2. The asymmetry, on five axes</h2>
+<p>A buyer evaluation runs on five axes. We will work them in order, with the public-anchor for HyperAPI on the right and <code>[PUBLIC-SURFACE PENDING-VERIFICATION]</code> on the left where our <code>WebFetch</code> access was blocked.</p>
+<h3>2.1 Axis 1 — model backbone disclosure</h3>
+<p>A buyer asks: <em>what is your model?</em></p>
+<ul><li><strong>Trainable-IDP-with-an-API-veneer.</strong> Closed stack. The public surface, as we can read it on disk, characterizes the model as a proprietary &quot;AI&quot; trained per customer; the backbone is not disclosed. <code>[PUBLIC-SURFACE PENDING-VERIFICATION]</code>.</li><li><strong>API-native fine-tuned (HyperAPI).</strong> Open-source backbones, fine-tuned by Hyperbots (Hyperbots IP). LoRA recipe is in the SAVIOR-Bench paper&#x27;s Appendix A. Both fine-tuned [FT] rows and zero-shot rows are tagged inline in every results table — the fine-tune disclosure is the first paragraph of the paper&#x27;s Abstract, not a buried footnote.</li></ul>
+<p>The honest reading: the difference is not &quot;open beats closed.&quot; Plenty of closed stacks ship excellent products. The difference is <strong>disclosure discipline</strong>. A buyer who needs to audit &quot;what runs in production on my documents&quot; will get further on the right column than on the left.</p>
+<h3>2.2 Axis 2 — API decomposition</h3>
+<p>A buyer asks: <em>what is the API surface?</em></p>
+<ul><li><strong>Trainable-IDP-with-an-API-veneer.</strong> End-to-end &quot;extraction&quot; endpoint with vertical templates and a labeling portal upstream. Match, validate, classify, split, augment, reason — present, but as features of one box, not separately addressable. <code>[PUBLIC-SURFACE PENDING-VERIFICATION]</code> for the specific endpoint enumeration on this vendor.</li><li><strong>API-native fine-tuned (HyperAPI).</strong> Primitive-resolved: <code>parse</code>, <code>parse-x</code>, <code>parse-intent</code>, <code>split</code>, <code>classify</code>, <code>extract</code>, <code>extract-omni</code>, <code>redact</code>, <code>detect</code>, <code>validate</code>, <code>reconcile</code>, <code>bundle</code>. Each is its own endpoint; each has its own pricing line; each has its own failure mode. A buyer can plug <code>extract</code> upstream of their ERP without adopting <code>reason</code>.</li></ul>
+<p>The honest reading: both shapes are valid. A buyer who wants &quot;one endpoint, one JSON&quot; gets faster time-to-first-extract on a templated flow. A buyer whose stack already has match, validate, and audit-trace modules wants to address <code>extract</code> and <code>reason</code> separately and not pay for a re-implementation of what their ERP already does. The shape question is structural, not a quality question — and the gated study walks through which shape suits which buyer.</p>
+<h3>2.3 Axis 3 — published benchmark surface</h3>
+<p>A buyer asks: <em>show me your accuracy.</em></p>
+<ul><li><strong>Trainable-IDP-with-an-API-veneer.</strong> <code>[PUBLIC-SURFACE PENDING-VERIFICATION]</code> — we have no on-disk anchor in this study to a vendor-published, dataset-pinned, <em>n</em>-and-CI-bearing leaderboard from this category leader. The gated companion records the URLs a follow-up beat needs to fetch to convert this cell from PENDING to anchored.</li><li><strong>API-native fine-tuned (HyperAPI).</strong> SAVIOR-Bench v1 (509 docs, IAA 0.761), 23-system parse-intent panel, 21-system OCR panel; the W6 reproducibility audit re-derived <strong>0 of 23</strong> SAVIOR cells — and we published that. The honest fine-tune edge over the strongest documented zero-shot system is parse-intent <strong>+0.0276 F1</strong> and OCR <strong>+0.0061 recall</strong>. Real, but narrow. We say so in the Abstract.</li></ul>
+<p>The honest reading: the gap on this axis is not in the <em>numbers</em> — it is in <strong>whether numbers exist on a comparable surface at all</strong>. The follow-up beat that fetches the family-4 vendor&#x27;s surface either confirms an equally rigorous benchmark page (in which case this axis becomes a head-to-head on the numbers themselves) or it does not. We do not pre-judge.</p>
+<p>What we will say: a single &quot;99% accuracy&quot; line, without dataset, n, CI, or rerunnable command, is not a benchmark — it is a headline. The 2026-05-22 measurement-methodology post in this series walks the metric framework dimension by dimension.</p>
+<h3>2.4 Axis 4 — reproducibility</h3>
+<p>A buyer asks: <em>can I re-run your numbers?</em></p>
+<ul><li><strong>Trainable-IDP-with-an-API-veneer.</strong> <code>[PUBLIC-SURFACE PENDING-VERIFICATION]</code> for a published rerunnable harness from this category leader.</li><li><strong>API-native fine-tuned (HyperAPI).</strong> The <strong>SEED leaderboard</strong> — 12 cells, deterministic, stdlib-only, runs on a laptop — is the reproducible offline panel. The CONSOLIDATED-150 view of the benchmark factory ships <strong>160 rows</strong>, <strong>16 factory-reproduced</strong>, <strong>79 attested</strong>, and per-row provenance tags (<code>factory</code> / <code>attested</code> / <code>derived</code> / <code>pending</code>). Every factory-reproduced row has a <code>source_cells</code> field; every attested row says so; every pending row is scaffolded honestly.</li></ul>
+<p>The honest reading: reproducibility is the single hardest discipline to fake. A vendor either ships a harness their reader can run, or they don&#x27;t. If they don&#x27;t, the reader is in believe-the-vendor territory — which is fine for some buyers and not for others.</p>
+<h3>2.5 Axis 5 — pricing transparency</h3>
+<p>A buyer asks: <em>what does it cost?</em></p>
+<ul><li><strong>Trainable-IDP-with-an-API-veneer.</strong> <code>[PUBLIC-SURFACE PENDING-VERIFICATION]</code> — public pricing characterization not asserted without a fetch of the vendor&#x27;s pricing page.</li><li><strong>API-native fine-tuned (HyperAPI).</strong> Published <strong>$0.05/page</strong>, &quot;volume sized on a call.&quot; Single anchor; the pricing URL is the pricing. No quote-by-email fiction.</li></ul>
+<p>The honest reading: pricing transparency is its own credibility signal, separate from the product. A vendor that publishes a per-page or per-document price loses optionality on enterprise negotiations and gains credibility with the practitioner reader who decides whether to recommend the vendor internally. Both postures are defensible. The asymmetry is real and visible to the buyer either way.</p>
+<hr/>
+<h2>3. The honest negative findings — both sides</h2>
+<p>A comparative blog that only reports the side where the author wins is a marketing post. We will not write one. Two negative findings sit on the HyperAPI side of this comparison and we publish them up front:</p>
+<h3>3.1 Our <code>extract</code> cell on <code>dataset_95_granular</code> is below three measured peers</h3>
+<p>On <code>dataset_95_granular</code> (95 invoices, factory-reproduced), the Hyperbots IDP chain (parse + extract) lands at <strong>0.3573 micro-F1</strong>, <em>below</em> Gemini 2.5 Flash (0.7132), Gemini 2.5 Pro (0.6195), Azure DI prebuilt-invoice (0.6078), and Gemini 2.5 Flash-Lite (0.5004) on the same dataset. The failure mode is identified: two long invoices ([55, 68]) hit the 300-second server-side extract timeout — the same long-invoice failure mode that dropped Gemini Pro on [42, 51] and Flash on [2, 3, 41, 42, 51]. We published the 0.3573 number in the CONSOLIDATED-150 delta on 2026-05-25. We are working the long-invoice timeout; we are not hiding the cell.</p>
+<h3>3.2 Our fine-tune edge over the best zero-shot is narrow</h3>
+<p>Parse-intent +0.0276 F1 over GPT-4o; OCR +0.0061 recall over Textract and Azure-DI. Both are real, both have non-overlapping reads against the rest of the panel — and both are smaller than the &quot;10x&quot; the category would imply if the marketing copy were the only data source.</p>
+<p>We publish that because the <em>moat</em> is not the model; the moat is the <strong>corpus, the primitive decomposition, the rerunnable harness, the audit discipline, and the open pricing line</strong>. The 2026-07-01 post in this series (the corpus-and-loop argument) goes deeper. For this post, the honest read is: the model is a piece of the answer, not the whole answer.</p>
+<p>A reader who has read both this paragraph and the gated companion has seen the comparison in both directions. That is the whole point.</p>
+<hr/>
+<h2>4. The seven primitives, walked against this comparison</h2>
+<p>The 2026-05-26 stack-level comparative gave the seven-primitive split (<code>parse</code>, <code>classify</code>, <code>split</code>, <code>match</code>, <code>validate</code>, <code>augment</code>, <code>reason</code>) and the fourteen cells of work (seven primitives × two process families, P2P and O2C). Against this category leader, primitive by primitive, the <strong>structural</strong> question is the same one:</p>
+<ul><li><strong><code>parse</code></strong> — is the parser addressable separately, with its own metric (field-level P/R/F1) and its own failure-mode bucketing (the 7-bucket error taxonomy in <code>01-measuring-extraction-accuracy.md</code>)?</li><li><strong><code>classify</code></strong> — is calibration (D9 in the deep-study framework) measurable on the surface, or is &quot;accuracy&quot; the only available metric?</li><li><strong><code>split</code></strong> — is bundle-PDF splitting a first-class primitive or a preprocessing detail the buyer is expected to solve?</li><li><strong><code>match</code></strong> — is 3-way / 2-way / N-way match an addressable primitive with explicit tolerance pins as configuration, or is the tolerance policy hand-coded per customer?</li><li><strong><code>validate</code></strong> — is the rule catalog auditable as a first-class object, or is the rule a prompt-string?</li><li><strong><code>augment</code></strong> — are master-data lookups built in as a first-class call with a freshness SLA, or stitched together per integration?</li><li><strong><code>reason</code></strong> — does the system return a decision <em>and</em> a field-citing justification trace, scored against a <em>distribution</em> of human decisions rather than a single right answer?</li></ul>
+<p>For HyperAPI, every primitive answers &quot;yes — addressable, named, measured (or honestly pending).&quot; For the family-4 category leader, each answer is <code>[PUBLIC-SURFACE PENDING-VERIFICATION]</code> until the follow-up beat lands. The gated companion records the URLs to fetch and the depth-pattern questions to apply, ten per primitive.</p>
+<p>The honest reading: the differentiator is not the per-primitive accuracy — it is <strong>the addressability</strong>. A buyer who needs to instrument <code>match</code> and <code>validate</code> separately gets a different purchase from a stack that exposes them separately than from one that buries them inside an &quot;extraction&quot; endpoint.</p>
+<hr/>
+<h2>5. The buyer&#x27;s three questions — and the honest answers</h2>
+<p>We will not pretend this post answers the buyer&#x27;s question for them. But three questions a head-to-head deal will surface, with the honest HyperAPI answer:</p>
+<h3>5.1 &quot;Show me your accuracy.&quot;</h3>
+<blockquote>Per <code>apis.hyperbots.com</code>, product accuracy is what the page says it is. Beyond product copy: our public benchmark — SAVIOR-Bench v1, 509 documents — places the fine-tuned <code>hyperapi-parse-intent</code> at F1 0.8328 / WER 0.2589 against 23 systems, with a +0.0276 F1 edge over the strongest documented zero-shot. We say that out loud because the alternative is the kind of headline number that doesn&#x27;t survive your second invoice. The W6 audit re-derived 0 of 23 SAVIOR cells under our own harness — we publish that too, because if we cannot reproduce our own paper, we want to know first.</blockquote>
+<h3>5.2 &quot;What&#x27;s your API surface?&quot;</h3>
+<blockquote>Primitive-resolved. <code>parse</code>, <code>parse-x</code>, <code>parse-intent</code>, <code>split</code>, <code>classify</code>, <code>extract</code>, <code>extract-omni</code>, <code>redact</code>, <code>detect</code>, <code>validate</code>, <code>reconcile</code>, <code>bundle</code>. Each is its own endpoint; each has its own pricing line. You can plug <code>extract</code> upstream of your ERP without adopting <code>reason</code>. The trainable-IDP family ships one end-to-end endpoint with vertical templates — both shapes are valid; the right shape depends on whether you want one box or a toolkit.</blockquote>
+<h3>5.3 &quot;What does it cost?&quot;</h3>
+<blockquote>$0.05/page published, volume sized on a call. The pricing URL is the pricing — there is no hidden tier. For a head-to-head against a trainable-IDP-with-an-API-veneer vendor whose public pricing requires a sales call, this is itself a credibility line: a buyer can plan their budget without an NDA.</blockquote>
+<hr/>
+<h2>6. What is measured, what is pending, and what we will not invent</h2>
+<p>Per the discipline of the parent framework and the 2026-05-26 stack-level comparative:</p>
+<ul><li>The HyperAPI-side cells in §1–§5 above are anchored to:</li><li><code>paper/SAVIOR-Bench.md</code> — <code>hyperapi-parse-intent</code> [FT] F1 0.8328 / WER 0.2589; <code>Qwen2.5-VL-7B-F</code> [FT] recall 0.9294; Textract 0.9233; Azure-DI 0.9202; +0.0276 F1 fine-tune gap over GPT-4o; W6 audit 0/23; IAA 0.761.</li><li><code>leaderboard/CONSOLIDATED-150/CONSOLIDATED-150.md</code> — 160 rows; <code>dataset_95_granular</code>: Gemini Flash 0.7132, Pro 0.6195, Flash-Lite 0.5004, Azure DI 0.6078, Hyperbots IDP chain 0.3573.</li><li>Published $0.05/page pricing (Hyperbots public surface).</li><li>The competitor-side cells (family 4 — trainable-IDP-with-an-API- veneer) carry <code>[PUBLIC-SURFACE PENDING-VERIFICATION]</code> per cell. We did not invent a single number for the competitor side. The parent framework&#x27;s WebFetch attempts on competitor blog indices — including the category-leading IDP vendor at the heart of this study — were harness-blocked on initial authoring and on a fresh-context retry [^webfetch]. We characterize what we have not read by saying &quot;we have not read it,&quot; and we list the URLs the follow-up beat must fetch.</li><li>The benchmark-factory has not run the family-4 vendor on <code>dataset_95_granular</code>, SAVIOR-Bench v1, or any other Hyperbots- pinned panel. The gated companion&#x27;s §5 names the cells that would land if the run were scoped; the public read of this post is &quot;no number is asserted in either direction until that run is in.&quot; [^pending]</li></ul>
+<p>[^webfetch]: See <code>content/deep-study-framework/WEBFETCH-RESULTS-2026-05-25.md</code> (gated) for the per-target record across nine competitor blogs; harness denied <code>WebFetch</code> for the agent identity, identical permission-denied error shape across attempts. The follow-up beat with <code>WebFetch</code> permission, or a human-curated competitor-post pack, unblocks this.</p>
+<p>[^pending]: The fix is operational, not methodological: the benchmark factory&#x27;s <code>experimental-run-consolidator</code> agent can scope a vendor run on the existing <code>dataset_95_granular</code> harness with no new methodology — same dataset, same metric, provenance-tagged <code>factory</code>. The CONSOLIDATED-150 delta on 2026-05-25 (Gemini 2.5 + Hyperbots IDP) is the proof.</p>
+<hr/>
+<h2>7. What to do with this — for the practitioner, the buyer, the CIO</h2>
+<p>For an <strong>ML practitioner</strong>: read the SAVIOR-Bench v1 paper, run the 12-cell SEED leaderboard on your laptop, then point your evaluation at the seven-primitive decomposition rather than a single F1. The 2026-05-22 measurement-methodology post is the rubric.</p>
+<p>For a <strong>finance buyer</strong>: ask each vendor for the five axes in §2 — backbone disclosure, API decomposition, published benchmark surface, reproducibility, pricing transparency — and accept &quot;we don&#x27;t publish that&quot; as an answer. The vendors who answer cleanly on three of five are the ones to shortlist; the ones who answer with adjectives on all five are the ones to deprioritize.</p>
+<p>For a <strong>CIO / finance-tech executive</strong>: notice the structural asymmetry. One side has a published benchmark, a published audit, a published pricing line, and a primitive-resolved API. The other side is <code>[PENDING-VERIFICATION]</code> on most of those — which is either an honest measurement gap on our side or a posture difference on theirs, and the right buyer rubric makes the difference visible either way.</p>
+<hr/>
+<h2>8. The gated companion</h2>
+<p>The named comparison — vendor A, with the URL list, the per-axis verdict draft, the GTM consequence read-out, and the measurement panel skeleton with PENDING competitor-side cells — lives at <code>content/competitor-studies/&lt;vendor&gt;/STUDY-2026-05-27.md</code> in the internal repo. This post is the public-facing half. Both halves share the same anchors on the HyperAPI side; only the gated half identifies the competitor.</p>
+<p>That is the honest split.</p>
+<hr/>
+<h2>Sources</h2>
+<ul><li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/content/competitor-studies/vendor-A/STUDY-2026-05-27.md</code> — the gated internal companion study; names the vendor; carries the per-axis verdict draft and the measurement panel skeleton.</li><li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/content/deep-study-framework/FRAMEWORK-2026-05-25.md</code> — the parent deep-study framework: nine-section spine, 14-dim D-axis, 8-row data-status legend, 14-cell matrix, 10 depth-pattern questions.</li><li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/content/deep-study-framework/WEBFETCH-RESULTS-2026-05-25.md</code> — the honest record that WebFetch on the competitor blog indices was harness-blocked.</li><li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/2026-05-26-deep-comparative-document-ai-stack.md</code> — the stack-level comparative; five-approach category map; the fourteen-cell primitive-by-domain matrix.</li><li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/01-measuring-extraction-accuracy.md</code> — the metric framework dimension by dimension; the 7-bucket error taxonomy; n + 95% CI reporting rule; Δ-rule.</li><li><code>/Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/paper/SAVIOR-Bench.md</code> — SAVIOR-Bench v1: 509 docs, IAA 0.761; <code>hyperapi-parse-intent</code> [FT] F1 0.8328 / WER 0.2589; +0.0276 F1 over GPT-4o; <code>Qwen2.5-VL-7B-F</code> [FT] recall 0.9294; Textract 0.9233; Azure-DI 0.9202; ci95=null disclosed; W6 0/23.</li><li><code>/Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/leaderboard/CONSOLIDATED-150/CONSOLIDATED-150.md</code> — 160 rows; 16 factory-reproduced; per-cell provenance; the <code>dataset_95_granular</code> row with Hyperbots IDP at 0.3573 below three measured peers and Azure DI.</li><li><code>apis.hyperbots.com</code> — verbatim source of product-accuracy claims; the $0.05/page pricing line.</li></ul>
+<h2>Open assumptions</h2>
+<ul><li><strong>DRAFT, human-gated.</strong> External publication requires the human gate. The 2026-05-20 LinkedIn-via-Slack pause is in effect; this post is not a publish order.</li><li><strong>No competitor named in body copy.</strong> Category labels only — <code>trainable-IDP-with-an-API-veneer</code>, <code>rules-and-templates IDP</code>, <code>legacy OCR-plus-rules</code>, <code>LLM-only naïve extraction</code>, <code>API-native fine-tuned</code>. The named comparison lives in the gated companion.</li><li><strong>No fabricated numbers.</strong> Every HyperAPI-side cell is anchored to SAVIOR-Bench v1 or CONSOLIDATED-150; every competitor-side cell is <code>[PUBLIC-SURFACE PENDING-VERIFICATION]</code> because WebFetch was harness-blocked.</li><li><strong>WebFetch was harness-blocked</strong> for the competitor blog indices in the parent framework&#x27;s authoring session and on a fresh-context retry. This post does not characterize content it has not read.</li><li><strong>Open-source backbones fine-tuned by Hyperbots (Hyperbots IP).</strong> No claim of closed-source ownership of open weights. The SAVIOR-Bench abstract carries the fine-tune disclosure inline; we inherit that here.</li><li><strong>Product accuracy is &quot;per apis.hyperbots.com.&quot;</strong> Benchmark figures (SAVIOR-Bench v1, CONSOLIDATED-150) are model OCR/parse performance — labelled as such, kept lexically separate from product-accuracy claims.</li><li><strong>No HITL/manual-review framing.</strong> The post discusses primitive decomposition, addressability, and confidence calibration — not human-in-the-loop / manual review.</li><li><strong>The measurement panel on the competitor side is PENDING.</strong> No Hyperbots-vs-vendor accuracy delta is asserted in this post. Converting the PENDING cells to anchored cells requires a benchmark-factory run scoped to the competitor on <code>dataset_95_granular</code> (and optionally SAVIOR-Bench v1), provenance-tagged <code>factory</code>. That run is not commissioned by this draft.</li><li><strong>Category placement is a starting hypothesis.</strong> The &quot;trainable- IDP-with-an-API-veneer&quot; label is the working category for the family-4 vendor; the follow-up WebFetch beat either confirms or refines the placement. The asymmetry argument on the five axes does not depend on the label being exactly &quot;family 4.&quot;</li></ul>
+<div class="footer">Source: <code>2026-05-27-vendor-A-deep-comparative-DRAFT.md</code> · Generated 2026-05-27 · Hyperbots content hub — external publication is human-gated.</div>
+</div></body></html>
