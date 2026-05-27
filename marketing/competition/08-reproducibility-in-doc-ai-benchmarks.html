@@ -1,0 +1,164 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reproducibility in document-AI benchmarks — why most comparisons can&#x27;t be trusted</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT</div><div class="meta">2026-05-22</div><blockquote><strong>DRAFT — competitive claims require legal review and verified benchmark data before publication.</strong></blockquote>
+<h1>Reproducibility in document-AI benchmarks — why most comparisons can&#x27;t be trusted</h1>
+<p>A benchmark number you cannot rerun is a marketing asset, not a measurement. Most</p>
+<p>published document-AI comparisons — including, until proven otherwise, ours —</p>
+<p>cannot be reproduced by a stranger. This post explains the discipline that makes</p>
+<p>a number trustworthy, and is candid about where the Hyperbots numbers currently</p>
+<p>sit on that ladder.</p>
+<h2>The benchmark-factory bar: a number that does not &quot;exist&quot;</h2>
+<p>The factory constitution states it bluntly: **&quot;Numbers without a rerunnable</p>
+<p>command do not exist.&quot;** Concretely, a trustworthy cell requires:</p>
+<ul>
+<li><strong>Model pinning</strong> — exact model ID *and* revision/commit hash. No floating</li>
+</ul>
+<p>  <code>latest</code>. An API model pinned to its version date; a local model to a file</p>
+<p>  sha256.</p>
+<ul>
+<li><strong>Dataset pinning</strong> — name + version/snapshot + split + a content sha256</li>
+</ul>
+<p>  manifest. Splits frozen at registration so nobody can re-slice after seeing</p>
+<p>  results.</p>
+<ul>
+<li><strong>Harness pinning</strong> — the git commit of the harness, plus a <code>PINS.txt</code> with the</li>
+</ul>
+<p>  Python version, every dependency at an exact version, and the seed.</p>
+<ul>
+<li><strong>Decoding pinning</strong> — temperature, top-p, max-tokens, stop sequences fixed</li>
+</ul>
+<p>  *per task family*, identical across every model in that family.</p>
+<ul>
+<li><strong>A literal command</strong> stored with the cell — re-running it on the pinned</li>
+</ul>
+<p>  commit reproduces the metric within Monte-Carlo CI.</p>
+<p>If any of these is missing, the comparison is not reproducible, and a 0.4-point</p>
+<p>gap between two vendors is indistinguishable from noise.</p>
+<h2>Why most public comparisons fail this bar</h2>
+<ul>
+<li><strong>Floating models.</strong> A vendor benchmarks against &quot;GPT-4o&quot; with no version date.</li>
+</ul>
+<p>  The model changes under them; the number is stale and unrepeatable.</p>
+<ul>
+<li><strong>Self-reported numbers.</strong> Vendor A benchmarks Vendor B by reading Vendor B&#x27;s</li>
+</ul>
+<p>  marketing page. Neither ran the other under a common harness. The anti-gaming</p>
+<p>  rule: *submitters provide an adapter + a pinned model ref; the factory runs it,</p>
+<p>  the submitter does not self-report.*</p>
+<ul>
+<li><strong>Per-model prompt engineering.</strong> Vendor A tunes the prompt for its own model</li>
+</ul>
+<p>  and runs the competitor on a generic prompt. The factory rule: one frozen</p>
+<p>  prompt template per task family, public, identical for every model.</p>
+<ul>
+<li><strong>No contamination check.</strong> If the eval documents were in a model&#x27;s</li>
+</ul>
+<p>  pretraining data, the score is memorization, not extraction. The factory</p>
+<p>  requires an n-gram/canary overlap audit per (model, dataset) and prefers</p>
+<p>  held-out data released after the model&#x27;s training cutoff.</p>
+<ul>
+<li><strong>No CIs.</strong> Without a 95% CI you cannot tell a real win from sampling noise.</li>
+</ul>
+<p>  Overlapping CIs are a *tie band*, not a ranking.</p>
+<p>A comparison that fails several of these is not &quot;roughly right&quot; — it is</p>
+<p>unfalsifiable.</p>
+<h2>The honest part: where the Hyperbots numbers sit</h2>
+<p>We hold ourselves to this bar in public, so here is the unflattering truth.</p>
+<p>SAVIOR-Bench v1&#x27;s numbers are <strong>attested, not factory-reproduced.</strong> On</p>
+<p>2026-05-21, the W6 workstream ran the pinned factory harness against all 23 rows</p>
+<p>of the parse-intent table. The outcome: <strong>0/23 cells re-derived green.</strong> Three</p>
+<p>structural reasons, all logged:</p>
+<p>1. The SEED harness is, by design, offline / stdlib-only / no-API-key — it has</p>
+<p>   <strong>no adapters</strong> for the 23 hosted-API vendor models.</p>
+<p>2. The in-house parse-intent corpus is <strong>not in the benchmark repository</strong>, so</p>
+<p>   its loader is not registered.</p>
+<p>3. The attested source carries only <strong>aggregate</strong> F1/WER per model — no</p>
+<p>   per-document score vector exists, so a bootstrap CI cannot be derived without</p>
+<p>   fabricating per-document data, which the team refused to do.</p>
+<p>The honest reading — and we publish it exactly this way — is: the harness did</p>
+<p>not produce a *competing* measurement that disagrees with the attested one; it</p>
+<p>produced *no* measurement. Absence of independent re-derivation is not evidence</p>
+<p>of error, but it is also not reproduction. So every SAVIOR-Bench number is read</p>
+<p>at the <strong>attested tier</strong>: *in-house-run, user-attested 2026-05-18, not</p>
+<p>factory-harness-reproduced, <code>ci95=null</code>.*</p>
+<p>What W6 *does* contribute is evidence of due diligence: the harness was actually</p>
+<p>run, the blockers were named, and **nothing was silently flipped, retracted, or</p>
+<p>re-derived to look better.** That is the difference between an honest benchmark</p>
+<p>and a marketing benchmark — not that the honest one has no gaps, but that it</p>
+<p>names them.</p>
+<h2>What this means for evaluating any comparison — Reducto&#x27;s, ours, anyone&#x27;s</h2>
+<p>When a vendor shows you a comparison, ask:</p>
+<p>1. Are all models pinned to a revision/version date?</p>
+<p>2. Was the competitor run under a common harness, or self-reported from a</p>
+<p>   marketing page?</p>
+<p>3. Is the prompt template frozen and identical across models?</p>
+<p>4. Is there a contamination audit, and is the data held-out?</p>
+<p>5. Is there a <code>n</code> and a 95% CI on every cell?</p>
+<p>6. Is there a literal rerunnable command?</p>
+<p>7. If a number cannot be reproduced, does the vendor *say so* — or imply it is</p>
+<p>   more verified than it is?</p>
+<p>Question 7 is the tell. A vendor that labels its evidence tier honestly —</p>
+<p>&quot;attested, not reproduced&quot; — is more trustworthy than one with a glossier number</p>
+<p>and no audit trail. The asset is the honesty, not the gloss.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/.claude/skills/benchmark-factory/SKILL.md</code></li>
+</ul>
+<p>  — pinning, rerunnable-command, contamination, anti-gaming, &quot;numbers without a</p>
+<p>  command do not exist.&quot;</p>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/comparative-study/comparative-study.md</code></li>
+</ul>
+<p>  — the W6 0/23 reproduction audit; the attested-not-reproduced evidence tier;</p>
+<p>  <code>ci95=null</code> rationale.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/datasets/registry/registry.json</code></li>
+</ul>
+<p>  — frozen splits, per-dataset license/provenance, sha256 manifest policy.</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT, internal, human-gated.</li>
+<li>SAVIOR-Bench v1 numbers are attested (user-attested 2026-05-18), NOT</li>
+</ul>
+<p>  factory-reproduced; W6 re-derived 0/23 parse-intent cells; <code>ci95=null</code>.</p>
+<ul>
+<li>No comparative accuracy number is asserted in this post.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

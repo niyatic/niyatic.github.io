@@ -1,0 +1,153 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reading a document-AI vendor&#x27;s accuracy claims critically</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT</div><div class="meta">2026-05-22</div><blockquote><strong>DRAFT — competitive claims require legal review and verified benchmark data before publication.</strong></blockquote>
+<h1>Reading a document-AI vendor&#x27;s accuracy claims critically</h1>
+<p>Every document-AI vendor publishes an accuracy number. Almost none of them</p>
+<p>publish enough context to interpret it. This post is a checklist for reading</p>
+<p>those claims — applied without favouritism, including to HyperAPI (by Hyperbots).</p>
+<h2>The seven questions a headline accuracy number cannot answer</h2>
+<p>When you see &quot;99% accuracy&quot; or &quot;best-in-class extraction,&quot; ask:</p>
+<h3>1. Accuracy of *what field*?</h3>
+<p>Header fields (vendor, invoice number, total) and line-item rows are different</p>
+<p>difficulty classes. A blended number is dominated by whichever class has more</p>
+<p>fields. Demand a per-field-type breakdown. If the vendor only has a blended</p>
+<p>number, they have not measured the hard part.</p>
+<h3>2. On *what documents*?</h3>
+<p>A born-digital PDF with a native text layer is an easy task. A sub-200-DPI skewed</p>
+<p>scan or a smartphone photo with glare is a hard one. A number measured on clean</p>
+<p>digital documents tells you nothing about your scanned-invoice backlog. Demand</p>
+<p>the document-quality stratification.</p>
+<h3>3. What is the *denominator*?</h3>
+<p>&quot;99% accuracy&quot; — out of how many documents? <code>n = 50</code> and <code>n = 50,000</code> are not the</p>
+<p>same evidence. A cell with <code>n &lt; 100</code> is low-confidence by the benchmark-factory</p>
+<p>standard and should not anchor a buying decision.</p>
+<h3>4. Where is the *confidence interval*?</h3>
+<p>A point estimate with no interval cannot be compared to another point estimate.</p>
+<p>If two vendors quote 98.5% and 98.1% with no CIs, you cannot tell whether that</p>
+<p>0.4-point gap is real or noise. Demand a 95% CI — or an honest statement of why</p>
+<p>one is not available.</p>
+<h3>5. Is it accuracy, or is it *accuracy after human review*?</h3>
+<p>Some vendors quote a number that includes a manual-review correction step. That</p>
+<p>is a measure of the *human-in-the-loop process*, not the model. The honest unit</p>
+<p>is automated-output accuracy *before* review. The cost-normalization convention</p>
+<p>makes this explicit: no manual-review augmentation is assumed for any approach,</p>
+<p>including HyperAPI.</p>
+<h3>6. Is the comparison *apples-to-apples*?</h3>
+<p>This is the subtle one, and the Hyperbots comparative study confronts it head-on.</p>
+<p>A fine-tuned model — one that has seen task-matched training data — compared</p>
+<p>against a zero-shot model that has not is <strong>not an apples-to-apples comparison</strong>.</p>
+<p>The fine-tuned model has an information advantage by construction. The honest</p>
+<p>study marks fine-tuned rows <code>[FT]</code> everywhere and calls every cross-setting delta</p>
+<p>&quot;direction-only.&quot; A vendor comparison that mixes fine-tuned and zero-shot rows</p>
+<p>without flagging it is misleading even if every individual number is true.</p>
+<h3>7. Can a stranger *rerun it*?</h3>
+<p>The benchmark-factory bar: every number is backed by a literal rerunnable</p>
+<p>command, on a pinned model revision, pinned dataset snapshot, pinned harness</p>
+<p>commit, pinned decoding. A number with no rerun path &quot;does not exist&quot; by that</p>
+<p>standard. See post 08 on reproducibility.</p>
+<h2>How to read the HyperBots numbers critically — including the unflattering parts</h2>
+<p>Apply the same checklist to our own SAVIOR-Bench numbers, and here is what an</p>
+<p>honest read finds:</p>
+<ul>
+<li><strong>Field breakdown:</strong> SAVIOR-Bench reports OCR transcription (recall/precision),</li>
+</ul>
+<p>  layout (PaIRS), and parse-intent (F1/WER) — separate axes, good. But it does</p>
+<p>  *not* yet ship a full field-type × document-quality stratified grid; that is a</p>
+<p>  convention for future ranking-grade runs.</p>
+<ul>
+<li><strong><code>n</code>:</strong> the OCR table reports <code>n = 509</code>. The parse-intent table reports **no</li>
+</ul>
+<p>  <code>n</code>** — the attested source does not carry one, and we report it as unknown</p>
+<p>  rather than inventing one.</p>
+<ul>
+<li><strong>CI:</strong> <code>ci95 = null</code> everywhere. The attested source has only aggregate</li>
+</ul>
+<p>  scores per model, so no bootstrap CI can be derived. Every delta is</p>
+<p>  direction-only. We say so.</p>
+<ul>
+<li><strong>Apples-to-apples:</strong> three rows are Hyperbots fine-tunes; every other row is</li>
+</ul>
+<p>  zero-shot. Marked <code>[FT]</code>. The fine-tune leads OCR recall by <strong>+0.0061</strong> and</p>
+<p>  parse-intent F1 by <strong>+0.0276</strong> over the best documented zero-shot anchor — and</p>
+<p>  *loses* on precision and layout. That is a narrow, mixed result, not a blowout.</p>
+<ul>
+<li><strong>Reproducibility:</strong> the W6 audit ran the factory harness against all 23</li>
+</ul>
+<p>  parse-intent rows and re-derived <strong>0/23</strong> — for structural reasons (no adapters</p>
+<p>  for hosted vendor APIs, the in-house corpus is not in the repo, no</p>
+<p>  per-document score vectors). The numbers stand at the *attested* tier, not the</p>
+<p>  *reproduced* tier, and we label them that way.</p>
+<p>If our own numbers do not survive this checklist cleanly, we say so. That is the</p>
+<p>point — the checklist is the asset, not the bravado.</p>
+<h2>The rule for competitor claims</h2>
+<p>When you read Reducto&#x27;s or any other vendor&#x27;s accuracy claims, hold them to the</p>
+<p>exact same seven questions. Do not accept a headline number from anyone. And note</p>
+<p>the inverse: in this blog series, we will not publish a &quot;HyperAPI beats Reducto by</p>
+<p>X%&quot; number unless it passes all seven — sourced, stratified, with <code>n</code> and CI, on</p>
+<p>a rerunnable command. Until then it is <code>PENDING MEASUREMENT</code>.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/.claude/skills/benchmark-factory/SKILL.md</code></li>
+</ul>
+<p>  — pinning, rerunnable-command, CI/tie-band, anti-gaming discipline.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/document-quality-stratification.md</code></li>
+</ul>
+<p>  — <code>n</code>/CI rule; <code>n &lt; 100</code> low-confidence rule.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/cost-normalization.md</code></li>
+</ul>
+<p>  — no manual-review augmentation assumed.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/comparative-study/comparative-study.md</code></li>
+</ul>
+<p>  — <code>[FT]</code> apples-to-apples disclosure; SAVIOR-Bench <code>n</code>/<code>ci95</code> status; the W6</p>
+<p>  0/23 reproduction audit.</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT, internal, human-gated.</li>
+<li>No competitive accuracy number is asserted here. The HyperBots numbers cited</li>
+</ul>
+<p>  are attested SAVIOR-Bench v1 cells (user-attested 2026-05-18), not</p>
+<p>  factory-reproduced; <code>ci95=null</code>.</p>
+<ul>
+<li>Any &quot;HyperAPI vs Reducto&quot; figure is <code>PENDING MEASUREMENT</code> — see <code>DATA-NEEDED.md</code>.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

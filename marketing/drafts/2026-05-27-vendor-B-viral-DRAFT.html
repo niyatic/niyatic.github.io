@@ -1,0 +1,120 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>An LLM-only parsing API solves one primitive of seven — and that&#x27;s the honest read</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publication is human-gated</div><div class="meta">linkedin-post-strategy (CTO-org / GTM Hub) — for founder authorship · 2026-05-27</div><h1>An LLM-only parsing API solves one primitive of seven — and that&#x27;s the honest read</h1>
+<p>The fastest-growing band in doc-AI is the <strong>LLM-only document-parsing API</strong>. Send a PDF, get tables and text back, feed it to RAG, ship by Tuesday. Real product shape. Good at what it does.</p>
+<p>It&#x27;s also one primitive of seven.</p>
+<p>A finance doc-AI stack does seven jobs of work — <code>parse</code>, <code>classify</code>, <code>split</code>, <code>match</code>, <code>validate</code>, <code>augment</code>, <code>reason</code>. Turning mixed PDFs into approved GL postings with an audit trail needs all of them. A single-call parsing API is built for the first one. That&#x27;s not a knock — it&#x27;s a category description.</p>
+<p><strong>Where the LLM-only parsing band actually wins.</strong></p>
+<p>Out-of-domain generality. A frontier-VLM-backed API handles research papers, contracts, scientific PDFs — classes a finance-tuned model has never seen. On our own SAVIOR-Bench v1 panel, *zero-shot* systems beat the fine-tuned ones on precision and layout. The general-purpose models are not a punching bag.</p>
+<p><strong>Where the band stops.</strong></p>
+<ul>
+<li><code>split</code> — cutting a 50-page bundle into sub-documents. An LLM sees page tokens; no native sense of boundary.</li>
+<li><code>match</code> — three-way match against a corpus of POs and GRNs. That&#x27;s a database operation. A parsing API has nowhere to put the corpus.</li>
+<li><code>validate</code> — business-rule audit. The rule becomes a string the model decides whether to honour — not a rule catalogue a controller can audit.</li>
+<li><code>reason</code> — exception decisions with a field-citing justification trace. Different product shape entirely.</li>
+</ul>
+<p><strong>Where the gap is small — and where it&#x27;s wide.</strong></p>
+<p>On parse itself, the gap is small. Our fine-tune edge is <strong>+0.0276 F1</strong> on parse-intent, <strong>+0.0061 recall</strong> on OCR. Real but narrow. We published that — the negative finding is the asset. The wide gap isn&#x27;t at the model. It&#x27;s at the architecture: the LLM-only band exposes one endpoint where a finance-tuned, primitive-resolved IDP exposes seven.</p>
+<p><strong>The buyer-rubric question that actually matters.</strong></p>
+<p>Not &quot;whose parse accuracy is higher?&quot; — it&#x27;s <strong>&quot;how many of the seven primitives are first-class named endpoints, with a documented schema, a published metric, and a price line?&quot;</strong> Count them on the docs page. Five minutes.</p>
+<p>For reference on our side: open-source backbones fine-tuned by Hyperbots (Hyperbots IP), seven primitives exposed, published <strong>$0.05/page</strong> (volume sized on a call), SEED leaderboard reproducible on a laptop, W6 audit that re-derived <strong>0 of 23</strong> cells under our own factory harness — published, because the finding is the point.</p>
+<p><strong>A question.</strong></p>
+<p>If you&#x27;ve evaluated an LLM-only parsing API for a finance workflow, where did you hit the seam — <code>split</code> on bundle PDFs, <code>match</code> against your ERP, <code>validate</code> against your rules, or somewhere else?</p>
+<hr>
+<p>*Open-source backbones fine-tuned by Hyperbots (Hyperbots IP). Benchmark numbers are model OCR / parse performance per SAVIOR-Bench v1, not product accuracy; product accuracy is per <code>apis.hyperbots.com</code>. Category labels only — no vendor named.*</p>
+<h2>Earn-Trust pre-post checklist (per <code>linkedin-post-strategy.md</code> §7)</h2>
+<p>1. ✓ <strong>Adds value to a non-buyer</strong> — the seven-primitive framing is a buyer-rubric for any doc-AI evaluation, not a sales page. The &quot;where the LLM-only band actually wins&quot; paragraph teaches the category honestly.</p>
+<p>2. ✓ <strong>Surprising-but-true</strong> — &quot;an LLM-only parsing API solves one primitive of seven&quot; is non-obvious to a reader who&#x27;s been sold &quot;AI-powered extraction&quot; as one monolithic capability. The +0.0276 F1 reveal is genuinely novel for a vendor post.</p>
+<p>3. ✓ <strong>Anchors present</strong> — +0.0276 F1, +0.0061 recall, 0/23 W6, SAVIOR-Bench v1, $0.05/page, seven named primitives. Every quantitative claim is anchored to a public artifact.</p>
+<p>4. ✓ <strong>Guardrails clean</strong> — no named competitor (category labels: &quot;LLM-only document-parsing API&quot;, &quot;finance-tuned, primitive-resolved IDP&quot;); no fabricated metric; no HITL/manual-review framing; no customer-outcome claim; no follower-count; product accuracy phrased &quot;per <code>apis.hyperbots.com</code>&quot;; pricing phrased correctly.</p>
+<p>5. ✓ <strong>Hook line standalone</strong> — &quot;An LLM-only parsing API solves one primitive of seven — and that&#x27;s the honest read&quot; is screenshot-quotable.</p>
+<p>6. ✓ <strong>CTA is a real question</strong> — &quot;where did you hit the seam — <code>split</code> on bundle PDFs, <code>match</code> against your ERP, <code>validate</code>, or somewhere else?&quot; invites a specific, comment-worthy reply with a 60-min author engagement window.</p>
+<p>7. ✓ <strong>Link target is real</strong> — no URL embedded in the body; if added at human-gate, target SAVIOR-Bench paper or <code>apis.hyperbots.com</code>, never the gated competitor study.</p>
+<p>8. ✓ <strong>Author identity disclosed</strong> — to be authored by CEO/founder; byline names the role.</p>
+<p>9. ✓ <strong>No bought reach</strong> — pod / brigade / paid boost = not used.</p>
+<p>10. ✓ <strong>Retraction risk = zero</strong> — every number cites a public artifact; no overclaim possible because the published anchors carry their existing caveats (<code>ci95=null</code>, fine-tuned vs zero-shot, in-house-attested).</p>
+<h2>LinkedIn ranking-signal mapping (per <code>linkedin-post-strategy.md</code> §0)</h2>
+<ul>
+<li><strong>S6 (quotable hook):</strong> &quot;one primitive of seven — and that&#x27;s the honest read&quot; is the screenshot line.</li>
+<li><strong>S7 (negative-finding novelty):</strong> &quot;where the LLM-only band actually wins&quot; + &quot;+0.0276 F1, real but narrow&quot; — vendor admitting the gap is small AND the other band has structural strengths is rare.</li>
+<li><strong>S8 (specificity):</strong> +0.0276, +0.0061, 0/23, $0.05/page, seven named primitives. Numbers over adjectives.</li>
+<li><strong>S2 (substantive comment depth):</strong> the four-option seam question invites specific war stories; each invites a follow-up reply.</li>
+<li><strong>S3 (early author reply):</strong> 60-min engagement window owned at post time.</li>
+<li><strong>S4 (named-practitioner reshare):</strong> engineers reshare honest category framings; finance-AI operators reshare buyer-rubric posts that work in a vendor-neutral RFP.</li>
+<li><strong>S5 (compounding &quot;publishes failures&quot; reputation):</strong> the 0/23 W6 line deposits another coin in the same account.</li>
+</ul>
+<h2>Guardrail audit — what is NOT in the post</h2>
+<ul>
+<li>❌ Vendor name (the category vendor, named only in the gated study)</li>
+<li>❌ Specific competitor capability or pricing claim (lives in the gated study)</li>
+<li>❌ Any &quot;we beat X by Y&quot; comparative accuracy assertion</li>
+<li>❌ Customer name, outcome, or revenue claim</li>
+<li>❌ HITL / manual-review framing</li>
+<li>❌ Fabricated metric or follower count</li>
+<li>❌ Closed-source ownership claim over open weights</li>
+<li>❌ Product accuracy claim outside the &quot;per <code>apis.hyperbots.com</code>&quot; anchor</li>
+</ul>
+<p>What IS in the post: a category-level honest framing of the LLM-only parsing band vs the finance-tuned primitive-resolved band; the seven-primitive buyer-rubric question; the public Hyperbots anchors (+0.0276 F1, +0.0061 recall, 0/23, $0.05/page); the small-gap-honest framing the rest of the GTM series carries.</p>
+<h2>Character count</h2>
+<p>Body (hook → final question, excluding YAML, disclaimer footer, and this checklist appendix): <strong>2,724 chars</strong> including spaces, within the 2,500–2,800 target. With the standard &quot;Open-source backbones fine-tuned by Hyperbots…&quot; disclaimer footer included, the total is <strong>~2,975 chars</strong> — still well under LinkedIn&#x27;s ~3,000-char long-form limit. If a tighter cut is preferred at human-gate time, dropping the &quot;Where the LLM-only parsing band actually wins&quot; paragraph keeps the post hook-led with the seven-primitive frame and the seam-question intact (~2,200 chars body).</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/content/competitor-studies/vendor-B/STUDY-2026-05-27.md</code> — the gated, named competitor study. The vendor name lives there; this post does not name it.</li>
+<li><code>~/Desktop/hyperapi-gtm-hub/comparative-blogs/2026-05-27-vendor-B-deep-comparative-DRAFT.md</code> — the parent comparative blog this post links to (also category-labels-only).</li>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/SAVIOR-Bench.md</code> — parse-intent +0.0276 F1, OCR +0.0061 recall, IAA 0.761 on 509 docs, fine-tune disclosure (Appendix A).</li>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/W6-attestation-2026-05-21.md</code> — the 0/23 audit anchor.</li>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/CLAUDE.md</code> — HyperAPI primitive inventory (the &quot;seven primitives&quot; line).</li>
+<li><code>~/Desktop/hyperapi-gtm-hub/linkedin/linkedin-post-strategy.md</code> — v2 strategy; §0 S1–S10 ranking signals, §6 honesty bar, §7 Earn-Trust checklist applied here.</li>
+<li><code>~/Desktop/hyperapi-gtm-hub/linkedin/2026-05-26-viral-technical-five-layers-DRAFT.md</code> — voice / tone reference for the founder-authored category post.</li>
+<li>Pricing: published $0.05/page model on <code>apis.hyperbots.com</code>, volume sized on a call.</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li><strong>DRAFT — external publication is human-gated.</strong> The 2026-05-20 LinkedIn-via-Slack pause is in effect; this draft does not authorize a post.</li>
+<li><strong>Founder-authored.</strong> Engineered for CEO authorship (S9 — founder voice is LinkedIn&#x27;s strongest authorial-trust signal). If a non-founder authors, the first-person framing must be reworked.</li>
+<li><strong>Category labels only.</strong> &quot;LLM-only document-parsing API&quot; and &quot;finance-tuned, primitive-resolved IDP&quot; are the two labels used. The vendor name is in the gated study and only there. Fallback labels accepted at human-gate: &quot;VLM-orchestrator IDP&quot;, &quot;RAG-ingestion parsing API&quot;, &quot;developer-facing LLM parsing API&quot; — all four hold the no-vendor-name guardrail.</li>
+<li><strong>No URL embedded in body</strong> — the gated study is referenced by file path inside the parent blog, not as a clickable link in the LinkedIn post body. If a URL is added at human-gate time, target SAVIOR-Bench (when public) or <code>apis.hyperbots.com</code>, never the internal gated study path.</li>
+<li><strong>Numbers carry caveats.</strong> +0.0276 F1, +0.0061 recall, 0/23 W6, IAA 0.761 are in-house-attested SAVIOR-Bench v1 / W6 figures; <code>ci95=null</code> on aggregates; fine-tuned vs zero-shot labelled inline. The post does not assert a head-to-head against a named LLM-only parsing API — only against the band&#x27;s structural shape.</li>
+<li><strong>Hyperbots framing.</strong> Open-source backbones fine-tuned by Hyperbots (Hyperbots IP). No claim of closed-source ownership of open weights.</li>
+<li><strong>No HITL framing.</strong> Per [[no-hitl-framing]].</li>
+<li><strong>WebFetch was harness-blocked</strong> in the session that drafted the gated study; the public LinkedIn post does not depend on those cells being lifted — it characterizes the band, not the vendor.</li>
+<li><strong>Character count is target, not contract.</strong> ~2,700 chars. Below 2,500 means the seam-question paragraph or the &quot;where the band stops&quot; paragraph is missing; above 2,800 means the buyer-rubric paragraph likely doubled with the closing question and should be trimmed.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

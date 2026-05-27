@@ -1,0 +1,162 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>How to actually measure document-AI extraction accuracy</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT</div><div class="meta">2026-05-22</div><blockquote><strong>DRAFT — competitive claims require legal review and verified benchmark data before publication.</strong></blockquote>
+<h1>How to actually measure document-AI extraction accuracy</h1>
+<p>Most document-AI vendor pages quote a single number — &quot;99% accuracy&quot; — with no</p>
+<p>field breakdown, no document-quality stratification, no <code>n</code>, and no confidence</p>
+<p>interval. That number is not measurement. It is a headline. This post is the</p>
+<p>opposite: the metric framework HyperAPI (by Hyperbots) uses internally, written</p>
+<p>out in full so you can apply it to *any* vendor, including us.</p>
+<h2>Why a single accuracy number is meaningless</h2>
+<p>&quot;Accuracy&quot; on a document is not one quantity. A document has a vendor name, an</p>
+<p>invoice number, a total, a tax line, a date, a dozen line items, and a payment</p>
+<p>terms note. Each is a different recognition problem. A model can nail the header</p>
+<p>fields and still mangle every line-item row — and a blended &quot;98%&quot; hides that</p>
+<p>completely. The blended number also hides *which documents*: a clean born-digital</p>
+<p>PDF and a skewed mobile photo are not the same task.</p>
+<p>The HyperBots benchmark-factory discipline states the rule plainly: **accuracy is</p>
+<p>never reported as one number.** It is reported on a 2-D grid of field-type ×</p>
+<p>document-quality, each cell carrying its own <code>n</code> and 95% confidence interval.</p>
+<h2>The metric framework, dimension by dimension</h2>
+<h3>1. Field-level precision / recall / F1</h3>
+<p>For each extracted field, score it against gold:</p>
+<ul>
+<li><strong>Precision</strong> — of the fields the model emitted, what fraction were correct.</li>
+</ul>
+<p>  Low precision means the model invents or mis-fills fields (a</p>
+<p>  <code>schema_mismatch_hallucination</code> in the error taxonomy below).</p>
+<ul>
+<li><strong>Recall</strong> — of the fields that should have been extracted, what fraction the</li>
+</ul>
+<p>  model got. Low recall means the model drops fields (a <code>refusal_no_output</code> or a</p>
+<p>  missed region).</p>
+<ul>
+<li><strong>F1</strong> — the harmonic mean. The honest single metric *per field type*, never</li>
+</ul>
+<p>  blended across all fields into one page-level number.</p>
+<p>Precision and recall trade against each other, and which one matters depends on</p>
+<p>your downstream process. An AP team that auto-posts invoices fears low precision</p>
+<p>(wrong total posted) far more than low recall (a field flagged for review).</p>
+<h3>2. Layout-aware accuracy</h3>
+<p>Getting the characters right is not enough if they land in the wrong field. The</p>
+<p>classic failure: the model reads <code>1,234.00</code> perfectly but pulls it from the</p>
+<p>*subtotal* line instead of the *total* line. Character-level scoring calls that a</p>
+<p>win. It is a <code>layout_misread</code> and it is a real production defect.</p>
+<p>A layout-aware metric scores whether the extracted value is associated with the</p>
+<p>correct semantic region. SAVIOR-Bench (the Hyperbots-side benchmark) uses</p>
+<p><strong>PaIRS</strong>, a pairwise spatial-relationship score, for exactly this — does the</p>
+<p>model preserve the relative spatial structure of the page, not just the glyphs.</p>
+<p>Note the honesty caveat in the benchmark: PaIRS is only directly comparable</p>
+<p>between *prompt-controlled* systems; across non-prompt-controlled systems it is a</p>
+<p>format-compatibility proxy, not a strict ranking. We state that rather than imply</p>
+<p>a clean ranking.</p>
+<h3>3. Line-item / table fidelity</h3>
+<p>A table is not a bag of cells. A purchase-order table has rows, and a row binds</p>
+<p>qty + description + unit-price + line-total together. The right metric is a</p>
+<p><strong>row-level F1</strong>: a row counts as correct only if its cells are correct *and*</p>
+<p>bound to the same logical row. The error taxonomy bucket here is</p>
+<p><code>table_structure_error</code> — one logical row split into two, or two merged into one.</p>
+<p>This is covered in depth in companion post 06.</p>
+<h3>4. Numeric and locale correctness</h3>
+<p><code>($125.00)</code> is negative 125. <code>1.234,56</code> is one-thousand-two-hundred in a European</p>
+<p>locale. A model that recognizes every digit but mishandles sign or locale commits</p>
+<p>a <code>numeric_format_error</code>. For finance documents this is not cosmetic — it changes</p>
+<p>the posted amount. Numeric fields get a numeric-tolerance metric, not a string</p>
+<p>match.</p>
+<h3>5. Confidence intervals and n</h3>
+<p>Every cell carries a <strong>95% confidence interval and the <code>n</code></strong> it was computed on.</p>
+<p>The interval is a nonparametric bootstrap (≥1000 resamples, pinned seed) over</p>
+<p>per-item scores. Two consequences the factory enforces:</p>
+<ul>
+<li>If two models&#x27; 95% CIs overlap, they are reported as a <strong>tie band</strong>, not</li>
+</ul>
+<p>  strictly ranked. &quot;We beat them by 0.4 points&quot; on overlapping CIs is not a real</p>
+<p>  win.</p>
+<ul>
+<li>A cell with <code>n &lt; 100</code> is marked low-confidence and excluded from any aggregate.</li>
+</ul>
+<p>An honesty note from the Hyperbots comparative study: SAVIOR-Bench v1 currently</p>
+<p>ships with <code>ci95=null</code> — the attested source carries only aggregate F1/WER per</p>
+<p>model, not per-document score vectors, so a bootstrap CI <strong>cannot</strong> be derived</p>
+<p>without fabricating per-document data, which the team refused to do. The honest</p>
+<p>move is to publish <code>ci95=null</code> and call every delta &quot;direction-only,&quot; not to</p>
+<p>invent an interval. That is the standard this whole framework is held to.</p>
+<h2>The error-mode taxonomy</h2>
+<p>A wrong extraction is not just &quot;wrong&quot; — it is wrong in one of seven specific</p>
+<p>ways. Bucketing failures tells you what to fix:</p>
+<table><thead><tr><th>bucket</th><th>what happened</th></tr></thead><tbody><tr><td><code>ocr_character_error</code></td><td>wrong character recognized (low-DPI, mobile capture)</td></tr><tr><td><code>layout_misread</code></td><td>right characters, wrong field</td></tr><tr><td><code>reading_order_error</code></td><td>text fragments concatenated in the wrong order</td></tr><tr><td><code>schema_mismatch_hallucination</code></td><td>a field invented that is not in the source</td></tr><tr><td><code>numeric_format_error</code></td><td>sign/locale mishandled</td></tr><tr><td><code>table_structure_error</code></td><td>row/column boundaries drawn wrong</td></tr><tr><td><code>refusal_no_output</code></td><td>model declined or returned empty</td></tr></tbody></table>
+<p>A good evaluation reports the top three buckets per system, with an example</p>
+<p>document each. A vendor that cannot tell you *how* it fails has not measured</p>
+<p>itself.</p>
+<h2>What to demand of any vendor — including HyperAPI</h2>
+<p>1. Field-level P/R/F1, broken out by field type — not one blended number.</p>
+<p>2. A document-quality stratification (clean digital / scanned / mobile /</p>
+<p>   multilingual / handwritten).</p>
+<p>3. Row-level F1 for tables, not cell-level.</p>
+<p>4. <code>n</code> and a 95% CI on every cell — or an honest <code>ci95=null</code> with the reason.</p>
+<p>5. The error-mode breakdown.</p>
+<p>6. A rerunnable command behind every number.</p>
+<p>If a vendor — us or anyone else — cannot produce this, the accuracy claim is</p>
+<p>unverified. Treat it accordingly.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/.claude/skills/benchmark-factory/SKILL.md</code></li>
+</ul>
+<p>  — metrics, CI, tie-band, pinning discipline.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/document-quality-stratification.md</code></li>
+</ul>
+<p>  — field-type × quality grid; <code>n</code>/CI reporting rule.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/error-mode-taxonomy.md</code></li>
+</ul>
+<p>  — the closed 7-bucket error taxonomy.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/comparative-study/comparative-study.md</code></li>
+</ul>
+<p>  — SAVIOR-Bench v1 methodology, PaIRS, <code>ci95=null</code> honesty note.</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT, internal, human-gated. No external publication without legal review.</li>
+<li>No competitive accuracy number appears in this post; it is a methodology piece.</li>
+<li>SAVIOR-Bench figures referenced are attested (user-attested 2026-05-18), not</li>
+</ul>
+<p>  factory-harness-reproduced; <code>ci95=null</code> throughout.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

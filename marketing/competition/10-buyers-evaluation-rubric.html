@@ -1,0 +1,158 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A buyer&#x27;s evaluation rubric — how a CFO and engineering team should benchmark document-AI vendors</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT</div><div class="meta">2026-05-22</div><blockquote><strong>DRAFT — competitive claims require legal review and verified benchmark data before publication.</strong></blockquote>
+<h1>A buyer&#x27;s evaluation rubric — how to benchmark document-AI vendors</h1>
+<p>You should not buy a document-AI vendor on their benchmark. You should buy on</p>
+<p>*your* benchmark — run on your documents, under one harness, scored one way. This</p>
+<p>post is the rubric to do that. It is vendor-neutral by construction: run it on</p>
+<p>Reducto, on HyperAPI (by Hyperbots), and on every shortlisted vendor identically.</p>
+<h2>Principle: bring your own held-out test set</h2>
+<p>The single most important step. Assemble <strong>your own</strong> test set of ~300–500</p>
+<p>documents, drawn from your real document mix, with <strong>gold annotations you own.</strong></p>
+<ul>
+<li>Stratify it *before* running anything (see step 2). No re-slicing after seeing</li>
+</ul>
+<p>  results.</p>
+<ul>
+<li>Keep it <strong>held-out</strong> — never send it to a vendor for &quot;tuning.&quot; A vendor that</li>
+</ul>
+<p>  tunes on your test set has invalidated your benchmark.</p>
+<ul>
+<li>A vendor&#x27;s own published number is, at best, a reason to make the shortlist —</li>
+</ul>
+<p>  never a reason to skip your own run.</p>
+<h2>The rubric — eight scored sections</h2>
+<h3>1. Field-level accuracy (P / R / F1)</h3>
+<p>Score every field type separately — <code>header</code>, <code>line_item</code> (row-F1), <code>numeric</code>,</p>
+<p><code>identifier</code>, <code>free_text</code>. Report precision, recall, F1 per field type. Reject</p>
+<p>any single blended number. Demand <code>n</code> and a 95% CI per cell.</p>
+<h3>2. Document-quality robustness</h3>
+<p>Stratify your test set into <code>clean_digital</code>, <code>scanned_high</code>, <code>scanned_low</code>,</p>
+<p><code>mobile_capture</code>, <code>multilingual</code>, <code>handwritten_annotated</code> — tagged *before* the</p>
+<p>run. Report accuracy per stratum. A vendor strong on clean digital and weak on</p>
+<p>scanned-low has told you exactly where your backlog will fail.</p>
+<h3>3. Line-item / table fidelity</h3>
+<p>Row-level F1, not cell-level. Plus an arithmetic-reconciliation rate: on what</p>
+<p>fraction of invoices does the line-item sum reconcile to the subtotal. Test</p>
+<p>multi-page and wrapped-row tables explicitly. (See post 06.)</p>
+<h3>4. Multi-currency / multi-language coverage</h3>
+<p>If your document mix is global, score the <code>multilingual</code> stratum and per-currency</p>
+<p>locale separately. Test DD/MM vs MM/DD date disambiguation. Measure the</p>
+<p><code>numeric_format_error</code> rate on European-formatted amounts. (See post 07.)</p>
+<h3>5. Error-mode profile</h3>
+<p>Bucket every failure into the seven-mode taxonomy (<code>ocr_character_error</code>,</p>
+<p><code>layout_misread</code>, <code>reading_order_error</code>, <code>schema_mismatch_hallucination</code>,</p>
+<p><code>numeric_format_error</code>, <code>table_structure_error</code>, <code>refusal_no_output</code>). The *mix*</p>
+<p>matters: a vendor that fails by refusing is operationally safer than one that</p>
+<p>fails by confidently posting a wrong number. (See post 09.)</p>
+<h3>6. Cost — three views</h3>
+<p>Per-page, per-call, and per-correct-extraction — all three, on your document-size</p>
+<p>distribution. Add a cost-per-error estimate weighted by the error-mode mix from</p>
+<p>section 5. Lowest per-page price is often not lowest total cost. (See post 09.)</p>
+<h3>7. Reproducibility and evidence tier</h3>
+<p>Ask each vendor: are your published numbers pinned and rerunnable? Is your</p>
+<p>evidence &quot;measured and reproduced,&quot; or &quot;attested but not independently</p>
+<p>reproduced&quot;? A vendor that labels its tier honestly scores higher than one with a</p>
+<p>glossier number and no audit trail. (See post 08.)</p>
+<h3>8. Operational fit</h3>
+<p>Latency (p50 and p99, not just average), throughput ceiling, failure-rate under</p>
+<p>load, integration effort, data-residency and compliance posture, and whether you</p>
+<p>can own or fine-tune the model. These are not accuracy, but they are the</p>
+<p>deployment.</p>
+<h2>The scorecard</h2>
+<p>Run every shortlisted vendor on the identical test set and fill this in. Do not</p>
+<p>let a vendor self-report any cell — your team runs it.</p>
+<table><thead><tr><th>Section</th><th>Metric</th><th>Vendor A</th><th>Vendor B</th><th>HyperAPI</th></tr></thead><tbody><tr><td>1. Field accuracy</td><td>F1 per field type + CI</td><td>_your run_</td><td>_your run_</td><td>_your run_</td></tr><tr><td>2. Quality robustness</td><td>accuracy per stratum</td><td>_your run_</td><td>_your run_</td><td>_your run_</td></tr><tr><td>3. Line items</td><td>row-F1 + reconciliation rate</td><td>_your run_</td><td>_your run_</td><td>_your run_</td></tr><tr><td>4. Multi-currency/lang</td><td>per-locale F1</td><td>_your run_</td><td>_your run_</td><td>_your run_</td></tr><tr><td>5. Error-mode profile</td><td>7-bucket mix</td><td>_your run_</td><td>_your run_</td><td>_your run_</td></tr><tr><td>6. Cost</td><td>per-page / call / correct</td><td>_your run_</td><td>_your run_</td><td>_your run_</td></tr><tr><td>7. Reproducibility</td><td>evidence tier</td><td>ask vendor</td><td>ask vendor</td><td>attested (SAVIOR-Bench)</td></tr><tr><td>8. Operational fit</td><td>p50/p99, throughput, etc.</td><td>_your run_</td><td>_your run_</td><td>_your run_</td></tr></tbody></table>
+<p>Every cell that is <code>_your run_</code> is filled by your bake-off, not by us. We do not</p>
+<p>pre-fill a &quot;HyperAPI beats Vendor A&quot; cell — that would be a fabricated comparative</p>
+<p>claim. The rubric is the deliverable; the numbers are yours to measure.</p>
+<h2>Decision rule</h2>
+<ul>
+<li>Rank within a section by <strong>CI-overlapping tie bands</strong>, not by raw point</li>
+</ul>
+<p>  estimates. If two vendors&#x27; CIs overlap, they are tied on that section.</p>
+<ul>
+<li>Weight the sections by *your* priorities — an auto-posting AP team weights</li>
+</ul>
+<p>  precision and section 5 heavily; a RAG-ingestion use case weights layout and</p>
+<p>  throughput.</p>
+<ul>
+<li>The winner is the best <strong>total-cost-of-ownership at your accuracy tolerance</strong> —</li>
+</ul>
+<p>  not the highest headline accuracy and not the lowest per-page price.</p>
+<h2>Why this rubric protects you</h2>
+<p>Every vendor&#x27;s marketing benchmark is run on the vendor&#x27;s favourable conditions.</p>
+<p>This rubric removes that advantage: one held-out test set, one harness, one</p>
+<p>scoring rubric, applied identically. It is the same discipline the</p>
+<p>benchmark-factory enforces internally — and the reason we publish it openly is</p>
+<p>that an honest buyer running an honest bake-off is the outcome we are willing to</p>
+<p>be measured by.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/document-quality-stratification.md</code></li>
+</ul>
+<p>  — field-type and quality strata; pre-run tagging; <code>n</code>/CI rule.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/error-mode-taxonomy.md</code></li>
+</ul>
+<p>  — the seven-bucket error taxonomy.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/cost-normalization.md</code></li>
+</ul>
+<p>  — the three cost views.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/.claude/skills/benchmark-factory/SKILL.md</code></li>
+</ul>
+<p>  — CI tie-band, pinning, reproducibility discipline.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/comparative-study/comparative-study.md</code></li>
+</ul>
+<p>  — HyperAPI evidence tier (attested SAVIOR-Bench v1, not factory-reproduced).</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT, internal, human-gated.</li>
+<li>No scorecard cell is pre-filled with a comparative number; every <code>_your run_</code></li>
+</ul>
+<p>  cell is for the buyer to measure.</p>
+<ul>
+<li>HyperAPI&#x27;s reproducibility tier is &quot;attested&quot; (SAVIOR-Bench v1, user-attested</li>
+</ul>
+<p>  2026-05-18, not factory-reproduced).</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

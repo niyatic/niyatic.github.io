@@ -1,0 +1,148 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Why layout awareness drives extraction accuracy — the mechanism</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT</div><div class="meta">2026-05-22</div><blockquote><strong>DRAFT — competitive claims require legal review and verified benchmark data before publication.</strong></blockquote>
+<h1>Why layout awareness drives extraction accuracy — the mechanism</h1>
+<p>A document is a 2-D object. Text on a page carries meaning *because of where it</p>
+<p>sits* — the number to the right of &quot;Total Due&quot; is the total because of its</p>
+<p>position, not because of the digits themselves. A document-AI system that treats</p>
+<p>a page as a 1-D stream of tokens has thrown away the signal that disambiguates</p>
+<p>fields. This post is about the mechanism: *why* layout awareness moves the</p>
+<p>accuracy needle, not a claim about how much.</p>
+<h2>The failure layout awareness prevents</h2>
+<p>Recall the error-mode taxonomy. Three of its seven buckets are *purely* layout</p>
+<p>failures:</p>
+<ul>
+<li><code>layout_misread</code> — characters right, assigned to the wrong field. The total</li>
+</ul>
+<p>  pulled from the subtotal line. Most common on multi-column statements.</p>
+<ul>
+<li><code>reading_order_error</code> — text fragmented across the page and concatenated in</li>
+</ul>
+<p>  the wrong order. Most common with column-spanning tables.</p>
+<ul>
+<li><code>table_structure_error</code> — row/column boundaries drawn wrong; one logical row</li>
+</ul>
+<p>  split or two merged.</p>
+<p>None of these is a character-recognition problem. A perfect OCR engine with no</p>
+<p>layout model commits all three. That is the core point: **OCR accuracy and</p>
+<p>extraction accuracy are different things**, and the gap between them is layout.</p>
+<h2>The mechanism, step by step</h2>
+<p>Consider an invoice with a two-column header — bill-to on the left, ship-to on</p>
+<p>the right — and a line-item table below.</p>
+<p>1. <strong>A reading-order-naive system</strong> linearizes the page top-to-bottom,</p>
+<p>   left-to-right. The two header columns interleave: &quot;Acme Corp / Globex Inc /</p>
+<p>   123 Main St / 456 Oak Ave …&quot;. The bill-to and ship-to addresses are now</p>
+<p>   shuffled together. The characters are all correct. The fields are all wrong.</p>
+<p>2. <strong>A layout-aware system</strong> first segments the page into regions — left column,</p>
+<p>   right column, table — and *then* reads within each region. The bill-to block</p>
+<p>   stays intact. Same OCR, correct fields.</p>
+<p>The difference is not in the recognition model. It is in whether the system has a</p>
+<p>representation of the page&#x27;s 2-D structure before it commits to field</p>
+<p>assignment. This is why the benchmark scores layout *separately* from</p>
+<p>transcription.</p>
+<h2>Why we measure it separately — PaIRS</h2>
+<p>SAVIOR-Bench scores two things on identical inputs:</p>
+<ul>
+<li><strong>Transcription</strong> — word-level multiset recall and precision. Did the right</li>
+</ul>
+<p>  words come out, regardless of arrangement.</p>
+<ul>
+<li><strong>Layout fidelity</strong> — <strong>PaIRS</strong>, a pairwise spatial-relationship score. Did</li>
+</ul>
+<p>  the system preserve the relative spatial structure of the page.</p>
+<p>A system can score high on transcription and low on PaIRS — it read every word</p>
+<p>and arranged them wrong. That is precisely the <code>layout_misread</code> /</p>
+<p><code>reading_order_error</code> failure made visible. If you only measured transcription,</p>
+<p>you would rank that system as excellent and then watch it mis-post totals in</p>
+<p>production.</p>
+<p><strong>An honest caveat, stated up front:</strong> in SAVIOR-Bench, PaIRS is directly</p>
+<p>comparable only between *prompt-controlled* systems. Across non-prompt-controlled</p>
+<p>systems it is a format-compatibility proxy, not a strict ranking. We will not</p>
+<p>present a clean PaIRS leaderboard across mixed systems and call it a ranking; it</p>
+<p>is direction-only.</p>
+<h2>What the Hyperbots data does and does not show</h2>
+<p>The internal comparative study is candid here, and we keep that candour:</p>
+<ul>
+<li>On SAVIOR-Bench, **fine-tuning a small open backbone did not buy layout</li>
+</ul>
+<p>  fidelity.** Strong zero-shot systems led on PaIRS by a wide margin</p>
+<p>  (category-label figures: 0.8766 vs 0.7066 for the fine-tuned row). Fine-tuning</p>
+<p>  bought recall and word-error-rate, not layout.</p>
+<ul>
+<li>That is a finding *against* a naive &quot;fine-tune wins everything&quot; story, and we</li>
+</ul>
+<p>  report it because cropping it would misrepresent the result.</p>
+<p>So the honest claim is not &quot;HyperAPI has the best layout model.&quot; The honest claim</p>
+<p>is: **layout is a distinct, measurable axis; most single-number accuracy claims</p>
+<p>do not measure it; and any serious evaluation must.** Where HyperAPI stands on</p>
+<p>that axis against a named competitor like Reducto is <code>PENDING MEASUREMENT</code> — see</p>
+<p>post 04 and <code>DATA-NEEDED.md</code>.</p>
+<h2>What this means for evaluation</h2>
+<p>When a vendor says &quot;layout-aware,&quot; ask the mechanism question:</p>
+<ul>
+<li>Does it segment regions before assigning fields, or linearize first?</li>
+<li>Does it score layout *separately* from transcription, or fold both into one</li>
+</ul>
+<p>  accuracy number?</p>
+<ul>
+<li>Can it show you a <code>reading_order_error</code> rate on multi-column documents?</li>
+</ul>
+<p>A vendor that cannot separate &quot;read the words&quot; from &quot;put the words in the right</p>
+<p>field&quot; has not measured the thing that actually breaks in production.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/error-mode-taxonomy.md</code></li>
+</ul>
+<p>  — <code>layout_misread</code>, <code>reading_order_error</code>, <code>table_structure_error</code> definitions.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/comparative-study/comparative-study.md</code></li>
+</ul>
+<p>  — PaIRS metric, PC/NPC comparability caveat, the layout-fidelity result</p>
+<p>  (0.8766 vs 0.7066, category labels, attested / <code>ci95=null</code>).</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT, internal, human-gated.</li>
+<li>The PaIRS figures cited are attested SAVIOR-Bench v1 cells (user-attested</li>
+</ul>
+<p>  2026-05-18), not factory-reproduced; <code>ci95=null</code>; direction-only.</p>
+<ul>
+<li>HyperAPI-vs-Reducto layout comparison is not made here — <code>PENDING MEASUREMENT</code>.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

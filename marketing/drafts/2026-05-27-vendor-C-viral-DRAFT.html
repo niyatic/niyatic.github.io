@@ -1,0 +1,101 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>A document parser that lives inside an LLM stack is not the same product as one that lives inside the CFO&#x27;s office</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publication is human-gated</div><div class="meta">linkedin-post-strategy (CTO-org / GTM Hub) — for CEO authorship · 2026-05-27</div><h1>A document parser that lives inside an LLM stack is not the same product as one that lives inside the CFO&#x27;s office</h1>
+<p>A category quietly bifurcated. Most haven&#x27;t noticed.</p>
+<p><strong>One side:</strong> the <strong>LLM-orchestration-stack document parser</strong> — front door of an LLM/RAG pipeline. PDF in, markdown chunks out, vector DB next. Tiered fast/accurate/multimodal modes, page-credit pricing, pre-wired into a developer framework.</p>
+<p><strong>Other side:</strong> <strong>API-native, finance-fine-tuned document AI</strong> — primitive-resolved endpoints whose outputs are typed records. Seven primitives — <code>parse · classify · split · match · validate · augment · reason</code>. Open-source backbones fine-tuned by Hyperbots (Hyperbots IP). <strong>$0.05 / page</strong>.</p>
+<p>Both are excellent at what they&#x27;re for. They are not for the same buyer.</p>
+<p><strong>Output shape decides.</strong> Markdown chunks are right for retrieval — chat-over-PDFs, contract-Q&amp;A, knowledge-base. Typed records are right for posting an approved invoice to a GL with audit trail. <strong>You can&#x27;t post a markdown chunk to a GL.</strong></p>
+<p><strong>The seven-primitive gap.</strong> A <strong>RAG-pipeline-native parsing API</strong> owns one — <code>parse</code>. The other six are the integrator&#x27;s problem. Right factoring for a developer; wrong factoring for a finance buyer paying to outsource assembly. P2P money lives in <code>match</code>; O2C money lives in <code>reason</code>. Neither is a parser problem.</p>
+<p><strong>Fine-tune posture, plainly.</strong> Every &quot;AI for finance&quot; post claims 10x. Honest version, per SAVIOR-Bench v1: the fine-tune edge over the best well-documented zero-shot is <strong>+0.0276 F1</strong> on parse-intent (23 systems) and <strong>+0.0061 recall</strong> on OCR (21 systems). Real, but narrow — and it lives on the finance long tail (delivery dockets, bilingual carriers, multi-leg BoLs, spanning-header invoices). The argument needs the right output shape — not a blowout.</p>
+<p><strong>Benchmark posture.</strong> SAVIOR-Bench v1 — 509 docs, IAA 0.761, <code>ci95=null</code> (published as such). SEED leaderboard — 12 cells, reproducible on a laptop. W6 audit re-derived <strong>0 of 23</strong> cells. We published that.</p>
+<p><strong>Three questions decide buyer-fit.</strong></p>
+<p>1. Who pays — IT/AI engineering or the CFO&#x27;s office?</p>
+<p>2. What ships — markdown chunks or typed records?</p>
+<p>3. Does the workload need the other six primitives out of the box?</p>
+<p>Answer &quot;CFO / typed records / yes&quot; and you&#x27;re not in the RAG-parser category. You&#x27;re in a different one — and that&#x27;s the distinction most &quot;AI for finance&quot; pitches blur.</p>
+<p><strong>The take.</strong> Stop ranking vendors. Start matching buyers. Category fit, not category superiority.</p>
+<p><strong>Challenge me.</strong> If you&#x27;ve shipped document AI for finance, which primitive broke first when you composed around a general-purpose parser — <code>match</code>, <code>validate</code>, or <code>reason</code>?</p>
+<hr>
+<p>*Open-source backbones fine-tuned by Hyperbots (Hyperbots IP). Benchmark numbers = model OCR/parse performance, not product accuracy; product accuracy only &quot;per apis.hyperbots.com.&quot; No customer outcomes claimed. Category-label comparison.*</p>
+<h2>Earn-Trust pre-post checklist (per <code>linkedin-post-strategy.md</code> §7)</h2>
+<p>1. ✓ <strong>Adds value to a non-buyer</strong> — the buyer-fit-vs-category-leadership framing is useful to anyone evaluating doc AI for any workload; it&#x27;s a decision rubric, not a sales page.</p>
+<p>2. ✓ <strong>Surprising-but-true</strong> — most readers won&#x27;t have predicted the &quot;+0.0276 F1&quot; honest gap, the &quot;0 of 23&quot; W6 audit, or the &quot;markdown chunks can&#x27;t post to a ledger&quot; framing.</p>
+<p>3. ✓ <strong>Anchors present</strong> — +0.0276 F1, +0.0061 recall, 509 docs, IAA 0.761, 12 cells, 0/23, $0.05/page — all from public Hyperbots artifacts (SAVIOR-Bench v1 + SEED leaderboard + W6 attestation + published pricing).</p>
+<p>4. ✓ <strong>Guardrails clean</strong> — no named competitor (category labels only — <code>LLM-orchestration-stack document parser</code>, <code>RAG-pipeline-native parsing API</code>); no fabricated metric; no HITL / manual-review framing; no customer-outcome claim; no follower-count; pricing phrased correctly; fine-tune-vs-zero-shot disclosed; product accuracy framed per apis.hyperbots.com.</p>
+<p>5. ✓ <strong>Hook line standalone</strong> — &quot;A document parser that lives inside an LLM stack is not the same product as one that lives inside the CFO&#x27;s office&quot; is screenshot-able as a one-liner.</p>
+<p>6. ✓ <strong>CTA is a real question</strong> — &quot;which primitive broke first — match, validate, or reason?&quot; invites comment + author engagement within 60 min.</p>
+<p>7. ✓ <strong>Link target is real</strong> — no link in body; if added at human-gate time, target the gated study landing page or <code>apis.hyperbots.com</code> (real, public). The named-competitor study is NOT linked publicly.</p>
+<p>8. ✓ <strong>Author identity disclosed</strong> — to be authored by CEO; byline names the role.</p>
+<p>9. ✓ <strong>No bought reach</strong> — no pod / brigade / paid boost.</p>
+<p>10. ✓ <strong>Retraction risk = zero</strong> — every number cites a public Hyperbots artifact; no claim about the comparison vendor that would require correction.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/content/competitor-studies/vendor-C/STUDY-2026-05-27.md</code> —</li>
+</ul>
+<p>  gated companion (named comparison, twelve publicly-attested ICP customers, fourteen-cell head-to-head plan, deal-room one-pager). <strong>Linked from the gated landing page, not from this post.</strong></p>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/comparative-blogs/2026-05-27-vendor-C-deep-comparative-DRAFT.md</code> —</li>
+</ul>
+<p>  the public-narrative comparative blog this post points the reader toward (also category-labels only).</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/SAVIOR-Bench.md</code> —</li>
+</ul>
+<p>  parse-intent +0.0276 F1, OCR +0.0061 recall, 509 docs, IAA 0.761, <code>ci95=null</code>, W6 0/23 audit.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/linkedin/linkedin-post-strategy.md</code> — v2 virality strategy; §0 ranking signals + §6 honesty bar + §7 pre-post checklist applied here.</li>
+<li><code>~/Desktop/hyperapi-gtm-hub/linkedin/2026-05-26-viral-technical-five-layers-DRAFT.md</code> —</li>
+</ul>
+<p>  the five-layer production-stack framing this post inherits.</p>
+<ul>
+<li>HyperAPI public pricing surface — published $0.05/page anchor, volume sized on a call.</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT — external publication is human-gated. The 2026-05-20 LinkedIn-via-Slack pause is in effect; nothing here authorizes a post.</li>
+<li><strong>CEO-authored</strong> (founder voice — strongest LinkedIn ranking signal). If a different author posts it, rework first-person framing.</li>
+<li><strong>Category labels only.</strong> The competitor vendor is not named in the post. The three category labels (<code>LLM-orchestration-stack document parser</code>, <code>RAG-pipeline-native parsing API</code>, <code>LLM ecosystem doc parser</code>) are buyer-orientation devices.</li>
+<li><strong>No fabricated customer references.</strong> No competitor customer is named in the post — the twelve publicly-attested ICP customers for the comparison vendor are gated to the internal study.</li>
+<li><strong>No fabricated numbers.</strong> Numbers cited are Hyperbots public artifacts only. Where comparison vendor data would be needed (exact current per-page rates across modes, exact published case-study count), the post abstracts to category claims; the gated study marks those <code>[PENDING-WEBFETCH-VERIFICATION]</code>.</li>
+<li><strong>Hyperbots framing kept:</strong> open-source backbones fine-tuned by Hyperbots (Hyperbots IP). <code>[FT]</code> disclosure inline.</li>
+<li><strong>Product accuracy</strong> for HyperAPI is referenced only per <code>apis.hyperbots.com</code>; benchmark figures = model performance.</li>
+<li><strong>Character count target</strong> ~2,750 — within LinkedIn&#x27;s long-form post limit (~3,000 chars). If a shorter cut is preferred, the §1 hook + buyer-fit-test + closing question is the minimum viable subset.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

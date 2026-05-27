@@ -1,0 +1,150 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The line-item extraction problem — where most document-AI APIs break</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT</div><div class="meta">2026-05-22</div><blockquote><strong>DRAFT — competitive claims require legal review and verified benchmark data before publication.</strong></blockquote>
+<h1>The line-item extraction problem — where most document-AI APIs break</h1>
+<p>Header fields are the easy part of an invoice. Vendor name, invoice number,</p>
+<p>total — one value each, usually in a predictable place. The line-item table is</p>
+<p>where document-AI systems actually fail. This post is about *why*, and how to</p>
+<p>measure it honestly.</p>
+<h2>Why tables are hard</h2>
+<p>A line-item table is a 2-D structure with semantics:</p>
+<ul>
+<li>It has a <strong>variable number of rows</strong> — 1 row or 200, unknown in advance.</li>
+<li>Each row <strong>binds</strong> several cells together: qty, description, unit price, line</li>
+</ul>
+<p>  total are one logical record.</p>
+<ul>
+<li>Rows can <strong>wrap</strong> — a long description spills onto a second visual line that is</li>
+</ul>
+<p>  still the same logical row.</p>
+<ul>
+<li>Columns can be <strong>implicit</strong> — separated by whitespace alignment, not ruled</li>
+</ul>
+<p>  lines.</p>
+<ul>
+<li>Tables <strong>span pages</strong> — a row order that breaks across a page boundary.</li>
+<li>Subtotals, tax lines, and section headers sit *inside* the table region but are</li>
+</ul>
+<p>  <strong>not</strong> line items.</p>
+<p>Every one of these is a place to go wrong. The error-mode taxonomy has a</p>
+<p>dedicated bucket — <code>table_structure_error</code>: row/column boundaries drawn wrong,</p>
+<p>one logical row split into two, or two merged into one.</p>
+<h2>The four ways line-item extraction breaks</h2>
+<p>1. <strong>Row splitting.</strong> A wrapped description is read as two rows. Now you have a</p>
+<p>   phantom line item with a description fragment and no price. `table_structure_</p>
+<p>   error`.</p>
+<p>2. <strong>Row merging.</strong> Two tightly-spaced rows are collapsed into one. The qty of</p>
+<p>   row 1 binds to the price of row 2. The arithmetic no longer checks.</p>
+<p>   <code>table_structure_error</code>.</p>
+<p>3. <strong>Column drift.</strong> On a whitespace-aligned table, the unit-price column and the</p>
+<p>   line-total column are adjacent and similar in magnitude. The model assigns the</p>
+<p>   line total to the unit-price field. Characters correct, field wrong — a</p>
+<p>   <code>layout_misread</code>.</p>
+<p>4. <strong>Non-item contamination.</strong> A &quot;Subtotal&quot; line inside the table region is</p>
+<p>   extracted as a line item. Now your line-item sum double-counts.</p>
+<p>A header-field accuracy number tells you *nothing* about any of these.</p>
+<h2>How to measure it honestly: row-level F1</h2>
+<p>The wrong metric is cell-level accuracy — it gives partial credit to a broken</p>
+<p>row. The right metric is <strong>row-level F1</strong>:</p>
+<ul>
+<li>A predicted row counts as a true positive only if <strong>all</strong> its cells are correct</li>
+</ul>
+<p>  <strong>and</strong> they are bound to the correct logical row.</p>
+<ul>
+<li><strong>Recall</strong> = correct rows ÷ gold rows. Catches row-merging and dropped rows.</li>
+<li><strong>Precision</strong> = correct rows ÷ predicted rows. Catches row-splitting and</li>
+</ul>
+<p>  non-item contamination (phantom rows).</p>
+<ul>
+<li><strong>Row-F1</strong> = the harmonic mean.</li>
+</ul>
+<p>Report it stratified — a 3-row table and a 90-row table are different difficulty</p>
+<p>classes — and report <code>n</code> and a 95% CI. A useful secondary check is an</p>
+<p><strong>arithmetic-consistency rate</strong>: on what fraction of invoices does</p>
+<p><code>sum(line_totals)</code> reconcile to the document subtotal? That is a free,</p>
+<p>gold-free signal that catches row-merge and column-drift errors.</p>
+<h2>What the Hyperbots data shows — and what it does not</h2>
+<p>Honesty first: SAVIOR-Bench v1 scores OCR transcription, layout (PaIRS), and</p>
+<p>parse-intent F1/WER. It does <strong>not</strong> currently publish an isolated **row-level F1</p>
+<p>column** for line items. So we cannot put a HyperAPI line-item row-F1 number on</p>
+<p>this page. It is <code>PENDING MEASUREMENT</code>.</p>
+<p>What the data *does* support: word-level (not character-level) scoring exists in</p>
+<p>SAVIOR-Bench precisely because downstream extraction needs whole tokens —</p>
+<p><code>Totl</code> ≠ <code>Total</code>. And the parse-intent WER result (0.2589 for the fine-tuned</p>
+<p>system vs 0.4232 for the best documented zero-shot anchor — attested,</p>
+<p><code>ci95=null</code>, fine-tuned <code>[FT]</code>, not apples-to-apples) is a transcription-quality</p>
+<p>signal that *correlates with* but is not the same as table fidelity.</p>
+<p>Any &quot;HyperAPI extracts line items more accurately than Reducto&quot; claim is</p>
+<p><code>PENDING MEASUREMENT</code> — it requires a shared dataset with gold line-item tables,</p>
+<p>a row-F1 metric run under a pinned harness, and per-document scores for a CI. See</p>
+<p><code>DATA-NEEDED.md</code>.</p>
+<h2>What to demand of a vendor on line items</h2>
+<p>1. A <strong>row-level F1</strong> number, not a cell-level or blended one.</p>
+<p>2. Row-F1 stratified by table size and by document quality.</p>
+<p>3. An <strong>arithmetic-consistency / reconciliation rate</strong> on real invoices.</p>
+<p>4. The <code>table_structure_error</code> rate from an error-mode breakdown.</p>
+<p>5. Behaviour on <strong>multi-page tables</strong> and <strong>wrapped descriptions</strong> specifically —</p>
+<p>   ask for example documents.</p>
+<p>If a vendor&#x27;s line-item evidence is a blended page-level accuracy number, they</p>
+<p>have not measured the part of the document that actually breaks.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/error-mode-taxonomy.md</code></li>
+</ul>
+<p>  — <code>table_structure_error</code>, <code>layout_misread</code> definitions.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/framework/conventions/document-quality-stratification.md</code></li>
+</ul>
+<p>  — <code>line_item</code> field type scored as row-F1; <code>n</code>/CI rule.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/comparative-study/comparative-study.md</code></li>
+</ul>
+<p>  — word-level-scoring rationale; parse-intent WER result (attested, <code>ci95=null</code>).</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT, internal, human-gated.</li>
+<li>HyperAPI line-item row-F1 is <code>PENDING MEASUREMENT</code> — SAVIOR-Bench v1 publishes</li>
+</ul>
+<p>  no isolated row-F1 column.</p>
+<ul>
+<li>No comparative line-item accuracy claim is made.</li>
+<li>WER figures cited are attested SAVIOR-Bench v1 cells, not factory-reproduced.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>
