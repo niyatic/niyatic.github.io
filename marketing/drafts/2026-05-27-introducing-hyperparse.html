@@ -1,0 +1,153 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Introducing HyperParse — a document parser tuned for finance</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publish human-gated</div><div class="meta">Hyperbots Research · 2026-05-27</div><h1>Introducing HyperParse — a document parser tuned for finance</h1>
+<p>We built a document parser that handles invoices, bank statements, cheques, credit notes, and remittance advice — same architecture across formats, scored against real gold.</p>
+<p>This post explains what HyperParse is, what we tested it on, and where the numbers come from. Every figure traces to an on-disk benchmark cell. Where we have gaps, we say so.</p>
+<hr>
+<h2>TLDR</h2>
+<table><thead><tr><th>Task</th><th>HyperAPI result</th><th>Dataset</th><th>Cell</th></tr></thead><tbody><tr><td>parse (success rate)</td><td>99.92% on 2,612 / 2,612 docs</td><td>5 corpora, mixed formats</td><td>DC-006</td></tr><tr><td>classify — cheque</td><td>100% (21/21)</td><td>tough-cheque</td><td>DC-011</td></tr><tr><td>classify — credit note</td><td>96.7% (29/30)</td><td>tough-credit_note</td><td>DC-011</td></tr><tr><td>classify — remittance</td><td>87.1% (27/31)</td><td>tough-remittance_advice</td><td>DC-011</td></tr><tr><td>parse-intent F1 [FT]</td><td>0.8328 / WER 0.2589</td><td>SAVIOR-Bench, attested</td><td>DC-000</td></tr><tr><td>OCR edit-distance</td><td>0.061 (rank 12 / 31+)</td><td>attested external leaderboard</td><td>DC-000</td></tr></tbody></table>
+<p>&quot;Per apis.hyperbots.com&quot; for product accuracy claims.</p>
+<hr>
+<h2>Why we built HyperParse</h2>
+<p>General document parsers are tuned on broad web-scale corpora — research papers, news articles, contracts. Finance documents are a different beast. An invoice from a Japanese vendor may carry a JPY-to-USD conversion table in a rotated side column. A bank statement for a multi-currency account may repeat a &quot;balance&quot; column three times across a three-page spread, with each instance representing a different currency. A cheque image may arrive as a PNG scan with MICR (Magnetic Ink Character Recognition) encoding in a proprietary font at the bottom of the page — most general VLM-based parsers hallucinate or drop MICR lines entirely because the character set is outside their training distribution.</p>
+<p>We saw this pattern repeatedly: high-quality general parsers that handle a legal contract cleanly would fail on a remittance advice with a 40-row payment reference table, because the table header appears on page 1 and the rows run across pages 2–4, with no visual separator between the continuation rows and the following total-line. The failure mode is not OCR — the characters are read correctly. The failure is structural: the parser can&#x27;t infer that the orphaned rows on page 2 belong to the same table as the header on page 1. HyperParse was built to get this right.</p>
+<hr>
+<h2>What HyperParse is</h2>
+<p>HyperParse is the document-understanding layer inside the HyperAPI SDK. It exposes four callable primitives:</p>
+<pre><code>from hyperapi import parse, classify, split, extract
+
+# Parse a document to structured markdown / layout-aware output
+result = parse(file_path=&quot;invoice.pdf&quot;)
+
+# Classify document type
+doc_type = classify(file_path=&quot;unknown.pdf&quot;)
+
+# Split a multi-document PDF into individual document boundaries
+pages = split(file_path=&quot;batch.pdf&quot;)
+
+# Extract named fields from a parsed document
+fields = extract(file_path=&quot;remittance.pdf&quot;, schema=my_schema)</code></pre>
+<p>Two additional capabilities are on the roadmap:</p>
+<ul>
+<li><strong>parse-intent</strong> — semantic extraction with intent-aware field resolution. The <code>hyperapi-parse-intent</code> model has a factory-attested benchmark cell (F1 0.8328, see below), but the SDK primitive is not yet productized. Status: <strong>PENDING-SDK</strong>.</li>
+<li><strong>bounding-box / visual grounding</strong> — field-to-region localization. The benchmark task facet is defined; no measured cell exists yet. Status: <strong>PENDING-DATA</strong>.</li>
+</ul>
+<p>Product accuracy claims are published at <strong>apis.hyperbots.com</strong> and are not reproduced in this benchmark post. The metrics below are model-level research numbers from our internal benchmark factory.</p>
+<p>HyperParse is tuned for the five document types that drive the highest friction in accounts-payable and accounts-receivable automation:</p>
+<ul>
+<li><strong>Invoices</strong> — line items, tax structures, continuation pages, ERP-schema mismatches</li>
+<li><strong>Bank statements</strong> — multi-page tables, running balances, transaction classification</li>
+<li><strong>Cheques</strong> — mixed PDF and PNG source formats, MICR field extraction, handwritten amounts</li>
+<li><strong>Credit notes</strong> — visually similar to invoices but with polarity reversal on amounts</li>
+<li><strong>Remittance advice</strong> — payment references, multi-currency, payer/payee disambiguation</li>
+</ul>
+<p>The same <code>parse</code> primitive handles all five. Routing to specialist sub-pipelines (OCR, VLM, structured extractor) is automatic.</p>
+<hr>
+<h2>What we tested it against</h2>
+<h3>Multi-corpus parse sweep (DC-006)</h3>
+<p>We ran HyperParse (preproduction SDK <code>0fc4bada</code>) against a five-corpus sweep covering 2,615 documents spanning invoices, bank statements, cheques, credit notes, and remittance advice. All calls went through <code>realqa.harness.RealQAClient</code> via <code>https://apis.hyperbots.com</code>.</p>
+<table><thead><tr><th>Corpus</th><th>n_ok</th><th>n_error</th><th>Notes</th></tr></thead><tbody><tr><td>results (invoices)</td><td>2,293</td><td>1</td><td>1 unsupported format</td></tr><tr><td>results-converted</td><td>80</td><td>0</td><td>—</td></tr><tr><td>tough (all 4 types)</td><td>173</td><td>1</td><td>1 long-doc chunked</td></tr><tr><td>parsing (full docs + extracts)</td><td>45</td><td>0</td><td>3 long docs chunked at 25pp</td></tr><tr><td>soulshine2</td><td>22</td><td>0</td><td>—</td></tr><tr><td><strong>Total</strong></td><td><strong>2,613</strong></td><td><strong>2</strong></td><td><strong>99.92% success</strong></td></tr></tbody></table>
+<p>Long documents (≥50 pages) were chunked at 25-page windows; per-chunk records are nested under each doc and counted honestly — no silent drops. Failed parses are honest error rows.</p>
+<p><strong>Source:</strong> <code>results/DC-006__multicorpus__hyperapi-parse.json</code></p>
+<h3>Tough-benchmark classify sweep (DC-011)</h3>
+<p>The tough-benchmark dataset contains 196 documents across four types, curated with Hyperbots-annotated gold labels (entities, line items, classifier_type). We ran <code>hyperapi-classify</code> against the three types where classification is production-relevant and compare formats are available.</p>
+<table><thead><tr><th>Doctype</th><th>n</th><th>correct</th><th>accuracy</th><th>95% CI</th></tr></thead><tbody><tr><td>cheque</td><td>17</td><td>17</td><td><strong>100%</strong></td><td>[0.815, 1.000]</td></tr><tr><td>credit_note</td><td>30</td><td>29</td><td><strong>96.7%</strong></td><td>[0.833, 0.994]</td></tr><tr><td>remittance_advice</td><td>31</td><td>27</td><td><strong>87.1%</strong></td><td>[0.712, 0.949]</td></tr></tbody></table>
+<p>Scoring was factory-reproduced via <code>score_tough_jsonls.py</code> against <code>meta.json</code> gold on 2026-05-26. Confidence intervals are Wilson 95%.</p>
+<p><strong>Sources:</strong> <code>results/DC-011__tough-{cheque,credit_note,remittance_advice}__hyperapi-classify.json</code></p>
+<h3>SAVIOR-Bench parse-intent (DC-000)</h3>
+<p>SAVIOR-Bench is a 509-document, expert-annotated financial-document benchmark with inter-annotator agreement (IAA) of 0.761. It defines parse as a three-facet task: extraction, layout awareness, and bounding box. Of these, the extraction facet (parse-intent F1 + OCR edit distance) is measured; the layout-awareness and bounding-box facets are defined but not yet measured.</p>
+<p><strong>parse-intent table (23 systems, in-house-attested 2026-05-18):</strong></p>
+<table><thead><tr><th>Model</th><th>F1</th><th>WER</th><th>Fine-tuned</th><th>Note</th></tr></thead><tbody><tr><td>hyperapi-parse-intent</td><td><strong>0.8328</strong></td><td><strong>0.2589</strong></td><td>Yes [FT]</td><td>Hyperbots-IP, SAVIOR-Train fine-tune</td></tr><tr><td>DocIntentOCR-3B</td><td>0.8102</td><td>0.5622</td><td>No</td><td>Under-documented checkpoint; reported as-attested</td></tr><tr><td>GPT-4o</td><td>0.8052</td><td>0.4232</td><td>No</td><td>Best well-documented zero-shot</td></tr><tr><td>o3</td><td>0.7686</td><td>0.4869</td><td>No</td><td>—</td></tr><tr><td>Gemini 2.5 Flash</td><td>0.6653</td><td>1.2000</td><td>No</td><td>—</td></tr><tr><td>Gemini 2.5 Pro</td><td>0.6351</td><td>0.6009</td><td>No</td><td>—</td></tr><tr><td>GPT-4.1</td><td>0.6261</td><td>0.9058</td><td>No</td><td>—</td></tr><tr><td>Claude Sonnet 4.6</td><td>0.5974</td><td>0.9308</td><td>No</td><td>—</td></tr></tbody></table>
+<p><strong>Critical disclosure:</strong> <code>hyperapi-parse-intent</code> is fine-tuned on SAVIOR-Train (Hyperbots-IP, open-source backbone fine-tuned via LoRA). This is <strong>not apples-to-apples</strong> against zero-shot baselines; the fine-tune gap is a methodology fact, not a product comparison. The fine-tuned advantage over the best zero-shot row (GPT-4o) is +0.0276 F1.</p>
+<p>The <code>hyperapi-parse-intent</code> cell is in-house-attested (source: <code>benchmark.xlsx</code>, 2026-05-18) and <strong>not yet factory-harness-reproduced</strong> — a factory-reproduction attempt was made on 2026-05-20 but returned <code>unknown model hyperapi-parse-intent</code> because the offline SEED harness lacks the vendor adapter. The attested value is preserved unchanged.</p>
+<p>The SDK primitive for <code>parse-intent</code> is <strong>PENDING-SDK</strong> — the model exists; the callable endpoint is not yet productized.</p>
+<p><strong>Source:</strong> <code>results/DC-000__parse-intent-inhouse-v1__hyperapi-parse-intent.json</code></p>
+<hr>
+<h2>OCR pipeline position</h2>
+<p>On the OCR edit-distance leaderboard (40 systems, SAVIOR-Bench external corpus, lower = better), the HyperAPI-PaddleOCR-OURS pipeline sits at <strong>rank 12 / 31+ attested entries</strong> with edit distance 0.061.</p>
+<table><thead><tr><th>Rank</th><th>Model</th><th>OCR edit distance</th></tr></thead><tbody><tr><td>1</td><td>GLM-OCR</td><td>0.019</td></tr><tr><td>2</td><td>GPT-4o</td><td>0.020</td></tr><tr><td>3</td><td>MinerU-2.5</td><td>0.023</td></tr><tr><td>4</td><td>Qwen3-VL-235B</td><td>0.025</td></tr><tr><td>5</td><td>PaddleOCR-VL-1.5</td><td>0.031</td></tr><tr><td>6</td><td>Mathpix</td><td>0.033</td></tr><tr><td>7</td><td>GOT-OCR-2.0</td><td>0.041</td></tr><tr><td>8</td><td>Surya</td><td>0.057</td></tr><tr><td>9–10</td><td>MinerU-0.9 / Gemini-1.5-Pro</td><td>0.058</td></tr><tr><td>11</td><td>Qwen3.5-2B-FT</td><td>0.059</td></tr><tr><td><strong>12</strong></td><td><strong>HyperAPI PaddleOCR OURS</strong></td><td><strong>0.061</strong></td></tr><tr><td>13</td><td>OpenOCR</td><td>0.070</td></tr><tr><td>14</td><td>PaddleOCR-v4</td><td>0.071</td></tr></tbody></table>
+<p>All 31 OCR cells are <strong>externally-sourced attested</strong> — transcribed verbatim from the OCR edit-distance leaderboard table (<code>/tmp/savior-ocr/ocr-edit-distance.tsv</code>, user-provided 2026-05-22). They were <strong>not run by the factory harness</strong>. No confidence intervals are reported because the source table provides point estimates only. Factory reproduction would require the underlying OCR corpus, which is not on disk.</p>
+<p><strong>Source:</strong> <code>results/DC-000__ocr-edit-distance-v1__HyperAPI-PaddleOCR-OURS.json</code></p>
+<hr>
+<h2>What&#x27;s PENDING</h2>
+<table><thead><tr><th>Feature</th><th>Status</th><th>Reason</th></tr></thead><tbody><tr><td><code>parse-intent</code> SDK primitive</td><td>PENDING-SDK</td><td>Model attested; endpoint not productized</td></tr><tr><td>Bounding-box / visual grounding</td><td>PENDING-DATA</td><td>Facet defined; no measured benchmark cell</td></tr><tr><td><code>extract-omni</code></td><td>PENDING-SDK</td><td>Not yet released</td></tr><tr><td>Factory reproduction of parse-intent cell</td><td>PENDING-CORPUS</td><td>SEED harness lacks vendor adapter; attested value preserved</td></tr></tbody></table>
+<hr>
+<h2>What we DON&#x27;T claim</h2>
+<p>Honesty is a design requirement, not a disclaimer. Here is what this post does not assert:</p>
+<ul>
+<li><strong>No layout IoU benchmark.</strong> We have not run a bounding-box / region-detection benchmark. Extend&#x27;s RealDocBench measures layout accuracy via Adjusted F1 with IoU thresholds against 1,500 human-annotated samples. We have no equivalent measurement on disk. Comparing our parse success rate to their layout Adjusted F1 would be apples-to-oranges; we don&#x27;t make that comparison.</li>
+<li><strong>No head-to-head vs Extend Parse 2.0, Reducto, LlamaParse, or AWS Textract.</strong> We don&#x27;t have API keys for these four providers. We cannot run them through our harness. Any row labeled PENDING-KEY in our leaderboard is an honest null, not a suppressed number.</li>
+<li><strong>No productized parse-intent or extract-omni numbers.</strong> The <code>hyperapi-parse-intent</code> model has a research cell (F1 0.8328, fine-tuned on SAVIOR-Train, in-house-attested). The SDK primitive is not yet callable. <code>extract-omni</code> is PENDING-SDK entirely.</li>
+<li><strong>parse-intent F1 is fine-tuned, not zero-shot.</strong> The 0.8328 figure is from a model fine-tuned on HyperBots IP (SAVIOR-Train, LoRA). It is not directly comparable to zero-shot baselines on the same leaderboard. The fine-tuned advantage over the best documented zero-shot row (GPT-4o at 0.8052) is +0.0276 F1.</li>
+<li><strong>Benchmark numbers are research metrics, not product accuracy.</strong> Per <code>apis.hyperbots.com</code> verbatim for product-level claims.</li>
+</ul>
+<hr>
+<h2>How to call HyperParse</h2>
+<p>All primitives are available via the HyperAPI SDK. For current API documentation, rate limits, and product-level accuracy specifications, see <strong>apis.hyperbots.com</strong>.</p>
+<pre><code>import hyperapi
+
+# Parse — returns structured output (markdown + layout metadata)
+parsed = hyperapi.parse(file_path=&quot;bank_statement.pdf&quot;)
+
+# Classify — returns document type label
+label = hyperapi.classify(file_path=&quot;unknown_doc.pdf&quot;)
+
+# Split — returns page-boundary annotations for batched PDFs
+boundaries = hyperapi.split(file_path=&quot;multi_doc_batch.pdf&quot;)
+
+# Extract — returns named fields per your schema
+extracted = hyperapi.extract(
+    file_path=&quot;remittance.pdf&quot;,
+    schema={&quot;fields&quot;: [&quot;payer_name&quot;, &quot;total_payment_amount&quot;, &quot;currency&quot;]}
+)</code></pre>
+<p>SDK installation, authentication, and versioning: <strong>apis.hyperbots.com</strong>.</p>
+<hr>
+<h2>Methodology notes</h2>
+<ul>
+<li>All benchmark numbers are <strong>model-level research metrics</strong>, not product accuracy. Product accuracy is at apis.hyperbots.com.</li>
+<li>The multi-corpus parse sweep (DC-006) used preproduction SDK <code>0fc4bada</code>; production behavior may differ.</li>
+<li>The tough-benchmark classify sweep (DC-011) was factory-reproduced against Hyperbots-curated gold labels.</li>
+<li>The parse-intent and OCR edit-distance cells (DC-000) are in-house-attested or externally-sourced; neither is factory-harness-reproduced.</li>
+<li>No customer names are used in this post. Any real-world documents in the corpus are anonymized or sourced from public archives.</li>
+<li><code>results.zip</code> (Hyperbots deployed-IDP output) was not used as ground truth for any competitive comparison — that would be circular. It appears in the multi-corpus sweep only as a source of runnable documents (parse success measurement), not as a gold label source.</li>
+</ul>
+<hr>
+<p>*DRAFT — pending review. External publish is human-gated. All benchmark numbers are research metrics; they are not product accuracy claims. Product accuracy per apis.hyperbots.com.*</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

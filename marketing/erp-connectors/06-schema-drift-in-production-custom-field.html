@@ -1,0 +1,162 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hyperbots</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="meta"></div><h1>Schema drift in production: what happens when a customer adds a custom field — plan</h1>
+<h2>1. Headline + hook</h2>
+<p>Hook: **&quot;On Monday morning, the customer&#x27;s NetSuite admin adds a custom</p>
+<p>segment field to vendor bills. The bespoke integration breaks silently.</p>
+<p>The connector framework&#x27;s <code>schema_version</code> header catches it; the affected</p>
+<p>records dead-letter with the raw response attached; nothing is silently</p>
+<p>posted with a missing field. Here is how that contract works.&quot;**</p>
+<p>The post is the *operational reality* counterpart to blog #5 — drift is</p>
+<p>the failure mode the framework is shaped around.</p>
+<h2>2. Audience + intent</h2>
+<ul>
+<li>Primary: integration engineers + change-management owners.</li>
+<li>Reader takeaway: *&quot;schema drift is a connector-framework first-class</li>
+</ul>
+<p>  concern, not a runtime surprise.&quot;*</p>
+<ul>
+<li>CTA: try a drift simulation on a sandbox.</li>
+</ul>
+<h2>3. The two-layer pitch (REQUIRED)</h2>
+<h3>3.1 Speed</h3>
+<ul>
+<li>Agent re-runs the connector after the new field lands; affected records</li>
+</ul>
+<p>  hit <code>dead_letter</code> with the raw response.</p>
+<ul>
+<li>Agent updates the normalizer to map the new field (one function); ships</li>
+</ul>
+<p>  the new descriptor with bumped <code>schema_version</code>.</p>
+<ul>
+<li>*[PLACEHOLDER, ~1-2 hours per drift event] vs bespoke baseline often</li>
+</ul>
+<p>  [PLACEHOLDER, days, because schema breakage is silent].*</p>
+<h3>3.2 Depth</h3>
+<ul>
+<li><strong><code>schema_version</code> is on the descriptor.</strong> It is stamped on every</li>
+</ul>
+<p>  record (<code>docs/USAGE.md</code> + descriptor code). The CSV emit carries a</p>
+<p>  <code># schema_version=2.3.0</code> header (see byte-exact sample in</p>
+<p>  <code>README.md</code>).</p>
+<ul>
+<li><strong>Additive fields don&#x27;t break the contract.</strong> The normalizer&#x27;s job is</li>
+</ul>
+<p>  to map; an unknown additive field is recorded in lineage, not posted</p>
+<p>  blind.</p>
+<ul>
+<li><strong>Subtractive / type-change drift dead-letters.</strong> When a field the</li>
+</ul>
+<p>  normalizer expects is missing or shape-changed, the record goes to</p>
+<p>  <code>dead_letter</code> with the raw response attached. Never to <code>posted</code>.</p>
+<ul>
+<li><strong>Bump the <code>schema_version</code>, ship a new descriptor.</strong> Old records with</li>
+</ul>
+<p>  old <code>schema_version</code> continue to flow; new field is mapped going</p>
+<p>  forward. The two co-exist.</p>
+<ul>
+<li><strong>Lineage stamp</strong> carries <code>schema_version</code> on every record (per</li>
+</ul>
+<p>  v0.4 README — &quot;lineage stamp on every result carries the connector&#x27;s</p>
+<p>  descriptor policy&quot;).</p>
+<h2>4. Outline</h2>
+<ul>
+<li>P-1. The Monday-morning drift story.</li>
+<li>P-2. Where most integrations fail silently.</li>
+<li>P-3. What <code>schema_version</code> catches.</li>
+<li>P-4. Additive vs subtractive vs type-change drift — three cases.</li>
+<li>P-5. The dead-letter contract (never a human queue; <code>docs/LIMITS.md</code>).</li>
+<li>P-6. The agent loop — what gets reconfigured in hours.</li>
+<li>P-7. CTA.</li>
+</ul>
+<h2>5. Required evidence before publish</h2>
+<ul>
+<li>Confirm <code>schema_version</code> stamping is in the byte-exact CSV emit</li>
+</ul>
+<p>  (already in <code>README.md</code>).</p>
+<ul>
+<li>Confirm <code>dead_letter</code>-on-shape-mismatch behavior in the normalizer</li>
+</ul>
+<p>  source (audit before publish).</p>
+<ul>
+<li>A simulated drift sequence as a code excerpt (additive + subtractive +</li>
+</ul>
+<p>  type-change).</p>
+<h2>6. Placeholders to fill</h2>
+<ul>
+<li>[PLACEHOLDER-time-recovery-bespoke]</li>
+<li>[PLACEHOLDER-time-recovery-hyperapi]</li>
+<li>[PLACEHOLDER-customer-real-drift-event] (consent-gated)</li>
+<li>[PLACEHOLDER-normalizer-source-audit]</li>
+</ul>
+<h2>7. Competitor positioning</h2>
+<ul>
+<li>Workato — NOT-FETCHED. Hypothesis: schema drift is per-recipe; no</li>
+</ul>
+<p>  framework-level <code>schema_version</code> contract.</p>
+<ul>
+<li>MuleSoft — NOT-FETCHED. Likely stronger on DataWeave; schema-version</li>
+</ul>
+<p>  story to be confirmed.</p>
+<ul>
+<li>Boomi — NOT-FETCHED.</li>
+</ul>
+<h2>8. Sources / provenance</h2>
+<ul>
+<li><code>connector-framework/README.md</code> (the <code>schema_version=2.3.0</code> line in the</li>
+</ul>
+<p>  byte-exact sample)</p>
+<ul>
+<li><code>docs/USAGE.md</code></li>
+<li><code>docs/LIMITS.md</code> (no HITL)</li>
+<li><code>src/hyperapi_connector/connectors/README-v0.4.md</code> (lineage stamp on</li>
+</ul>
+<p>  every result)</p>
+<ul>
+<li>skill: <code>connector-conformance</code></li>
+</ul>
+<h2>Z. Internal-only</h2>
+<ul>
+<li>Cost: ~5 hours.</li>
+<li>Dependencies: the normalizer-source audit.</li>
+<li>Risk: if the type-change-drift behavior turns out to be looser than the</li>
+</ul>
+<p>  plan claims, the post tightens its language. Audit gates the publish.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

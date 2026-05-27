@@ -1,0 +1,161 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hyperbots</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="meta"></div><h1>Observability for connectors: what an SRE actually needs to see — plan</h1>
+<h2>1. Headline + hook</h2>
+<p>Hook: **&quot;You don&#x27;t get paged when an ERP integration posts the wrong</p>
+<p>thing. You get paged 11 days later when the closing fails. SRE for</p>
+<p>connectors isn&#x27;t &#x27;add Prometheus metrics&#x27; — it&#x27;s &#x27;the run object is the</p>
+<p>metric, and the dead-letter is the alert.&#x27; Here is what the connector</p>
+<p>framework emits, and what an on-call engineer actually needs from each</p>
+<p>field.&quot;**</p>
+<p>This is the <strong>depth anchor #2</strong> — high evidence floor like blog #5. The</p>
+<p>observability surface is on disk; the post unpacks it for an SRE</p>
+<p>audience.</p>
+<h2>2. Audience + intent</h2>
+<ul>
+<li>Primary: SRE / platform engineers; secondary: finance-platform leads.</li>
+<li>Reader takeaway: *&quot;the six sinks + the lineage stamp + the exit-code</li>
+</ul>
+<p>  gate is the observability contract; nothing extra to wire.&quot;*</p>
+<ul>
+<li>CTA: subscribe to the depth series.</li>
+</ul>
+<h2>3. The two-layer pitch (REQUIRED)</h2>
+<h3>3.1 Speed</h3>
+<ul>
+<li>No extra observability wiring; the framework emits the surface.</li>
+<li>[PLACEHOLDER, ~0 hours of agent observability work] vs [PLACEHOLDER,</li>
+</ul>
+<p>  ~hours-to-days of bespoke metric / logging wiring per connector].</p>
+<h3>3.2 Depth — the observability surface</h3>
+<ul>
+<li><strong>Six typed sinks.</strong> <code>posted</code>, <code>dead_letter</code>, <code>unresolved</code>,</li>
+</ul>
+<p>  <code>skipped_dup</code>, <code>failed</code>, <code>audit</code>. Each is a counter the SRE reads</p>
+<p>  directly; no extra metric library.</p>
+<ul>
+<li><strong>The count invariant.</strong> <code>count(sources) == sum(counts(sinks))</code> or</li>
+</ul>
+<p>  non-zero exit. The simplest possible page-worthy signal: did the</p>
+<p>  process exit non-zero?</p>
+<ul>
+<li><strong><code>RunResult</code> is the structured event.</strong> A connector run produces one</li>
+</ul>
+<p>  <code>RunResult</code>; the SRE ingests it as JSON.</p>
+<ul>
+<li><strong>Lineage stamp on every record.</strong> Per v0.4 README: lineage carries</li>
+</ul>
+<p>  <code>target</code>, <code>schema_version</code>, <code>sign</code>, <code>grain</code>, <code>fx_policy</code>,</p>
+<p>  <code>date_calendar</code>. The forensic trail is already there.</p>
+<ul>
+<li><strong><code>dead_letter</code> is the alert, with the raw response attached.</strong> Not a</li>
+</ul>
+<p>  generic error message; the *actual response* from the target. SRE</p>
+<p>  triages without re-running.</p>
+<ul>
+<li><strong>No HITL.</strong> Low-confidence records dead-letter; an SRE never owns a</li>
+</ul>
+<p>  human-review queue.</p>
+<ul>
+<li><strong>Secrets boundary: nothing logged.</strong> <code>secrets.py</code> enforces no token</li>
+</ul>
+<p>  in logs, no token in payload, no token committed.</p>
+<h3>What the post does NOT claim</h3>
+<ul>
+<li>Built-in metric exporters (Prometheus, OTel). Not in v0.</li>
+<li>Distributed tracing. Not in v0.</li>
+<li>Built-in dashboards. Not in v0.</li>
+<li>A scheduler / orchestrator that surfaces these signals. Per</li>
+</ul>
+<p>  <code>docs/LIMITS.md</code>, the framework is an exit-code-gated unit of work; an</p>
+<p>  external scheduler integrates the signals.</p>
+<h2>4. Outline</h2>
+<ul>
+<li>P-1. The actual SRE problem — when do you get paged on an integration?</li>
+<li>P-2. The six sinks as the metric surface.</li>
+<li>P-3. The count invariant as the page-worthy signal.</li>
+<li>P-4. <code>RunResult</code> as the structured event; lineage stamp as the</li>
+</ul>
+<p>  forensic trail.</p>
+<ul>
+<li>P-5. <code>dead_letter</code> as the alert.</li>
+<li>P-6. What&#x27;s not in v0 (and what to wire externally).</li>
+<li>P-7. CTA — read <code>docs/LIMITS.md</code>; fork and try.</li>
+</ul>
+<h2>5. Required evidence before publish</h2>
+<ul>
+<li>Confirm <code>RunResult</code> shape in <code>result.py</code> matches the post&#x27;s claims.</li>
+<li>Confirm the lineage-stamp content from the v0.4 README is still</li>
+</ul>
+<p>  current.</p>
+<ul>
+<li>A sample <code>RunResult</code> JSON dump (real or mocked, byte-exact).</li>
+</ul>
+<h2>6. Placeholders to fill</h2>
+<ul>
+<li>[PLACEHOLDER-runresult-sample]: actual JSON dump from a run</li>
+<li>[PLACEHOLDER-external-scheduler-recipe]: what to wire (Argo, k8s</li>
+</ul>
+<p>  cronjobs, etc.)</p>
+<h2>7. Competitor positioning</h2>
+<ul>
+<li>Workato / MuleSoft / Boomi — NOT-FETCHED. Hypothesis: all ship</li>
+</ul>
+<p>  observability dashboards as part of the platform; HyperAPI&#x27;s wedge is</p>
+<p>  *the framework, not a UI*. Frame the post for the SRE who wants</p>
+<p>  observable primitives, not a vendor dashboard.</p>
+<h2>8. Sources / provenance</h2>
+<ul>
+<li><code>connector-framework/src/hyperapi_connector/result.py</code></li>
+<li><code>connector-framework/src/hyperapi_connector/connectors/README-v0.4.md</code></li>
+</ul>
+<p>  (lineage stamp content)</p>
+<ul>
+<li><code>docs/LIMITS.md</code> (what&#x27;s not in v0)</li>
+<li><code>connector-framework/src/hyperapi_connector/secrets.py</code></li>
+<li>skill: <code>observability-engineer</code>, <code>sre-reliability-engineer</code></li>
+</ul>
+<h2>Z. Internal-only</h2>
+<ul>
+<li>Cost: ~4-5 hours.</li>
+<li>Dependencies: a <code>RunResult</code> JSON dump.</li>
+<li>Risk: low. This is depth anchor #2; on-disk evidence is strong.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

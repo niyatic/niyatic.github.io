@@ -1,0 +1,300 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>New benchmark-based blog ideas — 7 posts sourced from on-disk cells</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; the human approval gate before any publication</div><div class="meta">Agent 12 (abm-gtm content orchestrator) · 2026-05-25</div><h1>New benchmark-based blog ideas — 7 posts sourced from on-disk cells</h1>
+<blockquote><strong>DRAFT.</strong> Seven additional benchmark-based blog ideas beyond the 5 CEO-set</blockquote>
+<blockquote>posts (A–E), each grounded in cells that already exist on disk in</blockquote>
+<blockquote><code>hyperapi-documentapi-benchmark-factory/results/</code> (137 result JSONs across</blockquote>
+<blockquote>5 task families). All require the same review chain as the CEO blogs and</blockquote>
+<blockquote>the human approval gate.</blockquote>
+<h2>On-disk cell inventory (the source pool)</h2>
+<p>From <code>ls hyperapi-documentapi-benchmark-factory/results/ | wc -l = 137</code>:</p>
+<table><thead><tr><th>Task family</th><th># cells</th><th>Provenance</th><th>Factory-reproduced?</th></tr></thead><tbody><tr><td><code>financepss-205-v1</code></td><td>48</td><td>external-attested (FinancePSS-205 report)</td><td>NO (<code>factory_reproduced: false</code>, <code>ci95: null</code>)</td></tr><tr><td><code>ocr-edit-distance-v1</code></td><td>31</td><td>external-attested (OCR edit-distance leaderboard table)</td><td>NO</td></tr><tr><td><code>parse-intent-inhouse-v1</code></td><td>23</td><td>in-house-attested (benchmark.xlsx, 2026-05-18)</td><td>NO (W6 attempt 0/23 green)</td></tr><tr><td><code>savior-bench-v1</code></td><td>21</td><td>in-house-attested</td><td>NO</td></tr><tr><td><code>finbench-synth-fixture-v1</code></td><td>12</td><td>synthetic-fixture (factory harness)</td><td><strong>YES</strong> (4 tasks × 3 models; pinned <code>git_commit</code>, <code>seed</code>, <code>decoding</code>)</td></tr></tbody></table>
+<p><strong>Honest framing every post must carry:</strong> 125 of 137 cells are `attested:</p>
+<p>true, factory_reproduced: false` (OCR / parse / SAVIOR / FinancePSS); only the</p>
+<p>12 classify cells in <code>finbench-synth-fixture-v1</code> are factory-reproduced</p>
+<p>(DC-001, DE-002, DE-003, DV-001 × <code>hyperbots-ip-seed-v1</code>,</p>
+<p><code>keyword-extractor-v1</code>, <code>rule-baseline-v1</code>). Every new post below names which</p>
+<p>tier its evidence sits in.</p>
+<h2>The 7 new post ideas</h2>
+<h3>NB-1 — &quot;What 31 OCR engines actually do on financial documents (and why the leaderboard is misleading)&quot;</h3>
+<ul>
+<li><strong>Hook:</strong> We pulled the OCR edit-distance number for 31 engines on the same</li>
+</ul>
+<p>  corpus — Tesseract to GPT-4o to PaddleOCR-VL-1.5 — and the spread is wider</p>
+<p>  than any single vendor admits.</p>
+<ul>
+<li><strong>Defending cells (2–3):</strong></li>
+</ul>
+<p>  - <code>DC-000__ocr-edit-distance-v1__HyperAPI-PaddleOCR-OURS.json</code> (metric</p>
+<p>    0.061, lower-is-better, <code>report_rank: 12</code>).</p>
+<p>  - <code>DC-000__ocr-edit-distance-v1__Tesseract-OCR.json</code> (the floor).</p>
+<p>  - <code>DC-000__ocr-edit-distance-v1__GPT-4o.json</code> and</p>
+<p>    <code>DC-000__ocr-edit-distance-v1__PaddleOCR-VL-1.5.json</code> (the top of the</p>
+<p>    table).</p>
+<ul>
+<li><strong>Complements:</strong> <code>comparative-blogs/02-layout-awareness-mechanism.md</code> and</li>
+</ul>
+<p>  <code>04-metric-coverage-dimension-by-dimension.md</code>.</p>
+<ul>
+<li><strong>Honest framing:</strong> All 31 cells are `attested: true, factory_reproduced:</li>
+</ul>
+<p>  false`; the source is an external leaderboard table. CIs are null; n is</p>
+<p>  null. The post must state this and not invent intervals.</p>
+<h3>NB-2 — &quot;FinancePSS-205 page-stream segmentation: what 12 model families actually score (and why our split task matters)&quot;</h3>
+<ul>
+<li><strong>Hook:</strong> Page-stream segmentation is the most under-reported task in</li>
+</ul>
+<p>  doc-AI; here is <code>doc_f1</code> for 12 model families on FinancePSS-205, all</p>
+<p>  attested point estimates.</p>
+<ul>
+<li><strong>Defending cells:</strong></li>
+</ul>
+<p>  - <code>DS-001__financepss-205-v1__GLM-4.7__v4_plr-on_ir-off_expand.json</code></p>
+<p>    (<code>doc_f1: 0.8558</code>, n=205, n_gt_segments=682).</p>
+<p>  - <code>DS-001__financepss-205-v1__claude-sonnet-4-6__v4.2_plr-on_ir-off_expand.json</code></p>
+<p>    and the matching <code>noexpand</code> pair (config sensitivity).</p>
+<p>  - <code>DS-001__financepss-205-v1__qwen3-coder-480b__v4.2_plr-on_ir-n-a_expand.json</code></p>
+<p>    (the open-weight top).</p>
+<p>  - 48 total cells available to draw from; the post picks 8–12 to chart.</p>
+<ul>
+<li><strong>Complements:</strong> none directly; this becomes a *new* comparative-blog</li>
+</ul>
+<p>  candidate (the splitting task is under-covered in <code>comparative-blogs/</code>).</p>
+<ul>
+<li><strong>Honest framing:</strong> all 48 cells are external-attested</li>
+</ul>
+<p>  (FinancePSS-205 RICoT v4 / v4.2 report); <code>factory_reproduced: false</code>,</p>
+<p>  <code>ci95: null</code>. The post must label every number with its <code>config_tags</code></p>
+<p>  (page_level_reasoning, internal_reasoning, expand) — config sensitivity is</p>
+<p>  the honest finding.</p>
+<h3>NB-3 — &quot;Zero-shot is not enough: the 21-model SAVIOR-Bench v1 read on parse&quot;</h3>
+<ul>
+<li><strong>Hook:</strong> SAVIOR-Bench v1 (n=509) shows the spread between zero-shot</li>
+</ul>
+<p>  general-purpose models and OCR-specific systems on financial-doc parse —</p>
+<p>  Azure DI at 0.9202 <code>savior_word_recall</code>, the others stretched across the</p>
+<p>  table.</p>
+<ul>
+<li><strong>Defending cells:</strong> all 21 <code>DC-000__savior-bench-v1__*.json</code> files</li>
+</ul>
+<p>  (Azure-DI, Textract, GPT-4o, Gemini-2.5-Flash, Mistral-OCR, PaddleOCR-VL,</p>
+<p>  dots.ocr, Qwen2.5-VL-* variants, etc.).</p>
+<ul>
+<li><strong>Complements:</strong> <code>comparative-blogs/05-reducto-and-the-doc-ai-landscape.md</code></li>
+</ul>
+<p>  and <code>02-layout-awareness-mechanism.md</code> (the layout sub-claim).</p>
+<ul>
+<li><strong>Honest framing:</strong> in-house-attested, not factory-reproduced; the W6</li>
+</ul>
+<p>  audit context from <code>comparative-blogs/08-reproducibility-in-doc-ai-benchmarks.md</code></p>
+<p>  must be cited explicitly. **No HyperAPI cell on savior-bench-v1 exists on</p>
+<p>  disk** — this post does not score HyperAPI on SAVIOR-Bench v1.</p>
+<h3>NB-4 — &quot;Page-level reasoning on / off: a config-sensitivity study on FinancePSS-205&quot;</h3>
+<ul>
+<li><strong>Hook:</strong> Same model, same dataset, two config flags</li>
+</ul>
+<p>  (<code>page_level_reasoning</code>, <code>expand</code>) — the score swings far enough that</p>
+<p>  vendor leaderboards quoting &quot;best of 4 configs&quot; are reporting noise.</p>
+<ul>
+<li><strong>Defending cells:</strong> the matched pairs in the</li>
+</ul>
+<p>  <code>DS-001__financepss-205-v1__*</code> set — every model has both <code>expand</code> and</p>
+<p>  <code>noexpand</code> variants, several have <code>plr-on</code> and <code>plr-off</code>. The post</p>
+<p>  charts the within-model swing.</p>
+<ul>
+<li><strong>Complements:</strong> <code>comparative-blogs/03-reading-accuracy-claims-critically.md</code></li>
+</ul>
+<p>  (the &quot;seven questions a headline number cannot answer&quot; frame).</p>
+<ul>
+<li><strong>Honest framing:</strong> attested, not factory-reproduced; the post is itself</li>
+</ul>
+<p>  an integrity argument — config disclosure is a *requirement* of an honest</p>
+<p>  cell.</p>
+<h3>NB-5 — &quot;Classify Document Type with n=60 and a pinned harness: what factory-reproduced actually looks like&quot;</h3>
+<ul>
+<li><strong>Hook:</strong> Most leaderboards report point estimates with no CI, no <code>n</code>, and</li>
+</ul>
+<p>  no rerun command. Here is the opposite: 12 classify cells, all</p>
+<p>  factory-reproduced, all with <code>ci95</code>, all with a single-line</p>
+<p>  <code>rerun_command</code>.</p>
+<ul>
+<li><strong>Defending cells:</strong> the 12</li>
+</ul>
+<p>  <code>DC-001</code>/<code>DE-002</code>/<code>DE-003</code>/<code>DV-001</code>__finbench-synth-fixture-v1__*.json</p>
+<p>  files — specifically:</p>
+<p>  - <code>DC-001__finbench-synth-fixture-v1__hyperbots-ip-seed-v1.json</code> (metric</p>
+<p>    1.0, ci95 1.0/1.0, n=60, pinned <code>git_commit</code>, <code>seed: 20260516</code>,</p>
+<p>    <code>temperature: 0.0</code>).</p>
+<p>  - <code>DC-001__finbench-synth-fixture-v1__keyword-extractor-v1.json</code> and</p>
+<p>    <code>rule-baseline-v1.json</code> (the baselines).</p>
+<ul>
+<li><strong>Complements:</strong> <code>comparative-blogs/08-reproducibility-in-doc-ai-benchmarks.md</code></li>
+</ul>
+<p>  — this is the *example* the reproducibility post points to.</p>
+<ul>
+<li><strong>Honest framing:</strong> this is the <strong>only</strong> post in the 7 that gets to claim</li>
+</ul>
+<p>  <code>factory_reproduced: true</code>. The headline is the discipline itself, not a</p>
+<p>  competitive win — the win is &quot;we publish the pin, the others don&#x27;t.&quot;</p>
+<p>  <code>dataset_kind: synthetic-fixture</code> must be stated (it is not a real-world</p>
+<p>  test set; the discipline is the asset, not the result).</p>
+<h3>NB-6 — &quot;Parse-intent: where do general-purpose LLMs sit on a finance-OCR task?&quot;</h3>
+<ul>
+<li><strong>Hook:</strong> Sonnet 4.6 at <code>parse_intent_f1: 0.5974</code> on our in-house</li>
+</ul>
+<p>  parse-intent task — and the 22 other models we measured tell a story about</p>
+<p>  what zero-shot can and can&#x27;t do on financial documents.</p>
+<ul>
+<li><strong>Defending cells:</strong> any 5–8 of the 23</li>
+</ul>
+<p>  <code>DC-000__parse-intent-inhouse-v1__*.json</code> files (Claude-Sonnet-4.6,</p>
+<p>  GPT-4.1, GPT-4o, Gemini-2.5-Pro, GLM-OCR, DeepSeek-OCR-2, FireRed-OCR,</p>
+<p>  Qwen3.5-2B-FT, etc.).</p>
+<ul>
+<li><strong>Complements:</strong> <code>comparative-blogs/06-line-item-extraction-problem.md</code></li>
+</ul>
+<p>  (the line-item facet) and the <code>comparative-blogs/02-layout-awareness-mechanism.md</code></p>
+<p>  (Sonnet 4.6 cell has <code>factory_rerun_2026_05_20.attempted: true</code> but</p>
+<p>  <code>green_repro_check: false</code> — that exact W6 context is the honest-framing</p>
+<p>  hook).</p>
+<ul>
+<li><strong>Honest framing:</strong> in-house-attested, not factory-reproduced; the W6</li>
+</ul>
+<p>  retry attempted-but-not-green note (visible in the Sonnet 4.6 cell&#x27;s</p>
+<p>  <code>factory_rerun_2026_05_20</code> block) must be cited verbatim — that is the</p>
+<p>  most credible reproducibility-honesty moment in the entire cell base.</p>
+<h3>NB-7 — &quot;The fine-tune line: when does in-domain fine-tuning beat the next-best zero-shot model?&quot;</h3>
+<ul>
+<li><strong>Hook:</strong> Six cells with <code>fine_tuned: true</code> vs the matched zero-shot</li>
+</ul>
+<p>  cells on the same dataset; here is the gap and the cost-vs-quality read.</p>
+<ul>
+<li><strong>Defending cells:</strong> any cell with <code>fine_tuned: true</code> in the result set</li>
+</ul>
+<p>  (e.g., <code>DC-000__ocr-edit-distance-v1__Qwen3.5-2B-FT.json</code>,</p>
+<p>  <code>DC-000__savior-bench-v1__Qwen2.5-VL-3B-F.json</code>,</p>
+<p>  <code>DC-000__savior-bench-v1__Qwen2.5-VL-7B-F.json</code>) paired with their</p>
+<p>  non-FT siblings (<code>Qwen2.5-VL-3B-Instr.</code>, <code>Qwen2.5-VL-7B-Instr.</code>).</p>
+<ul>
+<li><strong>Complements:</strong> the existing viral blog <strong><code>2026-05-22-viral-blog-2-narrow-honest-edge.html</code></strong></li>
+</ul>
+<p>  in <code>hyperapi-documentapi-benchmark-factory/content/blog/</code> —</p>
+<p>  this post is the *evidence dump* behind that essay.</p>
+<ul>
+<li><strong>Honest framing:</strong> all cells attested, not factory-reproduced; the</li>
+</ul>
+<p>  comparison is point-estimate vs point-estimate with no CI, so the post</p>
+<p>  must say &quot;the size of the gap is observable; whether it is statistically</p>
+<p>  significant is not, until ci95 lands.&quot;</p>
+<h2>Honest framing footer (every post above must carry this verbatim)</h2>
+<blockquote>All cells cited from <code>attested: true, factory_reproduced: false</code> task</blockquote>
+<blockquote>families (<code>ocr-edit-distance-v1</code>, <code>parse-intent-inhouse-v1</code>,</blockquote>
+<blockquote><code>savior-bench-v1</code>, <code>financepss-205-v1</code>) are point estimates transcribed</blockquote>
+<blockquote>from external or in-house attested sources; the factory harness has not</blockquote>
+<blockquote>reproduced them. Only the 12 cells in <code>finbench-synth-fixture-v1</code> are</blockquote>
+<blockquote>factory-reproduced (pinned <code>git_commit</code>, <code>seed</code>, <code>decoding</code>, <code>ci95</code>).</blockquote>
+<blockquote>Where a post draws on attested cells, it states the tier; where it draws</blockquote>
+<blockquote>on factory-reproduced cells, it cites the <code>rerun_command</code>. We do not</blockquote>
+<blockquote>fabricate confidence intervals where the source provides none.</blockquote>
+<h2>How these map to the review chain</h2>
+<p>Each NB-* post inherits the same reviewer matrix as the CEO blogs (see</p>
+<p><code>REVIEW-MATRIX.md</code>). The differential is:</p>
+<ul>
+<li><strong>NB-5</strong> is the only post that can claim factory-reproduced numbers; it</li>
+</ul>
+<p>  needs <code>benchmark-format-steward</code> skill + <code>evals-benchmark-engineer</code> skill</p>
+<p>  as primary reviewers (the discipline is the asset).</p>
+<ul>
+<li><strong>NB-3 + NB-6</strong> (SAVIOR-Bench v1 + parse-intent) carry the W6 0/23</li>
+</ul>
+<p>  audit context and must be reviewed by <code>comparative-study</code> for the</p>
+<p>  honest-framing read.</p>
+<ul>
+<li><strong>NB-1 + NB-2 + NB-4</strong> are *category* posts (multi-vendor reads); they</li>
+</ul>
+<p>  don&#x27;t need legal review for named-competitor content because the</p>
+<p>  category-level naming (model names from public leaderboards) is already</p>
+<p>  the pattern in <code>comparative-blogs/04-metric-coverage-dimension-by-dimension.md</code>.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/results/</code> (137</li>
+</ul>
+<p>  files counted; per-family counts via `ls | awk -F&#x27;__&#x27; &#x27;{print $2}&#x27; | sort</p>
+<p>  | uniq -c`).</p>
+<ul>
+<li>Specific cells read in this turn:</li>
+</ul>
+<p>  - <code>DC-000__savior-bench-v1__Azure-DI.json</code></p>
+<p>  - <code>DC-000__ocr-edit-distance-v1__HyperAPI-PaddleOCR-OURS.json</code></p>
+<p>  - <code>DC-001__finbench-synth-fixture-v1__hyperbots-ip-seed-v1.json</code></p>
+<p>  - <code>DS-001__financepss-205-v1__GLM-4.7__v4_plr-on_ir-off_expand.json</code></p>
+<p>  - <code>DC-000__parse-intent-inhouse-v1__Claude-Sonnet-4.6.json</code></p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/INDEX.md</code></li>
+</ul>
+<p>  (integrity posture for all 7 candidates).</p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/leaderboard/dashboard.html</code></li>
+</ul>
+<p>  (file confirmed; structure not rendered in this turn).</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>The 137-cell count is the on-disk total as of 2026-05-25; any later</li>
+</ul>
+<p>  additions need a re-walk.</p>
+<ul>
+<li>Where a post says &quot;X cells available to draw from,&quot; the actual chart</li>
+</ul>
+<p>  selection is at the comparative-study reviewer&#x27;s discretion; this plan</p>
+<p>  names the *defending* cells, not the full chart.</p>
+<ul>
+<li>No post above asserts a head-to-head HyperAPI-vs-competitor accuracy</li>
+</ul>
+<p>  claim on a like-for-like dataset that does not exist on disk.</p>
+<ul>
+<li><code>results.zip</code> (HyperAPI&#x27;s deployed-extraction prod-ref) is not used as</li>
+</ul>
+<p>  ground truth anywhere; the only HyperAPI cells cited are the on-disk</p>
+<p>  attested ones (<code>HyperAPI-PaddleOCR-OURS</code>, <code>hyperbots-ip-seed-v1</code>).</p>
+<ul>
+<li>The 7 ideas are post candidates; the final cut/sequence is the</li>
+</ul>
+<p>  comparative-study + abm-vp + the human approval gate&#x27;s call.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

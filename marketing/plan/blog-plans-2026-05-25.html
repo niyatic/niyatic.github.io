@@ -1,0 +1,594 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Blog Plans — 5 CEO-set posts (A–E)</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending agent reviews; the human approval gate is the only release authority</div><div class="meta">Agent 12 (abm-gtm content orchestrator) · 2026-05-25</div><h1>Blog Plans — 5 CEO-set posts (A–E)</h1>
+<blockquote><strong>DRAFT — pending reviews + the human approval gate.</strong> No blog below is</blockquote>
+<blockquote>approved for publication. Every benchmark number cited is either pinned to an</blockquote>
+<blockquote>on-disk JSON cell in <code>hyperapi-documentapi-benchmark-factory/results/</code> or</blockquote>
+<blockquote>explicitly marked <code>PENDING MEASUREMENT</code>. <code>results.zip</code> is HyperAPI&#x27;s</blockquote>
+<blockquote>deployed-extraction prod-ref, <strong>never gold</strong>; the Azure-vs-Hyperbots plan</blockquote>
+<blockquote>(BLOG-C) is framed accordingly.</blockquote>
+<h2>How to read these plans</h2>
+<p>For each blog: title (final) → one-line hook → source-of-truth → depth plan</p>
+<p>(B2B account depth + four-channel virality) → reviewers needed → final human</p>
+<p>gate → risk register.</p>
+<p>The four canonical organic channels (per <code>gtm-b2c-virality</code>,</p>
+<p><code>linkedin-post-strategy</code>, <code>reddit-docai</code>, <code>huggingface-strategy</code>):</p>
+<p>1. <strong>LinkedIn long-post</strong> (engineer-to-engineer voice; primary B2B funnel).</p>
+<p>2. <strong>Reddit</strong> — the specific subreddit named per blog (r/accounting,</p>
+<p>   r/fintech, r/MachineLearning, r/learnmachinelearning, r/Accounts_Payable).</p>
+<p>3. <strong>Hacker News submission</strong> (Show HN or research-post format).</p>
+<p>4. <strong>HuggingFace card cross-post</strong> (model/dataset card section linking to the</p>
+<p>   blog; only for blogs that map to an HF artifact).</p>
+<hr>
+<h2>BLOG-A — &quot;500 line items on invoices — extracted accurately&quot;</h2>
+<h3>Title (final)</h3>
+<p>**&quot;500 line items on a single invoice — what it takes to extract every row</p>
+<p>without hallucinating one&quot;**</p>
+<h3>One-line hook</h3>
+<p>A real customer invoice with 500 line items broke every off-the-shelf</p>
+<p>extractor we benchmarked; here is the row-F1 we landed and the four failure</p>
+<p>modes we had to fix.</p>
+<h3>Source of truth (what makes the claim defensible)</h3>
+<ul>
+<li>Customer artifact: a real production invoice with 500 line items. **PENDING</li>
+</ul>
+<p>  DESIGN PARTNER PERMISSION** — until permission lands, the blog is drafted</p>
+<p>  with the artifact anonymized (vendor/customer/$$ redacted; the only</p>
+<p>  load-bearing fact is the line-item count and the row-F1 result).</p>
+<ul>
+<li>The honest row-F1 claim ties to the framework in</li>
+</ul>
+<p>  <code>hyperapi-gtm-hub/comparative-blogs/06-line-item-extraction-problem.md</code>,</p>
+<p>  which states <strong>HyperAPI row-F1 is <code>PENDING MEASUREMENT</code></strong>. Without a real</p>
+<p>  row-F1 cell on disk (currently no <code>results/*line-item*</code> file exists), the</p>
+<p>  500-row claim is <strong>PENDING MEASUREMENT</strong> and must land before publish.</p>
+<ul>
+<li>How to land it: pin a <code>DC-???__line-item-rowf1-v1</code> task in the factory</li>
+</ul>
+<p>  harness, run on the 500-row artifact + the bench-100 subset, write the</p>
+<p>  result JSON with <code>n</code>, <code>ci95</code>, <code>attested:false, factory_reproduced:true</code>.</p>
+<h3>Depth plan</h3>
+<ul>
+<li><strong>3 B2B customer-types it lands with:</strong></li>
+</ul>
+<p>  1. <strong>Mid-market AP / shared-services CFO orgs</strong> (Coupa/Stampli/AppZen-style</p>
+<p>     buyers) processing 5k–50k invoices/month — line-item depth is a daily</p>
+<p>     pain point.</p>
+<p>  2. <strong>Manufacturing / distribution finance teams</strong> where every invoice is</p>
+<p>     30–500 SKU rows.</p>
+<p>  3. <strong>3PL / logistics CFO orgs</strong> where line items = waybills / shipment</p>
+<p>     lines and row-loss is a billing-leakage risk.</p>
+<ul>
+<li><strong>4 channels:</strong></li>
+</ul>
+<p>  1. LinkedIn long-post (engineer-to-engineer; the four failure modes).</p>
+<p>  2. Reddit — <strong>r/Accounts_Payable</strong> primary; <strong>r/accounting</strong> secondary;</p>
+<p>     <strong>r/fintech</strong> tertiary.</p>
+<p>  3. Hacker News — <code>Show HN: row-F1 on a 500-line-item invoice</code>.</p>
+<p>  4. HuggingFace — cross-post as a section on the SAVIOR-Bench dataset card</p>
+<p>     (line-item facet).</p>
+<ul>
+<li><strong>ABM account list:</strong> auto-feeds the <code>abm-accounts</code> top-100 outbound for</li>
+</ul>
+<p>  any account tagged <code>doc_class=invoice</code> AND</p>
+<p>  <code>pain=line_item_volume_high</code>.</p>
+<h3>Reviewers needed (named)</h3>
+<ul>
+<li><code>comparative-study</code> — owns the honest framing of the row-F1 claim and the</li>
+</ul>
+<p>  link to <code>06-line-item-extraction-problem.md</code>.</p>
+<ul>
+<li><code>abm-content-marketing</code> — certifies hook + one-idea discipline + clarity.</li>
+<li><code>content-marketing-validate</code> skill — applies the validator gate.</li>
+<li><code>abm-vp</code> — strategic fit / buyer credibility.</li>
+<li><code>abm-qa</code> — source-traceability + brand guardrails.</li>
+<li><code>blogs-status</code> — ledger update on publish-readiness.</li>
+</ul>
+<h3>Final human gate</h3>
+<p><strong>The human approval gate</strong> (CEO + <code>abm-manager-approver</code>) is the only</p>
+<p>release authority; no agent merges or publishes.</p>
+<h3>Risk register</h3>
+<ul>
+<li><strong>R-A1 (BLOCK).</strong> No measured row-F1 number on disk; the headline claim is</li>
+</ul>
+<p>  fabrication risk until the line-item task is pinned + run. <strong>Mitigation:</strong></p>
+<p>  pin <code>DC-???__line-item-rowf1-v1</code> and the 500-row artifact before publish.</p>
+<ul>
+<li><strong>R-A2 (BLOCK).</strong> No design-partner permission to publish the customer</li>
+</ul>
+<p>  artifact — even anonymized references can be traced from line-item</p>
+<p>  patterns. <strong>Mitigation:</strong> PENDING DESIGN PARTNER PERMISSION; if not</p>
+<p>  granted, publish with synthetic 500-row fixture and reframe as</p>
+<p>  reproducibility post.</p>
+<ul>
+<li><strong>R-A3 (CHANGES-REQUESTED risk).</strong> Comparative-study may flag the</li>
+</ul>
+<p>  &quot;accurately&quot; framing as a swap-the-vendor-name fail per the</p>
+<p>  <code>content-marketing-validate</code> swap test; needs a specific row-F1 number, not</p>
+<p>  the word &quot;accurately.&quot;</p>
+<hr>
+<h2>BLOG-B — &quot;Time on OCR by our model — 0.5 seconds&quot;</h2>
+<h3>Title (final)</h3>
+<p>**&quot;0.5 seconds per page — how we got OCR latency down on financial documents</p>
+<p>(customer case + the four things that moved the needle)&quot;**</p>
+<h3>One-line hook</h3>
+<p>A real customer needed sub-second OCR on production invoices; here is what</p>
+<p>&quot;0.5 s&quot; actually measures, what hardware it ran on, and the four</p>
+<p>optimizations that got us there.</p>
+<h3>Source of truth</h3>
+<ul>
+<li>The &quot;0.5 s&quot; claim needs an on-disk latency cell. <strong>PENDING MEASUREMENT</strong> —</li>
+</ul>
+<p>  the current 137 result JSONs in</p>
+<p>  <code>hyperapi-documentapi-benchmark-factory/results/</code> are all</p>
+<p>  accuracy/quality cells (ocr_edit_distance, savior_word_recall, doc_f1,</p>
+<p>  parse_intent_f1, exact_match_accuracy); **no <code>latency_p50_seconds_per_page</code></p>
+<p>  cell exists today**. The closest reference is</p>
+<p>  <code>DC-000__ocr-edit-distance-v1__HyperAPI-PaddleOCR-OURS.json</code> (`metric:</p>
+<p>  0.061<code>, attested, </code>factory_reproduced: false`) which speaks to <strong>accuracy</strong>,</p>
+<p>  not latency.</p>
+<ul>
+<li>How to land it: pin a <code>DC-???__ocr-latency-v1</code> task in the factory harness</li>
+</ul>
+<p>  — fixed page set, fixed hardware (single GPU sku named), fixed input</p>
+<p>  resolution, p50/p90/p99 + <code>n</code> + the hardware pin in <code>pins.hardware</code>. Run</p>
+<p>  HyperAPI PaddleOCR pipeline + at least 3 baselines (Tesseract,</p>
+<p>  PaddleOCR-v4, Mistral-OCR) under identical conditions.</p>
+<ul>
+<li>The customer-case half mirrors BLOG-A: **PENDING DESIGN PARTNER</li>
+</ul>
+<p>  PERMISSION** before any account-identifying detail.</p>
+<h3>Depth plan</h3>
+<ul>
+<li><strong>3 B2B customer-types:</strong></li>
+</ul>
+<p>  1. <strong>High-throughput AP shared-services</strong> where queue latency limits SLA</p>
+<p>     to suppliers (an 0.5s win on 50k invoices/day = real wallclock).</p>
+<p>  2. <strong>Real-time invoice intake at supplier portals</strong> (latency is UX, not</p>
+<p>     batch SLA).</p>
+<p>  3. <strong>Logistics / banking docs with same-day cutoff workflows</strong> where</p>
+<p>     end-to-end latency is the user-visible metric.</p>
+<ul>
+<li><strong>4 channels:</strong></li>
+</ul>
+<p>  1. LinkedIn long-post (the four optimizations: page-batching,</p>
+<p>     low-res-first pass, GPU pinning, output-cache).</p>
+<p>  2. Reddit — <strong>r/MachineLearning</strong> for the engineering audience;</p>
+<p>     <strong>r/learnmachinelearning</strong> for the &quot;how did you measure&quot; sub-audience.</p>
+<p>  3. Hacker News — <code>Show HN: 0.5s/page OCR on financial docs — the pins</code>.</p>
+<p>  4. HuggingFace — cross-post the latency methodology on the</p>
+<p>     <code>HyperAPI-PaddleOCR-OURS</code> model card (when it lands as an HF artifact).</p>
+<ul>
+<li><strong>ABM account list:</strong> any account in <code>abm-accounts</code> top-100 tagged</li>
+</ul>
+<p>  <code>latency_sensitive=true</code> OR <code>volume&gt;=50k_per_day</code>.</p>
+<h3>Reviewers needed</h3>
+<ul>
+<li><code>comparative-study</code> — honest framing (latency vs throughput, the hardware</li>
+</ul>
+<p>  pin, the &quot;what&#x27;s NOT counted&quot; footnote).</p>
+<ul>
+<li><code>evals-benchmark-engineer</code> skill — review the harness pin proposal for</li>
+</ul>
+<p>  the latency task.</p>
+<ul>
+<li><code>abm-content-marketing</code> — certifies hook + one-idea discipline.</li>
+<li><code>content-marketing-validate</code> skill — validator gate.</li>
+<li><code>abm-vp</code> — strategic fit.</li>
+<li><code>abm-qa</code> — source-traceability.</li>
+</ul>
+<h3>Final human gate</h3>
+<p><strong>The human approval gate</strong> (CEO + <code>abm-manager-approver</code>).</p>
+<h3>Risk register</h3>
+<ul>
+<li><strong>R-B1 (BLOCK).</strong> &quot;0.5 s&quot; is not on disk; publishing without the pinned</li>
+</ul>
+<p>  latency cell = fabrication. <strong>Mitigation:</strong> land <code>DC-???__ocr-latency-v1</code></p>
+<p>  with the hardware pin first; do NOT round &quot;0.49&quot; or &quot;0.62&quot; to &quot;0.5&quot; in</p>
+<p>  draft — write the exact measured number.</p>
+<ul>
+<li><strong>R-B2 (BLOCK).</strong> No design-partner permission for the customer case.</li>
+<li><strong>R-B3 (CHANGES-REQUESTED risk).</strong> Without the hardware pin</li>
+</ul>
+<p>  (<code>pins.hardware: &quot;single-A10G-22GB-FP16&quot;</code> or similar), the number is</p>
+<p>  meaningless — <code>comparative-study</code> and the benchmark-format steward gate</p>
+<p>  will block.</p>
+<hr>
+<h2>BLOG-C — &quot;Azure DI vs Hyperbots — benchmarking&quot;</h2>
+<h3>Title (final)</h3>
+<p>**&quot;Azure DI vs HyperAPI on SAVIOR-Bench v1: an honest read of two numbers</p>
+<p>that look comparable but aren&#x27;t&quot;**</p>
+<h3>One-line hook</h3>
+<p>Azure DI scored 0.9202 savior_word_recall on SAVIOR-Bench v1 (n=509,</p>
+<p>in-house-attested); HyperAPI&#x27;s deployed extraction (<code>results.zip</code>) is our</p>
+<p><strong>prod-ref</strong>, not gold — so this post is a methodology blog, not a horse</p>
+<p>race.</p>
+<h3>Source of truth</h3>
+<ul>
+<li><strong>Azure DI cell</strong> (on disk):</li>
+</ul>
+<p>  <code>hyperapi-documentapi-benchmark-factory/results/DC-000__savior-bench-v1__Azure-DI.json</code></p>
+<p>  → <code>metric: 0.9202</code> (<code>savior_word_recall</code>), <code>n: 509</code>,</p>
+<p>  <code>metrics_secondary.pairs_layout: 0.5025</code>,</p>
+<p>  <code>metrics_secondary.savior_word_precision: 0.8978</code>, `dataset_kind:</p>
+<p>  in-house-attested<code>, </code>pins.reproduced_by_factory: false`,</p>
+<p>  `provenance: &quot;in-house-run, user-attested 2026-05-18; NOT</p>
+<p>  factory-harness-reproduced&quot;`.</p>
+<ul>
+<li><strong>HyperAPI position on SAVIOR-Bench v1 / SAVIOR-Bench:</strong> the closest on-disk</li>
+</ul>
+<p>  cell speaking to HyperAPI&#x27;s IP on the same parse task family is</p>
+<p>  <code>DC-000__ocr-edit-distance-v1__HyperAPI-PaddleOCR-OURS.json</code> (`metric:</p>
+<p>  0.061<code>, </code>lower_is_better: true`, attested, not factory-reproduced) — but</p>
+<p>  this is on a different dataset (<code>ocr-edit-distance-v1</code>, n=null), so it is</p>
+<p>  <strong>NOT a like-for-like comparison</strong> to Azure DI on <code>savior-bench-v1</code>.</p>
+<ul>
+<li>**<code>results.zip</code> (HyperAPI&#x27;s deployed extraction): is HyperAPI&#x27;s prod-ref;</li>
+</ul>
+<p>  it is NOT a ground-truth label set and must NEVER be used as gold.** This</p>
+<p>  is the load-bearing honest-framing constraint.</p>
+<ul>
+<li>The honest blog therefore is a <strong>methodology post</strong>: what Azure DI&#x27;s</li>
+</ul>
+<p>  attested number means, why a like-for-like HyperAPI cell on savior-bench-v1</p>
+<p>  is <strong>PENDING MEASUREMENT</strong> (no such cell exists today), why <code>results.zip</code></p>
+<p>  cannot substitute as ground truth, and the W6 0/23 audit context from</p>
+<p>  <code>comparative-blogs/08-reproducibility-in-doc-ai-benchmarks.md</code>.</p>
+<h3>Depth plan</h3>
+<ul>
+<li><strong>3 B2B customer-types:</strong></li>
+</ul>
+<p>  1. **Fortune-500 finance / shared-services teams currently on Azure DI</p>
+<p>     looking at alternatives** (the most direct buyer of this post).</p>
+<p>  2. **MS-shop CIOs / finance-IT who need to evaluate doc-AI vendors</p>
+<p>     side-by-side** and lack a methodology.</p>
+<p>  3. <strong>Doc-AI buyers reading vendor accuracy claims critically</strong> (the</p>
+<p>     <code>03-reading-accuracy-claims-critically.md</code> audience).</p>
+<ul>
+<li><strong>4 channels:</strong></li>
+</ul>
+<p>  1. LinkedIn long-post (the methodology, not a scoreboard).</p>
+<p>  2. Reddit — <strong>r/fintech</strong> + <strong>r/MachineLearning</strong> (for the harness</p>
+<p>     discipline).</p>
+<p>  3. Hacker News — <code>Show HN: methodology post on doc-AI benchmarking</code>.</p>
+<p>  4. HuggingFace — cross-post on the <strong>SAVIOR-Bench v1 dataset card</strong> as</p>
+<p>     the canonical &quot;how to compare attested cells&quot; section.</p>
+<ul>
+<li><strong>ABM account list:</strong> any account tagged</li>
+</ul>
+<p>  <code>current_vendor=Azure_DI</code> OR <code>evaluation_in_progress=true</code> in</p>
+<p>  <code>abm-accounts</code> top-100.</p>
+<h3>Reviewers needed</h3>
+<ul>
+<li><code>comparative-study</code> — <strong>primary owner</strong> for the honest-framing read.</li>
+<li><code>benchmark-format-steward</code> skill — the integrity gate (attested vs</li>
+</ul>
+<p>  factory-reproduced; <code>results.zip</code> ≠ gold).</p>
+<ul>
+<li><code>abm-content-marketing</code> + <code>content-marketing-validate</code> skill — bar gate.</li>
+<li><code>abm-vp</code> — strategic fit (this post defines our public methodology stance</li>
+</ul>
+<p>  on Azure DI; it cannot be wrong).</p>
+<ul>
+<li><code>abm-qa</code> — source-traceability (every number cited must trace to a JSON</li>
+</ul>
+<p>  cell or be marked PENDING).</p>
+<ul>
+<li><code>secrets-auth-boundary-engineer</code> skill — sanity check that no customer</li>
+</ul>
+<p>  identifier from <code>results.zip</code> leaks into the blog.</p>
+<h3>Final human gate</h3>
+<p><strong>The human approval gate</strong> (CEO + <code>abm-manager-approver</code>).</p>
+<h3>Risk register</h3>
+<ul>
+<li><strong>R-C1 (BLOCK — load-bearing).</strong> Using <code>results.zip</code> as ground truth</li>
+</ul>
+<p>  anywhere in the draft = automatic BLOCK. The post must explicitly state</p>
+<p>  &quot;<code>results.zip</code> is HyperAPI&#x27;s deployed-extraction prod-ref, not a label</p>
+<p>  set.&quot;</p>
+<ul>
+<li><strong>R-C2 (BLOCK).</strong> Asserting a like-for-like HyperAPI vs Azure DI score on</li>
+</ul>
+<p>  savior-bench-v1 without a HyperAPI cell on <code>savior-bench-v1</code> on disk =</p>
+<p>  fabrication. <strong>Mitigation:</strong> keep the post explicitly a *methodology*</p>
+<p>  post; do not score HyperAPI on savior-bench-v1 until a cell lands. If/when</p>
+<p>  the cell lands, file a v2.</p>
+<ul>
+<li><strong>R-C3 (CHANGES-REQUESTED risk).</strong> Naming Azure DI in a competitive frame</li>
+</ul>
+<p>  needs legal review per the integrity posture in</p>
+<p>  <code>comparative-blogs/INDEX.md</code> (&quot;Legal review of all named-competitor</p>
+<p>  content&quot;). Azure DI is a product line and is already named in</p>
+<p>  <code>04-metric-coverage-dimension-by-dimension.md</code>, so the precedent exists,</p>
+<p>  but the legal sign-off is still a gate.</p>
+<hr>
+<h2>BLOG-D — &quot;9,000 payment-terms types — reading + applying discounts is hard&quot;</h2>
+<h3>Title (final)</h3>
+<p>**&quot;9,000 payment-terms variants on real invoices — why discount capture</p>
+<p>breaks at the long tail, and how we got it to work&quot;**</p>
+<h3>One-line hook</h3>
+<p>Net-30, 2/10 Net 30, 1.5/10 Net 45 EOM, Cash on delivery (—Cust ref 119),</p>
+<p>... the long tail of payment-terms strings is 9,000+ variants wide; here is</p>
+<p>why classifier+regex fails and what an LLM-guided</p>
+<p>parse-and-apply-discount pipeline gets right.</p>
+<h3>Source of truth</h3>
+<ul>
+<li>The &quot;9,000 variants&quot; count is an <strong>internal taxonomy claim</strong>; it needs an</li>
+</ul>
+<p>  on-disk artifact. <strong>PENDING MEASUREMENT</strong> — there is no</p>
+<p>  <code>results/*payment-terms*</code> cell today. Closest factory-reproduced reference</p>
+<p>  is the classify task family (<code>finbench-synth-fixture-v1</code>, 12 cells with</p>
+<p>  pinned harness; <code>DC-001</code>, <code>DE-002</code>, <code>DV-001</code>, <code>DE-003</code> × 3 models each)</p>
+<p>  but none specifically about payment-terms variants.</p>
+<ul>
+<li>How to land it: (a) publish the taxonomy file (count + sample variants</li>
+</ul>
+<p>  table) as a dataset artifact in the benchmark factory; (b) pin a</p>
+<p>  <code>DE-???__payment-terms-extract-v1</code> task — exact-match on the parsed</p>
+<p>  <code>(discount_pct, discount_window_days, net_days, basis)</code> tuple; (c) run</p>
+<p>  HyperAPI&#x27;s pipeline + at least 2 LLM baselines. `factory_reproduced:</p>
+<p>  true<code>, </code>n<code>, </code>ci95` mandatory.</p>
+<ul>
+<li>The &quot;discount capture&quot; / NPV-of-early-pay angle ties to the</li>
+</ul>
+<p>  <code>09-cost-vs-accuracy-economics.md</code> framing — wrong terms = real money</p>
+<p>  left on the table; that one is on disk and citable.</p>
+<h3>Depth plan</h3>
+<ul>
+<li><strong>3 B2B customer-types:</strong></li>
+</ul>
+<p>  1. <strong>CFO orgs running working-capital programs</strong> where early-pay discount</p>
+<p>     capture is the KPI.</p>
+<p>  2. <strong>Treasury / supply-chain finance teams</strong> running dynamic-discounting</p>
+<p>     platforms.</p>
+<p>  3. <strong>AP automation buyers evaluating vendors</strong> on long-tail terms</p>
+<p>     handling (a frequent objection in deals).</p>
+<ul>
+<li><strong>4 channels:</strong></li>
+</ul>
+<p>  1. LinkedIn long-post (the long-tail-distribution chart is the hook;</p>
+<p>     CFO-office audience).</p>
+<p>  2. Reddit — <strong>r/Accounts_Payable</strong> + <strong>r/accounting</strong> (the practitioner</p>
+<p>     audience).</p>
+<p>  3. Hacker News — <code>Show HN: parsing 9,000 payment-terms variants</code>.</p>
+<p>  4. HuggingFace — only when the taxonomy + the</p>
+<p>     <code>DE-???__payment-terms-extract-v1</code> task become an HF dataset card.</p>
+<ul>
+<li><strong>ABM account list:</strong> any account tagged</li>
+</ul>
+<p>  <code>program=dynamic_discounting</code> OR <code>program=working_capital</code> in the top-100.</p>
+<h3>Reviewers needed</h3>
+<ul>
+<li><code>comparative-study</code> — honest framing (the 9,000 is a taxonomy count, not</li>
+</ul>
+<p>  a head-to-head).</p>
+<ul>
+<li><code>finance-doc-ml-engineer</code> skill — review the</li>
+</ul>
+<p>  <code>DE-???__payment-terms-extract-v1</code> task design.</p>
+<ul>
+<li><code>abm-content-marketing</code> + <code>content-marketing-validate</code> skill.</li>
+<li><code>abm-vp</code>, <code>abm-qa</code>.</li>
+</ul>
+<h3>Final human gate</h3>
+<p><strong>The human approval gate</strong> (CEO + <code>abm-manager-approver</code>).</p>
+<h3>Risk register</h3>
+<ul>
+<li><strong>R-D1 (BLOCK).</strong> &quot;9,000&quot; without the taxonomy file on disk is a number</li>
+</ul>
+<p>  that &quot;feels right&quot; — it must be <strong>counted</strong> and the taxonomy artifact</p>
+<p>  published. <strong>Mitigation:</strong> publish the variants table first; cite the</p>
+<p>  exact count from it.</p>
+<ul>
+<li><strong>R-D2 (BLOCK).</strong> &quot;Discount-capture $/year&quot; claims need a customer</li>
+</ul>
+<p>  artifact = <strong>PENDING DESIGN PARTNER PERMISSION</strong>, or the post is reframed</p>
+<p>  as taxonomy/methodology only.</p>
+<ul>
+<li><strong>R-D3 (CHANGES-REQUESTED risk).</strong> The &quot;we got it to work&quot; claim needs an</li>
+</ul>
+<p>  exact-match number on the parsed tuple; the validator will REWORK any</p>
+<p>  qualitative-only success framing.</p>
+<hr>
+<h2>BLOG-E — &quot;The account-number-mismatch problem&quot;</h2>
+<h3>Title (final)</h3>
+<p>**&quot;The account-number mismatch problem — what happens when invoice</p>
+<p>account-numbers don&#x27;t match the ERP master file, and the 7 reconciliation</p>
+<p>rules our model learned&quot;**</p>
+<h3>One-line hook</h3>
+<p>~1 in N invoices arrives with an account number that doesn&#x27;t exactly match</p>
+<p>the ERP vendor master (typo, format drift, merged entity, sub-account); the</p>
+<p>ERP-grade rule of &quot;exact-match-or-reject&quot; leaks N% of payables to</p>
+<p>exceptions — here are the 7 fuzzy-match rules we benchmarked.</p>
+<h3>Source of truth</h3>
+<ul>
+<li>&quot;1 in N&quot; / &quot;N%&quot; exception-rate numbers: <strong>PENDING MEASUREMENT</strong> + **PENDING</li>
+</ul>
+<p>  DESIGN PARTNER PERMISSION** for any customer-data reference.</p>
+<ul>
+<li>The 7 reconciliation rules: must trace to either (a) an on-disk</li>
+</ul>
+<p>  <code>DC-???__account-number-match-v1</code> task in the factory or (b) the relevant</p>
+<p>  ERP connector skills (<code>erp-quickbooks-connector</code>, <code>erp-netsuite-connector</code>,</p>
+<p>  <code>erp-sap-s4hana-connector</code>, <code>erp-d365-bc-connector</code>,</p>
+<p>  <code>erp-sage-intacct-connector</code>, <code>erp-epicor-connector</code>,</p>
+<p>  <code>erp-deltek-costpoint-connector</code>, <code>connector-conformance</code>) — those exist as</p>
+<p>  skills, so the rules can be sourced to the conformance suite rather than a</p>
+<p>  benchmark cell.</p>
+<ul>
+<li>Closest reproducibility anchor: the classify cells in</li>
+</ul>
+<p>  <code>finbench-synth-fixture-v1</code> (factory-reproduced, n=60 each).</p>
+<h3>Depth plan</h3>
+<ul>
+<li><strong>3 B2B customer-types:</strong></li>
+</ul>
+<p>  1. <strong>Multi-ERP enterprise AP teams</strong> (the most common pain — same vendor,</p>
+<p>     different account numbers across BU ERPs).</p>
+<p>  2. <strong>Shared-services CFO orgs running consolidation</strong> post-M&amp;A (account</p>
+<p>     drift after acquisition).</p>
+<p>  3. <strong>Procure-to-pay teams measured on exception rate</strong> — exception-rate</p>
+<p>     is the daily ops KPI.</p>
+<ul>
+<li><strong>4 channels:</strong></li>
+</ul>
+<p>  1. LinkedIn long-post (the 7 rules as the framework; CFO-office</p>
+<p>     audience).</p>
+<p>  2. Reddit — <strong>r/Accounts_Payable</strong> + <strong>r/accounting</strong>.</p>
+<p>  3. Hacker News — <code>Show HN: fuzzy account-number matching for ERP AP</code>.</p>
+<p>  4. HuggingFace — only when the</p>
+<p>     <code>DC-???__account-number-match-v1</code> task ships as a dataset.</p>
+<ul>
+<li><strong>ABM account list:</strong> any account tagged <code>multi_ERP=true</code> OR</li>
+</ul>
+<p>  <code>post_M&amp;A=true</code> in the top-100.</p>
+<h3>Reviewers needed</h3>
+<ul>
+<li><code>comparative-study</code> — honest framing (the 7 rules are *our* rules, not the</li>
+</ul>
+<p>  industry standard — claim must be scoped).</p>
+<ul>
+<li><code>connector-conformance</code> skill — the 7 rules must align with the</li>
+</ul>
+<p>  conformance suite mapping for each ERP.</p>
+<ul>
+<li><code>erp-mcp-orchestrator</code> skill — sanity-check the cross-ERP claim.</li>
+<li><code>abm-content-marketing</code> + <code>content-marketing-validate</code> skill.</li>
+<li><code>abm-vp</code>, <code>abm-qa</code>.</li>
+</ul>
+<h3>Final human gate</h3>
+<p><strong>The human approval gate</strong> (CEO + <code>abm-manager-approver</code>).</p>
+<h3>Risk register</h3>
+<ul>
+<li><strong>R-E1 (BLOCK).</strong> &quot;1 in N&quot; without an on-disk count = fabrication.</li>
+</ul>
+<p>  <strong>Mitigation:</strong> either publish the</p>
+<p>  <code>DC-???__account-number-match-v1</code> task first, or reframe the blog as a</p>
+<p>  framework post (the 7 rules without the prevalence claim).</p>
+<ul>
+<li><strong>R-E2 (BLOCK).</strong> Customer-data examples = **PENDING DESIGN PARTNER</li>
+</ul>
+<p>  PERMISSION**; even sample account-number strings can be back-traced.</p>
+<ul>
+<li><strong>R-E3 (CHANGES-REQUESTED risk).</strong> The 7 rules cited must match the</li>
+</ul>
+<p>  conformance-suite mapping per ERP exactly; any drift = the</p>
+<p>  connector-conformance reviewer REWORKs.</p>
+<hr>
+<h2>Cross-blog summary</h2>
+<table><thead><tr><th>Blog</th><th>Headline number</th><th>On-disk cell?</th><th>Customer-case?</th><th>Top blocker</th></tr></thead><tbody><tr><td>BLOG-A</td><td>500 line items, row-F1</td><td>NO (PENDING MEASUREMENT)</td><td>PENDING DESIGN PARTNER PERMISSION</td><td>Land <code>DC-???__line-item-rowf1-v1</code></td></tr><tr><td>BLOG-B</td><td>0.5 s/page OCR</td><td>NO (PENDING MEASUREMENT)</td><td>PENDING DESIGN PARTNER PERMISSION</td><td>Land <code>DC-???__ocr-latency-v1</code> with hardware pin</td></tr><tr><td>BLOG-C</td><td>Azure DI: 0.9202, HyperAPI prod-ref</td><td>YES (Azure-DI); HyperAPI on same dataset = NO</td><td>n/a (methodology post)</td><td>Frame as methodology, not horse race; legal review for named-competitor</td></tr><tr><td>BLOG-D</td><td>9,000 payment-terms variants</td><td>NO (PENDING MEASUREMENT)</td><td>PENDING DESIGN PARTNER PERMISSION</td><td>Publish taxonomy artifact first</td></tr><tr><td>BLOG-E</td><td>7 reconciliation rules</td><td>NO (PENDING MEASUREMENT)</td><td>PENDING DESIGN PARTNER PERMISSION</td><td>Either ship task or reframe as framework</td></tr></tbody></table>
+<p><strong>4 of 5 blogs have the same root blocker:</strong> no on-disk benchmark cell</p>
+<p>backing the headline number. The fastest unblock is to pin the four missing</p>
+<p>tasks in the factory harness (line-item-rowf1, ocr-latency,</p>
+<p>payment-terms-extract, account-number-match) and run them — at that point</p>
+<p>the cells become defensible and the blogs become publishable subject to the</p>
+<p>human approval gate.</p>
+<p>BLOG-C is the only one publishable on existing data alone — and only as a</p>
+<p>methodology post, not a head-to-head.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/results/DC-000__savior-bench-v1__Azure-DI.json</code></li>
+</ul>
+<p>  (Azure DI cell; metric 0.9202; n=509; in-house-attested,</p>
+<p>  not-factory-reproduced).</p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/results/DC-000__ocr-edit-distance-v1__HyperAPI-PaddleOCR-OURS.json</code></li>
+</ul>
+<p>  (HyperAPI OCR cell; metric 0.061 edit-distance, lower-is-better,</p>
+<p>  attested, not-factory-reproduced).</p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/results/DC-001__finbench-synth-fixture-v1__hyperbots-ip-seed-v1.json</code></li>
+</ul>
+<p>  (factory-reproduced classify cell; n=60; ci95 1.0/1.0; pinned harness).</p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-documentapi-benchmark-factory/results/DS-001__financepss-205-v1__GLM-4.7__v4_plr-on_ir-off_expand.json</code></li>
+</ul>
+<p>  (financepss attested cell schema reference).</p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/INDEX.md</code> (10-post</li>
+</ul>
+<p>  series; integrity posture; W6 0/23 audit; legal-review gate).</p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/06-line-item-extraction-problem.md</code></li>
+</ul>
+<p>  (row-F1 framework — currently PENDING MEASUREMENT).</p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/08-reproducibility-in-doc-ai-benchmarks.md</code></li>
+</ul>
+<p>  (W6 audit reference for BLOG-C).</p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/09-cost-vs-accuracy-economics.md</code></li>
+</ul>
+<p>  ($/wrong-extraction frame for BLOG-D).</p>
+<ul>
+<li><code>/Users/niyati/Desktop/hyperapi-abm-team/.claude/skills/content-marketing-validate/SKILL.md</code></li>
+</ul>
+<p>  (validator rubric).</p>
+<ul>
+<li>The 22 agent files in <code>hyperapi-abm-team/.claude/agents/</code> and</li>
+</ul>
+<p>  <code>hyperapi-gtm-hub/.claude/agents/</code> (reviewer roster).</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>Every &quot;PENDING MEASUREMENT&quot; line indicates a cell that does not exist on</li>
+</ul>
+<p>  disk today; no number was rounded or inferred to fill it.</p>
+<ul>
+<li>&quot;PENDING DESIGN PARTNER PERMISSION&quot; applies anywhere a real customer</li>
+</ul>
+<p>  artifact is referenced; treat as a hard gate before publish.</p>
+<ul>
+<li><code>results.zip</code> is HyperAPI&#x27;s deployed-extraction prod-ref and is not used</li>
+</ul>
+<p>  as ground truth in any plan; BLOG-C is explicitly framed on this rule.</p>
+<ul>
+<li>The four channels (LinkedIn / Reddit / HN / HF) are the canonical organic</li>
+</ul>
+<p>  set; per-blog LinkedIn / HN posts are the default, HF cross-post is</p>
+<p>  conditional on the artifact landing as an HF card first.</p>
+<ul>
+<li>The reviewer agents named above have not run yet on these plans; the</li>
+</ul>
+<p>  reviewer matrix is populated PENDING in <code>REVIEW-MATRIX.md</code>.</p>
+<ul>
+<li>No agent in this plan is authorized to publish; the final human approval</li>
+</ul>
+<p>  gate is the only release authority.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>
