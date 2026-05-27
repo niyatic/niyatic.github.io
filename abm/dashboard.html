@@ -1,0 +1,967 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ABM-GTM dashboard — Hyperbots content hub</title>
+<style>
+:root {
+  --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-3:#DEEEF5; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-3:#EDF3F4; --grey-4:#E2ECEE;
+  --grey-9:#8A9799; --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26;
+  --ok-fg:#039855; --ready-fg:#1B7DA7; --draft-fg:#B54708;
+  --blocked-fg:#D92D20; --neutral-fg:#748081;
+  --ok-bg:#E1F9D6; --ready-bg:#EDFAFF; --draft-bg:#FEDF89;
+  --blocked-bg:#FCD1CF; --neutral-bg:#F6F9F9;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font: 14px/1.55 "Rubik", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  background: var(--grey-2); color: var(--grey-12);
+  max-width: 1280px; margin: 0 auto; padding: 24px 20px 56px;
+  -webkit-font-smoothing: antialiased; }
+.brand-header { display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  padding: 16px 20px; background: #fff;
+  border: 1px solid var(--grey-4); border-radius: 12px;
+  border-left: 5px solid var(--brand-7); margin-bottom: 18px;
+  box-shadow: 0 1px 3px rgba(33,31,38,.06); }
+.brand-header h1 { font-size: 20px; font-weight: 600; }
+.brand-header .sub { color: var(--grey-10); font-size: 12.5px; margin-top: 3px; }
+.brand-header .tag { font-size: 10.5px; padding: 3px 9px; background: var(--brand-2); color: var(--brand-9);
+  border-radius: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; }
+.back { display: inline-block; color: var(--grey-10); font-size: 12.5px; text-decoration: none; margin-bottom: 10px; }
+.back:hover { color: var(--brand-7); text-decoration: underline; }
+h2 { font-size: 15.5px; color: var(--brand-9); font-weight: 600; margin: 24px 0 10px;
+  padding-bottom: 6px; border-bottom: 2px solid var(--brand-4); }
+.acct-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin: 8px 0 18px; }
+.acct-card { background: #fff; border: 1px solid var(--grey-4); border-radius: 10px;
+  padding: 12px 14px; text-decoration: none; color: inherit;
+  box-shadow: 0 1px 2px rgba(33,31,38,.04); transition: box-shadow .15s; }
+.acct-card:hover { box-shadow: 0 4px 12px rgba(33,31,38,.10); }
+.acct-count { font-size: 26px; font-weight: 700; color: var(--brand-7); }
+.acct-label { font-size: 12px; color: var(--grey-11); margin-top: 2px; line-height: 1.45; }
+
+.summary-strip { display: flex; gap: 18px; flex-wrap: wrap; margin: 6px 0 14px;
+  padding: 10px 14px; background: #fff; border: 1px solid var(--grey-4); border-radius: 10px; }
+.summary-strip span { font-size: 12.5px; color: var(--grey-11); }
+.summary-strip b { color: var(--grey-12); }
+
+.filters { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0; align-items: center; }
+.filters label { font-size: 12px; color: var(--grey-11); display: flex; align-items: center; gap: 6px; }
+.filters select, .filters input { font: inherit; font-size: 12.5px; padding: 5px 8px;
+  border: 1px solid var(--grey-4); border-radius: 6px; background: #fff; color: var(--grey-12); }
+.filters input[type=text] { min-width: 220px; }
+.filters .clear-btn { font-size: 11.5px; color: var(--brand-7); background: var(--brand-2);
+  border: 1px solid var(--brand-4); border-radius: 6px; padding: 5px 10px; cursor: pointer; }
+
+table { width: 100%; border-collapse: separate; border-spacing: 0; background: #fff;
+  border: 1px solid var(--grey-4); border-radius: 10px; overflow: hidden;
+  box-shadow: 0 1px 2px rgba(33,31,38,.04); margin-top: 8px; }
+th { background: var(--brand-2); color: var(--brand-9); font-weight: 600; text-align: left;
+  padding: 10px 12px; font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+  border-bottom: 1px solid var(--grey-4); cursor: pointer; user-select: none; }
+th:hover { background: var(--brand-3); }
+th .sort-ind { font-size: 10px; color: var(--grey-10); margin-left: 4px; }
+td { padding: 9px 12px; border-bottom: 1px solid var(--grey-4); font-size: 12.5px;
+  color: var(--grey-12); vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+tr:hover { background: var(--brand-2); }
+.status { display: inline-block; padding: 2px 8px; border-radius: 11px; font-size: 11px;
+  font-weight: 600; letter-spacing: .03em; }
+.status.ok { background: var(--ok-bg); color: var(--ok-fg); }
+.status.ready { background: var(--ready-bg); color: var(--ready-fg); }
+.status.draft { background: var(--draft-bg); color: var(--draft-fg); }
+.status.blocked { background: var(--blocked-bg); color: var(--blocked-fg); }
+.status.neutral { background: var(--neutral-bg); color: var(--neutral-fg); }
+.type { font-size: 11.5px; color: var(--grey-11); font-family: "SF Mono", ui-monospace, Menlo, monospace; }
+.path { font-size: 11px; color: var(--grey-10); font-family: "SF Mono", ui-monospace, Menlo, monospace; word-break: break-all; }
+.audience { font-size: 11.5px; color: var(--grey-11); max-width: 220px; }
+.title-cell { font-weight: 500; max-width: 380px; }
+.footer { margin-top: 32px; padding-top: 14px; border-top: 1px solid var(--grey-4);
+  color: var(--grey-10); font-size: 11.5px; }
+.empty-row { text-align: center; color: var(--grey-10); padding: 24px 0 !important; font-style: italic; }
+</style>
+</head>
+<body>
+
+<a class="back" href="/">← back to content hub</a>
+
+<header class="brand-header">
+  <img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:34px;height:35px;display:block;margin-right:12px"/>
+  <div style="flex:1">
+    <h1>ABM-GTM dashboard</h1>
+    <div class="sub">Asset draft state + account universe links. All ABM-GTM content currently in flight, by type and status.</div>
+  </div>
+  <span class="tag">private · password-gated</span>
+</header>
+
+<h2>🎯 Account universe</h2>
+<div class="acct-grid">
+  <a class="acct-card" href="/abm/accounts/top50.html">
+    <div class="acct-count">50</div>
+    <div class="acct-label">Top-50 curated (Tier-1 named)</div>
+  </a>
+  <a class="acct-card" href="/abm/accounts/enriched-288.html">
+    <div class="acct-count">288</div>
+    <div class="acct-label">Enriched 288 (Tier-2+)</div>
+  </a>
+  <a class="acct-card" href="/abm/accounts/">
+    <div class="acct-count">338</div>
+    <div class="acct-label">All target accounts (universe)</div>
+  </a>
+  <a class="acct-card" href="/abm/events/jun-nov-2026.html">
+    <div class="acct-count">26</div>
+    <div class="acct-label">Events Jun–Nov 2026 (NA · ME · India + Doc-AI)</div>
+  </a>
+</div>
+
+<h2>📋 Asset drafts &amp; published content</h2>
+<div class="summary-strip">
+  <span><b>65</b> total assets</span>
+  <span>·</span>
+  <span><b>1</b> abm-blog</span> · <span><b>1</b> abm-strategy</span> · <span><b>16</b> comparative-blog</span> · <span><b>3</b> deep-study-framework</span> · <span><b>3</b> erp-connector-blog</span> · <span><b>12</b> erp-connector-plan</span>
+</div>
+
+<div class="filters">
+  <label>Type
+    <select id="filter-type">
+      <option value="">All types</option>
+<option value="abm-blog">abm-blog (1)</option>
+<option value="abm-strategy">abm-strategy (1)</option>
+<option value="comparative-blog">comparative-blog (16)</option>
+<option value="deep-study-framework">deep-study-framework (3)</option>
+<option value="erp-connector-blog">erp-connector-blog (3)</option>
+<option value="erp-connector-plan">erp-connector-plan (12)</option>
+<option value="events-plan">events-plan (24)</option>
+<option value="linkedin-post">linkedin-post (5)</option>
+    </select>
+  </label>
+  <label>Status
+    <select id="filter-status">
+      <option value="">All statuses</option>
+<option value="ACTIVE">ACTIVE (24)</option>
+<option value="BLOCKED">BLOCKED (1)</option>
+<option value="DRAFT">DRAFT (23)</option>
+<option value="FRAMEWORK">FRAMEWORK (1)</option>
+<option value="PLACEHOLDER-FRAMING">PLACEHOLDER-FRAMING (1)</option>
+<option value="PLAN">PLAN (14)</option>
+<option value="PLANS ONLY">PLANS ONLY (1)</option>
+    </select>
+  </label>
+  <label>Search
+    <input id="filter-search" type="text" placeholder="title / audience / owner / path …"/>
+  </label>
+  <button class="clear-btn" onclick="clearFilters()">Reset</button>
+  <span style="font-size:11.5px;color:var(--grey-10);margin-left:auto"><span id="visible-count">65</span> / 65 rows · refreshed 2026-05-27 15:27 UTC</span>
+</div>
+
+<table id="t">
+  <thead>
+    <tr>
+      <th data-key="title">Title <span class="sort-ind"></span></th>
+      <th data-key="type" style="width:140px">Type <span class="sort-ind"></span></th>
+      <th data-key="status" style="width:130px">Status <span class="sort-ind"></span></th>
+      <th data-key="audience">Audience <span class="sort-ind"></span></th>
+      <th data-key="owner" style="width:160px">Owner <span class="sort-ind"></span></th>
+      <th data-key="mtime" style="width:96px">Updated <span class="sort-ind">↓</span></th>
+    </tr>
+  </thead>
+  <tbody id="tbody"></tbody>
+</table>
+
+<div class="footer">
+  Sources: <code>~/Desktop/hyperapi-gtm-hub/{linkedin,comparative-blogs,content/competitor-studies,content/deep-study-framework,content/erp-connector-blogs}/*.md</code>
+  · <code>~/Desktop/hyperapi-abm-team/{content/{blog,strategy},plan}/*.md</code>
+  · Account counts: <code>abm/accounts/{top50,enriched-288}.html</code> + the icp-v2-flat.csv source.
+  · DRAFT = pending review; external publication remains human-gated.
+</div>
+
+<script id="data" type="application/json">[
+{
+"title": "We ran a deep head-to-head against a category-leading IDP vendor — and the gap wasn't in the accuracy number",
+"type": "linkedin-post",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "Finance buyer · CFO/Controller · AI/Data Strategy · ML practitioner · IT/CIO",
+"mtime": "2026-05-27",
+"owner": "linkedin-post-strategy",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/linkedin/2026-05-27-vendor-A-viral-DRAFT.md",
+"filename": "2026-05-27-vendor-A-viral-DRAFT.md"
+},
+{
+"title": "An LLM-only parsing API solves one primitive of seven — and that's the honest read",
+"type": "linkedin-post",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "Finance buyer · AI/Data Strategy · ML practitioner · IT/CIO · ERP Lead",
+"mtime": "2026-05-27",
+"owner": "linkedin-post-strategy",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/linkedin/2026-05-27-vendor-B-viral-DRAFT.md",
+"filename": "2026-05-27-vendor-B-viral-DRAFT.md"
+},
+{
+"title": "A document parser that lives inside an LLM stack is not the same product as one that lives inside the CFO's office",
+"type": "linkedin-post",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "Finance buyer · CFO/Controller/AP director · AI/Data Strategy · ML practitioner · IT/CIO",
+"mtime": "2026-05-27",
+"owner": "linkedin-post-strategy",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/linkedin/2026-05-27-vendor-C-viral-DRAFT.md",
+"filename": "2026-05-27-vendor-C-viral-DRAFT.md"
+},
+{
+"title": "Trainable-IDP-with-an-API-veneer vs API-native fine-tuned — the head-to-head, honestly",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "Finance buyer · CFO/Controller/AP director · IT/CIO · ML practitioner · AI/Data strategy",
+"mtime": "2026-05-27",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/2026-05-27-vendor-A-deep-comparative-DRAFT.md",
+"filename": "2026-05-27-vendor-A-deep-comparative-DRAFT.md"
+},
+{
+"title": "LLM-only parsing APIs vs primitive-resolved finance IDP — a stack-level honest comparison",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "AI/Data Strategy · ML practitioner · IT/CIO · Finance buyer evaluating doc-AI APIs",
+"mtime": "2026-05-27",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/2026-05-27-vendor-B-deep-comparative-DRAFT.md",
+"filename": "2026-05-27-vendor-B-deep-comparative-DRAFT.md"
+},
+{
+"title": "When the parser is the front door of a RAG stack — and what changes when the buyer is the CFO's office",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "Finance buyer · CFO/Controller/AP director · IT/CIO · ML practitioner · AI/Data Strategy",
+"mtime": "2026-05-27",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/2026-05-27-vendor-C-deep-comparative-DRAFT.md",
+"filename": "2026-05-27-vendor-C-deep-comparative-DRAFT.md"
+},
+{
+"title": "Five layers of production document AI — what doesn't show up in a one-number leaderboard",
+"type": "linkedin-post",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "Finance buyer · CFO/Controller · AI/Data Strategy · ML practitioner · IT/CIO",
+"mtime": "2026-05-26",
+"owner": "linkedin-post-strategy",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/linkedin/2026-05-26-viral-technical-five-layers-DRAFT.md",
+"filename": "2026-05-26-viral-technical-five-layers-DRAFT.md"
+},
+{
+"title": "Document AI for finance — the stack-level comparison, honestly",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "Finance buyer · CFO/Controller/AP director · IT/CIO · ML practitioner",
+"mtime": "2026-05-26",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/2026-05-26-deep-comparative-document-ai-stack.md",
+"filename": "2026-05-26-deep-comparative-document-ai-stack.md"
+},
+{
+"title": "Events by Location · Month — Jun 2026 → Nov 2026 (NA / ME / India + document-AI)",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-26",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/EVENTS-BY-LOCATION-MONTH.md",
+"filename": "EVENTS-BY-LOCATION-MONTH.md"
+},
+{
+"title": "LinkedIn Post Strategy — Hyperbots / HyperAPI (GTM Hub) — v2 virality-enhanced",
+"type": "linkedin-post",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "Hyperbots founders, research-comms-lead, GTM leaders",
+"mtime": "2026-05-25",
+"owner": "linkedin-post-strategy",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/linkedin/linkedin-post-strategy.md",
+"filename": "linkedin-post-strategy.md"
+},
+{
+"title": "Hyperbots deep-study blog framework",
+"type": "deep-study-framework",
+"status": "PLAN",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "gtm-hub",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/deep-study-framework/FRAMEWORK-2026-05-25.md",
+"filename": "FRAMEWORK-2026-05-25.md"
+},
+{
+"title": "Deep-study framework — index",
+"type": "deep-study-framework",
+"status": "PLAN",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "gtm-hub",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/deep-study-framework/INDEX.md",
+"filename": "INDEX.md"
+},
+{
+"title": "WebFetch retry results (2026-05-25)",
+"type": "deep-study-framework",
+"status": "BLOCKED",
+"status_color": "blocked",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "gtm-hub",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/deep-study-framework/WEBFETCH-RESULTS-2026-05-25.md",
+"filename": "WEBFETCH-RESULTS-2026-05-25.md"
+},
+{
+"title": "Hours, not weeks: the SAP connector that builds itself — plan",
+"type": "erp-connector-plan",
+"status": "PLAN",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "erp-connector-agent",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/plans/01-hours-not-weeks-sap-connector.md",
+"filename": "01-hours-not-weeks-sap-connector.md"
+},
+{
+"title": "NetSuite REST vs SuiteTalk: a 17-edge-case integration the agent already knows — plan",
+"type": "erp-connector-plan",
+"status": "PLAN",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "erp-connector-agent",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/plans/02-netsuite-rest-vs-suitetalk-17-edge-cases.md",
+"filename": "02-netsuite-rest-vs-suitetalk-17-edge-cases.md"
+},
+{
+"title": "Dynamics 365 + GP + BC: three ERPs, one agent surface — plan",
+"type": "erp-connector-plan",
+"status": "PLAN",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "erp-connector-agent",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/plans/03-dynamics-365-gp-bc-three-erps-one-agent.md",
+"filename": "03-dynamics-365-gp-bc-three-erps-one-agent.md"
+},
+{
+"title": "Oracle EBS to Fusion: the migration-aware connector — plan",
+"type": "erp-connector-plan",
+"status": "PLAN",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "erp-connector-agent",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/plans/04-oracle-ebs-to-fusion-migration-aware.md",
+"filename": "04-oracle-ebs-to-fusion-migration-aware.md"
+},
+{
+"title": "Idempotency for invoices: how the connector survives retries — plan",
+"type": "erp-connector-plan",
+"status": "PLAN",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "erp-connector-agent",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/plans/05-idempotency-for-invoices.md",
+"filename": "05-idempotency-for-invoices.md"
+},
+{
+"title": "Schema drift in production: what happens when a customer adds a custom field — plan",
+"type": "erp-connector-plan",
+"status": "PLAN",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "erp-connector-agent",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/plans/06-schema-drift-in-production-custom-field.md",
+"filename": "06-schema-drift-in-production-custom-field.md"
+},
+{
+"title": "From CSV to event-driven: an evolving integration in 4 stages — plan",
+"type": "erp-connector-plan",
+"status": "PLAN",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "erp-connector-agent",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/plans/07-csv-to-event-driven-4-stages.md",
+"filename": "07-csv-to-event-driven-4-stages.md"
+},
+{
+"title": "The 9 reasons SAP integrations fail (and how the agent handles each) — plan",
+"type": "erp-connector-plan",
+"status": "PLAN",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "erp-connector-agent",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/plans/08-9-reasons-sap-integrations-fail.md",
+"filename": "08-9-reasons-sap-integrations-fail.md"
+},
+{
+"title": "Workday HCM + Financials: connecting payroll docs without losing context — plan",
+"type": "erp-connector-plan",
+"status": "PLAN",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "erp-connector-agent",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/plans/09-workday-hcm-financials-payroll-docs.md",
+"filename": "09-workday-hcm-financials-payroll-docs.md"
+},
+{
+"title": "QuickBooks Online vs Desktop: the SMB-to-mid-market upgrade path — plan",
+"type": "erp-connector-plan",
+"status": "PLAN",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "erp-connector-agent",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/plans/10-quickbooks-online-vs-desktop-smb-upgrade.md",
+"filename": "10-quickbooks-online-vs-desktop-smb-upgrade.md"
+},
+{
+"title": "The 'integration QBR' is dead: an agent does what a 4-week SI engagement used to — plan",
+"type": "erp-connector-plan",
+"status": "PLAN",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "erp-connector-agent",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/plans/11-integration-qbr-is-dead.md",
+"filename": "11-integration-qbr-is-dead.md"
+},
+{
+"title": "Observability for connectors: what an SRE actually needs to see — plan",
+"type": "erp-connector-plan",
+"status": "PLAN",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "erp-connector-agent",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/plans/12-observability-for-connectors-what-sre-needs.md",
+"filename": "12-observability-for-connectors-what-sre-needs.md"
+},
+{
+"title": "ERP-Connector Deep-Blog Framework",
+"type": "erp-connector-blog",
+"status": "FRAMEWORK",
+"status_color": "neutral",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "erp-connector-agent",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/FRAMEWORK-2026-05-25.md",
+"filename": "FRAMEWORK-2026-05-25.md"
+},
+{
+"title": "ERP-connector deep-blog plans — INDEX",
+"type": "erp-connector-blog",
+"status": "PLANS ONLY",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "erp-connector-agent",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/INDEX.md",
+"filename": "INDEX.md"
+},
+{
+"title": "Internal-demo integration-time case — bol-grn dogfood ([PLACEHOLDER] until a customer case lands)",
+"type": "erp-connector-blog",
+"status": "PLACEHOLDER-FRAMING",
+"status_color": "blocked",
+"audience": "",
+"mtime": "2026-05-25",
+"owner": "gtm-hub + sales",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/content/erp-connector-blogs/INTERNAL-DEMO-CASE-2026-05-25.md",
+"filename": "INTERNAL-DEMO-CASE-2026-05-25.md"
+},
+{
+"title": "How to actually measure document-AI extraction accuracy",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "engineering leaders, ML platform owners, doc-AI buyers",
+"mtime": "2026-05-22",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/01-measuring-extraction-accuracy.md",
+"filename": "01-measuring-extraction-accuracy.md"
+},
+{
+"title": "Why layout awareness drives extraction accuracy — the mechanism",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "ML engineers, doc-AI evaluators",
+"mtime": "2026-05-22",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/02-layout-awareness-mechanism.md",
+"filename": "02-layout-awareness-mechanism.md"
+},
+{
+"title": "Reading a document-AI vendor's accuracy claims critically",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "doc-AI buyers, eng leaders running vendor evaluations",
+"mtime": "2026-05-22",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/03-reading-accuracy-claims-critically.md",
+"filename": "03-reading-accuracy-claims-critically.md"
+},
+{
+"title": "HyperAPI vs the document-AI category — a metric-coverage framework",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "doc-AI buyers, competitive evaluators",
+"mtime": "2026-05-22",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/04-metric-coverage-dimension-by-dimension.md",
+"filename": "04-metric-coverage-dimension-by-dimension.md"
+},
+{
+"title": "Reducto and the modern document-AI landscape — an honest map",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "doc-AI buyers orienting the vendor space",
+"mtime": "2026-05-22",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/05-reducto-and-the-doc-ai-landscape.md",
+"filename": "05-reducto-and-the-doc-ai-landscape.md"
+},
+{
+"title": "The line-item extraction problem — where most document-AI APIs break",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "AP automation owners, doc-AI engineers",
+"mtime": "2026-05-22",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/06-line-item-extraction-problem.md",
+"filename": "06-line-item-extraction-problem.md"
+},
+{
+"title": "Multi-currency and multi-language invoice accuracy — a coverage-gap analysis",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "global AP teams, doc-AI buyers with non-US document mix",
+"mtime": "2026-05-22",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/07-multi-currency-multi-language-accuracy.md",
+"filename": "07-multi-currency-multi-language-accuracy.md"
+},
+{
+"title": "Reproducibility in document-AI benchmarks — why most comparisons can't be trusted",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "ML platform owners, technical evaluators",
+"mtime": "2026-05-22",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/08-reproducibility-in-doc-ai-benchmarks.md",
+"filename": "08-reproducibility-in-doc-ai-benchmarks.md"
+},
+{
+"title": "Cost vs accuracy — the operational economics of document-AI at scale",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "CFOs, finance-ops leaders, eng budget owners",
+"mtime": "2026-05-22",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/09-cost-vs-accuracy-economics.md",
+"filename": "09-cost-vs-accuracy-economics.md"
+},
+{
+"title": "A buyer's evaluation rubric — how a CFO and engineering team should benchmark document-AI vendors",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "CFOs, finance-ops leaders, engineering leads running a vendor bake-off",
+"mtime": "2026-05-22",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/10-buyers-evaluation-rubric.md",
+"filename": "10-buyers-evaluation-rubric.md"
+},
+{
+"title": "DATA-NEEDED — pending competitive data for the HyperAPI blog series",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-22",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/DATA-NEEDED.md",
+"filename": "DATA-NEEDED.md"
+},
+{
+"title": "HyperAPI competitive blog series — INDEX",
+"type": "comparative-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "",
+"mtime": "2026-05-22",
+"owner": "comparative-study",
+"source_local": "/Users/niyati/Desktop/hyperapi-gtm-hub/comparative-blogs/INDEX.md",
+"filename": "INDEX.md"
+},
+{
+"title": "We Built Our Entire ABM Engine in Claude Code — Here's What That Actually Looks Like",
+"type": "abm-blog",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "founders, GTM leaders, operators evaluating agent-native workflows",
+"mtime": "2026-05-22",
+"owner": "Cofounder, Hyperbots",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/content/blog/2026-05-22-abm-agent-with-claude-code.md",
+"filename": "2026-05-22-abm-agent-with-claude-code.md"
+},
+{
+"title": "Hyperbots Content / Benchmark / Experience / Tech-Moat Virality Strategy",
+"type": "abm-strategy",
+"status": "DRAFT",
+"status_color": "draft",
+"audience": "Hyperbots founders, research-comms-lead, GTM leaders",
+"mtime": "2026-05-22",
+"owner": "technical-content-strategist + launch-pr-strategist",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/content/strategy/2026-05-22-content-virality-strategy.md",
+"filename": "2026-05-22-content-virality-strategy.md"
+},
+{
+"title": "ABM Consolidated Slack Summary — Events + Accounts (overview of record)",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-20",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/ABM-SLACK-SUMMARY.md",
+"filename": "ABM-SLACK-SUMMARY.md"
+},
+{
+"title": "Events Action Plan — Jun–Nov 2026 (NA · India · ME) [PREP · manager-gated · NOTHING COMMITTED]",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-19",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/EVENTS-ACTION-PLAN.md",
+"filename": "EVENTS-ACTION-PLAN.md"
+},
+{
+"title": "Independent Fortune-100 Audit — ABM Bundle, Post-Enrichment",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-18",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/ABM-AUDIT-fortune100-postenrichment.md",
+"filename": "ABM-AUDIT-fortune100-postenrichment.md"
+},
+{
+"title": "ABM Bundle — Independent Fortune-100 Post-Upgrade Audit",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-18",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/ABM-AUDIT-fortune100-postupgrade.md",
+"filename": "ABM-AUDIT-fortune100-postupgrade.md"
+},
+{
+"title": "ABM Program Audit — Fortune-100 Enterprise Doc-AI ABM Owner Review",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-18",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/ABM-AUDIT-fortune100.md",
+"filename": "ABM-AUDIT-fortune100.md"
+},
+{
+"title": "ABM/GTM Site — End-to-End Deploy Runbook",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-18",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/ABM-DEPLOY-E2E.md",
+"filename": "ABM-DEPLOY-E2E.md"
+},
+{
+"title": "Convergence Stream C — Independent Re-Audit (post-merge)",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-18",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/CONVERGENCE-C-AUDIT.md",
+"filename": "CONVERGENCE-C-AUDIT.md"
+},
+{
+"title": "Convergence Stream C — Merge Decision: hyperapi-erp-abm → hyperapi-abm-team",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-18",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/CONVERGENCE-C-DECISION.md",
+"filename": "CONVERGENCE-C-DECISION.md"
+},
+{
+"title": "Events Discovery — Jun–Aug 2026 (NA · India · Middle East) [CHARTER · manager-gated]",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-18",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/EVENTS-DISCOVERY-JUN-AUG-2026.md",
+"filename": "EVENTS-DISCOVERY-JUN-AUG-2026.md"
+},
+{
+"title": "Events Shortlist — Jun–Nov 2026 (NA · India · Middle East) [DRAFT · DISCOVER-ONLY · manager-gated]",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-18",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/EVENTS-SHORTLIST.md",
+"filename": "EVENTS-SHORTLIST.md"
+},
+{
+"title": "GTM-Signals Enhancement Audit — Fortune-100 Enterprise Doc-AI ABM/GTM Owner Review",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-18",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/GTM-SIGNALS-AUDIT-fortune100.md",
+"filename": "GTM-SIGNALS-AUDIT-fortune100.md"
+},
+{
+"title": "LinkedIn Daily-Actions Strategy — proposal [PROPOSE → share → execute on approval]",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-18",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/LINKEDIN-DAILY-STRATEGY.md",
+"filename": "LINKEDIN-DAILY-STRATEGY.md"
+},
+{
+"title": "Blog Media Content + Automation — proposal [PROPOSE → review → execute on approval]",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-18",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/MEDIA-CONTENT-AUTOMATION-PLAN.md",
+"filename": "MEDIA-CONTENT-AUTOMATION-PLAN.md"
+},
+{
+"title": "ABM — Per-Account Deck Program (plan, then go)",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-18",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/PLAN-account-decks.md",
+"filename": "PLAN-account-decks.md"
+},
+{
+"title": "ABM-GTM ⇄ Slack Integration — proposal [PROPOSE → execute on human approval]",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-18",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/SLACK-INTEGRATION-PLAN.md",
+"filename": "SLACK-INTEGRATION-PLAN.md"
+},
+{
+"title": "HyperAPI (by Hyperbots) — ABM Plan (v2, approved as method)",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-16",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/ABM-PLAN.md",
+"filename": "ABM-PLAN.md"
+},
+{
+"title": "ABM Plan — Approver Sign-off (abm-manager-approver) · v2 post-edit",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-16",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/APPROVAL.md",
+"filename": "APPROVAL.md"
+},
+{
+"title": "ABM Delivery Status (maintained by abm-dev-manager)",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-16",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/STATUS.md",
+"filename": "STATUS.md"
+},
+{
+"title": "HyperAPI (by Hyperbots) — Asset Kit (drafts only — nothing published)",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-16",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/asset-kit.md",
+"filename": "asset-kit.md"
+},
+{
+"title": "HyperAPI (by Hyperbots) — Channel Plan (one combined timeline, drafts only)",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-16",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/channel-plan.md",
+"filename": "channel-plan.md"
+},
+{
+"title": "HyperAPI (by Hyperbots) — Account-Level Engagement Measurement (drafts only)",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-16",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/measurement.md",
+"filename": "measurement.md"
+},
+{
+"title": "HyperAPI (by Hyperbots) — Message Maps (50-account G0 slate: Tier-1 per-account + Tier-2 domain segments)",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-16",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/message-maps.md",
+"filename": "message-maps.md"
+},
+{
+"title": "HyperAPI (by Hyperbots) — Outbound Sequences (drafts only — nothing is sent)",
+"type": "events-plan",
+"status": "ACTIVE",
+"status_color": "ok",
+"audience": "",
+"mtime": "2026-05-16",
+"owner": "events-discovery-gtm",
+"source_local": "/Users/niyati/Desktop/hyperapi-abm-team/plan/outbound-sequences.md",
+"filename": "outbound-sequences.md"
+}
+]</script>
+<script>
+const DATA = JSON.parse(document.getElementById('data').textContent);
+let state = { sortKey: 'mtime', sortDir: -1 };
+
+function render() {
+  const fType   = document.getElementById('filter-type').value;
+  const fStatus = document.getElementById('filter-status').value;
+  const fSearch = document.getElementById('filter-search').value.toLowerCase().trim();
+  let rows = DATA.filter(r => {
+    if (fType   && r.type   !== fType)   return false;
+    if (fStatus && r.status !== fStatus) return false;
+    if (fSearch) {
+      const hay = (r.title + ' ' + r.audience + ' ' + r.owner + ' ' + r.source_local).toLowerCase();
+      if (!hay.includes(fSearch)) return false;
+    }
+    return true;
+  });
+  rows.sort((a, b) => {
+    const av = (a[state.sortKey] || '').toString();
+    const bv = (b[state.sortKey] || '').toString();
+    if (av < bv) return -1 * state.sortDir;
+    if (av > bv) return  1 * state.sortDir;
+    return 0;
+  });
+  document.getElementById('visible-count').textContent = rows.length;
+  const tbody = document.getElementById('tbody');
+  if (rows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-row">No rows match the current filters.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(r => `
+    <tr>
+      <td class="title-cell">${escapeHtml(r.title)}<div class="path">${escapeHtml(r.source_local.replace('/Users/niyati/Desktop/', '~/Desktop/'))}</div></td>
+      <td class="type">${escapeHtml(r.type)}</td>
+      <td><span class="status ${r.status_color}">${escapeHtml(r.status)}</span></td>
+      <td class="audience">${escapeHtml(r.audience || '—')}</td>
+      <td class="audience">${escapeHtml(r.owner)}</td>
+      <td>${escapeHtml(r.mtime)}</td>
+    </tr>`).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+}
+
+function clearFilters() {
+  document.getElementById('filter-type').value = '';
+  document.getElementById('filter-status').value = '';
+  document.getElementById('filter-search').value = '';
+  render();
+}
+
+document.querySelectorAll('th').forEach(th => {
+  th.addEventListener('click', () => {
+    const key = th.dataset.key;
+    if (state.sortKey === key) state.sortDir *= -1;
+    else { state.sortKey = key; state.sortDir = 1; }
+    document.querySelectorAll('th .sort-ind').forEach(s => s.textContent = '');
+    th.querySelector('.sort-ind').textContent = state.sortDir === 1 ? '↑' : '↓';
+    render();
+  });
+});
+
+document.getElementById('filter-type').addEventListener('change', render);
+document.getElementById('filter-status').addEventListener('change', render);
+document.getElementById('filter-search').addEventListener('input', render);
+
+render();
+</script>
+</body>
+</html>
