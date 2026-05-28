@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Azure DI fragments. Gemini truncates. We published the doc that breaks all three.</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publication is human-gated</div><div class="meta">linkedin-post-strategy (GTM Hub) — for CEO authorship · 2026-05-28</div><h1>Azure DI fragments. Gemini truncates. We published the doc that breaks all three.</h1>
+<p>We took the ten longest invoices in a finance benchmark — up to 323 line items — and ran them through the two leading cloud prebuilt extractors. Both broke. They broke differently. And the boundary that breaks them also breaks ours.</p>
+<p><strong>Azure DI prebuilt-invoice fragments.</strong> On a 323-line-item invoice it returned 332 rows — close on the count, F1 0.0094. One true positive, 109 false positives. On another it returned zero rows. On a third it sprayed an 88-row table into 2,150 rows. It nails the invoice *total* 9 times out of 9 — and gets the *line items* wrong. A tool can be right about the number a CFO signs and useless for the GL underneath it.</p>
+<p><strong>Gemini 2.5 truncates.</strong> Flash lands at 0.7132 micro-F1; Pro at 0.6195 — yes, the premium model loses, at 3× the cost. Both hit a hard JSON-truncation cliff at 32k output tokens on invoices past ~100 line items. The model just stops emitting before the table is done.</p>
+<p>Same documents. Two different cliffs. One dataset boundary.</p>
+<p>Here&#x27;s the line most vendor posts would delete: <strong>our own pipeline doesn&#x27;t win this corpus either.</strong> Today the Hyperbots IDP chain lands at 0.3573 on it — below Gemini Flash. We published that, because the credibility of everything else we say depends on it.</p>
+<p>So this isn&#x27;t a &quot;we win&quot; post. It&#x27;s a &quot;here&#x27;s the measured frontier&quot; post. And the reason the frontier exists is architectural: a 300-row invoice breaks an end-to-end extractor because one model call is doing splitting, layout reasoning, and table recovery all at once, under one token budget. Decompose it — <code>split</code> before <code>parse</code>, <code>validate</code> as an auditable step, open-source backbones fine-tuned per primitive (Hyperbots IP) — and the cliff becomes a handled case instead of a silent failure.</p>
+<p>The bet isn&#x27;t a better single model. It&#x27;s a pipeline where the long invoice is a case you designed for.</p>
+<p>If you evaluate document AI: ask for the numbers on invoices past 100 line items, not the blended average. That&#x27;s where the truth is.</p>
+<p>Where did *your* extractor break first — the long tables, the totals, or the line items underneath?</p>
+<hr>
+<p>*Benchmark figures are model parse/extract performance on a factory-reproduced corpus, not product accuracy; product accuracy is referenced only &quot;per apis.hyperbots.com.&quot; Open-source backbones fine-tuned by Hyperbots (Hyperbots IP). No customer documents or names referenced.*</p>
+<h2>Earn-Trust checklist (per linkedin-post-strategy.md §7)</h2>
+<p>1. ✓ Adds value to a non-buyer (the &quot;ask for 100+ line-item numbers&quot; tip is vendor-neutral).</p>
+<p>2. ✓ Surprising-but-true (premium model loses; we published our own losing number).</p>
+<p>3. ✓ Anchors: 0.0094 F1, 332-rows-on-323, 9/9 total, 0.7132 vs 0.6195, 0.3573 ours — all factory-reproduced.</p>
+<p>4. ✓ Guardrails: Azure DI/Gemini are benchmark baselines (not IDP-competitor disparagement); no fabricated number; no HITL framing; no customer names; &quot;per apis.hyperbots.com&quot; present.</p>
+<p>5. ✓ Hook line standalone + screenshot-able.</p>
+<p>6. ✓ CTA is a real question.</p>
+<p>7. ✓ No URL in body (the internal repo / gated study not linked).</p>
+<p>8. ✓ Founder voice.</p>
+<p>9. ✓ No bought reach.</p>
+<p>10. ✓ Zero retraction risk — every figure is on disk; the honest-loss framing means there&#x27;s no overclaim to walk back.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/comparative/azure-di-long-invoices/AZURE-DI-LONG-INVOICE-2026-05-25.json</code></li>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/comparative/gemini-models/GEMINI-DATASET95-FULLN-2026-05-25.md</code></li>
+<li>Hyperbots 0.3573 baseline: parse-deep benchmark framework §4.1 H5 + CONSOLIDATED-150.</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT — external publication human-gated; 2026-05-20 LinkedIn pause in effect.</li>
+<li>CEO-authored (founder voice). Reframe if a different author posts.</li>
+<li>Azure DI / Gemini cited as published benchmark baselines on factory-reproduced data, not as IDP-vendor disparagement.</li>
+<li>The 0.3573 Hyperbots figure is the current baseline; no forward-looking number claimed.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

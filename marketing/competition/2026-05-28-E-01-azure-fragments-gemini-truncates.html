@@ -1,0 +1,160 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Azure DI fragments. Gemini truncates. One dataset boundary breaks both.</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publication is human-gated</div><div class="meta">comparative-study (hyperapi-gtm-hub) · 2026-05-28</div><h1>Azure DI fragments. Gemini truncates. One dataset boundary breaks both.</h1>
+<blockquote><strong>DRAFT — pending review; external publication is human-gated.</strong> Every number</blockquote>
+<blockquote>below is factory-reproduced and cited to an on-disk results artifact. The</blockquote>
+<blockquote>honest finding is the asset — including the part where our own pipeline does</blockquote>
+<blockquote>not win this corpus. Benchmark figures are model parse/extract performance,</blockquote>
+<blockquote>not product accuracy; product accuracy is referenced only &quot;per</blockquote>
+<blockquote>apis.hyperbots.com.&quot;</blockquote>
+<p>Most document-AI accuracy claims are made on the easy 80% of documents. The</p>
+<p>interesting question lives in the other 20% — the long invoices, the ones with</p>
+<p>100+ line items, the ones a controller actually loses sleep over. We took the</p>
+<p><strong>ten longest invoices in <code>dataset_95</code></strong> (49–323 line items) and ran them</p>
+<p>through the two leading cloud prebuilt extractors. Both broke. They broke</p>
+<p>*differently*. And the boundary that breaks them is the same boundary that, today,</p>
+<p>breaks ours.</p>
+<h2>The two failures</h2>
+<p><strong>Azure DI prebuilt-invoice fragments.</strong> On the long-invoice subset (n=10,</p>
+<p>factory-reproduced 2026-05-25):</p>
+<ul>
+<li>line-count preservation: <strong>0.6396</strong> mean — exact match on only <strong>1 of 10</strong> docs</li>
+<li>line-item-set F1: <strong>0.3439</strong> mean</li>
+<li>summary total: <strong>9 of 9</strong> matched — it reads the *total* fine, it just can&#x27;t keep the *line items* straight</li>
+</ul>
+<p>The cleanest illustration is <code>51.json</code> — a 323-line-item invoice. Azure DI</p>
+<p>returned 332 rows: close on the *count* (preservation 0.9729) but F1 <strong>0.0094</strong> —</p>
+<p>1 true positive, 109 false positives, 101 false negatives. It produced a</p>
+<p>plausible-looking table that was almost entirely wrong at the row level. On</p>
+<p><code>42.json</code> (115 line items) it returned <strong>0 rows</strong>. On <code>3.json</code> (88 gold rows) it</p>
+<p>fragmented the table into <strong>2,150 rows</strong> (preservation 0.041).</p>
+<p><strong>Gemini 2.5 truncates.</strong> Full-n on <code>dataset_95</code> (factory-reproduced):</p>
+<table><thead><tr><th>Model</th><th>micro-F1</th><th>line-count exact</th><th>$/doc</th></tr></thead><tbody><tr><td>Gemini 2.5 Flash</td><td><strong>0.7132</strong></td><td>0.7333</td><td>$0.010</td></tr><tr><td>Gemini 2.5 Pro</td><td>0.6195</td><td>0.6452</td><td>$0.033</td></tr><tr><td>Gemini 2.5 Flash-Lite</td><td>0.5004</td><td>0.5895</td><td>$0.001</td></tr></tbody></table>
+<p>Two things stand out. First, the <strong>premium model loses</strong> — Flash (0.7132) beats</p>
+<p>Pro (0.6195) on this corpus, at one-third the cost. Second, the error docs are</p>
+<p>*the longest invoices* — the same <code>42.json</code> and <code>51.json</code> Azure DI failed on.</p>
+<p>Gemini hits a hard JSON-truncation cliff at <code>max_output_tokens=32768</code> on invoices</p>
+<p>with 100+ line items: the model simply stops emitting before the table is done.</p>
+<h2>One boundary, two cliffs</h2>
+<table><thead><tr><th>Doc</th><th>Gold line items</th><th>Gemini Flash</th><th>Gemini Pro</th><th>Azure DI</th></tr></thead><tbody><tr><td>42.json</td><td>115</td><td>❌ truncate</td><td>❌ truncate</td><td>❌ 0 rows</td></tr><tr><td>51.json</td><td><strong>323</strong></td><td>❌ truncate</td><td>❌ truncate</td><td>⚠ 332 rows, F1 0.009</td></tr><tr><td>3.json</td><td>88</td><td>—</td><td>—</td><td>⚠ 2,150 rows (LCP 0.041)</td></tr><tr><td>1.json</td><td>122</td><td>❌ truncate (Flash)</td><td>—</td><td>✓ exact (LCP 1.000)</td></tr></tbody></table>
+<p>The failure *modes* differ — Gemini stops early, Azure DI sprays rows — but the</p>
+<p><strong>dataset boundary is identical</strong>: invoices past ~100 line items break both</p>
+<p>leading prebuilt extractors. This isn&#x27;t a vendor-specific bug. It&#x27;s a structural</p>
+<p>property of treating a 300-row financial table as one end-to-end generation.</p>
+<h2>The honest part: ours doesn&#x27;t win this corpus either</h2>
+<p>Here is the line most vendor blogs would delete. On <code>dataset_95</code>, the current</p>
+<p>Hyperbots IDP chain lands at <strong>0.3573 micro-F1 — below Gemini Flash&#x27;s 0.7132</strong></p>
+<p>(factory-reproduced; shown in the parse-deep benchmark framework, not hidden).</p>
+<p>We publish that because the credibility of everything else we say depends on it.</p>
+<p>So this post is not &quot;we win.&quot; It&#x27;s &quot;here is the measured frontier, and here is</p>
+<p>why the *architecture* — not the model — is the answer to it.&quot;</p>
+<h2>Why API-native, primitive-resolved is the structural fix</h2>
+<p>The reason a 300-row invoice breaks an end-to-end extractor is that *extraction*</p>
+<p>is being asked to do *splitting*, *layout reasoning*, and *table-structure</p>
+<p>recovery* all in one shot, inside one token budget. Decompose it and the cliff</p>
+<p>moves:</p>
+<ul>
+<li><strong><code>split</code></strong> as a first-class primitive: a 323-row invoice is chunked at</li>
+</ul>
+<p>  page/section boundaries before extraction, so no single call has to emit 332</p>
+<p>  rows under a 32k-token ceiling.</p>
+<ul>
+<li><strong><code>parse</code> → <code>validate</code></strong> as separate, measurable steps: line-count</li>
+</ul>
+<p>  preservation becomes an *auditable* boundary, not a silent truncation.</p>
+<ul>
+<li><strong>Open-source backbones fine-tuned by Hyperbots (Hyperbots IP)</strong>, served per</li>
+</ul>
+<p>  primitive, so each step is measured and improvable independently — which is</p>
+<p>  exactly how 0.3573 becomes a number that moves.</p>
+<p>That&#x27;s the bet: not a better single model, but a pipeline where the long-invoice</p>
+<p>boundary is a *handled case* instead of a *cliff*.</p>
+<h2>What a buyer should take from this</h2>
+<p>1. Ask any vendor for their numbers on <strong>invoices past 100 line items</strong>, not the</p>
+<p>   blended average. The cliff lives there.</p>
+<p>2. Distinguish <strong>summary-total accuracy</strong> (Azure DI nails it, 9/9) from</p>
+<p>   <strong>line-item accuracy</strong> (0.3439 F1). A tool can be right about the total and</p>
+<p>   useless for the GL.</p>
+<p>3. The premium model is not automatically the right one — Flash beat Pro here at</p>
+<p>   1/3 the cost. Measure, don&#x27;t assume.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/comparative/azure-di-long-invoices/AZURE-DI-LONG-INVOICE-2026-05-25.json</code></li>
+</ul>
+<p>  (Azure DI long-invoice subset, n=10, factory-reproduced 2026-05-25).</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/comparative/gemini-models/GEMINI-DATASET95-FULLN-2026-05-25.md</code></li>
+</ul>
+<p>  (Gemini 2.5 family full-n on dataset_95, factory-reproduced).</p>
+<ul>
+<li>Hyperbots IDP <code>dataset_95</code> baseline 0.3573: per the parse-deep benchmark</li>
+</ul>
+<p>  framework (<code>PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-05-27.md</code>, §4.1 H5) and the</p>
+<p>  CONSOLIDATED-150 leaderboard.</p>
+<ul>
+<li>SAVIOR-Bench v1 (<code>paper/SAVIOR-Bench.md</code>) for the parse/OCR anchors.</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT — external publication is human-gated; the 2026-05-20 LinkedIn pause is</li>
+</ul>
+<p>  in effect.</p>
+<ul>
+<li>Azure DI and Gemini are cited as <strong>published benchmark baselines</strong> (cloud</li>
+</ul>
+<p>  prebuilt extractors / foundation models), measured on a factory-reproduced</p>
+<p>  corpus — not as named IDP-vendor disparagement. The figures are model</p>
+<p>  parse/extract performance, labelled as such; product accuracy is referenced</p>
+<p>  only &quot;per apis.hyperbots.com.&quot;</p>
+<ul>
+<li>The Hyperbots-side <code>dataset_95</code> figure (0.3573) is the current factory-reproduced</li>
+</ul>
+<p>  baseline and is expected to move as the primitive-resolved chain is tuned; no</p>
+<p>  forward-looking number is claimed.</p>
+<ul>
+<li><code>dataset_95</code> line-item gold is the scoring basis; <code>summary_total_amount_match</code></li>
+</ul>
+<p>  is reported separately because the two measure different things.</p>
+<ul>
+<li>Per-doc figures (<code>42.json</code>, <code>51.json</code>, <code>3.json</code>, <code>1.json</code>) are quoted verbatim</li>
+</ul>
+<p>  from the JSON; the <code>2.json</code> Flash row is marked TBD in the source and is not</p>
+<p>  quoted with a number here.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>
