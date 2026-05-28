@@ -1,0 +1,248 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Hyperbots</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="meta"></div><h1>Hugging Face Launch Strategy — SAVIOR-Bench + SAVIOR-Train</h1>
+<p><strong>DRAFT — human-gated. Nothing in this plan is uploaded to Hugging Face.</strong></p>
+<p>HF dataset-card / model-card publication and any HF Space are externally</p>
+<p>visible and require explicit human approval against a green readiness gate.</p>
+<p>This document is the launch *plan*, not the launch.</p>
+<h2>1. Why Hugging Face, and why honesty wins here</h2>
+<p>Hugging Face is the surface where the document-AI research audience actually</p>
+<p>lives — practitioners who pull a checkpoint, read the card, and re-run the</p>
+<p>numbers. That audience punishes hype and rewards two things: **reproducibility</p>
+<p>discipline<strong> and </strong>honest disclosure**. SAVIOR-Bench is unusually well-suited</p>
+<p>to that bar, because its two most &quot;awkward&quot; facts are, on HF, *credibility</p>
+<p>assets*:</p>
+<ul>
+<li><strong>The W6 0/23 finding.</strong> A pinned factory re-run was attempted against all</li>
+</ul>
+<p>  23 parse-intent rows and re-derived **0/23 green — 23/23 red on structural</p>
+<p>  impossibility<strong>, with </strong>0 CIs added, 0 attested rows retracted, 0 silent</p>
+<p>  flips of <code>reproduced_by_factory</code>**. The structural reasons (no vendor</p>
+<p>  adapters in the offline SEED harness; the in-house parse-intent corpus is</p>
+<p>  not in-repo; the attested source carries only aggregate F1/WER, so no</p>
+<p>  bootstrap CI can be derived) are logged verbatim. Most launches would hide</p>
+<p>  this. We lead a section with it — *this is what a benchmark that refuses to</p>
+<p>  fabricate looks like.*</p>
+<ul>
+<li><strong>The narrow fine-tune edge.</strong> The Hyperbots-IP fine-tunes win, but</li>
+</ul>
+<p>  *narrowly and metric-specifically*: parse-intent F1 <strong>+0.0276</strong> over the</p>
+<p>  best well-documented zero-shot system (GPT-4o 0.8052; the fine-tune is</p>
+<p>  0.8328), OCR recall <strong>+0.0061</strong> over the best zero-shot OCR system. On OCR</p>
+<p>  <strong>precision</strong> and <strong>layout/PaIRS</strong>, zero-shot systems *win* (precision</p>
+<p>  −0.0165; PaIRS −0.1700). A launch that claimed a blowout would be caught in</p>
+<p>  a day. A launch that says &quot;fine-tuning buys a real but modest, recall/F1-</p>
+<p>  specific edge — here is the exact number, and here are the two metrics</p>
+<p>  where it loses&quot; earns the kind of trust that compounds.</p>
+<p>The strategy below makes those two facts the spine of every HF artifact.</p>
+<h2>2. Model-card plan — SAVIOR-Train fine-tunes (Hyperbots IP)</h2>
+<p>Three model cards, one per fine-tune. Each is an open-source backbone</p>
+<p>fine-tuned by Hyperbots and is therefore <strong>Hyperbots IP</strong>:</p>
+<table><thead><tr><th>Model card</th><th>Base model</th><th>Fine-tune</th></tr></thead><tbody><tr><td><code>Qwen2.5-VL-7B-F</code></td><td>Qwen2.5-VL-7B-Instruct (open source)</td><td>LoRA, SAVIOR-Train</td></tr><tr><td><code>Qwen2.5-VL-3B-F</code></td><td>Qwen2.5-VL-3B-Instruct (open source)</td><td>LoRA, SAVIOR-Train</td></tr><tr><td><code>hyperapi-parse-intent</code></td><td>Qwen2.5-VL-Instruct backbone</td><td>LoRA, SAVIOR-Train</td></tr></tbody></table>
+<p><strong>Every model card carries, above the fold:</strong></p>
+<p>1. <strong>Base-model + LoRA precision.</strong> Name the open-source backbone explicitly,</p>
+<p>   then the recipe verbatim from Appendix A: LoRA <strong>rank 32, α 64</strong>, applied</p>
+<p>   to the vision-encoder final layer + language decoder; lr 1e-4 vision /</p>
+<p>   5e-4 language; batch 1, grad-accum 10; 7 epochs (3B) / 5 epochs (7B);</p>
+<p>   2× H100 80 GB, CUDA 12.3. Inference: top-p 0.9, temp 0.1, frozen 10-step</p>
+<p>   layout prompt. No reader can mistake this for a from-scratch model or a</p>
+<p>   closed product.</p>
+<p>2. <strong>Fine-tune disclosure.</strong> A <code>[FT]</code> banner: this is a <strong>fine-tuned</strong> model</p>
+<p>   evaluated against <strong>zero-shot</strong> baselines; comparisons are **not</p>
+<p>   apples-to-apples**. This sits in the first content block, not a footnote.</p>
+<p>3. <strong>The honest result row</strong> (model performance, not product accuracy):</p>
+<p>   recall 0.9294 / precision 0.9157 / PaIRS 0.7066 for the 7B-F — *with* the</p>
+<p>   adjacent fact that zero-shot systems lead precision and PaIRS.</p>
+<p>4. <strong>Operational profile</strong> (from the attested source): p50 latency 2,548 ms,</p>
+<p>   p99 3,319 ms, 3% fail rate; ≈ $0.19 per 1,000 successful calls on an</p>
+<p>   A100 40 GB. Labelled infrastructure-derived, not a price quote.</p>
+<p>5. <strong>Limitations</strong> linked to paper §8: the multilingual / very-dense-layout</p>
+<p>   residual cluster persists after fine-tuning; PaIRS is PC-only;</p>
+<p>   attested-not-factory-reproduced; <code>ci95=null</code>.</p>
+<p>6. <strong>Provenance + intended-use</strong> block: in-house-run, user-attested</p>
+<p>   2026-05-18; metrics are model OCR/parse performance; product accuracy</p>
+<p>   only &quot;per apis.hyperbots.com&quot;. Citation: &quot;SAVIOR-Bench v1 (Hyperbots,</p>
+<p>   2026)&quot;.</p>
+<p>The model-card naming exception (competitor rows allowed) is **scoped to the</p>
+<p>card itself** — a scientific artifact. It does not leak into the launch post.</p>
+<h2>3. Dataset-card plan — SAVIOR-Bench v1</h2>
+<p>The dataset card is the conversion engine — it is what a researcher reads</p>
+<p>before deciding to engage. It re-uses the proposed frontmatter from</p>
+<p><code>HF-CARD.md</code> (license <code>other</code> / <code>mixed-source-corpora</code>; tasks</p>
+<p><code>image-to-text</code>; tags <code>ocr</code>, <code>document-understanding</code>, <code>finance</code>,</p>
+<p><code>invoices</code>, <code>layout-analysis</code>; <code>pretty_name</code> &quot;SAVIOR-Bench v1&quot;).</p>
+<p><strong>Card sections, in order:</strong></p>
+<ul>
+<li><strong>Dataset summary</strong> — 509 expert-annotated financial documents; IAA</li>
+</ul>
+<p>  <strong>0.761</strong> (fuzzy string similarity, 187 double-annotated pairs); five</p>
+<p>  corpora (UCSF Industry Documents 46.95%, in-house synthetic 17.88%, misc.</p>
+<p>  public financial 17.49%, Inv3D 9.04%, FUNSD 8.64%); six document classes.</p>
+<ul>
+<li><strong>Tasks &amp; metrics</strong> — OCR (word-level multiset recall/precision + PaIRS,</li>
+</ul>
+<p>  PC-only) and parse-intent (F1 ↑ / WER ↓). Frozen decoding: temp 0.1,</p>
+<p>  top-p 0.9, max_tokens 2048, seed 20260516.</p>
+<ul>
+<li><strong>Honesty &amp; provenance block — non-negotiable, placed high.</strong> Attested</li>
+</ul>
+<p>  2026-05-18, <strong>not factory-reproduced</strong>; <code>ci95=null</code> shown as &quot;reported</p>
+<p>  (no CI)&quot;; parse-intent <code>n</code> not in the attested source — reported unknown,</p>
+<p>  not inferred; the W6 0/23 audit summarized with a link to paper §5.1.1.</p>
+<ul>
+<li><strong>Limitations + the gap roadmap</strong> — the §3 related-work matrix marks ✗ on</li>
+</ul>
+<p>  every dimension SAVIOR-Bench does not yet satisfy (no per-category slices,</p>
+<p>  no degradation tracks, no CIs, not regenerable); §10 names the R1–R6 work</p>
+<p>  to close them. The dataset card *shows the ✗ matrix* — that honesty is the</p>
+<p>  card&#x27;s differentiator.</p>
+<ul>
+<li><strong>Access</strong> — benchmark access on request, niyati.chhaya@hyprbots.com;</li>
+</ul>
+<p>  raw labels not redistributed (mixed public-corpus licensing).</p>
+<h2>4. Leaderboard / Space positioning</h2>
+<ul>
+<li><strong>Positioning, not a claim of category dominance.</strong> SAVIOR-Bench is</li>
+</ul>
+<p>  positioned as a <strong>provenance-tagged financial-document benchmark</strong> — its</p>
+<p>  distinctness is financial-document specificity + provenance tagging +</p>
+<p>  parse-intent coverage, *not* evidence depth. The §3 matrix is shown so the</p>
+<p>  reader sees exactly where it leads and where it trails.</p>
+<ul>
+<li><strong>The leaderboard surface.</strong> <code>leaderboard/index.html</code> (the &quot;HyperAPI</li>
+</ul>
+<p>  DocumentAI Benchmark — SEED Leaderboard&quot;) is the scientific surface where</p>
+<p>  named rows are *required to exist* — the naming exception applies. Every</p>
+<p>  cell carries its provenance tier and <code>[FT]</code> flag. The leaderboard links</p>
+<p>  out to the paper and dataset card; it never restates a marketing claim.</p>
+<ul>
+<li><strong>Optional HF Space (human-gated, deferred).</strong> A read-only Space rendering</li>
+</ul>
+<p>  the leaderboard + the §5.1.3 headline chart would let practitioners filter</p>
+<p>  fine-tuned vs zero-shot rows themselves. It is a *post-approval* item, not</p>
+<p>  a launch-day dependency — flagged in Open assumptions, not built here.</p>
+<ul>
+<li><strong>One truthful chart.</strong> The launch leads with the §5.1.3 headline figure: a</li>
+</ul>
+<p>  faithful re-presentation that **deliberately includes the two metric groups</p>
+<p>  where fine-tuning loses** (precision −0.0165, PaIRS −0.1700). Cropping</p>
+<p>  those would be the dishonest chart; we ship the honest one.</p>
+<h2>5. Launch narrative</h2>
+<p><strong>Hook (two lines):</strong> *&quot;We fine-tuned an open VLM for financial-document OCR,</p>
+<p>then ran a benchmark honest enough to show where it loses — and a factory</p>
+<p>re-run that came back 0/23 green. Here is the real SAVIOR-Bench number, and</p>
+<p>why a +0.0276 F1 edge is still the right call.&quot;*</p>
+<p><strong>Through-line.</strong> The surprising-but-true finding is that the fine-tune edge</p>
+<p>is *narrow* — and that this is the point, not a disappointment: a modest,</p>
+<p>metric-specific, transparently-measured gain on a provenance-tagged benchmark</p>
+<p>is worth more than a hyped number nobody can re-derive. The 0/23 W6 result is</p>
+<p>told as a feature of the discipline — *the harness refused to fabricate</p>
+<p>per-document scores, so it reported red instead of green.* Format-native</p>
+<p>variants (HF card prose, an &quot;honest finding&quot; thread, a paper link) all carry</p>
+<p>the same spine; competitor names stay inside the scientific artifacts only.</p>
+<h2>6. How this drives credible virality</h2>
+<ul>
+<li><strong>Reproducibility as the shareable object.</strong> HF&#x27;s audience shares</li>
+</ul>
+<p>  artifacts that *respect them* — pinned decoding (seed 20260516), a verbatim</p>
+<p>  LoRA recipe, an explicit <code>ci95=null</code>, and a ✗-marked gap matrix. The W6</p>
+<p>  0/23 audit is the most screenshot-able asset: it is rare and it signals</p>
+<p>  integrity.</p>
+<ul>
+<li><strong>The narrow edge invites scrutiny instead of fearing it.</strong> Publishing the</li>
+</ul>
+<p>  two losing metrics pre-empts the &quot;but actually…&quot; reply that kills hyped</p>
+<p>  launches; the conversation becomes &quot;this team measures honestly,&quot; which</p>
+<p>  compounds.</p>
+<ul>
+<li><strong>No vanity metrics.</strong> No download/like/star count is claimed or targeted —</li>
+</ul>
+<p>  the launch has not happened. Success is *quality of engagement* (issues,</p>
+<p>  citations, re-runs), not inflated counts.</p>
+<ul>
+<li><strong>Compounding, not a spike.</strong> The §10 roadmap (factory re-run, CIs, slices,</li>
+</ul>
+<p>  degradation tracks) is a public commitment that gives the launch a credible</p>
+<p>  second and third beat — each closed ✗ is a follow-up moment.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>hyperapi-documentapi-benchmark-factory/paper/HF-CARD.md</code> — proposed HF</li>
+</ul>
+<p>  dataset/model card frontmatter, attested leaderboard rows, LoRA recipe,</p>
+<p>  honesty/provenance block.</p>
+<ul>
+<li><code>paper/SAVIOR-Bench.md</code> — full paper: §3 related-work ✗ matrix, §4 panel,</li>
+</ul>
+<p>  §5 seven pillars, §5.1.1 W6 0/23 factory-reproduction audit, §5.1.3</p>
+<p>  headline chart, §8 limitations, §10 gap roadmap, Appendix A LoRA recipe.</p>
+<ul>
+<li><code>leaderboard/index.html</code>, <code>leaderboard/build.py</code> — SEED leaderboard surface.</li>
+<li><code>README.md</code> — benchmark-factory framing (measured, pinned, rerunnable).</li>
+<li>gtm-hub <code>README.md</code>; CTO-org</li>
+</ul>
+<p>  <code>.claude/agents/{technical-content-strategist,benchmark-format-steward}.md</code>.</p>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT only. HF dataset-card / model-card upload and any HF Space are</li>
+</ul>
+<p>  externally visible and human-gated — not performed here.</p>
+<ul>
+<li>All numbers are in-house-run, user-attested 2026-05-18, **not</li>
+</ul>
+<p>  factory-harness-reproduced**; <code>ci95=null</code> shown as &quot;reported (no CI)&quot;;</p>
+<p>  parse-intent <code>n</code> is unknown in the attested source and is not inferred.</p>
+<ul>
+<li>Fine-tune-vs-zero-shot is disclosed inline (<code>[FT]</code>); the fine-tunes are</li>
+</ul>
+<p>  open-source backbones (Qwen2.5-VL-3B/7B-Instruct) fine-tuned by Hyperbots</p>
+<p>  via LoRA — Hyperbots IP.</p>
+<ul>
+<li>Benchmark figures are model OCR/parse performance, not product accuracy;</li>
+</ul>
+<p>  product accuracy only &quot;per apis.hyperbots.com&quot;.</p>
+<ul>
+<li>Competitor naming is scoped to the HF scientific artifacts (dataset card,</li>
+</ul>
+<p>  model card, leaderboard) only; the launch narrative uses category labels.</p>
+<ul>
+<li>No download/like/star count is asserted — the launch has not occurred.</li>
+<li>The HF Space is a post-approval option, not a launch-day deliverable.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

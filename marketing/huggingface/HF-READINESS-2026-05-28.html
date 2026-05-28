@@ -1,0 +1,84 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HF launch readiness ledger — per-artifact × honesty-bar matrix</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — internal readiness snapshot; nothing uploaded to Hugging Face</div><div class="meta">2026-05-28</div><h1>HF launch readiness ledger — 2026-05-28</h1>
+<p>This is the Day-1 deliverable of the HF launch week-plan: a per-artifact</p>
+<p>readiness matrix against the six honesty-bar fields from</p>
+<p><code>huggingface-strategy.md</code> §2, plus a weights-on-disk column. **Nothing is</p>
+<p>uploaded to Hugging Face.** Every external publish remains gated on the W5</p>
+<p><code>approved-by:</code> human sign-off.</p>
+<h2>The 6 honesty-bar fields (per <code>huggingface-strategy.md</code> §2)</h2>
+<p>1. <strong>base+LoRA</strong> — base model named + LoRA recipe/precision disclosed</p>
+<p>2. <strong>[FT] banner</strong> — fine-tuned-vs-zero-shot disclosed above the fold</p>
+<p>3. <strong>honest result</strong> — the real result row, including where it loses</p>
+<p>4. <strong>ops profile</strong> — latency / cost / fail-rate, labelled infrastructure-derived</p>
+<p>5. <strong>limitations</strong> — paper §8 limitations + <code>ci95=null</code> + attested-not-reproduced</p>
+<p>6. <strong>provenance</strong> — provenance + intended-use (&quot;model perf, not product accuracy&quot;; &quot;per apis.hyperbots.com&quot;)</p>
+<p>Cell legend: ✅ GREEN (anchored, on disk) · ⏳ PENDING (artifact not yet drafted / blocker named) · N/A (field doesn&#x27;t apply)</p>
+<h2>Matrix</h2>
+<table><thead><tr><th>Artifact</th><th>base+LoRA</th><th>[FT] banner</th><th>honest result</th><th>ops profile</th><th>limitations</th><th>provenance</th><th>weights on disk?</th><th>Overall</th></tr></thead><tbody><tr><td><strong>Dataset card — SAVIOR-Bench v1</strong> (<code>paper/HF-CARD.md</code> drafted)</td><td>N/A</td><td>N/A</td><td>✅ (0.7066 PaIRS + losing rows shown)</td><td>N/A</td><td>✅ (<code>ci95=null</code>, W6 0/23, attested-not-reproduced)</td><td>✅ (per apis.hyperbots.com; intended-use present)</td><td>N/A (dataset)</td><td><strong>READY pending W5</strong> — card drafted; needs <code>approved-by:</code> line</td></tr><tr><td><strong>Model card — Qwen2.5-VL-7B-F</strong></td><td>⏳ recipe in paper App. A, card not drafted</td><td>⏳</td><td>⏳ (recall 0.9294 / precision-loss to zero-shot)</td><td>⏳ (p50 2,548 ms · ~$0.19/1k drafted)</td><td>⏳</td><td>⏳</td><td>❌ not in checkout</td><td><strong>NOT DRAFTED</strong> (week-plan Day 3)</td></tr><tr><td><strong>Model card — Qwen2.5-VL-3B-F</strong></td><td>⏳ recipe in App. A</td><td>⏳</td><td>⏳</td><td>⏳</td><td>⏳</td><td>⏳</td><td>❌ not in checkout</td><td><strong>NOT DRAFTED</strong> (Day 3)</td></tr><tr><td><strong>Model card — hyperapi-parse-intent</strong></td><td>⏳ recipe in App. A</td><td>⏳</td><td>⏳ (F1 0.8328 lead; +0.0276 over GPT-4o)</td><td>⏳</td><td>⏳</td><td>⏳</td><td>❌ not in checkout</td><td><strong>NOT DRAFTED</strong> (Day 3)</td></tr><tr><td><strong>Leaderboard surface — SEED 12-cell</strong> (<code>leaderboard/index.html</code> local)</td><td>N/A</td><td>✅ (<code>[FT]</code> tags on FT rows)</td><td>✅ (12 cells reproducible on laptop)</td><td>N/A</td><td>✅ (pending cells labelled, not hidden)</td><td>✅</td><td>N/A</td><td><strong>READY local; hosting PENDING</strong> (G2)</td></tr></tbody></table>
+<h2>Honest readiness summary</h2>
+<ul>
+<li><strong>2 of 5 artifacts are draft-ready</strong> (dataset card + leaderboard surface) — both gated only on a human action (W5 <code>approved-by:</code> line; G2 hosting), not on more drafting.</li>
+<li><strong>3 of 5 artifacts (the model cards) are not drafted yet</strong> — that&#x27;s the week-plan Day-3 deliverable. Recipe inputs (LoRA params, App. A) and result anchors (CONSOLIDATED-150 cells) are on disk, so drafting is unblocked.</li>
+<li><strong>0 of 5 have weights on disk.</strong> The LoRA recipe is in the paper Appendix A but <code>.safetensors</code>/<code>.bin</code> artifacts are not in this checkout. <strong>Open CEO/CTO decision: publish cards-without-weights, cards-with-weights (weights must come from wherever training ran), or neither.</strong> This gates the model-card &quot;Overall&quot; status more than any drafting does.</li>
+<li><strong>Nothing is on huggingface.co.</strong> No <code>approved-by:</code> line exists on <code>paper/HF-CARD.md</code>; the W5 external-publish gate is un-cleared by design.</li>
+</ul>
+<h2>Critical-path to publish-ready (unchanged from week-plan)</h2>
+<p>1. <strong>CEO/CTO call: weights or not?</strong> — gates model-card completeness.</p>
+<p>2. <strong>W5 <code>approved-by:</code> line</strong> on each card — the non-waivable human gate.</p>
+<p>3. <strong>G2: host the leaderboard</strong> (the SEED 12-cell surface) — out-of-session deploy.</p>
+<p>4. Day-3 model-card drafting (solo-executable once #1 is answered).</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/huggingface/huggingface-strategy.md</code> (§2 honesty-bar fields)</li>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/HF-CARD.md</code> (dataset card draft)</li>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/SAVIOR-Bench.md</code> (App. A LoRA recipe; §5 result rows; §8 limitations)</li>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/W6-attestation-2026-05-21.md</code></li>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/leaderboard/CONSOLIDATED-150/</code> (SEED cells)</li>
+<li>HF launch week-plan (Tue 2026-05-26 → Mon 2026-06-01) produced 2026-05-26.</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT — nothing uploaded to HF; W5 human-gate un-cleared by design.</li>
+<li>&quot;Weights on disk = ❌&quot; is a checkout fact, not a claim about whether weights exist elsewhere; the training artifacts may live wherever the LoRA runs happened.</li>
+<li>Result anchors (0.7066 PaIRS, 0.9294 recall, 0.8328 F1, +0.0276 over GPT-4o) are factory-attested with <code>ci95=null</code>; no independent-reproduction claim is made.</li>
+<li>This ledger is a Day-1 snapshot; the Day-3 model-card drafting will flip the three NOT-DRAFTED rows once the weights-or-not decision lands.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>
