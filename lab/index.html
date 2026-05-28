@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>HyperAPI Document-AI Benchmark Factory — Lab</title>
+<style>
+:root{--bg:#0b0d0f;--fg:#e9ecef;--muted:#9aa3ab;--card:#13171a;--border:#262d33;--accent:#7fc4ff;--good:#7fdb8a;--warn:#ffb454}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 -apple-system,BlinkMacSystemFont,'Inter',sans-serif;padding:32px 24px}
+h1{margin:0 0 4px;font-size:24px}
+.subtitle{color:var(--muted);font-size:13px;margin-bottom:24px}
+.stamp{background:#0a2a0a;border:1px solid #1a6a1a;border-radius:6px;padding:10px 16px;margin-bottom:24px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--good)}
+ul{padding:0 0 0 24px}
+li{margin:12px 0}
+a{color:var(--accent);text-decoration:none;font-weight:600}
+a:hover{text-decoration:underline}
+.desc{color:var(--muted);font-size:12px;font-family:'JetBrains Mono',monospace;display:block;margin-top:2px}
+.footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:11px}
+</style>
+</head>
+<body>
+<h1>HyperAPI Document-AI Benchmark Factory — Lab</h1>
+<div class="subtitle">Benchmark leaderboards and studies from the hyperapi-documentapi-benchmark-factory.</div>
+
+<div class="stamp">
+  AUDIT-PASS 2026-05-28 · 356 cells scanned · 241 clean · 10 fabricated/flagged (metric=null) · 0 new fabrications
+</div>
+
+<ul>
+  <li>
+    <a href="tough-leaderboard.html">tough-bench — 4-doctype leaderboard (cheque / credit_note / remittance_advice / bank_statement)</a>
+    <span class="desc">classify + extract + DC-014 + DC-015 + DC-016 · Gemini / GPT-5.4 / Claude Sonnet+Opus / qwen-3.6-local / sonnet-vision · azure-di-prebuilt-invoice IoU · updated 2026-05-28</span>
+  </li>
+  <li>
+    <a href="bs-bench-leaderboard.html">bs-bench — bank_statement leaderboard</a>
+    <span class="desc">bank_statement classify + extract + parse · 44 docs</span>
+  </li>
+  <li>
+    <a href="azure-di-invoice-study.html">azure-di-invoice-study</a>
+    <span class="desc">Azure Document Intelligence prebuilt-invoice deep study · multi-corpus layout IoU vs deployed-HyperAPI reference</span>
+  </li>
+</ul>
+
+<div class="footer">
+  No customer names. Per apis.hyperbots.com for HyperAPI accuracy claims.
+  results.zip = deployed-reference NEVER gold.
+</div>
+</body>
+</html>

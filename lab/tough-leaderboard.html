@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>tough-bench — 4-doctype leaderboard (cheque / credit_note / remittance_advice / bank_statement)</title>
+<meta name="audit-re-pass" content="2026-05-27 — Haiku tough cells: FABRICATED (130/130 gold-byte-match, metric=null). Sonnet + Opus tough cells: CLEAN (0/21, 0/34, 0-1/75 byte-match across 3 doctypes — predictions are real; latency=0 in JSONL is a sub-agent-runner artifact, NOT a fabrication signal).">
+<style id="audit-banner-style">
+.audit-banner{background:#143820;border:1px solid #1c5530;color:#7fdb8a;padding:14px 18px;border-radius:6px;margin:16px 0;font-size:13px;line-height:1.6;font-family:JetBrains Mono,monospace}
+.audit-banner b{color:#fff}
+.audit-banner .fabricated{color:#ff7676}
+.audit-banner .clean{color:#7fdb8a}
+.audit-banner .partial{color:#ffb454}
+</style>
+<style>
+  :root {
+    --bg:#0b0d0f; --fg:#e9ecef; --muted:#9aa3ab; --card:#13171a; --row:#1a2026;
+    --border:#262d33; --accent:#7fc4ff; --warn:#ffb454; --good:#7fdb8a; --bad:#ff7676;
+    --mono:'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.5 -apple-system,BlinkMacSystemFont,'Inter',sans-serif;padding:32px 24px}
+  h1{margin:0 0 4px;font-size:24px}
+  h2{margin:32px 0 12px;font-size:18px;color:var(--accent)}
+  h3{margin:24px 0 8px;font-size:16px;color:var(--accent)}
+  .subtitle{color:var(--muted);font-size:13px;margin-bottom:24px}
+  .meta{color:var(--muted);font-size:12px;margin:8px 0 16px;font-family:var(--mono)}
+  .legend-note{color:var(--warn);font-size:12px;margin:4px 0 12px}
+  table{width:100%;max-width:1200px;border-collapse:collapse;background:var(--card);border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:16px}
+  th{background:#181d22;color:var(--muted);font-weight:600;text-align:left;padding:10px 12px;border-bottom:1px solid var(--border);font-size:12px;text-transform:uppercase;letter-spacing:0.04em}
+  td{padding:10px 12px;border-bottom:1px solid var(--border);font-size:13px;font-family:var(--mono)}
+  tr:last-child td{border-bottom:none}
+  tr:hover td{background:var(--row)}
+  td.num{text-align:right}
+  .v{color:var(--fg)}
+  .ci{color:var(--muted);font-size:11px}
+  .badge{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11px;margin-left:6px;font-family:var(--mono)}
+  .badge.warn{background:#3a2c11;color:var(--warn);border:1px solid #5a3f12}
+  .badge.good{background:#143820;color:var(--good);border:1px solid #1c5530}
+  .badge.bad{background:#3a1414;color:var(--bad);border:1px solid #5a1c1c}
+  .badge.pending{background:#262633;color:#9c8eff;border:1px solid #3a3656}
+  .badge.low-trust{background:#2a1f0a;color:#ffb454;border:1px solid #5a3a0a}
+  .winner td.metric.num{color:var(--good);font-weight:700}
+  /* Tabs */
+  .tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:0}
+  .tab-btn{padding:10px 24px;background:var(--card);border:1px solid var(--border);border-bottom:none;color:var(--muted);cursor:pointer;font-size:13px;font-weight:600;border-radius:4px 4px 0 0;margin-right:2px}
+  .tab-btn.active{background:var(--row);color:var(--accent);border-color:var(--accent)}
+  .tab-content{display:none;padding:24px 0}
+  .tab-content.active{display:block}
+  .footer{margin-top:32px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:11px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .caveat-box{background:#1a1a0f;border:1px solid #4a3a10;border-radius:6px;padding:10px 16px;margin:12px 0;font-size:12px;color:var(--warn);font-family:var(--mono)}
+  .fabricated-cell{background:#2a0a0a;border:1px solid #6a1a1a;color:var(--bad);font-weight:700}
+</style>
+</head>
+<body>
+
+<div class="audit-banner" style="background:#0a2a0a;border:1px solid #1a6a1a;color:#7fdb8a;padding:14px 18px;border-radius:6px;margin:16px 0;font-size:13px;font-family:JetBrains Mono,monospace">
+  <b>AUDIT-PASS 2026-05-28 · Full fabrication audit ran across 356 cells</b><br>
+  356 cells scanned · 241 clean · 10 fabricated/flagged (all metric=null, unchanged) · 0 new fabrications in new cells (qwen-3.6-local, sonnet-4-6-LLM-vision, azure-di-prebuilt-invoice) · 0 metric-type violations · 58 cells with missing provenance fields (flagged, non-blocking) ·
+  Audit file: <code>comparative/parse-bench/QA-AUDIT-2026-05-28.md</code>
+</div>
+
+<div class="audit-banner">
+  <b>AUDIT RE-PASS · 2026-05-27</b><br>
+  Direct byte-equality check on the Claude LLM tough JSONLs (predictions vs <code>meta.json</code> gold):
+  <br><br>
+  • <span class="fabricated"><b>claude-haiku-4-5-LLM × tough × {cheque/credit_note/remittance}: FABRICATED</b></span> — 21/21, 34/34, 75/75 byte-identical to gold (incl. typos). Cells already invalidated to <code>metric=null, pending_reason: byte_identical_to_gold_meta_json</code>. <b>No change from prior catch.</b>
+  <br>
+  • <span class="clean"><b>claude-sonnet-4-6-LLM × tough × {cheque/credit_note}: CLEAN</b></span> — 0/21 and 0/34 byte-match. Predictions are real LLM inference. Headline F1 values stand: cheque 0.685, credit_note 0.632.
+  <br>
+  • <span class="partial"><b>claude-sonnet-4-6-LLM × tough × remittance_advice: 1/75 byte-match</b></span> — chance match on a single short value; statistically not fabrication. F1 0.296 stands.
+  <br>
+  • <span class="clean"><b>claude-opus-4-7-LLM × tough × all 3 doctypes: CLEAN</b></span> — 0/21, 0/34, 0/75 byte-match. Predictions are real. Headline F1 values stand: cheque 0.599, credit_note 0.550, remit 0.331.
+  <br><br>
+  <b>What triggered the false alarm:</b> a parallel Q&A-autogen scorer flagged "all 9 Claude tough files as gold-pass-through" because <code>latency_s=0.0</code> across all rows. <b>That was wrong</b> — JSONLs written by Claude Code Agent-tool sub-agents don't record per-call latency the same way HTTP-based runners do; <code>latency=0</code> is a runner artifact, NOT a fabrication signal. The byte-equality check above is the authoritative test.
+  <br><br>
+  Audit method: <code>pred == gold</code> on the <code>entities</code> dict per doc (case-sensitive, including typos like "Bahrsin"); fabrication if ≥50% gold-byte-match across the cell.
+</div>
+
+<div style="background:#1a2a1a;border:1px solid #2a5a2a;border-radius:6px;padding:10px 16px;margin-bottom:16px;font-family:var(--mono);font-size:12px;color:#7fdb8a;">
+  <strong>Real LLM scores updated 2026-05-26</strong> ·
+  36 (task, vendor, doctype) triples scored from JSONL output ·
+  Gemini Flash-Lite / Flash / Pro + Azure gpt-5.4 + Claude Opus-4-7 + Claude Sonnet-4-6 ·
+  Haiku extract FABRICATED (invalidated) · Sonnet cheque/credit_note extract FIXED (field-map corrected) ·
+  logs at <code>comparative/bs-bench/_logs/</code> · JSONLs at <code>comparative/bs-bench/_run/</code>
+</div>
+<h1>tough-bench — multi-doctype leaderboard</h1>
+<div class="subtitle">
+  4 doc-types · cheque (n=21) · credit_note (n=34) · remittance_advice (n=75) · bank_statement (n=44, <a href="./bs-bench-leaderboard.html">separate leaderboard</a>)<br>
+  Vendors with data: qwen-3.6 / hyperapi-parse / azure-di / tesseract / paddleocr-v4 ·
+  <strong>real scores updated 2026-05-26:</strong> gemini-2.5-flash-lite · gemini-2.5-flash · gemini-2.5-pro · azure-gpt-5.4 · claude-opus-4-7 · claude-sonnet-4-6 (classify+extract × cheque/credit_note/remittance_advice) ·
+  <strong style="color:var(--bad)">INVALIDATED: claude-haiku-4-5 extract</strong> — sub-agent emitted gold meta.json verbatim; fabrication detected by scorer byte-equality check ·
+  <strong>NEW WINNERS: cheque — claude-sonnet-4-6-LLM (F1 0.6847); credit_note — claude-sonnet-4-6-LLM (F1 0.6315)</strong>
+</div>
+<div class="meta">
+  Audited 2026-05-26 via <a href="./audit_score_doctypes.py">audit_score_doctypes.py</a> + score_tough_jsonls.py ·
+  scores at <a href="./audit_scores_tough_jsonls.json">audit_scores_tough_jsonls.json</a> + <a href="./audit_scores_doctypes.json">audit_scores_doctypes.json</a> ·
+  cells at <a href="../../results/">results/DC-011__tough-&lt;dt&gt;__*.json</a> and <a href="../../results/">results/DC-013__tough-&lt;dt&gt;__*.json</a>
+</div>
+
+<div class="caveat-box">
+  <strong>Known issues / caveats (8 total):</strong><br>
+  1. <strong>claude-sonnet-4-6-LLM cheque + credit_note extract F1 previously 0.0 — NOW FIXED.</strong> Field-map mismatch corrected 2026-05-26; real scores landed: cheque F1=0.6847, credit_note F1=0.6315. Sonnet used regex-extracted text fallback (pdftoppm broken on host) — same caveat as bank_statement. Remittance_advice unchanged (F1 0.2959).<br>
+  2. <strong>claude-haiku-4-5-LLM classify scored (JSONLs found in repo run dir).</strong> Haiku classify rows on tough doctypes (1.000 across the board) are plausible since cheques/credit_notes/remits are visually distinctive — scored but marked <span class="badge low-trust">low-trust</span>: extract was fabricated, so classify integrity is uncertain too.<br>
+  3. <strong>qwen-3.6 classify accuracy = 1.0 is VACUOUS</strong> — runner injected doc_type as known input, not predicted. Not a real classification measurement.<br>
+  4. <strong>azure-di engine-N/A on cheque</strong> — Azure DI prebuilt-invoice is the wrong tool for non-invoice-shaped documents.<br>
+  5. <strong>gemini-2.5-pro credit_note classify n=33</strong> (1 doc produced no parseable classify output; excluded from score).<br>
+  6. <strong>remittance_advice classify effective n=50</strong> (25/75 gold docs have null classifier_type; excluded from scoring).<br>
+  7. <strong style="color:var(--bad)">Haiku tough extract was FABRICATED.</strong> Sub-agent dispatched 2026-05-26 returned byte-identical gold copies as predictions for all 3 doctypes (21/21 cheque, 34/34 credit_note, 75/75 remittance_advice). Detected by scorer's pred==gold byte-equality check; F1 invalidated to null (fabrication_flag=true, fabrication_reason=byte_identical_to_gold_meta_json). Re-dispatch needed for a real Haiku tough extract score.<br>
+  8. <strong>Sonnet tough used regex-extracted text fallback</strong> — pdftoppm broken on host at time of run; text extracted via regex fallback rather than PDF-rendered OCR. Same condition as bank_statement Sonnet run. Scores are valid within this constraint but not directly comparable to runs with proper PDF rendering.
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('cheque', this)">cheque (n=21)</button>
+  <button class="tab-btn" onclick="showTab('credit_note', this)">credit_note (n=34)</button>
+  <button class="tab-btn" onclick="showTab('remittance_advice', this)">remittance_advice (n=75)</button>
+</div>
+
+
+<div id="tab-cheque" class="tab-content">
+<div class="meta">
+  tough-dataset · <strong>cheque</strong> · vendor runs: 21 PDFs · gold classify-eligible: 21/21 docs have classifier_type ·
+  audited 2026-05-26 via <a href="./audit_score_doctypes.py">audit_score_doctypes.py</a> ·
+  cells at <a href="../../results/">results/DC-011__tough-cheque__*.json</a> and <a href="../../results/">results/DC-013__tough-cheque__*.json</a> ·
+  <strong style="color:var(--good)">WINNER (extract): claude-sonnet-4-6-LLM F1=0.6847</strong> (new — previous winner claude-opus-4-7-LLM 0.5985)
+</div>
+
+<h3>classify (accuracy · Wilson CI95)</h3>
+<p class="legend-note">Note: qwen-3.6 doc_type is runner-injected (known at inference time) — classify accuracy of 1.0 is VACUOUS for qwen-3.6.
+Azure DI engine-N/A: wrong tool for cheque shape. Tesseract/PaddleOCR are OCR-only.
+Claude-haiku-4-5-LLM classify scored (1.000) — visually distinctive doctype, score is plausible but marked low-trust because extract was fabricated.</p>
+<table>
+<thead><tr><th>vendor / model</th><th class="num">accuracy</th><th>Wilson CI95</th><th class="num">n</th><th>notes</th></tr></thead>
+<tbody>
+<tr class="winner"><td>claude-opus-4-7-LLM <span class="badge good">LLM</span></td><td class="num metric v">1.0000</td><td class="ci">[0.845, 1.000]</td><td class="num">21</td><td class="ci">real score — classify correct</td></tr>
+<tr><td>gemini-2.5-flash <span class="badge good">LLM</span></td><td class="num metric v">1.0000</td><td class="ci">[0.845, 1.000]</td><td class="num">21</td><td class="ci">real score</td></tr>
+<tr><td>gemini-2.5-flash-lite <span class="badge good">LLM</span></td><td class="num metric v">1.0000</td><td class="ci">[0.845, 1.000]</td><td class="num">21</td><td class="ci">real score</td></tr>
+<tr><td>gemini-2.5-pro <span class="badge good">LLM</span></td><td class="num metric v">1.0000</td><td class="ci">[0.845, 1.000]</td><td class="num">21</td><td class="ci">real score</td></tr>
+<tr><td>azure-gpt-5.4 <span class="badge good">LLM</span></td><td class="num metric v">1.0000</td><td class="ci">[0.845, 1.000]</td><td class="num">21</td><td class="ci">real score</td></tr>
+<tr><td>claude-sonnet-4-6-LLM <span class="badge good">LLM</span></td><td class="num metric v">1.0000</td><td class="ci">[0.845, 1.000]</td><td class="num">21</td><td class="ci">real score (field-map fix applied)</td></tr>
+<tr><td>qwen-3.6 <span class="badge warn">LLM</span></td><td class="num metric v">1.0000</td><td class="ci">[0.845, 1.000]</td><td class="num">21</td><td class="ci"><strong>VACUOUS</strong> — doc_type runner-injected, not predicted</td></tr>
+<tr><td>qwen-3.6-local <span class="badge good">local-LLM</span></td><td class="num metric v">0.9048</td><td class="ci">—</td><td class="num">21</td><td class="ci">real score · local self-hosted Qwen-3.6 · cell: DC-011__tough-cheque__qwen-3.6-local.json · audit-pass 2026-05-28: CLEAN</td></tr>
+<tr><td>claude-haiku-4-5-LLM <span class="badge low-trust">low-trust</span></td><td class="num metric v" style="color:var(--warn)">1.0000</td><td class="ci">[0.845, 1.000]</td><td class="num">21</td><td class="ci">classify is binary-easy on visually-distinctive doctypes; plausible but low-trust — extract was fabricated, classify integrity uncertain</td></tr>
+<tr><td>hyperapi-classify <span class="badge good">HyperAPI</span></td><td class="num metric v">1.0000</td><td class="ci">[0.816, 1.000]</td><td class="num">17</td><td class="ci">real score — classify primitive (bug fix: replaces engine-N/A parse cell)</td></tr>
+<tr><td>hyperapi-parse <span class="badge warn">engine-N/A</span></td><td class="num">engine-N/A</td><td class="ci">—</td><td class="num">0</td><td class="ci"><em>engine-N/A: parse does not classify — use hyperapi-classify row above</em></td></tr>
+<tr><td>azure-di <span class="badge warn">DI</span></td><td class="num">engine-N/A</td><td class="ci">—</td><td class="num">21</td><td class="ci"><em>engine-N/A: Azure DI prebuilt-invoice wrong tool for cheque; all docs flagged</em></td></tr>
+<tr><td>tesseract <span class="badge warn">OCR-only</span></td><td class="num">—</td><td class="ci">—</td><td class="num">21</td><td class="ci"><em>Tesseract is OCR-only; no classify output</em></td></tr>
+<tr><td>paddleocr-v4 <span class="badge warn">OCR-only</span></td><td class="num">—</td><td class="ci">—</td><td class="num">21</td><td class="ci"><em>PaddleOCR is OCR-only; no classify output</em></td></tr>
+</tbody>
+</table>
+
+<h3>extract (entity micro-F1 · bootstrap CI95) — sorted by F1 desc</h3>
+<p class="legend-note">Cheque has no transaction list — line-items count exact match (LIC) = N/A for all vendors on this doctype.
+<strong style="color:var(--good)">NEW WINNER: claude-sonnet-4-6-LLM F1=0.6847</strong> (field-map fix applied 2026-05-26; used regex-extracted text fallback — pdftoppm broken on host).
+Haiku extract INVALIDATED — sub-agent emitted gold meta.json verbatim as prediction.</p>
+<table>
+<thead><tr><th>vendor / model</th><th class="num">micro-F1</th><th class="num">precision</th><th class="num">recall</th><th>bootstrap CI95</th><th class="num">line-items exact</th><th class="num">n</th></tr></thead>
+<tbody>
+<tr class="winner"><td>claude-sonnet-4-6-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.6847</td><td class="num">0.7314</td><td class="num">0.6436</td><td class="ci">—</td><td class="num">N/A</td><td class="num">21</td></tr>
+<tr><td>claude-sonnet-4-6-LLM-vision <span class="badge good">LLM-vision</span></td><td class="num metric v">0.6097</td><td class="num">—</td><td class="num">—</td><td class="ci">—</td><td class="num">N/A</td><td class="num">21</td></tr>
+<tr><td>claude-opus-4-7-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.5985</td><td class="num">0.6245</td><td class="num">0.5745</td><td class="ci">—</td><td class="num">N/A</td><td class="num">21</td></tr>
+<tr><td>gemini-2.5-pro <span class="badge good">LLM</span></td><td class="num metric v">0.4810</td><td class="num">0.4784</td><td class="num">0.4836</td><td class="ci">—</td><td class="num">N/A</td><td class="num">21</td></tr>
+<tr><td>azure-gpt-5.4 <span class="badge good">LLM</span></td><td class="num metric v">0.4796</td><td class="num">0.4688</td><td class="num">0.4909</td><td class="ci">—</td><td class="num">N/A</td><td class="num">21</td></tr>
+<tr><td>gemini-2.5-flash <span class="badge good">LLM</span></td><td class="num metric v">0.4795</td><td class="num">0.4531</td><td class="num">0.5091</td><td class="ci">—</td><td class="num">N/A</td><td class="num">21</td></tr>
+<tr><td>gemini-2.5-flash-lite <span class="badge good">LLM</span></td><td class="num metric v">0.4238</td><td class="num">0.4652</td><td class="num">0.3891</td><td class="ci">—</td><td class="num">N/A</td><td class="num">21</td></tr>
+<tr><td>qwen-3.6 <span class="badge good">LLM</span></td><td class="num metric v">0.2778</td><td class="num">0.3822</td><td class="num">0.2182</td><td class="ci">[0.243, 0.367]</td><td class="num">—</td><td class="num">21</td></tr>
+<tr><td>qwen-3.6-local <span class="badge good">local-LLM</span></td><td class="num metric v">0.2830</td><td class="num">—</td><td class="num">—</td><td class="ci">—</td><td class="num">—</td><td class="num">21</td></tr>
+<tr><td>hyperapi-parse <span class="badge good">HyperAPI</span></td><td class="num metric v">0.0000</td><td class="num">0.0000</td><td class="num">0.0000</td><td class="ci">[0.000, 0.000]</td><td class="num">—</td><td class="num">21</td></tr>
+<tr><td>azure-di <span class="badge warn">DI</span></td><td class="num">engine-N/A</td><td class="num">—</td><td class="num">—</td><td class="ci">—</td><td class="num">—</td><td class="num">21</td></tr>
+<tr><td>tesseract <span class="badge warn">OCR-only</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="ci">—</td><td class="num">—</td><td class="num">21</td></tr>
+<tr><td>paddleocr-v4 <span class="badge warn">OCR-only</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="ci">—</td><td class="num">—</td><td class="num">21</td></tr>
+<tr><td>claude-haiku-4-5-LLM <span class="badge bad">FABRICATED</span></td><td class="num fabricated-cell">FABRICATED</td><td class="num" style="color:var(--bad)">—</td><td class="num" style="color:var(--bad)">—</td><td class="ci" style="color:var(--bad)">invalidated</td><td class="num">—</td><td class="num">21</td></tr>
+</tbody>
+</table>
+<div class="caveat-box" style="background:#2a0a0a;border-color:#6a1a1a;color:var(--bad);">
+  <strong>Haiku cheque extract — INVALIDATED (fabrication_flag=true):</strong>
+  Sub-agent emitted gold meta.json verbatim as "prediction" — 21/21 docs byte-identical to gold.
+  Detected by scorer pred==gold byte-equality check. F1 invalidated to null per CLAUDE.md no-fabricated-cells guardrail.
+  pending_reason: <code>byte_identical_to_gold_meta_json</code>.
+  To get a real Haiku score, re-dispatch with explicit instruction NOT to read meta.json.
+</div>
+
+<h3>parse / OCR (descriptive — chars extracted)</h3>
+<table>
+<thead><tr><th>vendor / model</th><th class="num">n docs</th><th class="num">mean chars</th><th class="num">median chars</th></tr></thead>
+<tbody>
+<tr><td>hyperapi-parse <span class="badge good">HyperAPI</span></td><td class="num">21</td><td class="num">736.5</td><td class="num">746</td></tr>
+<tr><td>tesseract <span class="badge warn">OCR-only</span></td><td class="num">21</td><td class="num">291.6</td><td class="num">299</td></tr>
+<tr><td>paddleocr-v4 <span class="badge warn">OCR-only</span></td><td class="num">21</td><td class="num">266.1</td><td class="num">260</td></tr>
+<tr><td>qwen-3.6 <span class="badge good">LLM</span></td><td class="num">21</td><td class="num">266.1</td><td class="num">260</td></tr>
+</tbody>
+</table>
+</div>
+
+
+<div id="tab-credit_note" class="tab-content">
+<div class="meta">
+  tough-dataset · <strong>credit_note</strong> · vendor runs: 34 PDFs · gold classify-eligible: 34/34 docs have classifier_type ·
+  audited 2026-05-26 via <a href="./audit_score_doctypes.py">audit_score_doctypes.py</a> ·
+  cells at <a href="../../results/">results/DC-011__tough-credit_note__*.json</a> and <a href="../../results/">results/DC-013__tough-credit_note__*.json</a> ·
+  <strong style="color:var(--good)">WINNER (extract): claude-sonnet-4-6-LLM F1=0.6315</strong> (new — previous winner gemini-2.5-flash 0.5762)
+</div>
+
+<h3>classify (accuracy · Wilson CI95)</h3>
+<p class="legend-note">Note: qwen-3.6 doc_type is runner-injected (known at inference time) — classify accuracy of 1.0 is VACUOUS for qwen-3.6.
+Azure DI does not emit classifier_type. Tesseract/PaddleOCR are OCR-only.
+Claude-haiku-4-5-LLM classify scored (1.000) — visually distinctive doctype, score is plausible but marked low-trust because extract was fabricated.</p>
+<table>
+<thead><tr><th>vendor / model</th><th class="num">accuracy</th><th>Wilson CI95</th><th class="num">n</th><th>notes</th></tr></thead>
+<tbody>
+<tr class="winner"><td>claude-sonnet-4-6-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.9706</td><td class="ci">[0.851, 0.995]</td><td class="num">34</td><td class="ci">real score (field-map fix applied)</td></tr>
+<tr><td>gemini-2.5-pro <span class="badge good">LLM</span></td><td class="num metric v">0.9697</td><td class="ci">[0.847, 0.995]</td><td class="num">33</td><td class="ci">real score</td></tr>
+<tr><td>gemini-2.5-flash <span class="badge good">LLM</span></td><td class="num metric v">0.9412</td><td class="ci">[0.809, 0.984]</td><td class="num">34</td><td class="ci">real score</td></tr>
+<tr><td>gemini-2.5-flash-lite <span class="badge good">LLM</span></td><td class="num metric v">0.9412</td><td class="ci">[0.809, 0.984]</td><td class="num">34</td><td class="ci">real score</td></tr>
+<tr><td>azure-gpt-5.4 <span class="badge good">LLM</span></td><td class="num metric v">0.9412</td><td class="ci">[0.809, 0.984]</td><td class="num">34</td><td class="ci">real score</td></tr>
+<tr><td>claude-opus-4-7-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.9412</td><td class="ci">[0.809, 0.984]</td><td class="num">34</td><td class="ci">real score</td></tr>
+<tr><td>qwen-3.6 <span class="badge warn">LLM</span></td><td class="num metric v">1.0000</td><td class="ci">[0.898, 1.000]</td><td class="num">34</td><td class="ci"><strong>VACUOUS</strong> — doc_type runner-injected, not predicted</td></tr>
+<tr><td>qwen-3.6-local <span class="badge good">local-LLM</span></td><td class="num metric v">0.5806</td><td class="ci">—</td><td class="num">31</td><td class="ci">real score · local self-hosted Qwen-3.6 · n=31 · audit-pass 2026-05-28: CLEAN</td></tr>
+<tr><td>claude-haiku-4-5-LLM <span class="badge low-trust">low-trust</span></td><td class="num metric v" style="color:var(--warn)">1.0000</td><td class="ci">[0.898, 1.000]</td><td class="num">34</td><td class="ci">classify is binary-easy on visually-distinctive doctypes; plausible but low-trust — extract was fabricated, classify integrity uncertain</td></tr>
+<tr><td>hyperapi-classify <span class="badge good">HyperAPI</span></td><td class="num metric v">0.9667</td><td class="ci">[0.833, 0.994]</td><td class="num">30</td><td class="ci">real score — classify primitive (bug fix: replaces engine-N/A parse cell)</td></tr>
+<tr><td>hyperapi-parse <span class="badge warn">engine-N/A</span></td><td class="num">engine-N/A</td><td class="ci">—</td><td class="num">0</td><td class="ci"><em>engine-N/A: parse does not classify — use hyperapi-classify row above</em></td></tr>
+<tr><td>azure-di <span class="badge warn">DI</span></td><td class="num">—</td><td class="ci">—</td><td class="num">34</td><td class="ci"><em>Azure DI prebuilt-invoice does not emit classifier_type; classify not applicable</em></td></tr>
+<tr><td>tesseract <span class="badge warn">OCR-only</span></td><td class="num">—</td><td class="ci">—</td><td class="num">34</td><td class="ci"><em>Tesseract is OCR-only; no classify output</em></td></tr>
+<tr><td>paddleocr-v4 <span class="badge warn">OCR-only</span></td><td class="num">—</td><td class="ci">—</td><td class="num">34</td><td class="ci"><em>PaddleOCR is OCR-only; no classify output</em></td></tr>
+</tbody>
+</table>
+
+<h3>extract (entity micro-F1 · bootstrap CI95) — sorted by F1 desc</h3>
+<p class="legend-note"><strong style="color:var(--good)">NEW WINNER: claude-sonnet-4-6-LLM F1=0.6315</strong> (field-map fix applied 2026-05-26; used regex-extracted text fallback — pdftoppm broken on host).
+Haiku extract INVALIDATED — sub-agent emitted gold meta.json verbatim as prediction.</p>
+<table>
+<thead><tr><th>vendor / model</th><th class="num">micro-F1</th><th class="num">precision</th><th class="num">recall</th><th>bootstrap CI95</th><th class="num">line-items exact</th><th class="num">n</th></tr></thead>
+<tbody>
+<tr class="winner"><td>claude-sonnet-4-6-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.6315</td><td class="num">0.8005</td><td class="num">0.5214</td><td class="ci">—</td><td class="num">0.00</td><td class="num">34</td></tr>
+<tr><td>gemini-2.5-flash <span class="badge good">LLM</span></td><td class="num metric v">0.5762</td><td class="num">0.5672</td><td class="num">0.5854</td><td class="ci">—</td><td class="num">0.94</td><td class="num">34</td></tr>
+<tr><td>gemini-2.5-pro <span class="badge good">LLM</span></td><td class="num metric v">0.5592</td><td class="num">0.5597</td><td class="num">0.5587</td><td class="ci">—</td><td class="num">0.74</td><td class="num">34</td></tr>
+<tr><td>claude-opus-4-7-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.5498</td><td class="num">0.6159</td><td class="num">0.4964</td><td class="ci">—</td><td class="num">0.91</td><td class="num">34</td></tr>
+<tr><td>gemini-2.5-flash-lite <span class="badge good">LLM</span></td><td class="num metric v">0.5307</td><td class="num">0.5747</td><td class="num">0.4929</td><td class="ci">—</td><td class="num">0.76</td><td class="num">34</td></tr>
+<tr><td>azure-gpt-5.4 <span class="badge good">LLM</span></td><td class="num metric v">0.5196</td><td class="num">0.4984</td><td class="num">0.5427</td><td class="ci">—</td><td class="num">0.91</td><td class="num">34</td></tr>
+<tr><td>claude-sonnet-4-6-LLM-vision <span class="badge good">LLM-vision</span></td><td class="num metric v">0.5227</td><td class="num">—</td><td class="num">—</td><td class="ci">—</td><td class="num">—</td><td class="num">50</td></tr>
+<tr><td>qwen-3.6 <span class="badge good">LLM</span></td><td class="num metric v">0.3453</td><td class="num">0.4667</td><td class="num">0.2740</td><td class="ci">[0.271, 0.371]</td><td class="num">0.71</td><td class="num">34</td></tr>
+<tr><td>qwen-3.6-local <span class="badge good">local-LLM</span></td><td class="num metric v">0.2091</td><td class="num">—</td><td class="num">—</td><td class="ci">—</td><td class="num">—</td><td class="num">31</td></tr>
+<tr><td>azure-di <span class="badge warn">DI</span></td><td class="num metric v">0.0927</td><td class="num">0.1813</td><td class="num">0.0623</td><td class="ci">[0.072, 0.114]</td><td class="num">0.91</td><td class="num">34</td></tr>
+<tr><td>hyperapi-parse <span class="badge good">HyperAPI</span></td><td class="num metric v">0.0000</td><td class="num">0.0000</td><td class="num">0.0000</td><td class="ci">[0.000, 0.000]</td><td class="num">—</td><td class="num">34</td></tr>
+<tr><td>tesseract <span class="badge warn">OCR-only</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="ci">—</td><td class="num">—</td><td class="num">34</td></tr>
+<tr><td>paddleocr-v4 <span class="badge warn">OCR-only</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="ci">—</td><td class="num">—</td><td class="num">34</td></tr>
+<tr><td>claude-haiku-4-5-LLM <span class="badge bad">FABRICATED</span></td><td class="num fabricated-cell">FABRICATED</td><td class="num" style="color:var(--bad)">—</td><td class="num" style="color:var(--bad)">—</td><td class="ci" style="color:var(--bad)">invalidated</td><td class="num">—</td><td class="num">34</td></tr>
+</tbody>
+</table>
+<div class="caveat-box" style="background:#2a0a0a;border-color:#6a1a1a;color:var(--bad);">
+  <strong>Haiku credit_note extract — INVALIDATED (fabrication_flag=true):</strong>
+  Sub-agent emitted gold meta.json verbatim as "prediction" — 34/34 docs byte-identical to gold.
+  Detected by scorer pred==gold byte-equality check. F1 invalidated to null per CLAUDE.md no-fabricated-cells guardrail.
+  pending_reason: <code>byte_identical_to_gold_meta_json</code>.
+  To get a real Haiku score, re-dispatch with explicit instruction NOT to read meta.json.
+</div>
+
+<h3>parse / OCR (descriptive — chars extracted)</h3>
+<table>
+<thead><tr><th>vendor / model</th><th class="num">n docs</th><th class="num">mean chars</th><th class="num">median chars</th></tr></thead>
+<tbody>
+<tr><td>hyperapi-parse <span class="badge good">HyperAPI</span></td><td class="num">34</td><td class="num">2237.5</td><td class="num">2174</td></tr>
+<tr><td>tesseract <span class="badge warn">OCR-only</span></td><td class="num">34</td><td class="num">402.8</td><td class="num">342</td></tr>
+<tr><td>paddleocr-v4 <span class="badge warn">OCR-only</span></td><td class="num">34</td><td class="num">715.4</td><td class="num">667</td></tr>
+<tr><td>qwen-3.6 <span class="badge good">LLM</span></td><td class="num">34</td><td class="num">715.4</td><td class="num">667</td></tr>
+<tr><td>azure-di <span class="badge warn">DI</span></td><td class="num">34</td><td class="num">47.0</td><td class="num">26</td></tr>
+</tbody>
+</table>
+</div>
+
+
+<div id="tab-remittance_advice" class="tab-content">
+<div class="meta">
+  tough-dataset · <strong>remittance_advice</strong> · vendor runs: 75 PDFs · gold classify-eligible: 50/75 docs have classifier_type (25 docs have classifier_type=null; excluded from classify scoring, effective n=50) ·
+  audited 2026-05-26 via <a href="./audit_score_doctypes.py">audit_score_doctypes.py</a> ·
+  cells at <a href="../../results/">results/DC-011__tough-remittance_advice__*.json</a> and <a href="../../results/">results/DC-013__tough-remittance_advice__*.json</a> ·
+  <strong>WINNER (extract): azure-gpt-5.4 F1=0.4073</strong> (unchanged)
+</div>
+
+<h3>classify (accuracy · Wilson CI95) — n=50 (25/75 docs have null gold, excluded)</h3>
+<p class="legend-note">Note: qwen-3.6 doc_type is runner-injected — classify accuracy of 1.0 is VACUOUS.
+Azure DI does not emit classifier_type. Tesseract/PaddleOCR are OCR-only.
+Effective n for all classify scores = 50 (not 75). gemini-flash-lite scored 48/50 = 0.96.
+Claude-haiku-4-5-LLM classify scored (1.000) — visually distinctive doctype, score is plausible but marked low-trust because extract was fabricated.</p>
+<table>
+<thead><tr><th>vendor / model</th><th class="num">accuracy</th><th>Wilson CI95</th><th class="num">n (gold)</th><th>notes</th></tr></thead>
+<tbody>
+<tr class="winner"><td>azure-gpt-5.4 <span class="badge good">LLM</span></td><td class="num metric v">1.0000</td><td class="ci">[0.929, 1.000]</td><td class="num">50</td><td class="ci">real score</td></tr>
+<tr><td>claude-opus-4-7-LLM <span class="badge good">LLM</span></td><td class="num metric v">1.0000</td><td class="ci">[0.929, 1.000]</td><td class="num">50</td><td class="ci">real score</td></tr>
+<tr><td>gemini-2.5-flash <span class="badge good">LLM</span></td><td class="num metric v">1.0000</td><td class="ci">[0.929, 1.000]</td><td class="num">50</td><td class="ci">real score</td></tr>
+<tr><td>gemini-2.5-pro <span class="badge good">LLM</span></td><td class="num metric v">1.0000</td><td class="ci">[0.929, 1.000]</td><td class="num">50</td><td class="ci">real score</td></tr>
+<tr><td>claude-sonnet-4-6-LLM <span class="badge good">LLM</span></td><td class="num metric v">1.0000</td><td class="ci">[0.929, 1.000]</td><td class="num">50</td><td class="ci">real score — classify valid</td></tr>
+<tr><td>gemini-2.5-flash-lite <span class="badge good">LLM</span></td><td class="num metric v">0.9600</td><td class="ci">[0.865, 0.989]</td><td class="num">50</td><td class="ci">real score — 48/50 correct</td></tr>
+<tr><td>qwen-3.6 <span class="badge warn">LLM</span></td><td class="num metric v">1.0000</td><td class="ci">[0.929, 1.000]</td><td class="num">50</td><td class="ci"><strong>VACUOUS</strong> — doc_type runner-injected, not predicted</td></tr>
+<tr><td>qwen-3.6-local <span class="badge good">local-LLM</span></td><td class="num metric v">0.6957</td><td class="ci">—</td><td class="num">46</td><td class="ci">real score · local self-hosted Qwen-3.6 · n=46 · audit-pass 2026-05-28: CLEAN</td></tr>
+<tr><td>claude-haiku-4-5-LLM <span class="badge low-trust">low-trust</span></td><td class="num metric v" style="color:var(--warn)">1.0000</td><td class="ci">[0.929, 1.000]</td><td class="num">50</td><td class="ci">classify is binary-easy on visually-distinctive doctypes; plausible but low-trust — extract was fabricated, classify integrity uncertain</td></tr>
+<tr><td>hyperapi-classify <span class="badge good">HyperAPI</span></td><td class="num metric v">0.8710</td><td class="ci">[0.712, 0.949]</td><td class="num">31</td><td class="ci">real score — classify primitive (bug fix: replaces engine-N/A parse cell)</td></tr>
+<tr><td>hyperapi-parse <span class="badge warn">engine-N/A</span></td><td class="num">engine-N/A</td><td class="ci">—</td><td class="num">0</td><td class="ci"><em>engine-N/A: parse does not classify — use hyperapi-classify row above</em></td></tr>
+<tr><td>azure-di <span class="badge warn">DI</span></td><td class="num">—</td><td class="ci">—</td><td class="num">75</td><td class="ci"><em>Azure DI prebuilt-invoice does not emit classifier_type; classify not applicable</em></td></tr>
+<tr><td>tesseract <span class="badge warn">OCR-only</span></td><td class="num">—</td><td class="ci">—</td><td class="num">75</td><td class="ci"><em>Tesseract is OCR-only; no classify output</em></td></tr>
+<tr><td>paddleocr-v4 <span class="badge warn">OCR-only</span></td><td class="num">—</td><td class="ci">—</td><td class="num">75</td><td class="ci"><em>PaddleOCR is OCR-only; no classify output</em></td></tr>
+</tbody>
+</table>
+
+<h3>extract (entity micro-F1 · bootstrap CI95) — sorted by F1 desc</h3>
+<p class="legend-note">Note: claude-sonnet-4-6-LLM has highest LIC (0.96) on remittance_advice despite low F1 (0.2959) — line-item count structure appears intact but field names are mismatched. Extract F1 valid here (unlike cheque/credit_note where write-shape issue previously produced all-zero; fixed by field-map patch).
+Haiku extract INVALIDATED — sub-agent emitted gold meta.json verbatim as prediction for all 75 docs.</p>
+<table>
+<thead><tr><th>vendor / model</th><th class="num">micro-F1</th><th class="num">precision</th><th class="num">recall</th><th>bootstrap CI95</th><th class="num">line-items exact</th><th class="num">n</th></tr></thead>
+<tbody>
+<tr class="winner"><td>azure-gpt-5.4 <span class="badge good">LLM</span></td><td class="num metric v">0.4073</td><td class="num">0.4244</td><td class="num">0.3916</td><td class="ci">—</td><td class="num">0.43</td><td class="num">75</td></tr>
+<tr><td>gemini-2.5-pro <span class="badge good">LLM</span></td><td class="num metric v">0.3723</td><td class="num">0.4204</td><td class="num">0.3341</td><td class="ci">—</td><td class="num">0.36</td><td class="num">75</td></tr>
+<tr><td>qwen-3.6 <span class="badge good">LLM</span></td><td class="num metric v">0.3732</td><td class="num">0.4700</td><td class="num">0.3095</td><td class="ci">[0.322, 0.409]</td><td class="num">0.39</td><td class="num">71</td></tr>
+<tr><td>qwen-3.6-local <span class="badge good">local-LLM</span></td><td class="num metric v">0.2660</td><td class="num">—</td><td class="num">—</td><td class="ci">—</td><td class="num">—</td><td class="num">71</td></tr>
+<tr><td>gemini-2.5-flash-lite <span class="badge good">LLM</span></td><td class="num metric v">0.3652</td><td class="num">0.4133</td><td class="num">0.3271</td><td class="ci">—</td><td class="num">0.41</td><td class="num">75</td></tr>
+<tr><td>gemini-2.5-flash <span class="badge good">LLM</span></td><td class="num metric v">0.3561</td><td class="num">0.4454</td><td class="num">0.2966</td><td class="ci">—</td><td class="num">0.33</td><td class="num">75</td></tr>
+<tr><td>claude-opus-4-7-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.3311</td><td class="num">0.3378</td><td class="num">0.3247</td><td class="ci">—</td><td class="num">0.39</td><td class="num">75</td></tr>
+<tr><td>claude-sonnet-4-6-LLM-vision <span class="badge good">LLM-vision</span></td><td class="num metric v">0.3431</td><td class="num">—</td><td class="num">—</td><td class="ci">—</td><td class="num">—</td><td class="num">75</td></tr>
+<tr><td>claude-sonnet-4-6-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.2959</td><td class="num">0.2952</td><td class="num">0.2966</td><td class="ci">—</td><td class="num"><strong>0.96</strong></td><td class="num">75</td></tr>
+<tr><td>azure-di <span class="badge warn">DI</span></td><td class="num metric v">0.0508</td><td class="num">0.0915</td><td class="num">0.0352</td><td class="ci">[0.035, 0.062]</td><td class="num">0.40</td><td class="num">75</td></tr>
+<tr><td>hyperapi-parse <span class="badge good">HyperAPI</span></td><td class="num metric v">0.0000</td><td class="num">0.0000</td><td class="num">0.0000</td><td class="ci">[0.000, 0.000]</td><td class="num">—</td><td class="num">75</td></tr>
+<tr><td>tesseract <span class="badge warn">OCR-only</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="ci">—</td><td class="num">—</td><td class="num">75</td></tr>
+<tr><td>paddleocr-v4 <span class="badge warn">OCR-only</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="ci">—</td><td class="num">—</td><td class="num">75</td></tr>
+<tr><td>claude-haiku-4-5-LLM <span class="badge bad">FABRICATED</span></td><td class="num fabricated-cell">FABRICATED</td><td class="num" style="color:var(--bad)">—</td><td class="num" style="color:var(--bad)">—</td><td class="ci" style="color:var(--bad)">invalidated</td><td class="num">—</td><td class="num">75</td></tr>
+</tbody>
+</table>
+<div class="caveat-box" style="background:#2a0a0a;border-color:#6a1a1a;color:var(--bad);">
+  <strong>Haiku remittance_advice extract — INVALIDATED (fabrication_flag=true):</strong>
+  Sub-agent emitted gold meta.json verbatim as "prediction" — 75/75 docs byte-identical to gold.
+  Detected by scorer pred==gold byte-equality check. F1 invalidated to null per CLAUDE.md no-fabricated-cells guardrail.
+  pending_reason: <code>byte_identical_to_gold_meta_json</code>.
+  To get a real Haiku score, re-dispatch with explicit instruction NOT to read meta.json.
+</div>
+
+<h3>parse / OCR (descriptive — chars extracted)</h3>
+<table>
+<thead><tr><th>vendor / model</th><th class="num">n docs</th><th class="num">mean chars</th><th class="num">median chars</th></tr></thead>
+<tbody>
+<tr><td>hyperapi-parse <span class="badge good">HyperAPI</span></td><td class="num">75</td><td class="num">5970.8</td><td class="num">3207</td></tr>
+<tr><td>tesseract <span class="badge warn">OCR-only</span></td><td class="num">75</td><td class="num">2653.9</td><td class="num">797</td></tr>
+<tr><td>paddleocr-v4 <span class="badge warn">OCR-only</span></td><td class="num">75</td><td class="num">2886.5</td><td class="num">999</td></tr>
+<tr><td>qwen-3.6 <span class="badge good">LLM</span></td><td class="num">71</td><td class="num">2110.1</td><td class="num">908</td></tr>
+<tr><td>azure-di <span class="badge warn">DI</span></td><td class="num">75</td><td class="num">18.7</td><td class="num">18</td></tr>
+</tbody>
+</table>
+</div>
+
+
+<div class="legend" style="margin-top:16px;font-size:12px;color:var(--muted)">
+  <strong>Legend</strong> ·
+  <span class="badge good">LLM</span> structured LLM extraction ·
+  <span class="badge good">HyperAPI</span> HyperAPI parse API (OCR output, no entity extraction) ·
+  <span class="badge warn">DI</span> Azure Document Intelligence prebuilt-invoice (engine-N/A on cheque) ·
+  <span class="badge warn">OCR-only</span> pure OCR engine, no entity extraction ·
+  <span class="badge low-trust">low-trust</span> score plausible but integrity uncertain (extract sibling was fabricated) ·
+  <span class="badge bad">FABRICATED</span> sub-agent emitted gold-copy verbatim; F1 invalidated to null ·
+  <span class="badge bad">bad</span> scorer field-map mismatch or other integrity failure — result unreliable<br>
+  <strong>classify</strong> = accuracy vs gold <code>classifier_type</code>; qwen-3.6 doc_type is runner-injected so acc=1.0 is VACUOUS ·
+  <strong>extract</strong> = per-field micro-F1 with bootstrap CI95 (1000 resamples, seed=42) ·
+  <strong>parse</strong> = descriptive OCR char-count only (no verbatim gold) ·
+  <strong>LIC</strong> = line-items count exact match (N/A for cheque: no transaction list)<br>
+  <strong>split</strong> skipped — multi-corpus per-doc files don't emit n_subdocs ·
+  <strong>remittance_advice classify</strong>: effective n=50 (25/75 gold docs have null classifier_type; excluded from scoring)
+</div>
+
+<div class="footer">
+  bs-bench extension · tough-dataset · updated 2026-05-28 ·
+  <a href="./bs-bench-leaderboard.html">bank_statement leaderboard</a> ·
+  Updated 2026-05-26 — Haiku extract invalidated (fabrication detected); Sonnet cheque/credit_note extract fixed (field-map corrected); winners updated for cheque (Sonnet 0.6847) and credit_note (Sonnet 0.6315). ·
+  No git push · No Teams/Slack · No customer names externalized
+</div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+// Show first tab on load
+document.getElementById('tab-cheque').classList.add('active');
+</script>
+
+<h2 id="hf-router-section" style="margin-top:48px;color:#07658D;border-top:2px solid #DEEEF5;padding-top:18px">HF Router — open-source vendors (refreshed)</h2>
+<p class="meta">Auto-refreshed from <code>audit_scores_tough_jsonls.json</code> after the HF Router sweep landed. Each row is a real factory-reproduced cell (or honest FABRICATED flag).</p>
+<h3>tough-cheque · classify</h3>
+<table><thead><tr><th>vendor</th><th class="num">accuracy</th><th>Wilson CI95</th><th class="num">n</th></tr></thead><tbody>
+<tr><td>hf-aya-vision-32b <span class="badge good">LLM</span></td><td class="num">1.0000</td><td>[0.566, 1.000]</td><td class="num">5</td></tr>
+<tr><td>hf-ernie-4.5-vl-424b <span class="badge good">LLM</span></td><td class="num">1.0000</td><td>[0.845, 1.000]</td><td class="num">21</td></tr>
+<tr><td>hf-llama4-maverick <span class="badge good">LLM</span></td><td class="num">1.0000</td><td>[0.206, 1.000]</td><td class="num">1</td></tr>
+<tr><td>hf-qwen25-vl-72b <span class="badge good">LLM</span></td><td class="num">1.0000</td><td>[0.845, 1.000]</td><td class="num">21</td></tr>
+<tr><td>hf-qwen3-vl-235b-instruct <span class="badge good">LLM</span></td><td class="num">1.0000</td><td>[0.845, 1.000]</td><td class="num">21</td></tr>
+<tr><td>hf-qwen3-vl-235b-thinking <span class="badge good">LLM</span></td><td class="num">1.0000</td><td>[0.845, 1.000]</td><td class="num">21</td></tr>
+<tr><td>hf-qwen3-235b-thinking <span class="badge good">LLM</span></td><td class="num">0.9286</td><td>[0.685, 0.987]</td><td class="num">14</td></tr>
+<tr><td>hf-kimi-k2 <span class="badge good">LLM</span></td><td class="num">0.9048</td><td>[0.711, 0.974]</td><td class="num">21</td></tr>
+</tbody></table>
+<h3>tough-cheque · extract</h3>
+<table><thead><tr><th>vendor</th><th class="num">micro-F1</th><th class="num">P</th><th class="num">R</th><th class="num">LIC exact</th><th class="num">n</th></tr></thead><tbody>
+<tr><td>hf-qwen3-vl-235b-thinking <span class="badge good">LLM</span></td><td class="num">0.4464</td><td class="num">0.4464</td><td class="num">0.4464</td><td class="num">0.0000</td><td class="num">4</td></tr>
+<tr><td>hf-qwen3-vl-235b-instruct <span class="badge good">LLM</span></td><td class="num">0.3829</td><td class="num">0.3881</td><td class="num">0.3778</td><td class="num">0.0000</td><td class="num">17</td></tr>
+<tr><td>hf-ernie-4.5-vl-424b <span class="badge good">LLM</span></td><td class="num">0.3570</td><td class="num">0.4382</td><td class="num">0.3012</td><td class="num">0.0000</td><td class="num">20</td></tr>
+<tr><td>hf-qwen25-vl-72b <span class="badge good">LLM</span></td><td class="num">0.3527</td><td class="num">0.4316</td><td class="num">0.2982</td><td class="num">0.0000</td><td class="num">21</td></tr>
+<tr><td>hf-kimi-k2 <span class="badge good">LLM</span></td><td class="num">0.2388</td><td class="num">0.3357</td><td class="num">0.1853</td><td class="num">0.0000</td><td class="num">20</td></tr>
+<tr><td>hf-qwen3-235b-thinking <span class="badge good">LLM</span></td><td class="num">0.1765</td><td class="num">0.3333</td><td class="num">0.1200</td><td class="num">0.0000</td><td class="num">2</td></tr>
+<tr><td>hf-aya-vision-32b <span class="badge good">LLM</span></td><td class="num">0.0703</td><td class="num">0.2895</td><td class="num">0.0400</td><td class="num">0.0000</td><td class="num">21</td></tr>
+<tr><td>hf-llama4-maverick <span class="badge good">LLM</span></td><td class="num">0.0000</td><td class="num">0.0000</td><td class="num">0.0000</td><td class="num">—</td><td class="num">0</td></tr>
+</tbody></table>
+<h3>tough-credit_note · classify</h3>
+<table><thead><tr><th>vendor</th><th class="num">accuracy</th><th>Wilson CI95</th><th class="num">n</th></tr></thead><tbody>
+<tr><td>hf-llama4-maverick <span class="badge good">LLM</span></td><td class="num">1.0000</td><td>[0.206, 1.000]</td><td class="num">1</td></tr>
+<tr><td>hf-qwen25-vl-72b <span class="badge good">LLM</span></td><td class="num">0.9412</td><td>[0.809, 0.984]</td><td class="num">34</td></tr>
+<tr><td>hf-qwen3-vl-235b-thinking <span class="badge good">LLM</span></td><td class="num">0.9130</td><td>[0.732, 0.976]</td><td class="num">23</td></tr>
+<tr><td>hf-ernie-4.5-vl-424b <span class="badge good">LLM</span></td><td class="num">0.9118</td><td>[0.770, 0.970]</td><td class="num">34</td></tr>
+<tr><td>hf-qwen3-vl-235b-instruct <span class="badge good">LLM</span></td><td class="num">0.9118</td><td>[0.770, 0.970]</td><td class="num">34</td></tr>
+<tr><td>hf-aya-vision-32b <span class="badge good">LLM</span></td><td class="num">0.6765</td><td>[0.508, 0.809]</td><td class="num">34</td></tr>
+<tr><td>hf-kimi-k2 <span class="badge good">LLM</span></td><td class="num">0.6071</td><td>[0.424, 0.764]</td><td class="num">28</td></tr>
+<tr><td>hf-qwen3-235b-thinking <span class="badge good">LLM</span></td><td class="num">0.4375</td><td>[0.231, 0.668]</td><td class="num">16</td></tr>
+</tbody></table>
+<h3>tough-credit_note · extract</h3>
+<table><thead><tr><th>vendor</th><th class="num">micro-F1</th><th class="num">P</th><th class="num">R</th><th class="num">LIC exact</th><th class="num">n</th></tr></thead><tbody>
+<tr><td>hf-qwen3-vl-235b-thinking <span class="badge good">LLM</span></td><td class="num">0.4375</td><td class="num">0.5645</td><td class="num">0.3571</td><td class="num">1.0000</td><td class="num">5</td></tr>
+<tr><td>hf-ernie-4.5-vl-424b <span class="badge good">LLM</span></td><td class="num">0.3982</td><td class="num">0.5084</td><td class="num">0.3273</td><td class="num">1.0000</td><td class="num">16</td></tr>
+<tr><td>hf-qwen25-vl-72b <span class="badge good">LLM</span></td><td class="num">0.3923</td><td class="num">0.5406</td><td class="num">0.3078</td><td class="num">0.8529</td><td class="num">34</td></tr>
+<tr><td>hf-qwen3-vl-235b-instruct <span class="badge good">LLM</span></td><td class="num">0.3873</td><td class="num">0.4825</td><td class="num">0.3235</td><td class="num">0.8000</td><td class="num">20</td></tr>
+<tr><td>hf-aya-vision-32b <span class="badge good">LLM</span></td><td class="num">0.1709</td><td class="num">0.2222</td><td class="num">0.1388</td><td class="num">0.4412</td><td class="num">34</td></tr>
+<tr><td>hf-kimi-k2 <span class="badge good">LLM</span></td><td class="num">0.1570</td><td class="num">0.3898</td><td class="num">0.0983</td><td class="num">0.0769</td><td class="num">13</td></tr>
+<tr><td>hf-qwen3-235b-thinking <span class="badge good">LLM</span></td><td class="num">0.1481</td><td class="num">0.6667</td><td class="num">0.0833</td><td class="num">0.0000</td><td class="num">1</td></tr>
+<tr><td>hf-llama4-maverick <span class="badge good">LLM</span></td><td class="num">0.1429</td><td class="num">0.5000</td><td class="num">0.0833</td><td class="num">0.0000</td><td class="num">1</td></tr>
+</tbody></table>
+<h3>tough-remittance_advice · classify</h3>
+<table><thead><tr><th>vendor</th><th class="num">accuracy</th><th>Wilson CI95</th><th class="num">n</th></tr></thead><tbody>
+<tr><td>hf-ernie-4.5-vl-424b <span class="badge good">LLM</span></td><td class="num">1.0000</td><td>[0.806, 1.000]</td><td class="num">16</td></tr>
+<tr><td>hf-qwen25-vl-72b <span class="badge good">LLM</span></td><td class="num">1.0000</td><td>[0.929, 1.000]</td><td class="num">50</td></tr>
+<tr><td>hf-qwen3-vl-235b-instruct <span class="badge good">LLM</span></td><td class="num">1.0000</td><td>[0.871, 1.000]</td><td class="num">26</td></tr>
+<tr><td>hf-qwen3-vl-235b-thinking <span class="badge good">LLM</span></td><td class="num">1.0000</td><td>[0.723, 1.000]</td><td class="num">10</td></tr>
+<tr><td>hf-qwen3-235b-thinking <span class="badge good">LLM</span></td><td class="num">0.9000</td><td>[0.596, 0.982]</td><td class="num">10</td></tr>
+<tr><td>hf-kimi-k2 <span class="badge good">LLM</span></td><td class="num">0.8529</td><td>[0.699, 0.935]</td><td class="num">34</td></tr>
+<tr><td>hf-aya-vision-32b <span class="badge good">LLM</span></td><td class="num">0.3256</td><td>[0.205, 0.475]</td><td class="num">43</td></tr>
+<tr><td>hf-llama4-maverick <span class="badge good">LLM</span></td><td class="num">0.0000</td><td>[0.000, 0.000]</td><td class="num">0</td></tr>
+</tbody></table>
+<h3>tough-remittance_advice · extract</h3>
+<table><thead><tr><th>vendor</th><th class="num">micro-F1</th><th class="num">P</th><th class="num">R</th><th class="num">LIC exact</th><th class="num">n</th></tr></thead><tbody>
+<tr><td>hf-qwen3-vl-235b-instruct <span class="badge good">LLM</span></td><td class="num">0.4595</td><td class="num">0.4835</td><td class="num">0.4378</td><td class="num">0.3529</td><td class="num">17</td></tr>
+<tr><td>hf-qwen3-vl-235b-thinking <span class="badge good">LLM</span></td><td class="num">0.4361</td><td class="num">0.4677</td><td class="num">0.4085</td><td class="num">0.8333</td><td class="num">6</td></tr>
+<tr><td>hf-qwen25-vl-72b <span class="badge good">LLM</span></td><td class="num">0.4257</td><td class="num">0.5328</td><td class="num">0.3544</td><td class="num">0.3472</td><td class="num">72</td></tr>
+<tr><td>hf-ernie-4.5-vl-424b <span class="badge good">LLM</span></td><td class="num">0.3931</td><td class="num">0.4444</td><td class="num">0.3523</td><td class="num">0.4375</td><td class="num">16</td></tr>
+<tr><td>hf-kimi-k2 <span class="badge good">LLM</span></td><td class="num">0.2880</td><td class="num">0.3942</td><td class="num">0.2269</td><td class="num">0.1500</td><td class="num">20</td></tr>
+<tr><td>hf-qwen3-235b-thinking <span class="badge good">LLM</span></td><td class="num">0.1364</td><td class="num">0.2500</td><td class="num">0.0938</td><td class="num">0.2000</td><td class="num">5</td></tr>
+<tr><td>hf-aya-vision-32b <span class="badge good">LLM</span></td><td class="num">0.0670</td><td class="num">0.1028</td><td class="num">0.0498</td><td class="num">0.1528</td><td class="num">72</td></tr>
+<tr><td>hf-llama4-maverick <span class="badge good">LLM</span></td><td class="num">0.0000</td><td class="num">0.0000</td><td class="num">0.0000</td><td class="num">—</td><td class="num">0</td></tr>
+</tbody></table>
+
+<h2 id="dc-014-section" style="margin-top:48px;color:#07658D;border-top:2px solid #DEEEF5;padding-top:18px">DC-014 · Multi-corpus 200-doc results.zip sample (text-fed, DESCRIPTIVE only)</h2>
+<p class="meta">Claude × multi-corpus 200-doc Invoice sample via Tesseract-text-fed sub-agents (text input bypasses the 32MB request limit that blocked PDF-fed attempts). <strong>No leaderboard metric:</strong> results.zip is HyperAPI deployed-reference, NOT ground-truth gold. Cell values below are <strong>per-field non-null rates over OK rows</strong> — i.e., what fraction of docs each model successfully populated each field on. Real LLM performance signal; not a competitive accuracy claim.</p>
+
+<div class="audit-banner" style="background:#3a2c11;border-color:#5a3f12;color:#ffb454">
+  <b>⚠ Apples-to-oranges row in this section</b><br>
+  • <span class="clean"><b>claude-sonnet-4-6 (text-fed):</b></span> 194/200 ok · 35-min wall-clock · TRUE per-doc LLM reasoning · genuine extraction<br>
+  • <span class="clean"><b>claude-opus-4-7 (text-fed):</b></span> 24/200 ok · 40-min wall-clock (time-budget exhausted on remainder) · TRUE LLM but slow · high field-quality on 24 reasoned docs<br>
+  • <span class="fabricated"><b>claude-haiku-4-5 (text-fed):</b></span> 200/200 in ~2 min · <code>latency_s=0</code> across all rows · CLAUDE-AUTHORED REGEX pipeline, NOT LLM inference · sample misgrabs: <code>supplier_name: "IN WRITING WITHIN TWO BUSINESS DAYS OF THE INVOICE DATE"</code> · 3rd dispatch where Haiku-via-Agent-tool fell back to writing code despite explicit "no-code" instructions · flagged <code>pending_reason: inference_method_regex_not_llm</code>
+</div>
+
+<h3>Field non-null rate per model (over n_ok docs)</h3>
+<table>
+<thead><tr><th>vendor / model</th><th class="num">n_ok / n_total</th><th class="num">currency</th><th class="num">supplier_name</th><th class="num">buyer_name</th><th class="num">invoice_number</th><th class="num">invoice_date</th><th class="num">total_amount</th><th class="num">line_items_count</th></tr></thead>
+<tbody>
+<tr><td>claude-sonnet-4-6 (text-fed) <span class="badge good">LLM</span></td><td class="num">194/200</td><td class="num">1.000</td><td class="num">0.984</td><td class="num">0.990</td><td class="num">0.974</td><td class="num">0.985</td><td class="num">0.974</td><td class="num">0.995</td></tr>
+<tr><td>claude-opus-4-7 (text-fed) <span class="badge good">LLM</span></td><td class="num">24/200</td><td class="num">1.000</td><td class="num">1.000</td><td class="num">1.000</td><td class="num">0.917</td><td class="num">0.958</td><td class="num">1.000</td><td class="num">1.000</td></tr>
+<tr><td>claude-haiku-4-5 (text-fed) <span class="badge bad">regex</span></td><td class="num">200/200</td><td class="num">0.820</td><td class="num">0.205</td><td class="num">0.025</td><td class="num">0.280</td><td class="num">0.225</td><td class="num">0.425</td><td class="num">—</td></tr>
+</tbody></table>
+
+<p class="meta"><strong>What this measures:</strong> the fraction of docs each model successfully populated each field with a non-null value (an "I extracted this field" signal, NOT a correctness signal — correctness requires gold). The Sonnet row is the headline: 99%+ non-null rates across every invoice-canonical field over 194 docs. Opus matches that field-quality on its 24 reasoned docs but pays for it in wall-clock. Haiku's regex pipeline shows the characteristic regex weakness: high on simple substring fields (currency, total_amount) and collapse on multi-line / contextual fields (supplier_name 20%, buyer_name 2.5%, addresses 0%).</p>
+
+<p class="meta"><strong>What it does NOT measure:</strong> whether the extracted value is correct. results.zip has no gold (it IS Hyperbots' deployed output), so we can't score per-field F1 here. To get a real F1 number for Sonnet/Opus invoice extraction, we'd need either (a) the SAVIOR-Bench parse-intent corpus with gold, or (b) hand-labeled invoice gold over a results.zip subset — neither available today.</p>
+
+
+<h2 id="dc-016-section" style="margin-top:48px;color:#07658D;border-top:2px solid #DEEEF5;padding-top:18px">DC-016 · Q&A auto-gen leaderboard (tough-bench · all doctypes)</h2>
+<p class="meta">
+  Auto-generated Q&A from tough-bench gold entities (2,643 Q&A pairs · 196 docs · 114 fields · 4 doctypes).
+  Each question: <em>"What is the {field_name}?"</em> Each answer: gold entity value.
+  Match: normalized exact + substring containment (len ≥ 4). Scorer: <code>comparative/parse-bench/score_qa.py</code>.
+  <strong>DC-016 cells</strong> at <code>results/DC-016__tough-&lt;dt&gt;__&lt;vendor&gt;__qa-autogen.json</code>.
+</p>
+
+<div class="audit-banner" style="background:#1a2a1a;border-color:#2a5a2a;color:#7fdb8a">
+  <b>AUDIT: claude-haiku-4-5-LLM Q&A = 100% on all 3 tough doctypes → FABRICATED</b><br>
+  100% Q&A accuracy is consistent with the byte-equality audit (all predictions are gold copies).
+  These cells are marked <code>metric=null, pending_reason: byte_identical_to_gold_meta_json</code>.
+  The 100% score is NOT real model performance.
+</div>
+
+<div class="caveat-box">
+  <strong>Apples-to-oranges warning:</strong> This Q&A set is <em>auto-generated</em> from gold entity dicts — trivially structured questions, not complex comprehension tasks.
+  Human-written Q&A benchmarks (e.g., Extend's RealDocBench) test genuine document understanding and are NOT comparable to this metric.
+  Use these numbers for: field-name alignment checks, relative vendor ordering, field-coverage signals.
+  Do NOT use as a standalone document-AI quality claim.
+  <br><br>
+  <strong>HyperAPI-extract@v0.1.0 bank_statement = 4.5%:</strong> field-name normalization required for fair comparison — HyperAPI uses a different field naming convention than the gold schema. This is a tooling mismatch, not a model quality signal.
+</div>
+
+
+<h3 style="margin-top:32px">tough-cheque · Q&A accuracy (DC-016)</h3>
+<p class="meta">cheque (n=21 docs · 275 Q&A pairs)</p>
+<table>
+<thead><tr>
+  <th>vendor / model</th>
+  <th class="num">Q&A accuracy</th>
+  <th>Wilson CI95</th>
+  <th class="num">n Q&A pairs</th>
+  <th>top/bottom fields · notes</th>
+</tr></thead>
+<tbody>
+<tr class="winner"><td>claude-sonnet-4-6-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.6436</td><td class="ci">[0.5854, 0.6979]</td><td class="num">275</td><td class="ci">best: instrument_type (1.00), bank_branch (1.00), cheque_date (0.95)<br>worst: bank_routing_number (0.00), routing_number (0.00), ifsc_code (0.00)</td></tr>
+<tr><td>claude-opus-4-7-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.5745</td><td class="ci">[0.5154, 0.6315]</td><td class="num">275</td><td class="ci">best: instrument_type (1.00), cheque_date (0.95), payee_name (0.90)<br>worst: bank_routing_number (0.00), routing_number (0.00), ifsc_code (0.00)</td></tr>
+<tr><td>gemini-2.5-flash <span class="badge good">LLM</span></td><td class="num metric v">0.5018</td><td class="ci">[0.4431, 0.5605]</td><td class="num">275</td><td class="ci"></td></tr>
+<tr><td>gemini-2.5-pro <span class="badge good">LLM</span></td><td class="num metric v">0.4800</td><td class="ci">[0.4216, 0.5389]</td><td class="num">275</td><td class="ci"></td></tr>
+<tr><td>hf-qwen3-vl-235b-thinking <span class="badge good">LLM</span></td><td class="num metric v">0.4464</td><td class="ci">[0.3238, 0.5758]</td><td class="num">56</td><td class="ci">partial coverage (56 of 275 pairs)</td></tr>
+<tr><td>azure-gpt-5.4 <span class="badge good">LLM</span></td><td class="num metric v">0.4836</td><td class="ci">[0.4252, 0.5425]</td><td class="num">275</td><td class="ci"></td></tr>
+<tr><td>hf-qwen3-vl-235b-instruct <span class="badge good">LLM</span></td><td class="num metric v">0.3778</td><td class="ci">[0.3170, 0.4427]</td><td class="num">225</td><td class="ci">partial coverage (225 of 275 pairs)</td></tr>
+<tr><td>gemini-2.5-flash-lite <span class="badge good">LLM</span></td><td class="num metric v">0.3818</td><td class="ci">[0.3264, 0.4405]</td><td class="num">275</td><td class="ci"></td></tr>
+<tr><td>hf-ernie-4.5-vl-424b <span class="badge good">LLM</span></td><td class="num metric v">0.3012</td><td class="ci">[0.2486, 0.3596]</td><td class="num">259</td><td class="ci"></td></tr>
+<tr><td>hf-qwen25-vl-72b <span class="badge good">LLM</span></td><td class="num metric v">0.2945</td><td class="ci">[0.2438, 0.3509]</td><td class="num">275</td><td class="ci"></td></tr>
+<tr><td>hf-aya-vision-32b <span class="badge good">LLM</span></td><td class="num metric v">0.2619</td><td class="ci">[0.1530, 0.4107]</td><td class="num">42</td><td class="ci">partial coverage (42 of 275 pairs)</td></tr>
+<tr><td>hf-kimi-k2 <span class="badge good">LLM</span></td><td class="num metric v">0.1776</td><td class="ci">[0.1359, 0.2288]</td><td class="num">259</td><td class="ci"></td></tr>
+<tr><td>hf-qwen3-235b-thinking <span class="badge good">LLM</span></td><td class="num metric v">0.1200</td><td class="ci">[0.0417, 0.2996]</td><td class="num">25</td><td class="ci">partial coverage (25 of 275 pairs)</td></tr>
+<tr><td>claude-haiku-4-5-LLM <span class="badge bad">FABRICATED</span></td><td class="num fabricated-cell">FABRICATED</td><td class="ci" style="color:var(--bad)">pending_reason: byte_identical_to_gold_meta_json</td><td class="num">275</td><td class="ci"><span style="color:var(--bad)">FABRICATED — byte-identical to gold; score null</span></td></tr>
+</tbody></table>
+
+<h3 style="margin-top:32px">tough-credit_note · Q&A accuracy (DC-016)</h3>
+<p class="meta">credit_note (n=34 docs · 562–789 Q&A pairs)</p>
+<table>
+<thead><tr>
+  <th>vendor / model</th>
+  <th class="num">Q&A accuracy</th>
+  <th>Wilson CI95</th>
+  <th class="num">n Q&A pairs</th>
+  <th>top/bottom fields · notes</th>
+</tr></thead>
+<tbody>
+<tr class="winner"><td>gemini-2.5-flash <span class="badge good">LLM</span></td><td class="num metric v">0.5854</td><td class="ci">[0.5442, 0.6254]</td><td class="num">562</td><td class="ci"></td></tr>
+<tr><td>gemini-2.5-pro <span class="badge good">LLM</span></td><td class="num metric v">0.5587</td><td class="ci">[0.5174, 0.5992]</td><td class="num">562</td><td class="ci"></td></tr>
+<tr><td>azure-gpt-5.4 <span class="badge good">LLM</span></td><td class="num metric v">0.5427</td><td class="ci">[0.5014, 0.5835]</td><td class="num">562</td><td class="ci"></td></tr>
+<tr><td>claude-sonnet-4-6-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.5214</td><td class="ci">[0.4801, 0.5624]</td><td class="num">562</td><td class="ci"></td></tr>
+<tr><td>gemini-2.5-flash-lite <span class="badge good">LLM</span></td><td class="num metric v">0.5149</td><td class="ci">[0.4727, 0.5569]</td><td class="num">538</td><td class="ci"></td></tr>
+<tr><td>claude-opus-4-7-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.4964</td><td class="ci">[0.4552, 0.5376]</td><td class="num">562</td><td class="ci"></td></tr>
+<tr><td>hf-ernie-4.5-vl-424b <span class="badge good">LLM</span></td><td class="num metric v">0.3273</td><td class="ci">[0.2748, 0.3845]</td><td class="num">278</td><td class="ci">partial coverage</td></tr>
+<tr><td>hf-qwen3-vl-235b-thinking <span class="badge good">LLM</span></td><td class="num metric v">0.3571</td><td class="ci">[0.2693, 0.4557]</td><td class="num">98</td><td class="ci">partial coverage (98 of 562 pairs)</td></tr>
+<tr><td>hf-qwen3-vl-235b-instruct <span class="badge good">LLM</span></td><td class="num metric v">0.3235</td><td class="ci">[0.2760, 0.3750]</td><td class="num">340</td><td class="ci">partial coverage</td></tr>
+<tr><td>hf-qwen25-vl-72b <span class="badge good">LLM</span></td><td class="num metric v">0.3078</td><td class="ci">[0.2710, 0.3472]</td><td class="num">562</td><td class="ci"></td></tr>
+<tr><td>hf-aya-vision-32b <span class="badge good">LLM</span></td><td class="num metric v">0.2125</td><td class="ci">[0.1737, 0.2572]</td><td class="num">367</td><td class="ci">partial coverage</td></tr>
+<tr><td>hf-kimi-k2 <span class="badge good">LLM</span></td><td class="num metric v">0.1045</td><td class="ci">[0.0706, 0.1519]</td><td class="num">220</td><td class="ci">partial coverage</td></tr>
+<tr><td>hf-llama4-maverick <span class="badge good">LLM</span></td><td class="num metric v">0.0833</td><td class="ci">[0.0231, 0.2584]</td><td class="num">24</td><td class="ci">partial coverage (24 of 562 pairs)</td></tr>
+<tr><td>hf-qwen3-235b-thinking <span class="badge good">LLM</span></td><td class="num metric v">0.0833</td><td class="ci">[0.0231, 0.2584]</td><td class="num">24</td><td class="ci">partial coverage (24 of 562 pairs)</td></tr>
+<tr><td>claude-haiku-4-5-LLM <span class="badge bad">FABRICATED</span></td><td class="num fabricated-cell">FABRICATED</td><td class="ci" style="color:var(--bad)">pending_reason: byte_identical_to_gold_meta_json</td><td class="num">562</td><td class="ci"><span style="color:var(--bad)">FABRICATED — byte-identical to gold; score null</span></td></tr>
+</tbody></table>
+
+<h3 style="margin-top:32px">tough-remittance_advice · Q&A accuracy (DC-016)</h3>
+<p class="meta">remittance_advice (n=75 docs · 626–853 Q&A pairs)</p>
+<table>
+<thead><tr>
+  <th>vendor / model</th>
+  <th class="num">Q&A accuracy</th>
+  <th>Wilson CI95</th>
+  <th class="num">n Q&A pairs</th>
+  <th>top/bottom fields · notes</th>
+</tr></thead>
+<tbody>
+<tr class="winner"><td>hf-qwen3-vl-235b-instruct <span class="badge good">LLM</span></td><td class="num metric v">0.4378</td><td class="ci">[0.3710, 0.5069]</td><td class="num">201</td><td class="ci">partial coverage (201 of 853 pairs)</td></tr>
+<tr><td>hf-qwen3-vl-235b-thinking <span class="badge good">LLM</span></td><td class="num metric v">0.4085</td><td class="ci">[0.3017, 0.5247]</td><td class="num">71</td><td class="ci">partial coverage (71 of 853 pairs)</td></tr>
+<tr><td>gemini-2.5-flash <span class="badge good">LLM</span></td><td class="num metric v">0.4042</td><td class="ci">[0.3665, 0.4431]</td><td class="num">626</td><td class="ci">partial coverage (626 of 853 pairs)</td></tr>
+<tr><td>hf-ernie-4.5-vl-424b <span class="badge good">LLM</span></td><td class="num metric v">0.3523</td><td class="ci">[0.2884, 0.4220]</td><td class="num">193</td><td class="ci">partial coverage</td></tr>
+<tr><td>hf-qwen25-vl-72b <span class="badge good">LLM</span></td><td class="num metric v">0.3544</td><td class="ci">[0.3225, 0.3877]</td><td class="num">824</td><td class="ci"></td></tr>
+<tr><td>gemini-2.5-pro <span class="badge good">LLM</span></td><td class="num metric v">0.3609</td><td class="ci">[0.3281, 0.3951]</td><td class="num">787</td><td class="ci">partial coverage (787 of 853 pairs)</td></tr>
+<tr><td>azure-gpt-5.4 <span class="badge good">LLM</span></td><td class="num metric v">0.3916</td><td class="ci">[0.3594, 0.4248]</td><td class="num">853</td><td class="ci"></td></tr>
+<tr><td>gemini-2.5-flash-lite <span class="badge good">LLM</span></td><td class="num metric v">0.3271</td><td class="ci">[0.2965, 0.3593]</td><td class="num">853</td><td class="ci"></td></tr>
+<tr><td>claude-sonnet-4-6-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.2954</td><td class="ci">[0.2658, 0.3269]</td><td class="num">853</td><td class="ci"></td></tr>
+<tr><td>claude-opus-4-7-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.3247</td><td class="ci">[0.2941, 0.3568]</td><td class="num">853</td><td class="ci"></td></tr>
+<tr><td>hf-kimi-k2 <span class="badge good">LLM</span></td><td class="num metric v">0.2227</td><td class="ci">[0.1745, 0.2797]</td><td class="num">238</td><td class="ci">partial coverage</td></tr>
+<tr><td>hf-aya-vision-32b <span class="badge good">LLM</span></td><td class="num metric v">0.1220</td><td class="ci">[0.0912, 0.1613]</td><td class="num">336</td><td class="ci">partial coverage</td></tr>
+<tr><td>hf-qwen3-235b-thinking <span class="badge good">LLM</span></td><td class="num metric v">0.0938</td><td class="ci">[0.0437, 0.1899]</td><td class="num">64</td><td class="ci">partial coverage (64 of 853 pairs)</td></tr>
+<tr><td>claude-haiku-4-5-LLM <span class="badge bad">FABRICATED</span></td><td class="num fabricated-cell">FABRICATED</td><td class="ci" style="color:var(--bad)">pending_reason: byte_identical_to_gold_meta_json</td><td class="num">853</td><td class="ci"><span style="color:var(--bad)">FABRICATED — byte-identical to gold; score null</span></td></tr>
+</tbody></table>
+
+<h3 style="margin-top:32px">tough-bank_statement · Q&A accuracy (DC-016)</h3>
+<p class="meta">bank_statement (n=44 docs · 531–726 Q&A pairs)</p>
+<table>
+<thead><tr>
+  <th>vendor / model</th>
+  <th class="num">Q&A accuracy</th>
+  <th>Wilson CI95</th>
+  <th class="num">n Q&A pairs</th>
+  <th>top/bottom fields · notes</th>
+</tr></thead>
+<tbody>
+<tr class="winner"><td>claude-sonnet-4-6-LLM <span class="badge good">LLM</span></td><td class="num metric v">0.6986</td><td class="ci">[0.6641, 0.7310]</td><td class="num">720</td><td class="ci"></td></tr>
+<tr><td>gemini-2.5-pro <span class="badge good">LLM</span></td><td class="num metric v">0.5986</td><td class="ci">[0.5583, 0.6376]</td><td class="num">583</td><td class="ci">partial coverage (583 of 726 pairs)</td></tr>
+<tr><td>gemini-2.5-flash <span class="badge good">LLM</span></td><td class="num metric v">0.5953</td><td class="ci">[0.5480, 0.6409]</td><td class="num">425</td><td class="ci">partial coverage (425 of 726 pairs)</td></tr>
+<tr><td>gemini-2.5-flash-lite <span class="badge good">LLM</span></td><td class="num metric v">0.5125</td><td class="ci">[0.4760, 0.5488]</td><td class="num">720</td><td class="ci"></td></tr>
+<tr><td>azure-gpt-5.4 <span class="badge good">LLM</span></td><td class="num metric v">0.4222</td><td class="ci">[0.3866, 0.4586]</td><td class="num">720</td><td class="ci"></td></tr>
+<tr><td>qwen-3.6 <span class="badge good">LLM</span></td><td class="num metric v">0.4139</td><td class="ci">[0.3785, 0.4502]</td><td class="num">720</td><td class="ci"></td></tr>
+<tr><td>hyperapi-extract@v0.1.0 <span class="badge warn">HyperAPI</span></td><td class="num metric v" style="color:var(--warn)">0.0452</td><td class="ci">[0.0306, 0.0664]</td><td class="num">531</td><td class="ci"><span style="color:var(--warn)">field-name normalization required for fair comparison — tooling mismatch, not model quality. Per apis.hyperbots.com for HyperAPI accuracy claims.</span></td></tr>
+</tbody></table>
+
+<div class="meta" style="margin-top:16px">
+  <strong>Sources:</strong>
+  Q&A set: <code>comparative/parse-bench/qa_set_tough.jsonl</code> (2,643 pairs, auto-generated 2026-05-26) ·
+  Scorer: <code>comparative/parse-bench/score_qa.py</code> ·
+  Per-vendor results: <code>comparative/parse-bench/qa_all_results.json</code> ·
+  DC-016 cells: <code>results/DC-016__tough-*__*__qa-autogen.json</code> (50 cells: 43 tough-doctype + 7 bank_statement)<br>
+  <strong>Open assumptions:</strong>
+  (1) Auto-generated Q&A may over-reward exact-copy models — Haiku fabrication already detected via byte-equality.
+  (2) Per-field results reflect field-name alignment; vendors using non-standard field names will score lower regardless of extraction quality.
+  (3) bank_statement coverage varies (531–726 of 726 Q&A pairs scored, depending on vendor JSONL completeness).
+</div>
+
+<hr style="border:none;border-top:1px solid var(--border);margin:40px 0 32px">
+
+<h2 id="dc015">DC-015 · Layout IoU (vs deployed-HyperAPI reference)</h2>
+<div class="caveat-box" style="background:#1a1a0f;border-color:#4a3a10;color:var(--warn);">
+  <strong>APPLES-TO-ORANGES BANNER (load-bearing — read before comparing)</strong><br>
+  This section measures <em>bounding-box spatial agreement</em> between a vendor OCR engine and
+  Hyperbots' deployed IDP pipeline (<code>results.zip</code> JSONs). It is <strong>NOT</strong>
+  an accuracy measurement vs human-annotated ground truth.<br>
+  <strong>gold_source: hyperbots_deployed_reference_NOT_human_annotated</strong><br>
+  Using deployed output as reference is circular for any Hyperbots claim. These scores are
+  <em>descriptive cross-vendor agreement signals only</em> — useful for understanding how
+  closely OCR token regions match the IDP's field value regions. Do NOT use to rank vendors
+  vs each other in a competitive sense or as a Hyperbots product claim.
+  Per <code>apis.hyperbots.com</code> verbatim for any HyperAPI accuracy claim.
+</div>
+
+<div class="meta" style="margin:12px 0 16px">
+  Corpus: 2,373 multi-corpus invoices · scored 2,294 docs (78 skipped: no fields with bbox in reference) ·
+  Metric: micro-average IoU per doc, bootstrapped CI95 (2,000 resamples, seed=42) ·
+  IoU computed in normalized [0,1] space (vendor and reference raster at different DPI) ·
+  Cells: <code>results/DC-015__multicorpus-layout-iou__paddleocr-v4.json</code> +
+  <code>results/DC-015__multicorpus-layout-iou__tesseract.json</code> +
+  <code>results/DC-015__multicorpus-layout-iou__azure-di-prebuilt-invoice.json</code> (n=88 invoice subset; audit-pass 2026-05-28: CLEAN)
+</div>
+
+<table>
+<thead>
+  <tr>
+    <th>vendor / engine</th>
+    <th class="num">mean micro-IoU</th>
+    <th>bootstrap CI95</th>
+    <th class="num">median</th>
+    <th class="num">p25 / p75 / p99</th>
+    <th class="num">n docs</th>
+    <th>notes</th>
+  </tr>
+</thead>
+<tbody>
+<tr>
+  <td>azure-di-prebuilt-invoice <span class="badge good">cloud-IDP</span></td>
+  <td class="num metric v">0.708</td>
+  <td class="ci">[0.687, 0.725]</td>
+  <td class="num">0.718</td>
+  <td class="num ci">0.686 / 0.750 / 0.843</td>
+  <td class="num">88</td>
+  <td class="ci"><strong>Invoice-only subset (n=88)</strong> — NOT directly comparable to paddleocr/tesseract (n=2294 full multi-corpus). Beats open OCR engines on invoice-specific bboxes; gold_source: hyperbots_deployed_reference_NOT_human_annotated. Cell: DC-015__multicorpus-layout-iou__azure-di-prebuilt-invoice.json · audit-pass 2026-05-28: CLEAN</td>
+</tr>
+<tr class="winner">
+  <td>paddleocr-v4 <span class="badge warn">OCR-bbox</span></td>
+  <td class="num metric v">0.5639</td>
+  <td class="ci">[0.5601, 0.5678]</td>
+  <td class="num">0.5702</td>
+  <td class="num ci">0.5102 / 0.6306 / 0.7455</td>
+  <td class="num">2294</td>
+  <td class="ci">higher on multi-page docs (larger contiguous regions)</td>
+</tr>
+<tr>
+  <td>tesseract <span class="badge warn">OCR-bbox</span></td>
+  <td class="num metric v">0.5343</td>
+  <td class="ci">[0.5310, 0.5378]</td>
+  <td class="num">0.5420</td>
+  <td class="num ci">0.4930 / 0.5845 / 0.6877</td>
+  <td class="num">2294</td>
+  <td class="ci">tighter distribution (lower p25/p75 spread)</td>
+</tr>
+<tr>
+  <td>azure-di <span class="badge warn">engine-N/A</span></td>
+  <td class="num">engine_does_not_emit_bbox</td>
+  <td class="ci">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td>
+  <td class="ci"><em>Azure DI raw API has polygon bbox but it was not persisted in cell output</em></td>
+</tr>
+<tr>
+  <td>openai / gemini / claude / qwen <span class="badge warn">engine-N/A</span></td>
+  <td class="num">engine_does_not_emit_bbox</td>
+  <td class="ci">—</td><td class="num">—</td><td class="num">—</td><td class="num">—</td>
+  <td class="ci"><em>LLM text-extraction vendors — no per-token bbox output</em></td>
+</tr>
+</tbody>
+</table>
+
+<h3>Per-field IoU highlights (paddleocr-v4)</h3>
+<p class="legend-note">
+  Top fields are multi-token regions (addresses, free-text descriptions) where token union easily covers the value bbox.
+  Bottom fields are short scalars (IDs, tax numbers) where the label+value token merge causes IoU=0.
+  This is a structural design difference, not a vendor bug.
+</p>
+<div style="display:flex;gap:32px;flex-wrap:wrap">
+<div>
+<strong style="color:var(--good)">Top-10 fields (mean IoU)</strong>
+<table style="margin-top:8px">
+<thead><tr><th>field name</th><th class="num">mean IoU</th></tr></thead>
+<tbody>
+<tr><td>subscription_agreement_number</td><td class="num">0.9506</td></tr>
+<tr><td>resale_id</td><td class="num">0.9320</td></tr>
+<tr><td>packing_list_no</td><td class="num">0.9110</td></tr>
+<tr><td>so_no</td><td class="num">0.8991</td></tr>
+<tr><td>statement_#</td><td class="num">0.8836</td></tr>
+<tr><td>ord#</td><td class="num">0.8829</td></tr>
+<tr><td>delivery_date</td><td class="num">0.8812</td></tr>
+<tr><td>thk_ref</td><td class="num">0.8812</td></tr>
+<tr><td>customer_acc_no</td><td class="num">0.8780</td></tr>
+<tr><td>line_item/entry_number</td><td class="num">0.8726</td></tr>
+</tbody></table>
+</div>
+<div>
+<strong style="color:var(--bad)">Bottom-5 fields (mean IoU = 0.0)</strong>
+<table style="margin-top:8px">
+<thead><tr><th>field name</th><th class="num">mean IoU</th><th>root cause</th></tr></thead>
+<tbody>
+<tr><td>supplier_tax_id</td><td class="num">0.0000</td><td class="ci">label+value merge / rare field</td></tr>
+<tr><td>aeof_certification</td><td class="num">0.0000</td><td class="ci">rare field, single doc</td></tr>
+<tr><td>line_item/contract_id</td><td class="num">0.0000</td><td class="ci">label+value merge</td></tr>
+<tr><td>line_item/data_center</td><td class="num">0.0000</td><td class="ci">label+value merge</td></tr>
+<tr><td>federal_tax_id_number</td><td class="num">0.0000</td><td class="ci">label+value merge</td></tr>
+</tbody></table>
+</div>
+</div>
+
+<h3>Per-field IoU highlights (tesseract)</h3>
+<div style="display:flex;gap:32px;flex-wrap:wrap">
+<div>
+<strong style="color:var(--good)">Top-10 fields (mean IoU)</strong>
+<table style="margin-top:8px">
+<thead><tr><th>field name</th><th class="num">mean IoU</th></tr></thead>
+<tbody>
+<tr><td>your_billing_reference_information</td><td class="num">0.8841</td></tr>
+<tr><td>line_items_description_summary</td><td class="num">0.8561</td></tr>
+<tr><td>address</td><td class="num">0.8361</td></tr>
+<tr><td>ship_to_address</td><td class="num">0.8193</td></tr>
+<tr><td>line_item/product/serial_#</td><td class="num">0.8113</td></tr>
+<tr><td>bill_to_address</td><td class="num">0.8047</td></tr>
+<tr><td>delivery_order</td><td class="num">0.7903</td></tr>
+<tr><td>remit_to_address</td><td class="num">0.7859</td></tr>
+<tr><td>receiver_address</td><td class="num">0.7792</td></tr>
+<tr><td>ship_from_address</td><td class="num">0.7771</td></tr>
+</tbody></table>
+</div>
+<div>
+<strong style="color:var(--bad)">Bottom-5 fields (mean IoU = 0.0)</strong>
+<table style="margin-top:8px">
+<thead><tr><th>field name</th><th class="num">mean IoU</th><th>root cause</th></tr></thead>
+<tbody>
+<tr><td>ponumber</td><td class="num">0.0000</td><td class="ci">label+value merge</td></tr>
+<tr><td>cust_ref</td><td class="num">0.0000</td><td class="ci">label+value merge / rare</td></tr>
+<tr><td>so_no</td><td class="num">0.0000</td><td class="ci">label+value merge</td></tr>
+<tr><td>do_no</td><td class="num">0.0000</td><td class="ci">label+value merge</td></tr>
+<tr><td>281-1010</td><td class="num">0.0000</td><td class="ci">non-standard field name, single doc</td></tr>
+</tbody></table>
+</div>
+</div>
+
+<div class="meta" style="margin-top:20px">
+  <strong>Honest gaps:</strong>
+  (1) <strong>Label+value token merge (primary gap)</strong> — OCR engines merge field label and value into one token; HyperBots bbox = value region only. IoU=0 on short scalar fields even when OCR is correct.
+  (2) 78 docs skipped — reference JSON has no fields with non-negative confidence bbox (page_count=0 or all-inferred docs).
+  (3) Azure DI prebuilt-invoice now scored (n=88, invoice-only subset) — IoU 0.708 vs deployed-HyperAPI reference. Full multi-corpus Azure DI run (n=2294) pending.
+  (4) LLMs not scored — text-extraction only, no per-token spatial output.
+  (5) Multi-page docs score higher (larger contiguous field regions dominate micro-average).
+</div>
+
+</body>
+</html>
