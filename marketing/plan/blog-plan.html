@@ -102,9 +102,10 @@ ul{margin:6px 0}li{margin:5px 0}a{color:#0b5cad}.meta{color:#748081;font-size:13
 
 <div class="queue">
   <div class="n">7</div><div class="fmt email">Email</div>
-  <div><div class="ttl">Usage Report with "Switch from Google" offer</div> <span class="status red">RED</span>
+  <div><div class="ttl" style="text-decoration:line-through;opacity:0.6">Usage Report with "Switch from Google" offer</div> <span class="status red">RED</span> <span style="display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 7px;border-radius:4px;background:#7a271a;color:#fff">KILLED 2026-05-28</span>
     <div class="nt">Outbound to identified Google DocAI users (use ABM list filtered by tech-stack signal). Personalized usage benchmark + concrete switch incentive. ABM channel, not broadcast.</div>
     <div class="audit"><b>Audit (2026-05-26 · RED):</b> ABM CSV has no tech-stack column; cannot filter to Google DocAI users. 1–2 week Clay/BuiltWith enrichment project.</div>
+    <div class="audit" style="border-left-color:#7a271a"><b>Decision (2026-05-28 · KILLED):</b> Dropped from this week. Tech-stack enrichment is a 1–2 week project, not a 5-day task — revisit when the ABM data has a tech-stack signal.</div>
     <span class="flag needs">⚠ Needs: confirmed Google-DocAI-using subset of target accounts; offer structure approved; legal review on competitor-named outbound copy.</span>
   </div>
 </div>
@@ -120,9 +121,10 @@ ul{margin:6px 0}li{margin:5px 0}a{color:#0b5cad}.meta{color:#748081;font-size:13
 
 <div class="queue">
   <div class="n">9</div><div class="fmt blog">Blog</div>
-  <div><div class="ttl">Why 'Human-in-the-Loop' is still necessary (and how we automate it)</div> <span class="status red">RED</span>
+  <div><div class="ttl">Why 'Human-in-the-Loop' is still necessary (and how we automate it)</div> <span class="status red">RED</span> <span style="display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 7px;border-radius:4px;background:#eef0f3;color:#596263">HELD</span>
     <div class="nt">Thought-leadership piece. Anti-hype: HITL isn't a weakness, it's the integrity floor. Show the workflow + how the system learns from each correction.</div>
     <div class="audit"><b>Audit (2026-05-26 · RED):</b> <strong>Brand guardrail conflict</strong> — cto-org/data-privacy-compliance.md: "no HITL/manual-review framing" (never waived). LinkedIn linter rejects this language. Needs strategic decision, not a writer.</div>
+    <div class="audit" style="border-left-color:#748081"><b>Decision (2026-05-28 · HELD):</b> Parked, not killed. Needs a CTO + brand call on whether to waive or reframe the HITL guardrail before any drafting starts.</div>
     <span class="flag needs">⚠ Needs: HITL workflow screenshots or diagrams; one concrete correction-then-learning example.</span>
   </div>
 </div>
@@ -147,23 +149,26 @@ ul{margin:6px 0}li{margin:5px 0}a{color:#0b5cad}.meta{color:#748081;font-size:13
 
 <div class="queue">
   <div class="n">12</div><div class="fmt landing">Landing</div>
-  <div><div class="ttl">The "Pepsi Challenge" (public) — "We bet $50 we can parse your doc"</div> <span class="status red">RED</span>
+  <div><div class="ttl">The "Pepsi Challenge" (public) — "We bet $50 we can parse your doc"</div> <span class="status red">RED</span> <span style="display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 7px;border-radius:4px;background:#eef0f3;color:#596263">HELD</span>
     <div class="nt">Viral landing. Drop a doc → get an extraction. If it fails, $50. Promotional via X/LI. Designed to manufacture real-world tough cases for the corpus + earn trust through public exposure.</div>
     <div class="audit"><b>Audit (2026-05-26 · RED):</b> No ToS, no abuse design, no upload flow, no payout mechanism. Pure design-from-zero exercise — cannot ship a public bet on 5 days notice.</div>
+    <div class="audit" style="border-left-color:#748081"><b>Decision (2026-05-28 · HELD):</b> Parked, not killed. Promising idea — needs a proper design budget (legal-reviewed ToS, abuse/rate-limit design, hardened upload flow) in a future sprint.</div>
     <span class="flag needs">⚠ Needs: legal review on the bet structure + ToS + payout mechanism; rate-limit/abuse design; clear scope (which doc types qualify).</span>
   </div>
 </div>
 
 <div class="queue">
   <div class="n">13</div><div class="fmt video">Video</div>
-  <div><div class="ttl">The HyperAPI Enterprise Dashboard — compliance features</div> <span class="status red">RED</span>
+  <div><div class="ttl">The HyperAPI Enterprise Dashboard — compliance features</div> <span class="status red">RED</span> <span style="display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 7px;border-radius:4px;background:#eef0f3;color:#596263">HELD</span>
     <div class="nt">Walkthrough of the dashboard: audit trail, access controls, data residency, retention, export. Sales-enablement asset for legal/compliance review calls.</div>
     <div class="audit"><b>Audit (2026-05-26 · RED):</b> Compliance views don't exist in vera-frontend (zero hits for audit/SOC/retention/residency). Brief says "don't show mocks" — nothing shippable today.</div>
+    <div class="audit" style="border-left-color:#748081"><b>Decision (2026-05-28 · HELD):</b> Parked, not killed. Gated on product shipping the compliance views first; revisit once the dashboard has real audit-trail / residency / retention features (no mocks).</div>
     <span class="flag needs">⚠ Needs: dashboard in shootable state; compliance features actually shipped (don't show mocks); brand review on enterprise positioning.</span>
   </div>
 </div>
 
-<p class="meta" style="margin-top:14px"><strong>Format mix:</strong> 6 Video · 3 Blog · 2 Landing · 1 Email · 1 Social. <strong>Gates:</strong> 7 of 13 are competitor-named or customer-named → require legal sign-off. <strong>Readiness (2026-05-26):</strong> 0 green · 2 yellow · 11 red. <strong>Realistic ship target:</strong> 2 items (4, 8) + 1 conditional (1). <strong>Recommended kill from this week:</strong> 7, 9, 12, 13.</p>
+<p class="meta" style="margin-top:14px"><strong>Format mix:</strong> 6 Video · 3 Blog · 2 Landing · 1 Email · 1 Social. <strong>Gates:</strong> 7 of 13 are competitor-named or customer-named → require legal sign-off. <strong>Readiness (2026-05-26):</strong> 0 green · 2 yellow · 11 red. <strong>Realistic ship target:</strong> 2 items (4, 8) + 1 conditional (1).</p>
+<p class="meta"><strong>Dispositions (2026-05-28):</strong> <span style="color:#b42318;font-weight:700">KILLED</span> — item 7 (Switch-from-Google email; no tech-stack data). <span style="color:#596263;font-weight:700">HELD</span> — item 9 (HITL blog; needs CTO/brand guardrail call), item 12 (Pepsi Challenge; needs design budget), item 13 (Enterprise Dashboard video; gated on product shipping compliance views). Remaining items (1–6, 8, 10, 11) unchanged from the 2026-05-26 audit.</p>
 
 <h2>P-1 · 500 line items on one invoice — extracted accurately</h2>
 <p class="meta">Depth 6/10 · Audience: AP leaders, finance-ops engineers · <span class="tag draft">DRAFT (pointers)</span></p>
