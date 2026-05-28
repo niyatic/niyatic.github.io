@@ -1,0 +1,197 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>hyperapi-parse-intent — SAVIOR-Train LoRA fine-tune (Hyperbots IP)</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT-equivalent — upload-READY, NOT uploaded. External HF publish is human-gated (W5).</div><div class="meta">2026-05-28</div><h1>hyperapi-parse-intent — SAVIOR-Train LoRA fine-tune</h1>
+<blockquote><strong><code>[FT]</code> — THIS IS A FINE-TUNED MODEL, NOT A ZERO-SHOT RESULT (read first).</strong></blockquote>
+<blockquote>hyperapi-parse-intent is a LoRA fine-tune of an open-source <strong>Qwen2.5-VL-Instruct</strong></blockquote>
+<blockquote>backbone on SAVIOR-Train, for structured parse-intent extraction. Every result</blockquote>
+<blockquote>below is compared against panel systems that are **zero-shot in their</blockquote>
+<blockquote>vendor-native settings<strong> — these are </strong>NOT apples-to-apples comparisons**, and</blockquote>
+<blockquote>the <code>[FT]</code> tag marks every fine-tuned row. Open-source backbone fine-tuned by</blockquote>
+<blockquote>Hyperbots → <strong>Hyperbots IP</strong>.</blockquote>
+<blockquote><strong>Weights status: NOT in this checkout — card published without weights pending the weights-source decision.</strong></blockquote>
+<blockquote>The LoRA recipe below is the full training spec; <code>.safetensors</code>/<code>.bin</code> adapter</blockquote>
+<blockquote>artifacts are not in this checkout and are not attached to this card.</blockquote>
+<h2>1. Base model + verbatim LoRA recipe (paper Appendix A)</h2>
+<ul>
+<li><strong>Base model:</strong> <code>Qwen/Qwen2.5-VL-Instruct</code> backbone (open source).</li>
+<li><strong>Method:</strong> LoRA, <strong>rank 32, α 64</strong>, applied to the **vision-encoder final</li>
+</ul>
+<p>  layer + the language decoder**.</p>
+<ul>
+<li><strong>Learning rates:</strong> <strong>1e-4 (vision) / 5e-4 (language)</strong>.</li>
+<li><strong>Batching:</strong> batch size <strong>1</strong>, gradient accumulation <strong>10</strong>.</li>
+<li><strong>Epochs:</strong> <strong>7 (3B) / 5 (7B)</strong> per the SAVIOR-Train recipe; the attested</li>
+</ul>
+<p>  source does not separately pin the parse-intent backbone size, so both epoch</p>
+<p>  settings from Appendix A are stated rather than inferring one.</p>
+<ul>
+<li><strong>Hardware:</strong> <strong>2× H100 80 GB, CUDA 12.3</strong>.</li>
+<li><strong>Inference:</strong> <strong>top-p 0.9, temperature 0.1</strong>; frozen 10-step layout prompt.</li>
+<li><strong>Decoding (frozen, DC-000):</strong> temp 0.1, top-p 0.9, max_tokens 2048,</li>
+</ul>
+<p>  seed 20260516.</p>
+<ul>
+<li><strong>Baselines:</strong> native settings, no fine-tune.</li>
+</ul>
+<h2>2. Honest result row — including the anchor caveat</h2>
+<p>Parse-intent (DC-000, dataset <code>parse-intent-inhouse-v1</code>), F1 ↑ / WER ↓.</p>
+<p><strong><code>n</code> not reported in the attested source for this table</strong> (stated honestly,</p>
+<p>not inferred). <code>[FT]</code> = fine-tuned.</p>
+<table><thead><tr><th>Rank</th><th>Model</th><th>F1 ↑</th><th>WER ↓</th><th>Setting</th></tr></thead><tbody><tr><td>1</td><td>hyperapi-parse-intent <code>[FT]</code></td><td><strong>0.8328</strong></td><td><strong>0.2589</strong></td><td>fine-tuned</td></tr><tr><td>2</td><td>DocIntentOCR-3B</td><td>0.8102</td><td>0.5622</td><td>zero-shot (under-documented)</td></tr><tr><td>3</td><td>GPT-4o</td><td>0.8052</td><td>0.4232</td><td>zero-shot</td></tr></tbody></table>
+<p><strong>Headline (honest):</strong> hyperapi-parse-intent <strong>leads parse-intent F1 at 0.8328</strong></p>
+<p>with the lowest WER (0.2589). The modesty anchor is the best <strong>well-documented</strong></p>
+<p>zero-shot system, <strong>GPT-4o (0.8052)</strong> → <strong>+0.0276 F1</strong> and a large WER reduction</p>
+<p>(0.2589 vs 0.4232). An under-documented panel row, <code>DocIntentOCR-3B</code> (0.8102,</p>
+<p>WER 0.5622), posts a marginally higher F1 — **no vendor/checkpoint/config is</p>
+<p>recorded for it<strong>, so it is reported as-attested but </strong>not** used as the</p>
+<p>comparison anchor (paper §5.1.1, OPEN-QUESTION-1); the gap over it is +0.0226 F1.</p>
+<p>The edge is <strong>narrow and metric-specific</strong>, not a blowout. Deltas are</p>
+<p><strong>direction-only</strong> (<code>ci95=null</code>), not interval-significant claims.</p>
+<blockquote><strong>W6 factory-reproduction audit (2026-05-20):</strong> the pinned harness was run</blockquote>
+<blockquote>per-cell against all 23 parse-intent rows and returned **0/23 green, 23/23 red</blockquote>
+<blockquote>on structural impossibility** — 0 CIs added, 0 attested rows retracted, 0</blockquote>
+<blockquote>silent flips of <code>reproduced_by_factory</code>. Structural reasons (paper §5.1.1):</blockquote>
+<blockquote>no vendor adapters in the offline SEED harness; the in-house parse-intent</blockquote>
+<blockquote>corpus is not in-repo; the attested source carries aggregate F1/WER only, so</blockquote>
+<blockquote>no bootstrap CI can be derived without fabricating per-doc scores (refused).</blockquote>
+<blockquote>The attested numbers are <strong>not contradicted</strong> — only un-re-derivable under the</blockquote>
+<blockquote>offline harness today. <code>ci95</code> stays <code>null</code>.</blockquote>
+<h2>3. Operational profile (infrastructure-derived, not a price quote)</h2>
+<p>From <code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code> (SAVIOR-Train inference path,</p>
+<p>A100 40 GB @ ~$2/hr):</p>
+<ul>
+<li><strong>p50 latency: 2,548 ms · p99 latency: 3,319 ms</strong></li>
+<li><strong>Failure rate: ~3%</strong> (KV-cache-bound; 2-GPU path is the noted mitigation)</li>
+<li><strong>Cost ≈ $0.000191 / successful call ≈ $0.19 per 1,000 successful calls</strong></li>
+</ul>
+<p>Labelled <strong>infrastructure-derived</strong>; not a product price quote.</p>
+<h2>4. Limitations</h2>
+<ul>
+<li><strong>Fine-tuned vs zero-shot</strong> comparisons are not apples-to-apples (paper §8 #1).</li>
+<li><strong>Narrow edge:</strong> +0.0276 F1 over the best well-documented zero-shot system,</li>
+</ul>
+<p>  not a category-dominance claim.</p>
+<ul>
+<li><strong><code>n</code> asymmetry:</strong> the parse-intent table has **no <code>n</code> in the attested</li>
+</ul>
+<p>  source** — reported as unknown, not assumed (paper §8 #6, OPEN-QUESTION-3).</p>
+<ul>
+<li><strong>Anchor caveat:</strong> the marginally-higher DocIntentOCR-3B row is</li>
+</ul>
+<p>  under-documented (no vendor/checkpoint/config; OPEN-QUESTION-1).</p>
+<ul>
+<li><strong><code>ci95=null</code></strong> — &quot;reported (no CI)&quot;; no interval fabricated. W6 = 0/23</li>
+</ul>
+<p>  factory-green by structural impossibility (paper §5.1.1, §5 banner).</p>
+<ul>
+<li><strong>Attested, NOT factory-reproduced</strong> — in-house-run, user-attested 2026-05-18</li>
+</ul>
+<p>  (paper §8 #3, Appendix D.2).</p>
+<ul>
+<li><strong>Residual cluster:</strong> multilingual + very-dense layouts persist after</li>
+</ul>
+<p>  fine-tuning (paper §5.6).</p>
+<ul>
+<li>Full limitations: <strong><code>paper/SAVIOR-Bench.md</code> §8</strong>.</li>
+</ul>
+<h2>5. Provenance + intended use</h2>
+<ul>
+<li><strong>Provenance:</strong> all cells <strong>in-house-run, user-attested 2026-05-18</strong></li>
+</ul>
+<p>  (<code>benchmark.xlsx</code> sheet <code>intent</code> + <code>paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code>,</p>
+<p>  the in-repo verbatim extract of the Hyperbots-provided <code>Benchmark-VLM_OCR.pdf</code>);</p>
+<p>  <strong>not factory-harness-reproduced</strong> (W6 0/23 green); <code>reproduced_by_factory: false</code>.</p>
+<ul>
+<li><strong>What these numbers are:</strong> <strong>model parse performance, not product accuracy.</strong></li>
+</ul>
+<p>  Product accuracy only <strong>per apis.hyperbots.com</strong>.</p>
+<ul>
+<li><strong>IP framing:</strong> an **open-source backbone (Qwen2.5-VL-Instruct) fine-tuned by</li>
+</ul>
+<p>  Hyperbots<strong> via LoRA — </strong>Hyperbots IP**. Never a from-scratch or</p>
+<p>  closed-source-owned-weights claim.</p>
+<ul>
+<li><strong>Intended use:</strong> financial-document parse-intent / structured-field</li>
+</ul>
+<p>  extraction research and benchmarking. Cite as</p>
+<p>  <strong>&quot;SAVIOR-Bench v1 (Hyperbots, 2026)&quot;</strong>.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/SAVIOR-Bench.md</code> —</li>
+</ul>
+<p>  §5.1.1 parse-intent table (23 systems) + W6 0/23 audit + reading guidance,</p>
+<p>  §5.1.3 headline chart, §5.4 latency, §5.5 cost, §8 limitations, Appendix A</p>
+<p>  LoRA recipe, Appendix D.2 reproduction-status box, §10.1 OPEN-QUESTION-1/3.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/leaderboard/CONSOLIDATED-150/CONSOLIDATED-150.md</code></li>
+</ul>
+<p>  — <code>### parse</code> rows (hyperapi-parse-intent F1 0.8328 row 107; GPT-4o 0.8052</p>
+<p>  row 110; DocIntentOCR-3B 0.8102 row 109).</p>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/SOURCE-EXTRACT-Benchmark-VLM-OCR.md</code></li>
+</ul>
+<p>  — latency/cost/recipe source-of-record extract.</p>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/huggingface/huggingface-strategy.md</code> §2 (honesty bar).</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li><strong>DRAFT-equivalent:</strong> upload-READY, <strong>NOT uploaded.</strong> HF publish is human-gated</li>
+</ul>
+<p>  (W5). The <code>approved-by:</code> line authorizes W5; the upload is a separate confirmed</p>
+<p>  step (see <code>UPLOAD-RUNBOOK.md</code>).</p>
+<ul>
+<li><strong>Weights not in this checkout.</strong> Card published without weights pending the</li>
+</ul>
+<p>  weights-source decision; the LoRA recipe is the full disclosed training spec.</p>
+<ul>
+<li>Numbers are attested (2026-05-18), <strong>not factory-reproduced</strong> (W6 0/23 green);</li>
+</ul>
+<p>  <code>ci95=null</code>; the +0.0276 F1 delta is direction-only.</p>
+<ul>
+<li>Parse-intent table <code>n</code> is unknown in the attested source — reported as such.</li>
+<li>Backbone epoch split (7ep/5ep) is stated from Appendix A; the attested source</li>
+</ul>
+<p>  does not separately pin the parse-intent backbone size.</p>
+<ul>
+<li>Competitor names are scoped to this scientific artifact (model card) only.</li>
+<li>&quot;v1, 2026-05-18&quot; — competitors improve; the comparison is timestamped.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>
