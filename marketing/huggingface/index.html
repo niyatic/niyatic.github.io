@@ -56,10 +56,14 @@ p.lead { color:var(--grey-11); font-size:13.5px; line-height:1.65; margin:0 0 12
   <a class="card" href="/marketing/huggingface/HF-READINESS-2026-05-28.html"><div class="icon">🧭</div><div class="title">Readiness ledger (2026-05-28)</div><div class="desc">5 artifacts × 6 honesty-bar fields + weights-on-disk column. 2/5 ready, 3/5 (model cards) in progress, 0/5 weights on disk.</div></a>
 </div>
 
-<h2>🃏 Model + dataset cards</h2>
-<p class="lead">Upload-ready cards (cards-without-weights, pending the weights-source decision). Landing as the model-card drafting pass completes.</p>
+<h2>🃏 Model + dataset cards (upload-ready, cards-without-weights)</h2>
+<p class="lead">Day-3 deliverable — each card carries the 6 honesty-bar fields + a "weights status: NOT in this checkout" line + the W5 <code>approved-by</code> sign-off. Upload-ready; <strong>not uploaded</strong> (the actual HF Hub push is a separate confirmed step — see runbook).</p>
 <div class="cards">
-  <a class="card" href="#" style="opacity:.55;pointer-events:none"><div class="icon">⏳</div><div class="title">Model + dataset cards — landing</div><div class="desc">Qwen2.5-VL-7B-F · 3B-F · hyperapi-parse-intent · SAVIOR-Bench v1 dataset card. In drafting; will appear here.</div></a>
+  <a class="card" href="/marketing/huggingface/cards/DATASET-CARD-savior-bench-v1.html"><div class="icon">📚</div><div class="title">Dataset card — SAVIOR-Bench v1</div><div class="desc">509 docs, IAA 0.761, five corpora. ci95=null + W6 0/23 disclosed honestly.</div></a>
+  <a class="card" href="/marketing/huggingface/cards/MODEL-CARD-hyperapi-parse-intent.html"><div class="icon">🃏</div><div class="title">Model card — hyperapi-parse-intent</div><div class="desc">F1 0.8328 leads (+0.0276 over GPT-4o). [FT] · open-source backbone fine-tuned by Hyperbots.</div></a>
+  <a class="card" href="/marketing/huggingface/cards/MODEL-CARD-Qwen2.5-VL-7B-F.html"><div class="icon">🃏</div><div class="title">Model card — Qwen2.5-VL-7B-F</div><div class="desc">Recall 0.9294 leads (+0.0061 vs Textract); loses on precision + PaIRS — shown, not hidden.</div></a>
+  <a class="card" href="/marketing/huggingface/cards/MODEL-CARD-Qwen2.5-VL-3B-F.html"><div class="icon">🃏</div><div class="title">Model card — Qwen2.5-VL-3B-F</div><div class="desc">Recall 0.9167, rank 4 — trails zero-shot on all three metrics. Honest.</div></a>
+  <a class="card" href="/marketing/huggingface/cards/UPLOAD-RUNBOOK.html"><div class="icon">📜</div><div class="title">Upload runbook</div><div class="desc">Exact huggingface-cli / huggingface_hub command sequence (NOT executed). Token referenced, never echoed. Public-flip is a separate human step.</div></a>
 </div>
 
 </body>

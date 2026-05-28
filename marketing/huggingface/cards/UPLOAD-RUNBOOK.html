@@ -1,0 +1,173 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>HF upload runbook — SAVIOR-Bench cards (cards-WITHOUT-weights)</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT-equivalent — commands documented, NOT executed. Upload is a separate human/confirmed step.</div><div class="meta">2026-05-28</div><h1>UPLOAD-RUNBOOK — SAVIOR-Bench HF cards</h1>
+<blockquote><strong>NOT EXECUTED.</strong> This runbook documents the exact <code>huggingface-cli</code> /</blockquote>
+<blockquote><code>huggingface_hub</code> commands that <strong>would</strong> be run, in order, with token/repo</blockquote>
+<blockquote>placeholders. <strong>No command in this file has been run.</strong> The <code>approved-by:</code></blockquote>
+<blockquote>line authorizes the W5 external-publish gate; the upload itself is still a</blockquote>
+<blockquote>separate, human-confirmed step. Run this only on explicit human go.</blockquote>
+<h2>Decision in force</h2>
+<ul>
+<li><strong>weights-decision = cards-WITHOUT-weights.</strong> No <code>.safetensors</code>/<code>.bin</code></li>
+</ul>
+<p>  adapter artifacts are in this checkout (verified 2026-05-28). Only the</p>
+<p>  Markdown cards (as <code>README.md</code>) are uploaded. Weights upload is deferred to</p>
+<p>  the weights-source decision and is <strong>out of scope for this runbook</strong>.</p>
+<ul>
+<li><strong>W5 sign-off:</strong> authorized this session (`approved-by: niyati (CEO) ·</li>
+</ul>
+<p>  2026-05-28`). Upload remains gated on an explicit human run.</p>
+<h2>Token (DO NOT read or echo)</h2>
+<p>The HF token lives at <code>~/Desktop/hyperapi-cto-org/secrets/huggingface.env</code></p>
+<p>(chmod 600). <strong>Do not <code>cat</code>, print, or interpolate it into a logged command.</strong></p>
+<p>Load it into the environment only at run time, e.g.:</p>
+<pre><code># Loads HF_TOKEN into the shell env WITHOUT printing it. Run interactively.
+set -a; source ~/Desktop/hyperapi-cto-org/secrets/huggingface.env; set +a
+# Expectation: huggingface.env defines HF_TOKEN=hf_xxx (placeholder; never echoed).</code></pre>
+<h2>Placeholders</h2>
+<table><thead><tr><th>Placeholder</th><th>Meaning</th></tr></thead><tbody><tr><td><code>&lt;HF_ORG&gt;</code></td><td>the Hyperbots HF org/namespace (e.g. <code>hyperbots</code>)</td></tr><tr><td><code>$HF_TOKEN</code></td><td>token from <code>huggingface.env</code> — never echoed</td></tr><tr><td><code>&lt;COMMIT_SHA&gt;</code></td><td>the gtm-hub commit the cards were approved against</td></tr></tbody></table>
+<p>Target repos (cards-only, <code>README.md</code> per repo):</p>
+<table><thead><tr><th>Local card</th><th>HF repo type</th><th>HF repo id (placeholder)</th><th>Uploaded as</th></tr></thead><tbody><tr><td><code>MODEL-CARD-Qwen2.5-VL-7B-F.md</code></td><td>model</td><td><code>&lt;HF_ORG&gt;/Qwen2.5-VL-7B-F</code></td><td><code>README.md</code></td></tr><tr><td><code>MODEL-CARD-Qwen2.5-VL-3B-F.md</code></td><td>model</td><td><code>&lt;HF_ORG&gt;/Qwen2.5-VL-3B-F</code></td><td><code>README.md</code></td></tr><tr><td><code>MODEL-CARD-hyperapi-parse-intent.md</code></td><td>model</td><td><code>&lt;HF_ORG&gt;/hyperapi-parse-intent</code></td><td><code>README.md</code></td></tr><tr><td><code>DATASET-CARD-savior-bench-v1.md</code></td><td>dataset</td><td><code>&lt;HF_ORG&gt;/savior-bench-v1</code></td><td><code>README.md</code></td></tr></tbody></table>
+<h2>Step 0 — preflight (read-only; safe to run, but still gated)</h2>
+<pre><code># Confirm CLI present and identity resolves from the token (no upload).
+huggingface-cli version
+set -a; source ~/Desktop/hyperapi-cto-org/secrets/huggingface.env; set +a
+huggingface-cli whoami            # confirms $HF_TOKEN resolves to the Hyperbots org
+# Re-verify NO weights are about to be shipped (cards-WITHOUT-weights):
+find ~/Desktop/hyperapi-gtm-hub/huggingface/cards -name &#x27;*.safetensors&#x27; -o -name &#x27;*.bin&#x27;
+#   ^ expected output: EMPTY. If non-empty, STOP — weights decision not made.</code></pre>
+<h2>Step 1 — create the four repos (private first)</h2>
+<pre><code>huggingface-cli repo create Qwen2.5-VL-7B-F     --type model   --organization &lt;HF_ORG&gt; --private
+huggingface-cli repo create Qwen2.5-VL-3B-F     --type model   --organization &lt;HF_ORG&gt; --private
+huggingface-cli repo create hyperapi-parse-intent --type model --organization &lt;HF_ORG&gt; --private
+huggingface-cli repo create savior-bench-v1     --type dataset --organization &lt;HF_ORG&gt; --private</code></pre>
+<h2>Step 2 — upload each card as that repo&#x27;s README.md (cards only)</h2>
+<pre><code># Models (upload-file: local card -&gt; README.md in the repo root)
+huggingface-cli upload &lt;HF_ORG&gt;/Qwen2.5-VL-7B-F \
+  ~/Desktop/hyperapi-gtm-hub/huggingface/cards/MODEL-CARD-Qwen2.5-VL-7B-F.md \
+  README.md --repo-type model \
+  --commit-message &quot;Add SAVIOR-Train 7B-F model card (cards-without-weights; W5-approved)&quot;
+
+huggingface-cli upload &lt;HF_ORG&gt;/Qwen2.5-VL-3B-F \
+  ~/Desktop/hyperapi-gtm-hub/huggingface/cards/MODEL-CARD-Qwen2.5-VL-3B-F.md \
+  README.md --repo-type model \
+  --commit-message &quot;Add SAVIOR-Train 3B-F model card (cards-without-weights; W5-approved)&quot;
+
+huggingface-cli upload &lt;HF_ORG&gt;/hyperapi-parse-intent \
+  ~/Desktop/hyperapi-gtm-hub/huggingface/cards/MODEL-CARD-hyperapi-parse-intent.md \
+  README.md --repo-type model \
+  --commit-message &quot;Add hyperapi-parse-intent model card (cards-without-weights; W5-approved)&quot;
+
+# Dataset
+huggingface-cli upload &lt;HF_ORG&gt;/savior-bench-v1 \
+  ~/Desktop/hyperapi-gtm-hub/huggingface/cards/DATASET-CARD-savior-bench-v1.md \
+  README.md --repo-type dataset \
+  --commit-message &quot;Add SAVIOR-Bench v1 dataset card (W5-approved)&quot;</code></pre>
+<h3>Step 2 (alt) — Python <code>huggingface_hub</code> equivalent</h3>
+<pre><code># Equivalent to Step 2; run only after the same human go. Token is read from the
+# environment (set via `source huggingface.env`), never hard-coded or printed.
+import os
+from huggingface_hub import HfApi
+api = HfApi(token=os.environ[&quot;HF_TOKEN&quot;])  # loaded from huggingface.env; not echoed
+CARDS = &quot;/Users/niyati/Desktop/hyperapi-gtm-hub/huggingface/cards&quot;
+HF_ORG = &quot;&lt;HF_ORG&gt;&quot;
+uploads = [
+    (&quot;MODEL-CARD-Qwen2.5-VL-7B-F.md&quot;,        f&quot;{HF_ORG}/Qwen2.5-VL-7B-F&quot;,     &quot;model&quot;),
+    (&quot;MODEL-CARD-Qwen2.5-VL-3B-F.md&quot;,        f&quot;{HF_ORG}/Qwen2.5-VL-3B-F&quot;,     &quot;model&quot;),
+    (&quot;MODEL-CARD-hyperapi-parse-intent.md&quot;,  f&quot;{HF_ORG}/hyperapi-parse-intent&quot;,&quot;model&quot;),
+    (&quot;DATASET-CARD-savior-bench-v1.md&quot;,      f&quot;{HF_ORG}/savior-bench-v1&quot;,     &quot;dataset&quot;),
+]
+for local, repo_id, repo_type in uploads:
+    api.upload_file(
+        path_or_fileobj=f&quot;{CARDS}/{local}&quot;,
+        path_in_repo=&quot;README.md&quot;,
+        repo_id=repo_id,
+        repo_type=repo_type,
+        commit_message=f&quot;Add card ({local}) — cards-without-weights; W5-approved&quot;,
+    )</code></pre>
+<h2>Step 3 — verify (read-only)</h2>
+<pre><code># Confirm each README.md landed and renders (HEAD request, no re-upload).
+for r in Qwen2.5-VL-7B-F Qwen2.5-VL-3B-F hyperapi-parse-intent; do
+  huggingface-cli repo-files &lt;HF_ORG&gt;/$r --repo-type model | grep README.md
+done
+huggingface-cli repo-files &lt;HF_ORG&gt;/savior-bench-v1 --repo-type dataset | grep README.md</code></pre>
+<h2>Step 4 — flip to public (final human action; deliberately last)</h2>
+<pre><code># Only after a human reviews the rendered cards on huggingface.co.
+# (Make-public is a separate confirmed action — not part of an automated run.)
+huggingface-cli repo settings &lt;HF_ORG&gt;/Qwen2.5-VL-7B-F      --repo-type model   --visibility public
+huggingface-cli repo settings &lt;HF_ORG&gt;/Qwen2.5-VL-3B-F      --repo-type model   --visibility public
+huggingface-cli repo settings &lt;HF_ORG&gt;/hyperapi-parse-intent --repo-type model  --visibility public
+huggingface-cli repo settings &lt;HF_ORG&gt;/savior-bench-v1      --repo-type dataset --visibility public</code></pre>
+<h2>What this runbook deliberately does NOT do</h2>
+<ul>
+<li><strong>No weights upload.</strong> cards-WITHOUT-weights; deferred to the weights-source</li>
+</ul>
+<p>  decision.</p>
+<ul>
+<li><strong>No automated public-flip.</strong> Step 4 is a separate human action after review.</li>
+<li><strong>No token echo.</strong> The token is sourced into the env at run time only.</li>
+<li><strong>No execution here.</strong> Every command above is documented, not run.</li>
+</ul>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/huggingface/HF-READINESS-2026-05-28.md</code> — readiness</li>
+</ul>
+<p>  ledger (weights-on-disk ❌; W5 gate).</p>
+<ul>
+<li><code>~/Desktop/hyperapi-gtm-hub/huggingface/huggingface-strategy.md</code> §2–§3.</li>
+<li><code>~/Desktop/hyperapi-cto-org/secrets/huggingface.env</code> — token location</li>
+</ul>
+<p>  (existence verified; contents NOT read or echoed).</p>
+<h2>Open assumptions</h2>
+<ul>
+<li><strong>NOT executed.</strong> This is the documented command sequence only; the upload is</li>
+</ul>
+<p>  a separate human/confirmed step even with W5 authorized.</p>
+<ul>
+<li><code>&lt;HF_ORG&gt;</code> and <code>&lt;COMMIT_SHA&gt;</code> are placeholders to be filled at run time.</li>
+<li>CLI flag names (<code>repo settings --visibility</code>, <code>repo-files</code>) reflect the</li>
+</ul>
+<p>  current <code>huggingface-cli</code>; verify against the installed version in Step 0</p>
+<p>  before running, as the CLI surface evolves.</p>
+<ul>
+<li>cards-WITHOUT-weights is the decision in force because no <code>.safetensors</code>/<code>.bin</code></li>
+</ul>
+<p>  are in this checkout (re-verified in Step 0).</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>
