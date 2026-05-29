@@ -1,0 +1,77 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>We benchmarked the premium model against the cheap one. The cheap one won.</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publication is human-gated</div><div class="meta">comparative-study (hyperapi-gtm-hub) · 2026-05-29</div><h1>We benchmarked the premium model against the cheap one. The cheap one won.</h1>
+<blockquote><strong>DRAFT — pending review; external publication is human-gated.</strong> Every number is</blockquote>
+<blockquote>factory-reproduced on <code>dataset_95</code> and cited to an on-disk results artifact.</blockquote>
+<blockquote>Benchmark figures are model extract performance, not product accuracy; product</blockquote>
+<blockquote>accuracy is referenced only &quot;per apis.hyperbots.com.&quot;</blockquote>
+<p>There&#x27;s an assumption baked into most model-selection decisions: the premium tier is the accurate tier, and the cheap tier is the one you settle for. We ran the test on finance invoices. The assumption broke.</p>
+<h2>The result</h2>
+<p>Full-n extract benchmark on <code>dataset_95</code> (95 invoices, factory-reproduced 2026-05-25), <code>invoice_extract_micro_f1</code>:</p>
+<table><thead><tr><th>Model</th><th>micro-F1</th><th>line-count exact</th><th>$/doc</th><th>docs extracted</th></tr></thead><tbody><tr><td><strong>Gemini 2.5 Flash</strong></td><td><strong>0.7132</strong></td><td>0.7333</td><td><strong>$0.010</strong></td><td>90 / 95</td></tr><tr><td>Gemini 2.5 Pro</td><td>0.6195</td><td>0.6452</td><td>$0.033</td><td>93 / 95</td></tr><tr><td>Gemini 2.5 Flash-Lite</td><td>0.5004</td><td>0.5895</td><td>$0.001</td><td>95 / 95</td></tr></tbody></table>
+<p><strong>Flash beat Pro by +0.0937 micro-F1 — at roughly one-third the per-document cost.</strong> The &quot;premium&quot; model was both more expensive and less accurate on this corpus.</p>
+<h2>Why this isn&#x27;t a fluke (and the one honest caveat)</h2>
+<p>The natural objection: maybe Pro just attempted harder documents. Worth checking — and partly true. Pro extracted <strong>93 of 95</strong> documents vs Flash&#x27;s <strong>90 of 95</strong>, so Pro did get 3 more across the line. But within the docs each actually completed, Flash&#x27;s per-document quality was higher: Flash leads on both micro-F1 (0.7132 vs 0.6195) and line-count-exact accuracy (0.7333 vs 0.6452). The cheaper model wasn&#x27;t winning on a technicality — it was extracting cleaner records.</p>
+<p>So the honest read is <strong>not</strong> &quot;Pro is bad.&quot; It&#x27;s: *on this finance-invoice corpus, the premium model&#x27;s extra capability did not translate into extraction accuracy, and it cost 3× more to find that out.*</p>
+<h2>The part we don&#x27;t hide</h2>
+<p>This is a Gemini-vs-Gemini finding — it&#x27;s about model selection, not about us winning. For the record, on this same <code>dataset_95</code>, the current Hyperbots IDP chain lands at <strong>0.3573 micro-F1 — below all three Gemini tiers</strong>. We publish that because the credibility of the finding depends on us not cherry-picking. The point of D-01 isn&#x27;t &quot;we&#x27;re better.&quot; It&#x27;s &quot;your intuition about which model to use is a hypothesis, not a fact — and on finance documents it&#x27;s frequently wrong.&quot;</p>
+<h2>What a buyer (or an ML lead) should take from this</h2>
+<p>1. <strong>Don&#x27;t pay the premium tax on faith.</strong> On your documents, run the cheaper tier head-to-head before defaulting to the flagship. Here the cheaper tier was both better *and* 3× cheaper — that&#x27;s a real budget line.</p>
+<p>2. <strong>Separate &quot;attempt rate&quot; from &quot;accuracy.&quot;</strong> Pro attempted more docs but extracted worse ones. A model that returns *something* on 100% of inputs can still be the wrong choice if the something is wrong. Measure both axes.</p>
+<p>3. <strong>Per-corpus, not per-leaderboard.</strong> A model&#x27;s general-benchmark ranking does not predict its accuracy on *your* invoice mix. The only number that matters is the one you measure on your own documents.</p>
+<p>4. <strong>This is why we benchmark every model per corpus</strong> rather than assume — the same discipline that produced this finding is the one behind the SAVIOR-Bench / SEED leaderboard.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/comparative/gemini-models/GEMINI-DATASET95-FULLN-2026-05-25.md</code></li>
+</ul>
+<p>  (Gemini 2.5 Flash / Pro / Flash-Lite full-n extract on <code>dataset_95</code>, factory-reproduced; cost from the run budget).</p>
+<ul>
+<li>Companion cells: <code>results/DG-001__dataset-95-full__Gemini-2.5-{Flash,Pro,Flash-Lite}.json</code>; CONSOLIDATED-150 leaderboard (extract section).</li>
+<li>Hyperbots IDP <code>dataset_95</code> baseline 0.3573: parse-deep benchmark framework §4.1 H5 + CONSOLIDATED-150.</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT — external publication human-gated; 2026-05-20 LinkedIn pause in effect.</li>
+<li>Gemini 2.5 (Flash/Pro/Flash-Lite) cited as <strong>foundation-model benchmark baselines</strong> on a factory-reproduced corpus — measured data, not vendor disparagement. Figures are model extract performance, not product accuracy.</li>
+<li><code>$/doc</code> is the run&#x27;s measured API cost on this corpus, not a quoted price; it scales with document size and prompt.</li>
+<li>The Hyperbots-side 0.3573 is the current factory-reproduced baseline; no forward-looking number is claimed.</li>
+<li>The Flash &gt; Pro result is specific to this <code>dataset_95</code> extract task; it is not asserted as a general claim about the models across all tasks.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>
