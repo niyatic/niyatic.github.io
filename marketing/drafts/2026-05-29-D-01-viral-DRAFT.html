@@ -1,0 +1,80 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>We paid 3× for the premium model. It lost.</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publication is human-gated</div><div class="meta">linkedin-post-strategy (GTM Hub) — for CEO authorship · 2026-05-29</div><h1>We paid 3× for the premium model. It lost.</h1>
+<p>We benchmarked Gemini 2.5 Pro against Gemini 2.5 Flash on 95 finance invoices — structured line-item extraction, factory-reproduced, scored on micro-F1.</p>
+<p>The premium model lost.</p>
+<ul>
+<li>Gemini 2.5 <strong>Flash</strong>: 0.7132 F1 · $0.010/doc</li>
+<li>Gemini 2.5 <strong>Pro</strong>: 0.6195 F1 · $0.033/doc</li>
+</ul>
+<p>Flash beat Pro by +0.0937 F1 — at one-third the cost. The cheaper model was both more accurate *and* cheaper on this corpus.</p>
+<p>The obvious objection: did Pro just attempt harder documents? Partly — Pro completed 93 of 95 vs Flash&#x27;s 90. But on the documents each actually finished, Flash extracted cleaner records on both F1 (0.7132 vs 0.6195) and exact line-count accuracy (0.7333 vs 0.6452). It wasn&#x27;t a technicality. The cheaper tier was simply better here.</p>
+<p>This isn&#x27;t a &quot;Gemini is bad&quot; post — both are strong models. And it&#x27;s not a &quot;we win&quot; post: for the record, our own pipeline lands at 0.3573 on this same corpus, below all three Gemini tiers. We publish that because the point doesn&#x27;t depend on us looking good.</p>
+<p>The point is this: <strong>the premium tier is a hypothesis, not a fact.</strong> On finance documents specifically, the assumption that flagship = most accurate broke — and it cost 3× per document to find out the expensive way.</p>
+<p>Two things I&#x27;d take into any model-selection decision:</p>
+<p>1. <strong>Separate attempt-rate from accuracy.</strong> A model that returns *something* on 100% of inputs can still be the wrong pick if the something is wrong. Pro attempted more, extracted worse.</p>
+<p>2. <strong>Measure per-corpus, not per-leaderboard.</strong> A model&#x27;s general ranking does not predict its accuracy on *your* invoice mix. The only number that matters is the one you run on your own documents.</p>
+<p>If you&#x27;re choosing a model for document extraction: run the cheap tier head-to-head before you default to the flagship. The budget line is real.</p>
+<p>When did the cheaper model last beat the premium one for you — and did you catch it, or just pay the premium on faith?</p>
+<hr>
+<p>*Benchmark figures are model extract performance on a factory-reproduced corpus (<code>dataset_95</code>), not product accuracy; product accuracy is referenced only &quot;per apis.hyperbots.com.&quot; $/doc is measured API cost on this corpus, not a quoted price. No customer documents or names referenced.*</p>
+<h2>Earn-Trust checklist (per linkedin-post-strategy.md §7)</h2>
+<p>1. ✓ Value to a non-buyer (the &quot;measure cheap-vs-premium per corpus&quot; lesson is vendor-neutral).</p>
+<p>2. ✓ Surprising-but-true (premium model loses; we publish our own below-Gemini number).</p>
+<p>3. ✓ Anchors: 0.7132 / 0.6195 / +0.0937 / $0.010 vs $0.033 / 90 vs 93 / our 0.3573 — all factory-reproduced.</p>
+<p>4. ✓ Guardrails: Gemini = foundation-model baseline (not IDP-competitor disparagement); no fabricated number; no HITL; no customer names; &quot;per apis.hyperbots.com&quot; present.</p>
+<p>5. ✓ Hook line standalone + screenshot-able (&quot;We paid 3× for the premium model. It lost.&quot;).</p>
+<p>6. ✓ CTA is a real question.</p>
+<p>7. ✓ No URL in body.</p>
+<p>8. ✓ Founder voice.</p>
+<p>9. ✓ No bought reach.</p>
+<p>10. ✓ Zero retraction risk — every figure on disk; honest-loss framing, no overclaim.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/comparative/gemini-models/GEMINI-DATASET95-FULLN-2026-05-25.md</code></li>
+<li>Hyperbots 0.3573 baseline: parse-deep framework §4.1 H5 + CONSOLIDATED-150.</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT — external publication human-gated; 2026-05-20 LinkedIn pause in effect.</li>
+<li>CEO-authored (founder voice). Reframe if a different author posts.</li>
+<li>Gemini cited as foundation-model baseline on factory-reproduced data; result specific to the <code>dataset_95</code> extract task, not a general cross-task claim.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>

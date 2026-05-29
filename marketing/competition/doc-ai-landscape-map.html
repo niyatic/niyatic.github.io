@@ -1,0 +1,76 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The modern document-AI landscape — an honest map</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publication is human-gated</div><div class="meta">2026-05-29</div><h1>The modern document-AI landscape — an honest map</h1>
+<p>A buyer evaluating document AI needs a <strong>map of the space before a scoreboard</strong>. This post is that map. It is deliberately descriptive, not comparative — it does not rank vendors. It describes the *categories* of approach, because the categories have different cost models, different failure modes, and different integration paths, and your first job is to figure out which one you&#x27;re actually shopping in.</p>
+<p>This map names no vendors on purpose. Cross-category &quot;X beats Y&quot; comparisons are usually apples-to-oranges; the useful work is matching your document mix and constraints to a *category*, then shortlisting within it.</p>
+<h2>The six approach categories</h2>
+<table><thead><tr><th>Category</th><th>What it is</th><th>Typical pricing</th><th>Owns the model?</th></tr></thead><tbody><tr><td><strong>Hyperscaler document AI</strong></td><td>cloud-platform pretrained document processors</td><td>per-page</td><td>no (managed)</td></tr><tr><td><strong>Vertical-SaaS extraction</strong></td><td>single-doc-type SaaS (invoice/receipt) with AP-team UX</td><td>per-doc / seat</td><td>no</td></tr><tr><td><strong>Frontier LLM-vision</strong></td><td>general-purpose VLMs — &quot;send a PDF, ask anything&quot;</td><td>per-token</td><td>no</td></tr><tr><td><strong>Legacy enterprise OCR</strong></td><td>on-prem document-automation suites</td><td>license</td><td>partial</td></tr><tr><td><strong>Custom-trainable / fine-tuned document AI</strong></td><td>a model adapted to your corpus (incl. open-backbone fine-tunes)</td><td>platform + train</td><td>often yes</td></tr><tr><td><strong>Open-source DIY</strong></td><td>OCR-class engines + downstream NLP + rules</td><td>infra only</td><td>yes (you build it)</td></tr></tbody></table>
+<p>A modern API-first vendor often <strong>spans more than one category</strong> — e.g. a parsing API that is LLM-vision under the hood but priced and packaged like vertical SaaS. So &quot;which category&quot; is a question about the *dominant cost + failure model*, not a rigid bucket.</p>
+<h2>What each category trades off</h2>
+<ul>
+<li><strong>Hyperscaler doc AI</strong> — broad, reliable, per-page priced; can get expensive at scale and behaves like a fixed-schema black box you can&#x27;t fine-tune deeply. <strong>Failure mode we&#x27;ve measured on long invoices: table fragmentation</strong> — it reads the invoice *total* correctly but sprays the line items (e.g. a 323-line invoice returned as 332 rows at F1 0.009; an 88-row table fragmented to 2,150 rows). Great at the headline number, weak at the rows underneath.</li>
+<li><strong>Vertical-SaaS extraction</strong> — excellent AP-team UX for one doc type; less flexible outside it. The UX *is* the product; the model is a means.</li>
+<li><strong>Frontier LLM-vision</strong> — flexible, strong zero-shot, genuinely good at many documents. Two structural costs: <strong>per-token price scales with document size</strong>, and the two error modes we see most are <strong>schema-mismatch hallucination</strong> and a <strong>hard output-token truncation cliff</strong> on very long tables (a 100+ line-item invoice can stop emitting mid-table). Also: the premium tier is *not* automatically the most accurate — measure per corpus (see the companion D-01 finding).</li>
+<li><strong>Legacy enterprise OCR</strong> — mature compliance, on-prem control; brittle on unseen layouts.</li>
+<li><strong>Custom-trainable / fine-tuned</strong> — adapts to *your* corpus distribution; requires training data; the edge over zero-shot is, in our own honest measurement, <strong>real but narrow</strong> (small backbone fine-tunes lead on some metrics by small margins and *lose* on others to strong zero-shot systems). The differentiator is the *package* — ownable small models, low serving cost, a transparent measured benchmark — not a raw-magnitude accuracy blowout.</li>
+<li><strong>Open-source DIY</strong> — lowest direct cost, highest engineering burden; you own every failure mode.</li>
+</ul>
+<p><strong>No category dominates.</strong> The right choice depends on document mix, volume, accuracy tolerance, integration target, and whether you need to *own* the model.</p>
+<h2>Where an API-native, finance-fine-tuned approach fits</h2>
+<p>Among these, the approach this blog&#x27;s authors take is <strong>custom-trainable, finance-specialized, and API-native</strong>: small open-source backbones fine-tuned by Hyperbots (Hyperbots IP) on financial-document data, exposed as <strong>primitive-resolved endpoints</strong> (parse / classify / split / match / validate / augment / reason) rather than one end-to-end call, with a published, reproducible benchmark behind it. Honest positioning: the fine-tune edge is real-but-narrow; the bet is the *architecture and the measurement discipline*, not a single magic number. Product accuracy is referenced only &quot;per apis.hyperbots.com&quot;; benchmark figures are model parse/extract performance.</p>
+<h2>How to use this map</h2>
+<p>1. <strong>Identify your category.</strong> Feeding documents into a RAG/agent pipeline → you&#x27;re shopping parsing-API / LLM-vision vendors. Automating finance-team invoice posting → vertical-SaaS or finance-tuned APIs.</p>
+<p>2. <strong>Shortlist within the category.</strong> Cross-category comparisons mislead.</p>
+<p>3. **Run the buyer&#x27;s rubric on *your* documents** — especially the long tail (invoices past ~100 line items, multi-currency, unusual layouts), because that&#x27;s where every category&#x27;s real failure mode lives.</p>
+<h2>Sources</h2>
+<ul>
+<li>The six approach categories: benchmark-factory competitor-category methodology.</li>
+<li>The measured failure modes (table fragmentation; truncation cliff; Flash-beats-Pro) are factory-reproduced on <code>dataset_95</code>; see the companion E-01 (cross-vendor long-invoice) and D-01 (Flash &gt; Pro) blogs.</li>
+<li>The fine-tune real-but-narrow finding: SAVIOR-Bench v1 + the comparative study.</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT — external publication human-gated; 2026-05-20 LinkedIn pause in effect.</li>
+<li><strong>Names no competitor</strong> — this is the publishable category-label edition (the named-vendor version is kept internal/gated).</li>
+<li>Measured failure modes are model parse/extract performance on a factory-reproduced corpus, labelled as such; product accuracy only &quot;per apis.hyperbots.com.&quot;</li>
+<li>The fine-tune &quot;real but narrow&quot; claim is attested SAVIOR-Bench v1 (<code>ci95=null</code>), not independently reproduced.</li>
+<li>&quot;No category dominates&quot; is an editorial judgment, not a measured claim.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>
