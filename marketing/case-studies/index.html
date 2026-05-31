@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case studies — Hyperbots content hub</title>
+<style>
+:root {
+  --brand-7:#1B7DA7; --brand-8:#047495; --brand-9:#07658D;
+  --brand-2:#EDFAFF; --brand-4:#BDDFEE;
+  --grey-2:#F6F9F9; --grey-4:#E2ECEE;
+  --grey-10:#748081; --grey-11:#596263; --grey-12:#211F26;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body {
+  font: 15px/1.6 "Rubik",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  background:var(--grey-2); color:var(--grey-12);
+  max-width: 980px; margin: 0 auto; padding: 28px 24px 56px;
+  -webkit-font-smoothing:antialiased;
+}
+.back { color:var(--grey-10); font-size:13px; text-decoration:none; display:inline-block; margin-bottom:14px; }
+.back:hover { color:var(--brand-7); text-decoration:underline; }
+.hero {
+  background:#fff; border:1px solid var(--grey-4); border-radius:12px;
+  border-left:5px solid var(--brand-7); padding:18px 22px; margin-bottom:18px;
+  display:flex; align-items:center; gap:16px;
+  box-shadow:0 1px 3px rgba(33,31,38,.06);
+}
+.hero img { width:36px; height:37px; }
+.hero h1 { font-size:20px; font-weight:600; color:var(--grey-12); margin:0; }
+.hero .sub { color:var(--grey-10); font-size:13px; margin-top:3px; }
+.note { background:var(--brand-2); border-left:3px solid var(--brand-7); padding:12px 16px; border-radius:6px; margin:12px 0 18px; font-size:13px; color:var(--grey-12); }
+h2 { font-size:17px; color:var(--brand-9); font-weight:600; margin:24px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--brand-4); }
+.cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:12px; margin:12px 0; }
+.card {
+  background:#fff; border:1px solid var(--grey-4); border-radius:10px;
+  padding:16px 18px; display:block; text-decoration:none; color:inherit;
+  transition:box-shadow .15s, transform .15s;
+  box-shadow:0 1px 2px rgba(33,31,38,.04);
+}
+.card:hover { box-shadow:0 4px 12px rgba(33,31,38,.10); transform:translateY(-1px); }
+.card .icon { font-size:22px; margin-bottom:6px; }
+.card .title { font-weight:600; font-size:14.5px; color:var(--brand-7); margin:0 0 4px; }
+.card .desc { color:var(--grey-10); font-size:12.5px; line-height:1.5; }
+.card .meta { color:var(--grey-11); font-size:11.5px; margin-top:6px; font-style:italic; }
+.footer { margin-top:36px; padding-top:14px; border-top:1px solid var(--grey-4); color:var(--grey-10); font-size:12px; }
+code { font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:12px; background:var(--brand-2); padding:1px 5px; border-radius:3px; }
+</style>
+</head>
+<body>
+
+<a class="back" href="/marketing/">← back to marketing</a>
+
+<header class="hero">
+  <img src="/assets/hyperbots-logo.svg" alt="Hyperbots"/>
+  <div>
+    <h1>Case studies</h1>
+    <div class="sub">Anonymized customer work — finance-ops deliverables built on HyperAPI.</div>
+  </div>
+</header>
+
+<div class="note">
+  <strong>Anonymization rule.</strong> Every case study replaces the customer operator name and downstream account names with placeholders (<code>Customer A</code>, <code>Chain 1</code>–<code>N</code>). Industry-level descriptions, time-series, methodology, and aggregate numbers are preserved so the work product is meaningful. Drill-down links to raw data are disabled.
+</div>
+
+<h2>Available case studies</h2>
+<div class="cards">
+  <a class="card" href="/marketing/case-studies/month-end-ar-pack.html">
+    <div class="icon">📊</div>
+    <div class="title">Month-end AR reporting pack</div>
+    <div class="desc">Multi-entity B2B distributor · ~518k aging rows · DSO proxy, concentration risk, deterioration watchlist, cash forecast. Interactive 9-tab dashboard with audited provenance.</div>
+    <div class="meta">Customer A · 22 downstream accounts · methodology + audit statement included</div>
+  </a>
+</div>
+
+<div class="footer">
+  Future case studies land here as they're produced and anonymized. Source style: each is a self-contained interactive HTML deliverable, gated, branded.
+</div>
+
+</body>
+</html>

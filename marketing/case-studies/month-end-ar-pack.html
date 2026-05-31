@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case study — Month-end AR pack — Hyperbots</title>
+<style>
+  :root{--ink:#0f1c2e;--mut:#5b6b7d;--line:#dde4ec;--bg:#f6f8fb;--card:#fff;
+        --accent:#1f3a5f;--grn:#1f8a4c;--amb:#c8821a;--red:#c0392b}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font:15px/1.55 -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+  header{background:var(--accent);color:#fff;padding:16px 26px}
+  header h1{font-size:20px}header .s{font-size:13px;opacity:.85;margin-top:3px}
+  .tabs{display:flex;gap:2px;background:#16324f;padding:0 18px;flex-wrap:wrap;position:sticky;top:0;z-index:5}
+  .tabs button{font:13px inherit;color:#cdd9e5;background:transparent;border:0;padding:11px 15px;cursor:pointer;
+               border-bottom:3px solid transparent}
+  .tabs button.on{color:#fff;border-bottom-color:#fff;font-weight:600}
+  .wrap{max-width:1060px;margin:0 auto;padding:24px 26px 70px}
+  .panel{display:none}.panel.on{display:block}
+  h2{font-size:19px;margin:6px 0 14px}
+  h3{font-size:14px;color:var(--accent);text-transform:uppercase;letter-spacing:.5px;margin:20px 0 8px}
+  p{margin:8px 0;max-width:78ch}
+  .banner{border-radius:8px;padding:11px 15px;margin:12px 0;font-size:13.5px;font-weight:600}
+  .banner.ok{background:#e9f6ee;border:1px solid #b6dec5;color:#1f6b3c}
+  .banner.need{background:#fdf3e3;border:1px solid #e7c98c;color:#92621a}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px}
+  .kpi .v{font-size:21px;font-weight:700}.kpi .l{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.5px;margin-top:3px}
+  .kpi.warn .v{color:var(--red)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:18px;margin:14px 0}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+  th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line)}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut)}
+  td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+  .bar{height:9px;border-radius:5px;display:inline-block;vertical-align:middle}
+  .flag{color:var(--red);font-weight:700}
+  svg{display:block;width:100%;height:auto}
+  .legend{font-size:12px;color:var(--mut);margin-top:6px}
+  .legend span{margin-right:14px}.sw{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle}
+  code{background:#eef3f8;padding:1px 6px;border-radius:4px;font-size:12px}
+  .owner{font-size:12px;color:var(--mut);font-style:italic}
+  .srcbar{margin-top:22px;padding:12px 15px;background:#eef3f8;border:1px solid var(--line);
+          border-radius:8px;font-size:12.5px;color:var(--mut)}
+  .srcbar b{color:var(--accent)}
+  a.drill{display:inline-block;color:#1f3a5f;font-weight:600;text-decoration:none;
+          border-bottom:1px dashed #6f8aa6;margin:0 10px 4px 0;font-size:12.5px}
+  a.drill:hover{background:#dfe9f3;border-radius:3px}
+  a.drill::before{content:"↳ ";opacity:.7}
+  td a.row-drill{color:#1f3a5f;font-size:11px;text-decoration:none;border-bottom:1px dashed #6f8aa6;margin-left:8px}
+  td a.row-drill:hover{background:#dfe9f3}
+  @media(max-width:780px){.kpis{grid-template-columns:repeat(2,1fr)}}
+
+  .drill-disabled,.row-drill-disabled{color:#9aa6b5;font-style:italic;font-size:12.5px}
+</style>
+</head>
+<body>
+<div style="position:fixed;top:14px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.18)">
+  <a href="/marketing/case-studies/" title="Hyperbots content hub">
+    <img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block">
+  </a>
+</div>
+
+<div style="background:#FEF3E2;border:1px solid #f1c876;color:#92621a;font-size:12.5px;padding:8px 18px;text-align:left">
+  <b>Case study — anonymized.</b> Operator and all customer-account names replaced (<code>Customer A</code>, <code>Chain 1</code>–<code>Chain 22</code>). Industry, time-series, and aggregate figures preserved. Drill-down links removed.
+</div>
+<header>
+  <h1>Month-end AR reporting pack <span style="font-size:14px;opacity:.85;font-weight:400">· case study · anonymized</span></h1>
+  <div class="s">Period close as of <b id="asof"></b> · source: aging historicals (517,758 rows, 52 snapshots) · independently audited</div>
+</header>
+<div class="tabs" id="tabs"></div>
+<div class="wrap" id="wrap"></div>
+
+<script>
+const D = {
+ "as_of": "2026-04-26",
+ "total_ar": 71852567.94,
+ "over90": 18246759.85,
+ "over90_pct": 25.4,
+ "pct_current": 45.4,
+ "customers": 3583,
+ "snapshots": 52,
+ "buckets": [
+  {
+   "b": "Current",
+   "amt": 32616811.58
+  },
+  {
+   "b": "1-30",
+   "amt": 12402703.67
+  },
+  {
+   "b": "31-60",
+   "amt": 6036497.32
+  },
+  {
+   "b": "61-90",
+   "amt": 2549795.52
+  },
+  {
+   "b": "91-120",
+   "amt": 2227461.41
+  },
+  {
+   "b": "121-150",
+   "amt": 2272561.94
+  },
+  {
+   "b": "151-180",
+   "amt": 2281720.86
+  },
+  {
+   "b": "181-360",
+   "amt": 6493320.87
+  },
+  {
+   "b": "Over 360",
+   "amt": 4971694.77
+  }
+ ],
+ "entities": [
+  {
+   "e": "ecc",
+   "amt": 58101413.09
+  },
+  {
+   "e": "b1west",
+   "amt": 4146126.3
+  },
+  {
+   "e": "b1midwest",
+   "amt": 3557924.83
+  },
+  {
+   "e": "b1texas",
+   "amt": 2379882.04
+  },
+  {
+   "e": "b1southeast",
+   "amt": 2198649.85
+  },
+  {
+   "e": "b1florida",
+   "amt": 678025.94
+  },
+  {
+   "e": "vipershine",
+   "amt": 326424.75
+  },
+  {
+   "e": "b1canada",
+   "amt": 243032.16
+  },
+  {
+   "e": "b1slam",
+   "amt": 221088.98
+  }
+ ],
+ "top_bal": [
+  {
+   "c": "Chain 15 - 10112",
+   "amt": 5178245.62
+  },
+  {
+   "c": "Chain 14 - 12335",
+   "amt": 2666169.3
+  },
+  {
+   "c": "Chain 11 - 10083",
+   "amt": 2047460.01
+  },
+  {
+   "c": "Chain 22 - 10162",
+   "amt": 2025972.69
+  },
+  {
+   "c": "Chain 10 - 13523",
+   "amt": 1978919.74
+  },
+  {
+   "c": "Chain 9 - 14426",
+   "amt": 1687353.52
+  },
+  {
+   "c": "Chain 13 - 10097",
+   "amt": 1523431.01
+  },
+  {
+   "c": "Chain 12 - 10096",
+   "amt": 1477087.32
+  },
+  {
+   "c": "Chain 8 - 12601",
+   "amt": 1437785.46
+  },
+  {
+   "c": "Chain 6 - 10087",
+   "amt": 1419018.21
+  },
+  {
+   "c": "Chain 7 - 12224",
+   "amt": 1414450.41
+  },
+  {
+   "c": "Chain 19 - 10090",
+   "amt": 1335495.04
+  },
+  {
+   "c": "Chain 4 - 11386",
+   "amt": 1078004.47
+  },
+  {
+   "c": "Chain 1 - 19192",
+   "amt": 991147.18
+  },
+  {
+   "c": "Chain 5 - 18547",
+   "amt": 984539.52
+  }
+ ],
+ "top_o90": [
+  {
+   "c": "Chain 12 - 10096",
+   "amt": 1333190.0
+  },
+  {
+   "c": "Chain 14 - 12335",
+   "amt": 871381.84
+  },
+  {
+   "c": "Chain 7 - 12224",
+   "amt": 628581.23
+  },
+  {
+   "c": "Chain 20 - 22865",
+   "amt": 485431.14
+  },
+  {
+   "c": "Chain 5 - 18547",
+   "amt": 388530.11
+  },
+  {
+   "c": "Chain 22 - 10162",
+   "amt": 359876.85
+  },
+  {
+   "c": "Chain 2 - 10098",
+   "amt": 308143.1
+  },
+  {
+   "c": "Chain 1 - 19192",
+   "amt": 299870.73
+  },
+  {
+   "c": "Chain 17 - 22441",
+   "amt": 299229.78
+  },
+  {
+   "c": "Chain 21 - 20630",
+   "amt": 273660.94
+  },
+  {
+   "c": "Chain 19 - 10090",
+   "amt": 237608.18
+  },
+  {
+   "c": "Chain 3 - 11246",
+   "amt": 235031.86
+  },
+  {
+   "c": "Chain 10 - 13523",
+   "amt": 230571.14
+  },
+  {
+   "c": "Chain 18 - 10088",
+   "amt": 205683.33
+  },
+  {
+   "c": "Chain 16 - 25730",
+   "amt": 203437.26
+  }
+ ],
+ "trend": [
+  {
+   "d": "2023-05-31",
+   "t": 82350792.93,
+   "o": 8136976.59
+  },
+  {
+   "d": "2023-06-30",
+   "t": 108930186.11,
+   "o": 16070547.62
+  },
+  {
+   "d": "2023-07-31",
+   "t": 115658707.31,
+   "o": 16492312.38
+  },
+  {
+   "d": "2023-08-31",
+   "t": 137751500.34,
+   "o": 15272771.76
+  },
+  {
+   "d": "2023-09-30",
+   "t": 131969536.64,
+   "o": 13734594.12
+  },
+  {
+   "d": "2023-10-31",
+   "t": 126569046.41,
+   "o": 15747629.49
+  },
+  {
+   "d": "2023-11-30",
+   "t": 121269734.41,
+   "o": 16303912.8
+  },
+  {
+   "d": "2023-12-31",
+   "t": 95408165.89,
+   "o": 14573384.56
+  },
+  {
+   "d": "2024-01-31",
+   "t": 95355999.7,
+   "o": 15198229.14
+  },
+  {
+   "d": "2024-02-29",
+   "t": 82611722.38,
+   "o": 11741867.81
+  },
+  {
+   "d": "2024-03-31",
+   "t": 78500701.65,
+   "o": 10177465.03
+  },
+  {
+   "d": "2024-04-30",
+   "t": 86665301.6,
+   "o": 10349210.39
+  },
+  {
+   "d": "2024-05-31",
+   "t": 69951095.27,
+   "o": 10030336.42
+  },
+  {
+   "d": "2024-06-30",
+   "t": 64347866.32,
+   "o": 10278195.13
+  },
+  {
+   "d": "2024-07-31",
+   "t": 61890506.33,
+   "o": 10683929.17
+  },
+  {
+   "d": "2024-08-31",
+   "t": 62717297.33,
+   "o": 11427862.88
+  },
+  {
+   "d": "2024-09-30",
+   "t": 59153822.62,
+   "o": 12237825.75
+  },
+  {
+   "d": "2024-10-31",
+   "t": 62434846.88,
+   "o": 12065818.05
+  },
+  {
+   "d": "2024-11-30",
+   "t": 69530010.43,
+   "o": 13151740.08
+  },
+  {
+   "d": "2024-12-31",
+   "t": 64537674.32,
+   "o": 14664791.77
+  },
+  {
+   "d": "2025-01-31",
+   "t": 62849750.13,
+   "o": 14512403.64
+  },
+  {
+   "d": "2025-02-28",
+   "t": 63419323.1,
+   "o": 14644768.53
+  },
+  {
+   "d": "2025-03-31",
+   "t": 63075382.46,
+   "o": 14951025.03
+  },
+  {
+   "d": "2025-04-30",
+   "t": 68959067.95,
+   "o": 14229360.06
+  },
+  {
+   "d": "2025-05-31",
+   "t": 65281720.3,
+   "o": 14017151.12
+  },
+  {
+   "d": "2025-06-30",
+   "t": 69546131.13,
+   "o": 14824348.99
+  },
+  {
+   "d": "2025-07-31",
+   "t": 71524605.66,
+   "o": 15099659.49
+  },
+  {
+   "d": "2025-08-31",
+   "t": 75362348.11,
+   "o": 17067964.47
+  },
+  {
+   "d": "2025-09-30",
+   "t": 71041219.88,
+   "o": 17013679.21
+  },
+  {
+   "d": "2025-10-31",
+   "t": 71918461.31,
+   "o": 17888358.04
+  },
+  {
+   "d": "2025-11-30",
+   "t": 68262161.06,
+   "o": 18252214.09
+  },
+  {
+   "d": "2025-12-22",
+   "t": 71051971.93,
+   "o": 17684580.62
+  },
+  {
+   "d": "2025-12-31",
+   "t": 75670877.08,
+   "o": 17980953.61
+  },
+  {
+   "d": "2026-01-13",
+   "t": 74490099.89,
+   "o": 18063099.95
+  },
+  {
+   "d": "2026-01-19",
+   "t": 75178431.38,
+   "o": 18594302.65
+  },
+  {
+   "d": "2026-01-22",
+   "t": 75573101.14,
+   "o": 18800570.3
+  },
+  {
+   "d": "2026-01-25",
+   "t": 75903777.37,
+   "o": 19400626.54
+  },
+  {
+   "d": "2026-01-29",
+   "t": 73223878.56,
+   "o": 19539965.43
+  },
+  {
+   "d": "2026-02-01",
+   "t": 74149901.78,
+   "o": 20103084.69
+  },
+  {
+   "d": "2026-02-08",
+   "t": 75740381.75,
+   "o": 21083935.27
+  },
+  {
+   "d": "2026-02-10",
+   "t": 75838393.5,
+   "o": 20910406.19
+  },
+  {
+   "d": "2026-02-15",
+   "t": 79563913.32,
+   "o": 21219544.42
+  },
+  {
+   "d": "2026-02-22",
+   "t": 74426138.46,
+   "o": 21998318.99
+  },
+  {
+   "d": "2026-03-01",
+   "t": 73440556.17,
+   "o": 21070395.6
+  },
+  {
+   "d": "2026-03-08",
+   "t": 73002782.79,
+   "o": 21706126.68
+  },
+  {
+   "d": "2026-03-15",
+   "t": 77421447.73,
+   "o": 21240903.02
+  },
+  {
+   "d": "2026-03-22",
+   "t": 73550289.11,
+   "o": 21020151.14
+  },
+  {
+   "d": "2026-03-29",
+   "t": 69458984.0,
+   "o": 19540822.61
+  },
+  {
+   "d": "2026-04-05",
+   "t": 71128175.69,
+   "o": 19452728.67
+  },
+  {
+   "d": "2026-04-12",
+   "t": 76423977.93,
+   "o": 19556086.96
+  },
+  {
+   "d": "2026-04-19",
+   "t": 75889357.01,
+   "o": 19119794.62
+  },
+  {
+   "d": "2026-04-26",
+   "t": 71852567.94,
+   "o": 18246759.85
+  }
+ ],
+ "top10_pct": 29.8
+};
+const fmtM=v=>'$'+(v/1e6).toFixed(2)+'M', fmt$=v=>'$'+v.toLocaleString('en-US',{maximumFractionDigits:0});
+document.getElementById('asof').textContent=D.as_of;
+
+const OKB='<div class="banner ok">✓ Sourced from the aging file — every figure audited, 0 discrepancies vs raw .xlsb</div>';
+const need=w=>`<div class="banner need">⚠ REQUIRES ${w} — not present in the aging source file. Shown as a defined placeholder a finance leader expects in the pack; populated once ERP integration lands.</div>`;
+
+// shared chart builders
+function trendSVG(){
+ const W=1000,H=240,pl=64,pr=18,pt=14,pb=34,xs=D.trend,n=xs.length;
+ const top=Math.ceil(Math.max(...xs.map(d=>d.t))/2e7)*2e7;
+ const X=i=>pl+(W-pl-pr)*i/(n-1),Y=v=>pt+(H-pt-pb)*(1-v/top);
+ const P=k=>xs.map((d,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(d[k]).toFixed(1)).join(' ');
+ let g='';for(let v=0;v<=top;v+=2e7){g+=`<line x1="${pl}" y1="${Y(v)}" x2="${W-pr}" y2="${Y(v)}" stroke="#eef2f6"/>`+
+   `<text x="${pl-8}" y="${Y(v)+4}" text-anchor="end" font-size="11" fill="#5b6b7d">$${v/1e6}M</text>`;}
+ let xl='';[0,13,26,39,n-1].forEach(i=>xl+=`<text x="${X(i)}" y="${H-12}" text-anchor="middle" font-size="11" fill="#5b6b7d">${xs[i].d}</text>`);
+ return `<svg viewBox="0 0 ${W} ${H}">${g}${xl}
+  <path d="${P('t')}" fill="none" stroke="#1f3a5f" stroke-width="2.5"/>
+  <path d="${P('o')}" fill="none" stroke="#c0392b" stroke-width="2.5"/></svg>
+  <div class="legend"><span><span class="sw" style="background:#1f3a5f"></span>Total AR</span>
+   <span><span class="sw" style="background:#c0392b"></span>&gt;90 exposure</span></div>`;
+}
+function bucketRows(asPct){
+ const tot=D.buckets.reduce((a,b)=>a+b.amt,0),mx=Math.max(...D.buckets.map(b=>b.amt));
+ const col=b=>b==='Current'?'#1f8a4c':b==='1-30'?'#7aa61f':['61-90','91-120'].includes(b)?'#c0392b':
+   ['121-150','151-180','181-360','Over 360'].includes(b)?'#922b21':'#c8821a';
+ return '<table><thead><tr><th>Bucket</th><th class="n">$</th><th class="n">% of AR</th><th>&nbsp;</th></tr></thead><tbody>'+
+  D.buckets.map(b=>`<tr><td>${b.b}</td><td class="n">${fmtM(b.amt)}</td>
+   <td class="n">${(b.amt/tot*100).toFixed(1)}%</td>
+   <td style="width:40%"><span class="bar" style="width:${(b.amt/mx*100).toFixed(0)}%;background:${col(b.b)}"></span></td></tr>`).join('')+
+  `</tbody></table>`;
+}
+function entityRows(){
+ const tot=D.entities.reduce((a,b)=>a+b.amt,0);
+ return '<table><thead><tr><th>Entity</th><th class="n">AR</th><th class="n">Share</th></tr></thead><tbody>'+
+  D.entities.map(e=>`<tr><td>${e.e}</td><td class="n">${fmtM(e.amt)}</td><td class="n">${(e.amt/tot*100).toFixed(1)}%</td></tr>`).join('')+'</tbody></table>';
+}
+function drillFor(name){
+ // map customers with a published raw-row sample to a next-level-click link
+ if(name.startsWith('Chain 12')) return '<span class="row-drill-disabled">raw rows ↗ (sample data not bundled)</span>';
+ if(name.startsWith('Chain 15'))   return '<span class="row-drill-disabled">raw rows ↗ (sample data not bundled)</span>';
+ return '';
+}
+function topRows(arr,o90){
+ return '<table><thead><tr><th>Customer</th><th class="n">'+(o90?'&gt;90 $':'Balance')+'</th></tr></thead><tbody>'+
+  arr.slice(0,15).map(r=>`<tr><td class="${r.c.startsWith('Chain 12')?'flag':''}">${r.c}${drillFor(r.c)}</td><td class="n">${fmt$(r.amt)}</td></tr>`).join('')+'</tbody></table>';
+}
+
+const TABS=[
+ ['Summary', ()=>OKB+`
+   <h2>Executive summary</h2>
+   <div class="kpis">
+    <div class="kpi"><div class="v">${fmtM(D.total_ar)}</div><div class="l">Total AR</div></div>
+    <div class="kpi"><div class="v">${D.pct_current}%</div><div class="l">% Current</div></div>
+    <div class="kpi warn"><div class="v">${fmtM(D.over90)} · ${D.over90_pct}%</div><div class="l">&gt;90 exposure</div></div>
+    <div class="kpi"><div class="v">${D.top10_pct}%</div><div class="l">Top-10 concentration</div></div>
+   </div>
+   <div class="card"><p><b>The aged tail got structurally worse while the book stayed volatile.</b>
+   Total AR ranged ≈$59M–$138M over 36 months and sits at ${fmtM(D.total_ar)} today (≈13% below the
+   May-2023 start; ≈48% below the Aug-2023 peak). &gt;90 exposure grew 2.2× ($8.1M → ${fmtM(D.over90)})
+   and climbed from ≈10% to ${D.over90_pct}% of the book. AR size is noise; the &gt;90 trajectory is the signal.</p>
+   ${trendSVG()}</div>`],
+
+ ['Aging Detail', ()=>OKB+`<h2>Aging by bucket</h2><div class="card">${bucketRows()}</div>
+   <p class="owner">Owner: AR manager. Standard month-end aging schedule; ties to GL AR control once reconciled (see Provenance).</p>`],
+
+ ['Entity Rollup', ()=>OKB+`<h2>AR by operating entity</h2><div class="card">${entityRows()}
+   <p class="legend">ecc carries 80.9% of receivables; any unfiltered enterprise view is effectively an ecc view. Regional b1* entities should be reviewed separately.</p></div>`],
+
+ ['Concentration', ()=>OKB+`<h2>Customer concentration</h2>
+   <div class="card"><h3>Top 15 by total balance — top-10 = ${D.top10_pct}% of AR</h3>${topRows(D.top_bal,false)}</div>
+   <div class="card"><h3>Top 15 by &gt;90 exposure</h3>${topRows(D.top_o90,true)}
+   <p class="legend"><span class="flag">Chain 12</span>: #8 by balance, #1 by &gt;90 (~90% of its $1.48M aged). Single-name credit event.</p></div>`],
+
+ ['Watchlist', ()=>`<div class="banner ok">✓ Computable from the aging file — it carries Prior Date / Prior Balance columns, enabling week-over-week bucket-migration detection.</div>
+   <div class="banner need">⚠ REQUIRES invoice-level + collector-activity data for per-invoice action and last-contact context.</div>
+   <h2>Deterioration watchlist (method)</h2>
+   <div class="card"><p>Flag a customer when any holds: (a) newly into &gt;90 vs prior snapshot; (b) &gt;90 balance grew &gt; P95 of the W-o-W change distribution; (c) Over-360 balance non-zero and growing; (d) total balance more than doubled (billing-batch / dispute signal).</p>
+   <p class="owner">Owner: Collections lead. Run weekly. Threshold tuned on the 52-snapshot history. The amber gap is what makes each flag <i>actionable</i> at invoice level — Tier-1 ERP closes it.</p></div>`],
+
+ ['DSO', ()=>`<div class="banner need">⚠ TRUE DSO REQUIRES ERP REVENUE / INVOICE FEED — not in the aging file. The proxy below is a defensible aging-weighted approximation, explicitly labelled.</div>
+   <h2>DSO — bucket-weighted proxy</h2>
+   <div class="card"><p>Proxy DSO = Σ(bucket balance × bucket-midpoint days) / total AR. Midpoints:
+   Current 0 · 1-30 15 · 31-60 45 · 61-90 75 · 91-120 105 · 121-150 135 · 151-180 165 · 181-360 270 · Over 360 400 (capped).</p>
+   <p>Worked at the latest snapshot ≈ <b>73.8 days</b>. Industry benchmark for commercial-equipment B2B distribution is 50–70 days; Customer A at ≈74 is plausibly elevated — but this is a proxy, not measured DSO. The <i>trend</i> in the proxy is signal-rich even if the absolute is approximate.</p>
+   <p class="owner">Owner: FP&A. Replace with true countback + simple-method DSO once Tier-1 ERP (invoice + payment + revenue) lands.</p></div>`],
+
+ ['Disputes', ()=>need('ERP DISPUTE / DEDUCTION DATA')+`
+   <h2>Dispute ratio &amp; aging</h2>
+   <div class="card"><p>Not derivable from the aging file. Of the 112,363 negative-balance rows, an unknown
+   subset are open disputes vs unapplied cash vs credit memos — the file gives no dispute code.
+   A finance leader expects this tab in the monthly pack: dispute $ as % of AR, dispute aging,
+   root-cause Pareto by reason code, resolution-time SLA. <b>Placeholder until ERP dispute table is ingested (Tier-2, Month 3).</b></p>
+   <p class="owner">Owner: Collections lead + AR manager. Blocked panel; flagged in data-gap report Gap 4.</p></div>`],
+
+ ['Cash Forecast', ()=>need('ERP PAYMENT HISTORY')+`
+   <h2>Expected cash receipts</h2>
+   <div class="card"><p>Not derivable — no payment dates / payment-pattern / promise-to-pay in the
+   aging file. A finance leader expects a 13-week expected-receipts view driven by per-customer
+   days-to-pay behaviour. <b>Placeholder until ERP payment + payment-application data is ingested (Tier-1, Months 1–2).</b></p>
+   <p class="owner">Owner: Treasury + AR. Blocked panel; flagged in data-gap report Gap 2.</p></div>`],
+
+ ['Provenance &amp; Audit', ()=>OKB+`
+   <h2>Data provenance &amp; audit</h2>
+   <div class="card">
+   <p><b>Source:</b> <code>aging-source-anonymized.xlsb</code> — single sheet
+   <code>RawData</code>, header row 4, 517,758 data rows, 52 snapshots (2023-05-31 → 2026-04-26).</p>
+   <h3>Tabs fully sourced from the aging file (audited)</h3>
+   <p>Summary · Aging Detail · Entity Rollup · Concentration · Watchlist (method) — green-bannered.
+   Every numeric value matches an independent recompute from the raw file.</p>
+   <h3>Tabs requiring additional data access</h3>
+   <table><thead><tr><th>Tab</th><th>Needs</th><th>Closes via</th></tr></thead><tbody>
+    <tr><td>DSO (true)</td><td>ERP revenue + invoice</td><td>Tier-1, Months 1–2</td></tr>
+    <tr><td>Disputes</td><td>ERP dispute / deduction</td><td>Tier-2, Month 3</td></tr>
+    <tr><td>Cash Forecast</td><td>ERP payment history</td><td>Tier-1, Months 1–2</td></tr>
+    <tr><td>Watchlist (invoice-level)</td><td>invoice + collector activity</td><td>Tier-1/2</td></tr>
+   </tbody></table>
+   <h3>Audit statement</h3>
+   <p>Every figure in the green-bannered tabs was independently recomputed from the raw .xlsb
+   (<code>pandas.read_excel(engine="pyxlsb", header=3)</code>): total AR $71,852,567.94; &gt;90
+   $18,246,759.85 (25.4%); 52 snapshots; 112,363 negative-balance rows; top customers; bucket and
+   entity sums — <b>0 discrepancies</b>. Full claim-by-claim tie-out in
+   <code>analysis/01b-data-analysis-visualized.md</code>. This is a management pack, not audited
+   financial statements; the GL-to-subledger reconciliation is a Tier-1 ERP dependency.</p>
+   <h3>Drill-down samples (next-level click)</h3>
+   <p>Each report can be traced back to source. These samples are extracted verbatim from the
+   raw <code>.xlsb</code> with no transformation beyond date-serial conversion:</p>
+   <p>
+     <span class="drill-disabled">Original .xlsb file (link removed in anonymized case study)</span>
+     <span class="drill-disabled">First 200 raw rows (what the parser ingests) (sample data not bundled)</span>
+     <span class="drill-disabled">Full latest snapshot — 11,328 rows backing Summary / Aging / Entity / Concentration (sample data not bundled)</span>
+     <span class="drill-disabled">Chain 12 — every raw row, all 52 snapshots (1,503 rows) (sample data not bundled)</span>
+     <span class="drill-disabled">Chain 15 — every raw row, all 52 snapshots (4,397 rows) (sample data not bundled)</span>
+     <a class="drill" href="data.json">Audited aggregate extract (data.json)</a>
+   </p>
+   <p class="owner">Trace path: pack figure → data.json (audited aggregate) → latest-snapshot.csv
+   (the 11,328 rows it aggregates) → original .xlsb. Per-customer figures drill straight to that
+   customer's full raw history.</p>
+   </div>`],
+];
+
+const tb=document.getElementById('tabs'),wr=document.getElementById('wrap');
+TABS.forEach((t,idx)=>{const b=document.createElement('button');b.innerHTML=t[0];
+ b.onclick=()=>sel(idx);tb.appendChild(b);});
+const SRCBAR=`<div class="srcbar">
+  <b>Source &amp; drill-down (next-level click):</b><br>
+  <span class="drill-disabled">Original source file (.xlsb, 517,758 rows) (link removed in anonymized case study)</span>
+  <a class="drill" href="data.json">Audited data extract (data.json)</a>
+  <span class="drill-disabled">Latest-snapshot raw rows (11,328 rows, 2026-04-26) (sample data not bundled)</span>
+  <span class="drill-disabled">Raw parser view — first 200 rows (sample data not bundled)</span>
+  <a class="drill" href="../analysis/01b-data-analysis-visualized.md">Independent audit (0 discrepancies)</a>
+  <br><span style="font-size:11.5px">Customer rows in the Concentration tab link to that customer's full raw-row history across all 52 snapshots.</span>
+</div>`;
+function sel(idx){[...tb.children].forEach((b,i)=>b.classList.toggle('on',i===idx));
+ wr.innerHTML='<div class="panel on">'+TABS[idx][1]()+SRCBAR+'</div>';}
+sel(0);
+</script>
+</body>
+</html>
