@@ -1,0 +1,94 @@
+<!doctype html><html lang="en"><head><script src="/gate.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>The fine-tune edge over the best zero-shot system was +0.0276 F1. We published that sentence.</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet"><style>
+:root{
+  --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;
+  --brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+  --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;
+  --grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+  --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+  --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);
+  --txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);margin:0;
+  font:16px/1.65 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+.wrap{max-width:760px;margin:0 auto;padding:48px 24px 96px;}
+.banner{background:var(--warn-fg);color:#fff;font-size:13px;font-weight:500;
+  padding:8px 14px;border-radius:8px;margin-bottom:28px;text-align:center;}
+.meta{color:var(--muted);font-size:14px;border-bottom:1px solid var(--line);
+  padding-bottom:18px;margin-bottom:32px;}
+h1{font-size:34px;line-height:1.25;color:var(--grey-12);margin:.2em 0 .5em;}
+h2{font-size:23px;color:var(--brand-8);margin:1.8em 0 .6em;
+  border-bottom:1px solid var(--line);padding-bottom:6px;}
+h3{font-size:18px;color:var(--brand-9);margin:1.4em 0 .4em;}
+p{margin:.85em 0;}
+a{color:var(--accent);text-decoration:none;}a:hover{text-decoration:underline;}
+ul{margin:.7em 0;padding-left:1.4em;}li{margin:.32em 0;}
+code{background:var(--brand-2);color:var(--brand-9);
+  font:13px/1.5 "SF Mono",Menlo,Consolas,monospace;padding:1.5px 5px;border-radius:4px;}
+pre{background:var(--grey-12);color:var(--grey-3);padding:16px 18px;border-radius:10px;
+  overflow:auto;font:13px/1.55 "SF Mono",Menlo,Consolas,monospace;}
+pre code{background:none;color:inherit;padding:0;}
+blockquote{margin:1.1em 0;padding:12px 18px;background:var(--brand-2);
+  border-left:4px solid var(--brand-6);border-radius:0 8px 8px 0;color:var(--grey-11);}
+hr{border:0;border-top:1px solid var(--line);margin:2.4em 0;}
+table{border-collapse:collapse;width:100%;margin:1.3em 0;font-size:13.5px;}
+th,td{border:1px solid var(--line);padding:8px 11px;text-align:left;vertical-align:top;}
+th{background:var(--brand-2);color:var(--grey-12);font-weight:600;}
+tbody tr:nth-child(even){background:var(--grey-2);}
+strong{color:var(--grey-12);font-weight:600;}
+.footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
+  color:var(--grey-9);font-size:13px;}
+</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publication is human-gated</div><div class="meta">comparative-study (hyperapi-gtm-hub) · 2026-06-09</div><h1>The fine-tune edge over the best zero-shot system was +0.0276 F1. We published that sentence.</h1>
+<blockquote><strong>DRAFT — pending review; external publication is human-gated.</strong> Every number cites</blockquote>
+<blockquote>an on-disk artifact. Benchmark figures are model parse-intent / OCR performance,</blockquote>
+<blockquote>attested SAVIOR-Bench v1 (user-attested 2026-05-18, <code>ci95=null</code>, not factory-reproduced);</blockquote>
+<blockquote>product accuracy is referenced only &quot;per apis.hyperbots.com.&quot;</blockquote>
+<p>&gt;</p>
+<blockquote>**Foundation-model names that appear below — GPT-4o and PaddleOCR-VL-1.5 — are cited</blockquote>
+<blockquote>only as measured benchmark baselines from the SAVIOR-Bench v1 panel** (the scientific</blockquote>
+<blockquote>artifact). They are not product comparisons; the named comparison lives in the</blockquote>
+<blockquote>linked benchmark paper. No IDP-vendor competitor is named anywhere in this post.</blockquote>
+<p>Most vendor blogs you&#x27;ll read this quarter will quote a &quot;10× better than the leading LLM&quot; line. We benchmarked our fine-tune against the leading LLM, on a finance-document corpus, on a primitive most buyers care about. The honest number is <strong>+0.0276 F1</strong>.</p>
+<p>That&#x27;s the headline. It&#x27;s a small number. We published it anyway, because the credibility of every other claim we make depends on it.</p>
+<h2>The result</h2>
+<p><strong>Parse-intent (intent + structured-field reading on financial documents) — SAVIOR-Bench v1:</strong></p>
+<table><thead><tr><th>System</th><th>F1</th><th>WER</th></tr></thead><tbody><tr><td><strong><code>hyperapi-parse-intent</code> <code>[FT]</code></strong></td><td><strong>0.8328</strong></td><td><strong>0.2589</strong></td></tr><tr><td>GPT-4o (zero-shot)</td><td>0.8052</td><td>0.4232</td></tr><tr><td>Delta</td><td><strong>+0.0276 F1</strong></td><td><strong>−0.1643 WER</strong></td></tr></tbody></table>
+<p>Two things to notice.</p>
+<p>First, the <strong>F1 lead is small</strong> — 27 thousandths. We are not claiming a magnitude blowout. We are claiming a measured, modest, sourced edge on this primitive on this corpus.</p>
+<p>Second, the <strong>WER drop is large</strong> — 0.16 absolute, roughly a 39% relative cut in word-error-rate. The same fine-tune that nudges F1 up by 0.0276 cuts the transcription error rate by almost two-fifths. Those two numbers are about different things — F1 is about *whether the right fields ended up in the right slots*, WER is about *whether the words inside them are correct* — and the gap between them is the architectural story.</p>
+<h2>Why a small F1 lead with a big WER drop is the interesting finding</h2>
+<p>If a zero-shot frontier model is already at 0.8052 F1 on this primitive, you can&#x27;t move the F1 by much without a different *kind* of investment. The fine-tune does that — but the place it shows up most isn&#x27;t field-routing accuracy (F1), it&#x27;s *transcription accuracy inside the field* (WER). For finance documents this matters: getting the right total in the right slot but transcribing the *digits* wrong is a downstream-pipeline poison. WER halving is the kind of edge a controller actually notices, even when the headline F1 number sounds modest.</p>
+<h2>The honest part — where the fine-tune loses</h2>
+<p>This isn&#x27;t &quot;we win at everything.&quot; Two losses, published honestly:</p>
+<ul>
+<li><strong>On the OCR task in the same benchmark panel, zero-shot frontier beats our fine-tunes on precision and PaIRS.</strong> GPT-4o leads OCR precision at 0.9322 (vs our 7B fine-tune at 0.9157); PaddleOCR-VL-1.5 leads PaIRS at 0.8766 (vs our 0.7066, a 0.17 gap). Our small-backbone fine-tunes lead OCR recall (+0.0061) and parse-intent F1 (+0.0276); they lose precision and layout to the best zero-shot systems. Real but narrow, in both directions.</li>
+<li><strong>On a different task — full-pipeline invoice extract on <code>dataset_95</code></strong> — the current Hyperbots IDP chain lands at <strong>0.3573 micro-F1, below Gemini Flash&#x27;s 0.7132</strong>. End-to-end extract is a structurally harder task than parse-intent, and our chain has not yet closed that gap. We publish that too. The bet isn&#x27;t &quot;we already won the corpus&quot;; the bet is that decomposition + per-primitive measurement is the path to closing those gaps in a way an end-to-end black box cannot.</li>
+</ul>
+<h2>So what is the bet, if the edge is small?</h2>
+<p>The bet is <strong>not</strong> the model. The bet is:</p>
+<p>1. <strong>The corpus is the moat.</strong> A small open backbone fine-tuned on a deep, expert-annotated finance corpus (509 docs, IAA 0.761, five corpora; SAVIOR-Bench v1) generalizes within finance documents in a way a general-purpose VLM does not. The +0.0276 F1 / −0.1643 WER on parse-intent is what that corpus discipline buys, today.</p>
+<p>2. <strong>Ownable economics.</strong> A small fine-tuned model (Qwen2.5-VL-3B/7B with a LoRA recipe — rank 32, α 64, lr 1e-4 vision / 5e-4 language; SAVIOR-Bench App. A) is cheap to serve at finance-throughput volumes (drafted ~$0.19 per 1,000 successful calls on A100-40GB, infrastructure-derived). Per-token frontier inference is not.</p>
+<p>3. <strong>Primitive-resolved measurability.</strong> Because the pipeline is decomposed into seven primitives (parse / classify / split / match / validate / augment / reason), the +0.0276 lives on a specific axis you can audit. The buyer can ask &quot;did we improve at parse, classify, or extract?&quot; and get a per-primitive answer — not &quot;did the demo number go up?&quot;</p>
+<p>4. <strong>Published failure honesty.</strong> The W6 audit re-derived 0 of 23 SAVIOR cells and we shipped that finding; every claim in this post carries an <code>attested</code> / <code>ci95=null</code> / <code>factory-reproduced</code> label. The credibility of &quot;+0.0276 F1&quot; depends on this discipline, not on its magnitude.</p>
+<h2>What a buyer should take from this</h2>
+<p>1. <strong>Treat small published numbers as a credibility signal, not a magnitude one.</strong> A vendor who reports a +0.027 F1 with WER halving honestly is doing something different than a vendor who reports &quot;10× better.&quot;</p>
+<p>2. <strong>Match the primitive to your problem.</strong> Parse-intent is one of seven primitives in this framework — it&#x27;s not invoice-extract, it&#x27;s not classification, it&#x27;s not validation. The right number to evaluate any vendor on is the primitive *your* workflow lives or dies on.</p>
+<p>3. <strong>Run the head-to-head on your own corpus.</strong> The 0.0276 is on SAVIOR-Bench v1. Your finance documents are not SAVIOR-Bench. The honest test is your own.</p>
+<h2>Sources</h2>
+<ul>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/paper/SAVIOR-Bench.md</code> — §5.1.1 parse-intent panel (hyperapi-parse-intent <code>[FT]</code> F1 0.8328 / WER 0.2589 vs GPT-4o 0.8052 / 0.4232); §5.1.2 OCR panel (precision / recall / PaIRS rows); §5 limitations + <code>ci95=null</code>; W6 0/23 audit footnote.</li>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/results/DC-000__parse-intent-inhouse-v1__hyperapi-parse-intent.json</code> (and the corresponding zero-shot rows).</li>
+<li><code>~/Desktop/hyperapi-documentapi-benchmark-factory/leaderboard/CONSOLIDATED-150/CONSOLIDATED-150.md</code> — parse-intent row references.</li>
+<li>Hyperbots IDP <code>dataset_95</code> baseline 0.3573 — parse-deep benchmark framework §4.1 H5 + CONSOLIDATED-150.</li>
+<li>LoRA recipe — SAVIOR-Bench Appendix A.</li>
+<li>Serving profile ~$0.19/1,000 successful calls on A100-40GB — HF model-card drafts (infrastructure-derived).</li>
+</ul>
+<h2>Open assumptions</h2>
+<ul>
+<li>DRAFT — external publication human-gated; 2026-05-20 LinkedIn pause in effect.</li>
+<li>GPT-4o cited as a <strong>foundation-model benchmark baseline</strong> on a shared corpus — measured data, not vendor disparagement. Figures are model parse-intent / OCR performance, not product accuracy.</li>
+<li>SAVIOR-Bench v1 is <strong>user-attested 2026-05-18, not factory-reproduced</strong> (W6 audit re-derived 0/23); <code>ci95=null</code>. No independent-reproduction claim is made; the only reproducible surface is the 12-cell SEED leaderboard.</li>
+<li>The +0.0276 F1 / −0.1643 WER figures are specific to the SAVIOR-Bench v1 parse-intent panel; not asserted as a general claim across all tasks or corpora.</li>
+<li>Hyperbots = &quot;open-source backbones fine-tuned by Hyperbots (Hyperbots IP)&quot; — never closed-source ownership of open weights.</li>
+<li>The dataset_95 0.3573 baseline is the current factory-reproduced full-pipeline number; no forward-looking number is claimed.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>
