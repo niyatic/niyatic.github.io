@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Independent audit (0 discrepancies) — Month-end AR pack — Hyperbots</title>
+<style>
+  :root{--ink:#0f1c2e;--mut:#5b6b7d;--line:#dde4ec;--bg:#f6f8fb;--card:#fff;--accent:#1f3a5f}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font:15px/1.55 -apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
+  header{background:var(--accent);color:#fff;padding:16px 26px}
+  header h1{font-size:20px}header .s{font-size:13px;opacity:.85;margin-top:3px}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 26px 70px}
+  .wrap h1{font-size:21px;margin:10px 0 14px}
+  h2{font-size:17px;color:var(--accent);margin:26px 0 10px}
+  p{margin:8px 0;max-width:78ch}
+  p.src{font-size:12.5px;color:var(--mut);font-style:italic}
+  hr{border:0;border-top:1px solid var(--line);margin:22px 0}
+  pre{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;
+      font:12.5px/1.45 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;overflow-x:auto;margin:12px 0}
+  code{background:#eef3f8;padding:1px 6px;border-radius:4px;font-size:12px}
+  pre code{background:none;padding:0}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0;background:var(--card);
+        border:1px solid var(--line);border-radius:10px}
+  th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line)}
+  th{font-size:11px;text-transform:uppercase;letter-spacing:.4px;color:var(--mut)}
+  .banner{border-radius:8px;padding:8px 18px;font-size:12.5px;background:#FEF3E2;
+          border:1px solid #f1c876;color:#92621a;text-align:left}
+</style>
+</head>
+<body>
+<div style="position:fixed;top:14px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.18)">
+  <a href="/marketing/case-studies/" title="Hyperbots content hub">
+    <img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block">
+  </a>
+</div>
+<div class="banner">
+  <b>Case study — anonymized.</b> Operator and all customer-account names replaced
+  (<code>Customer A</code>, <code>Chain 1</code>&ndash;<code>Chain 36</code>); source workbook referenced as
+  <code>aging-source-anonymized.xlsb</code>. All figures, dates, and methodology preserved verbatim.
+</div>
+<header>
+  <h1>Independent audit — 0 discrepancies <span style="font-size:14px;opacity:.85;font-weight:400">· case study · anonymized</span></h1>
+  <div class="s">Companion review file for the <a href="month-end-ar-pack.html" style="color:#fff">month-end AR pack</a> — every numeric claim independently recomputed from the raw source.</div>
+</header>
+<div class="wrap">
+<h1>01b — Data Analysis: Visualized + FP&amp;A Audit</h1>
+<p><b>Companion to:</b> <code>01-data-analysis.md</code>. <b>Purpose:</b> Visual representation of every major finding + an independent audit pass that recomputes each numeric claim against the raw <code>.xlsb</code> from scratch. <b>Source:</b> <code>aging-source-anonymized.xlsb</code>, sheet <code>RawData</code>, header row 4.</p>
+<hr>
+<h2>Executive read</h2>
+<p>517,758 customer-bucket-snapshot rows over 52 snapshots (May 2023 → Apr 2026). At the latest snapshot (2026-04-26) total AR is <b>$71,852,567.94</b>; <b>25.4% ($18.25M) is aged &gt;90 days</b>; one entity (<code>ecc</code>) carries 80.9%; top 10 customers carry 29.8%; Chain 12 is the single-name red flag (&gt;90% of its balance aged 90+). Every figure below has been independently recomputed — see Audit Findings (§9). <b>Audit result: 0 discrepancies.</b></p>
+<hr>
+<h2>1. Snapshot cadence timeline</h2>
+<p>The file is NOT a constant-cadence series. Monthly through 2024, then weekly from 2025.</p>
+<pre>2023  May─Jun─Jul─Aug─Sep─Oct─Nov─Dec      (monthly, month-end)
+2024  Jan─Feb─Mar─Apr─May─Jun─Jul─Aug─Sep─Oct─Nov─Dec  (monthly)
+2025  Jan‧‧‧ → shifts to WEEKLY (Sunday cadence) ‧‧‧‧‧‧‧‧‧‧‧‧‧‧‧‧
+2026  ‧W‧W‧W‧W‧W‧W‧W‧W‧W‧W‧W‧W‧W‧W‧W‧W‧W  → 2026-04-26 (latest)
+      └────────────── 52 snapshots total ──────────────┘</pre>
+<p><b>Implication:</b> all time-series charts must use true calendar dates on the x-axis. A 52-point index plot compresses 18 monthly points and 34 weekly points into equal width and distorts the trend.</p>
+<p class="src">Source: <code>df.groupby(df.date.dt.to_period("M")).size()</code> over the converted frame.</p>
+<hr>
+<h2>2. Aging bucket distribution (latest snapshot, by $)</h2>
+<pre>Current   ████████████████████████████████  $32.62M  45.4%
+1-30      ████████████                       $12.40M  17.3%
+181-360   ██████                             $ 6.49M   9.0%
+31-60     ██████                             $ 6.04M   8.4%
+Over 360  █████                              $ 4.97M   6.9%
+61-90     ██▌                                $ 2.55M   3.5%
+151-180   ██▎                                $ 2.28M   3.2%
+121-150   ██▎                                $ 2.27M   3.2%
+91-120    ██▏                                $ 2.23M   3.1%
+                                              ───────
+                              TOTAL           $71.85M  100%</pre>
+<p><code>Current</code> at 45.4% is below the 55-65% norm for healthy B2B distribution. Combined <code>&gt;120</code> ($15.0M, 20.9%) and standalone <code>Over 360</code> ($4.97M) are write-off / reserve-review territory.</p>
+<p class="src">Source: <code>dl.groupby("bucket")["bal"].sum()</code> at <code>date == max(date)</code>.</p>
+<hr>
+<h2>3. Operating-entity composition (latest, by $)</h2>
+<pre>ecc          ████████████████████████████████████████  $58.10M  80.9%
+b1west       ███                                        $ 4.15M   5.8%
+b1midwest    ██▌                                        $ 3.56M   5.0%
+b1texas      █▋                                         $ 2.38M   3.3%
+b1southeast  █▌                                         $ 2.20M   3.1%
+b1florida    ▌                                          $ 0.68M   0.9%
+vipershine   ▎                                          $ 0.33M   0.5%
+b1canada     ▏                                          $ 0.24M   0.3%
+b1slam       ▏                                          $ 0.22M   0.3%</pre>
+<p><code>ecc</code> dominates. Any unfiltered aggregate is effectively an <code>ecc</code> view. The dashboard must default to an entity filter and support per-entity drill.</p>
+<p class="src">Source: <code>dl.groupby("company")["bal"].sum()</code>.</p>
+<hr>
+<h2>4. Top 10 customers by total balance (latest)</h2>
+<pre>Chain 15 - 10112         ████████████████████  $5.18M
+Chain 14 - 12335         ██████████            $2.67M
+Chain 11 - 10083         ████████              $2.05M
+Chain 22 - 10162         ████████              $2.03M
+Chain 10 - 13523         ███████▋              $1.98M
+Chain 9 - 14426          ██████▌               $1.69M
+Chain 13 - 10097         ██████                $1.52M
+Chain 12 - 10096         █████▋                $1.48M
+Chain 8 - 12601          █████▌                $1.44M
+Chain 6 - 10087          █████▌                $1.42M
+                          ─────────────────────
+            Top 10 = $21.44M = 29.8% of total AR</pre>
+<p class="src">Source: <code>dl.groupby("cgclean")["bal"].sum().nlargest(10)</code>.</p>
+<hr>
+<h2>5. Top 10 by &gt;90-day exposure (latest)</h2>
+<pre>Chain 12 - 10096                     ████████████████  $1.33M  ◀ #8 by balance, #1 by aged
+Chain 14 - 12335                     ██████████        $0.87M
+Chain 7 - 12224                      ███████▌          $0.63M
+Chain 20 - 22865                     █████▊            $0.49M
+Chain 5 - 18547                      ████▋             $0.39M
+Chain 22 - 10162                     ████▎             $0.36M
+Chain 2 - 10098                      ███▋              $0.31M
+Chain 1 - 19192                      ███▌              $0.30M
+Chain 17 - 22441                     ███▌              $0.30M
+Chain 21 - 20630                     ███▎              $0.27M</pre>
+<p><b>Chain 12 is the standout:</b> $1.33M of its $1.48M total balance is aged &gt;90 (~90%). This is a single-name credit event the dashboard must surface independently — it does not stand out on a total-balance view (ranks #8) but is #1 on aged exposure.</p>
+<p class="src">Source: <code>o90 = dl[dl.o90]; o90.groupby("cgclean")["bal"].sum().nlargest(10)</code>.</p>
+<hr>
+<h2>6. &gt;90 exposure context</h2>
+<pre>Total AR (latest)     ████████████████████████████████████████  $71.85M
+&gt;90 exposure          ██████████▏                                $18.25M  (25.4%)
+Over-360 alone        ██▊                                        $ 4.97M  ( 6.9%)</pre>
+<p>Over a quarter of the book is aged past 90. The Over-360 slice alone — $4.97M across 1,557 customer-bucket rows — is past most write-off triggers and still accreting age. This is the panel CFOs anchor on.</p>
+<p class="src">Source: <code>o90.bal.sum() / dl.bal.sum()</code>.</p>
+<hr>
+<h2>7. Bucket-migration mechanism</h2>
+<p>The file carries <code>Prior Date</code> + <code>Prior Balance</code> per row, enabling defensible week-over-week migration detection without external data:</p>
+<pre>Snapshot N-1            Snapshot N
+┌──────────┐            ┌──────────┐
+│ Current  │──stays────▶│ Current  │   (good)
+│ 31-60    │──ages─────▶│ 61-90    │   (watch)
+│ 61-90    │──ages─────▶│ 91-120   │   (FLAG: new to &gt;90)
+│ 91-120   │──pays─────▶│ Current  │   (recovery)
+│ Over 360 │──grows────▶│ Over 360 │   (FLAG: write-off candidate accreting)
+└──────────┘            └──────────┘</pre>
+<p>The "new to &gt;90" and "Over-360 growing" transitions are the highest-value signals in the dataset and drive the watchlist panel (dashboard plan Step 8).</p>
+<hr>
+<h2>8. Data-quality summary</h2>
+<pre>Negative-balance rows   ████████████████████  112,363  (21.7%)  unapplied cash / credit memos
+NaN-balance rows        █▎                       6,463  ( 1.2%)  prior activity, no current bal
+IsUnappliedCash=True    ████████████████████▍  113,322  (21.9%)  ≈ but ≠ neg-bal count
+Zero-balance rows       ▏                            3</pre>
+<p>The negative-balance vs IsUnappliedCash mismatch (112,363 vs 113,322 — within ~1%) means some negative-balance rows are NOT flagged as unapplied cash → genuine open credits booked in aging rows. Treat <code>balance &lt; 0</code> as the canonical credit signal; net per customer before presenting.</p>
+<p class="src">Source: <code>(df.bal&lt;0).sum()</code>, <code>df.bal.isna().sum()</code>, <code>df.unappcash.value_counts()</code>.</p>
+<hr>
+<h2>9. Audit Findings — independent recompute</h2>
+<p>An independent pass re-loaded the raw <code>.xlsb</code> (header=3, columns sliced 0-18, balance coerced numeric, Excel-serial dates converted) and recomputed every numeric claim in <code>01-data-analysis.md</code> <b>without reference to the original computation</b>. Method: fresh <code>pandas.read_excel(engine="pyxlsb")</code>, independent column mapping, independent aggregation.</p>
+<table>
+<thead><tr><th>Claim in <code>01-data-analysis.md</code></th><th>Stated</th><th>Independent recompute</th><th>Tie?</th></tr></thead>
+<tbody>
+<tr><td>Total rows (main table)</td><td>517,758</td><td>517,758</td><td>✅</td></tr>
+<tr><td>Distinct snapshots</td><td>52</td><td>52</td><td>✅</td></tr>
+<tr><td>Latest snapshot date</td><td>2026-04-26</td><td>2026-04-26</td><td>✅</td></tr>
+<tr><td>Total AR at latest</td><td>$71,852,567.94</td><td>$71,852,567.94</td><td>✅</td></tr>
+<tr><td>&gt;90 exposure at latest</td><td>$18,246,759.85 (25.4%)</td><td>$18,246,759.85 (25.4%)</td><td>✅</td></tr>
+<tr><td>Distinct CustomerGroupID</td><td>7,283</td><td>7,283</td><td>✅</td></tr>
+<tr><td>Distinct CustomerGroup</td><td>6,722</td><td>6,722</td><td>✅</td></tr>
+<tr><td>Negative-balance rows</td><td>112,363</td><td>112,363</td><td>✅</td></tr>
+<tr><td>NaN-balance rows</td><td>6,463</td><td>6,463</td><td>✅</td></tr>
+<tr><td>Top customer (balance)</td><td>Chain 15 - 10112 $5,178,245.62</td><td>Chain 15 - 10112 $5,178,245.62</td><td>✅</td></tr>
+<tr><td>#2 (balance)</td><td>Chain 14 - 12335 $2,666,169.30</td><td>Chain 14 - 12335 $2,666,169.30</td><td>✅</td></tr>
+<tr><td>Top &gt;90 customer</td><td>Chain 12 - 10096 $1,333,190.00</td><td>Chain 12 - 10096 $1,333,190.00</td><td>✅</td></tr>
+<tr><td>Current bucket</td><td>$32,616,811.58</td><td>$32,616,811.58</td><td>✅</td></tr>
+<tr><td>1-30 bucket</td><td>$12,402,703.67</td><td>$12,402,703.67</td><td>✅</td></tr>
+<tr><td>Over 360 bucket</td><td>$4,971,694.77</td><td>$4,971,694.77</td><td>✅</td></tr>
+<tr><td>ecc entity total</td><td>$58,101,413.09</td><td>$58,101,413.09</td><td>✅</td></tr>
+<tr><td>b1west entity total</td><td>$4,146,126.30</td><td>$4,146,126.30</td><td>✅</td></tr>
+</tbody>
+</table>
+<p><b>Audit result: 0 discrepancies. Every claim in <code>01-data-analysis.md</code> reproduces exactly from the raw file.</b></p>
+<p>One incidental note: a CSV round-trip of the raw data (an intermediate working artifact, not used for the analysis) produced 517,759 rows due to a header-handling artifact in that conversion path. The authoritative read (<code>engine="pyxlsb", header=3</code>) yields 517,758, which is what the analysis used and what this audit confirms. The working CSV is gitignored and is not a deliverable.</p>
+<hr>
+<h2>10. Reproducibility</h2>
+<p>Every number above is reproducible with this snippet:</p>
+<pre>import pandas as pd
+df = pd.read_excel(
+    "aging-source-anonymized.xlsb",
+    sheet_name="RawData", engine="pyxlsb", header=3,
+).iloc[:, 0:18]
+df.columns = ["company","cgid","cgroup","bucket","unappcash","dser","bal","inv",
+              "pdser","pbal","pinv","cgclean","pastdue","o60","o90","o120","rank","rankpct"]
+df = df[df["company"].notna()]
+df["bal"]  = pd.to_numeric(df["bal"], errors="coerce")
+df["date"] = pd.Timestamp("1899-12-30") + pd.to_timedelta(
+                 pd.to_numeric(df["dser"], errors="coerce"), unit="D")
+
+latest = df["date"].max()
+dl  = df[df["date"] == latest]
+o90 = dl[dl["o90"] == True]
+
+dl["bal"].sum()                                  # 71,852,567.94
+o90["bal"].sum()                                 # 18,246,759.85  (25.4%)
+df["date"].nunique()                             # 52
+df["cgid"].nunique(), df["cgroup"].nunique()     # 7283, 6722
+(df["bal"] &lt; 0).sum(), df["bal"].isna().sum()    # 112363, 6463
+dl.groupby("cgclean")["bal"].sum().nlargest(10)  # top-10 by balance
+o90.groupby("cgclean")["bal"].sum().nlargest(10) # top-10 by &gt;90
+dl.groupby("bucket")["bal"].sum()                # bucket distribution
+dl.groupby("company")["bal"].sum()               # entity distribution</pre>
+<p>Pinned versions: pandas, pyxlsb. Excel serial epoch: <code>1899-12-30</code> (Excel 1900 date system with the standard 2-day offset). No seeds required — every operation is deterministic.</p>
+<p class="src" style="margin-top:26px">Back to the <a href="month-end-ar-pack.html">month-end AR pack case study</a>.</p>
+</div>
+</body>
+</html>
