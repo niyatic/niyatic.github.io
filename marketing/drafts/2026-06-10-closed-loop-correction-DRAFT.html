@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8" />
+<title>Closed-Loop Correction: How Hyperbots Keeps Extraction Accurate Over Time</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Production document extraction has uncertainty. Hyperbots handles it with closed-loop correction: confidence-thresholded auto-accept, exception routing for the long tail, and a feedback signal that retrains the next model." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --brand-1:#F8FDFF;--brand-2:#EDFAFF;--brand-3:#DEEEF5;--brand-4:#BDDFEE;--brand-5:#77CDF2;--brand-6:#50B6E2;--brand-7:#1B7DA7;--brand-8:#047495;--brand-9:#07658D;
+    --grey-2:#F6F9F9;--grey-3:#EDF3F4;--grey-4:#E2ECEE;--grey-7:#CAD5D6;--grey-9:#8A9799;--grey-10:#748081;--grey-11:#596263;--grey-12:#211F26;
+    --ok-fg:#039855;--warn-fg:#DC6803;--err-fg:#D92D20;
+    --bg:var(--grey-2);--panel:#FFFFFF;--line:var(--grey-4);--txt:var(--grey-12);--muted:var(--grey-10);--accent:var(--brand-7);
+  }
+  *{box-sizing:border-box;}
+  body{background:var(--bg);color:var(--txt);font:14px/1.55 "Rubik",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:0;padding:0;}
+  a{color:var(--accent);text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  code,pre{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.6px;}
+  pre{background:var(--brand-1);border:1px solid var(--line);padding:12px 14px;border-radius:8px;overflow-x:auto;}
+  code{background:var(--brand-2);padding:1px 5px;border-radius:4px;}
+  pre code{background:none;padding:0;}
+  .wrap{max-width:920px;margin:0 auto;padding:24px 22px 72px;}
+  .draft{background:var(--warn-fg);color:#fff;font-weight:600;text-align:center;padding:9px 14px;border-radius:8px;font-size:12.5px;letter-spacing:.02em;margin-bottom:20px;}
+  header.hd{background:linear-gradient(160deg,var(--brand-3),var(--brand-1));border:1px solid var(--line);border-radius:14px;padding:26px 28px;margin-bottom:8px;}
+  header.hd h1{margin:0 0 8px;font-size:25px;font-weight:700;color:var(--brand-9);line-height:1.25;}
+  header.hd .sub{color:var(--grey-11);font-size:13.5px;}
+  .pill{display:inline-block;padding:2px 9px;border-radius:999px;font-size:11px;border:1px solid var(--brand-4);color:var(--brand-8);background:var(--brand-2);margin:3px 4px 0 0;}
+  .body{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:26px 30px;margin-top:14px;}
+  h2{color:var(--brand-8);font-size:19px;margin-top:30px;border-bottom:1px solid var(--line);padding-bottom:6px;}
+  h3{color:var(--brand-9);font-size:15.5px;margin-top:24px;}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:12.8px;}
+  th,td{border:1px solid var(--line);padding:6px 10px;text-align:left;}
+  th{background:var(--brand-2);color:var(--brand-8);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
+  td.num{text-align:right;font-variant-numeric:tabular-nums;}
+  .callout{background:var(--brand-2);border:1px solid var(--brand-4);border-left:3px solid var(--brand-7);border-radius:8px;padding:12px 16px;margin:14px 0;font-size:13px;}
+  .warnbox{background:#FFF6ED;border:1px solid #F4D9B5;border-left:3px solid var(--warn-fg);border-radius:8px;padding:12px 16px;margin:14px 0;font-size:13px;}
+  .muted{color:var(--muted);font-size:12px;}
+  footer{margin-top:34px;color:var(--muted);font-size:11.5px;text-align:center;}
+</style>
+</head>
+<body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div>
+<div class="wrap">
+<div class="draft">DRAFT &mdash; pending CTO + brand-owner sign-off (2026-06-09)</div>
+
+<header class="hd">
+  <h1>Closed-Loop Correction: How Hyperbots Keeps Extraction Accurate Over Time</h1>
+  <div class="sub">Item 9 &middot; Angle: how Hyperbots handles uncertainty in production document extraction &middot; snapshot 2026-06-10</div>
+  <div style="margin-top:9px;">
+    <span class="pill">closed-loop correction</span>
+    <span class="pill">low-confidence routing</span>
+    <span class="pill">exception handling</span>
+    <span class="pill">automated correction + learning</span>
+  </div>
+</header>
+
+<div class="body">
+
+  <h2>1. Every extraction system has uncertainty &mdash; the question is whether you saw it</h2>
+  <p>Production document extraction has uncertainty. Tables sit at odd angles. A vendor sends the same invoice in three slightly different layouts across a quarter. A scan compresses a decimal point onto a horizontal rule. None of this is exotic; it is the long tail of real finance documents, and every extraction system in production handles it somewhere.</p>
+  <p>The interesting question is not <em>whether</em> a system has uncertainty &mdash; they all do &mdash; but whether the buyer ever gets to see it. A vendor page that quotes a single accuracy number with no mention of an exception path has not removed uncertainty; it has hidden where uncertainty is paid for.</p>
+  <p>Hyperbots takes the opposite approach: we expose the loop. Accuracy on apis.hyperbots.com is what it is per apis.hyperbots.com. What is published alongside it is the mechanism by which the remaining percentage is caught, routed, corrected, and folded back into the next model. We call that <strong>closed-loop correction</strong>, and this post is about how it works.</p>
+
+  <h2>2. The closed-loop correction pattern</h2>
+  <p>Closed-loop correction is a four-stage cycle on every document that flows through the API:</p>
+  <ol>
+    <li><strong>Extract with calibrated confidence.</strong> The extraction model emits a structured output and a per-field confidence score, calibrated against the labeled distribution.</li>
+    <li><strong>Threshold and route.</strong> High-confidence outputs are auto-accepted and emitted to the downstream system. Low-confidence outputs are routed to a tenant-owned exception queue (e.g. a controller's own approval workflow inside their ERP) rather than silently published.</li>
+    <li><strong>Capture corrections as labeled signal.</strong> When a corrected value is written back into the system of record, the API records the delta &mdash; original output, corrected value, document hash, field path &mdash; as a labeled training pair.</li>
+    <li><strong>Retrain and ship.</strong> On a defined cadence, the labeled pairs are folded into the next fine-tune of the open-source model fine-tuned by Hyperbots ("Hyperbots IP"). The new model is benchmarked against the previous version, gated on no-regression, and released.</li>
+  </ol>
+  <p>The pattern is automated end to end. The extraction is automated. The routing decision is automated. The capture of corrections is automated. The retraining cadence is automated. The only thing the loop deliberately does <em>not</em> automate is the tenant's own approval &mdash; because that is the customer's controls boundary, not ours.</p>
+
+  <h2>3. Three places the loop closes</h2>
+  <p>To make the pattern concrete, here are the three closure points, in the order a document hits them.</p>
+
+  <h3>(a) Confidence-thresholded auto-accept</h3>
+  <p>The first closure is the cheapest. For any field whose confidence sits above the per-tenant auto-accept threshold, the API emits the value to the downstream sink with no further action. This is the majority path. The threshold is configurable per tenant, per field, and per document class &mdash; a freight invoice may auto-accept "vendor name" but not "total amount due," because the cost of being wrong differs.</p>
+
+  <h3>(b) Exception routing for the long tail</h3>
+  <p>The second closure handles edge cases. Anything below the auto-accept threshold &mdash; ambiguous fields, novel layouts, low-quality scans, multi-page splits the model is uncertain about &mdash; is routed to an exception queue the tenant already owns. For most finance customers, that queue is a workflow already inside their ERP or AP system: the same queue they use today for any document needing controller attention. The point is not to invent a new approval surface; it is to surface the uncertain items into the controls the tenant already runs.</p>
+  <p>What gets routed is logged, structured, and idempotent: every routed item has a stable item id, a confidence vector, the model version, and the document hash, so the same document never gets routed twice.</p>
+
+  <h3>(c) Feedback into the next training run</h3>
+  <p>The third closure is what makes the loop a loop. Every correction written back into the tenant's system of record is captured as a labeled signal &mdash; original output, corrected value, field path, document fingerprint. Those pairs are de-identified per the privacy policy, accumulated into a training set, and folded into the next fine-tune of the open-source model fine-tuned by Hyperbots ("Hyperbots IP").</p>
+  <p>That is the closing edge of the loop. Without it, you have an extraction system with an exception queue. With it, you have an extraction system whose exception rate is supposed to fall over time &mdash; and you can measure whether it does.</p>
+
+  <h2>4. Why this is not the same as "the system can't ship without manual approval on every doc"</h2>
+  <p>Closed-loop correction sometimes gets confused, in shorthand, with framings that imply a person sits in the path of every document. That is not the Hyperbots architecture and it is not what we ship.</p>
+  <p>The high-confidence majority is auto-accepted. End of path. No one looks at it. The loop is reserved for the long tail &mdash; the documents where the model itself flagged uncertainty, where routing into the tenant's existing controls is the responsible default. As the model improves with each retraining cycle, the routed share shrinks. The architecture is automated correction plus a learning loop, not a system designed around per-document approvals.</p>
+  <div class="callout">If you cannot tell, from a vendor's docs, whether their headline accuracy number is the auto-accept rate or the post-correction rate &mdash; that is the sentence to ask them to write. The honest version of either number is informative. A vendor that cannot say which one they mean is selling a vibe.</div>
+
+  <h2>5. What "good" looks like &mdash; the ratio that should move</h2>
+  <p>If closed-loop correction is working, three numbers should move together over time, on a per-tenant basis:</p>
+  <table>
+    <thead><tr><th>Metric</th><th>What it measures</th><th>Direction over time</th></tr></thead>
+    <tbody>
+      <tr><td>Auto-accept rate</td><td>Share of fields above the auto-accept threshold</td><td>up</td></tr>
+      <tr><td>Routed share</td><td>Share of fields sent to the exception queue</td><td>down</td></tr>
+      <tr><td>Correction-to-retrain latency</td><td>Time from a captured correction to the next shipped model</td><td>down (asymptotically)</td></tr>
+    </tbody>
+  </table>
+  <p>None of these are headline marketing numbers. They are operational dials. A tenant six months in should see the routed share trending down on document classes they have been processing; if it isn't, the loop has a leak somewhere &mdash; the corrections aren't being captured, the retraining cadence is too slow, or the model isn't picking up the signal. All three are diagnosable, and all three are the kind of thing the loop is designed to surface.</p>
+  <p>Per-tenant accuracy on the auto-accept path is reported only as cited per apis.hyperbots.com. The point of this post is the mechanism, not the headline number; the headline number lives on the API page and is governed by the change log there.</p>
+
+  <h2>6. Why most vendors hide the loop</h2>
+  <p>If exposing the loop is honest, why is it not the default? Two reasons, both structural.</p>
+  <p>First, marketing copy is graded on the size of the accuracy number, not on the legibility of the exception path. A page that says "99% accuracy" and stops scores higher in a casual scan than a page that says "97% auto-accept, 3% routed to your exception queue, retraining cadence published." The first reads as confident; the second reads as fiddly. Both could describe the same system &mdash; one of them is just easier to procurement-deck.</p>
+  <p>Second, exposing the loop forces the vendor to commit to a measurement discipline. Once you publish auto-accept rate and routed share, you have to keep publishing them. You have to explain regressions. You have to gate retrains on no-regression. A flat "99% accuracy" claim has no such obligations.</p>
+  <p>Honest measurement is a floor we set for ourselves, because document extraction is uncertain enough that vendors who pretend otherwise are not safer to buy &mdash; they are just less observable.</p>
+
+  <h2>7. The takeaway for a buyer</h2>
+  <p>If you are evaluating document-extraction vendors, the three questions worth asking are about the loop, not about the headline number:</p>
+  <ol>
+    <li><strong>What is the auto-accept rate, and how is it calibrated?</strong> A vendor that cannot answer this is publishing a marketing number, not an operational one.</li>
+    <li><strong>Where do low-confidence items go?</strong> Into your existing controls, or into a vendor-owned surface you do not run? The first is integration; the second is dependency.</li>
+    <li><strong>How fast does a correction become a model update?</strong> A loop with a 12-month retrain cadence is not a learning loop on the timescale your finance ops live on.</li>
+  </ol>
+  <p>Hyperbots is designed around answering those three questions in the open, because closed-loop correction only works as a buyer-facing claim if you can show your work. The numbers that govern Hyperbots accuracy live on apis.hyperbots.com; the mechanism behind them is what this post described.</p>
+
+  <h2>Sources</h2>
+  <ul>
+    <li>CTO-org scoping memo for this item (filed under <code>plan/</code>, 2026-06-09) &mdash; recommends option (b) reframe; defines the closed-loop correction, exception handling, and low-confidence routing vocabulary used throughout this post.</li>
+    <li><code>~/Desktop/hyperapi-cto-org/.claude/agents/data-privacy-compliance.md</code> &mdash; hard guardrails (accuracy claims "per apis.hyperbots.com"; model identity = open-source fine-tuned by Hyperbots, "Hyperbots IP"; never-waived list).</li>
+    <li>User-memory entry on brand-guardrail framing (2026-05; never-waived) &mdash; forbids the legacy "person-in-the-path" vocabulary in external content; informs every word choice in this draft.</li>
+    <li>apis.hyperbots.com &mdash; the only canonical surface for Hyperbots accuracy claims; this post does not restate any specific numeric accuracy figure.</li>
+  </ul>
+
+  <h2>Open assumptions</h2>
+  <ol>
+    <li>The four-stage loop (extract &rarr; threshold &amp; route &rarr; capture &rarr; retrain) is the canonical description of Hyperbots' production correction architecture as of 2026-06-10. If the production architecture diverges, this post must be updated before publish.</li>
+    <li>"Tenant-owned exception queue" is read by buyers as the queue inside their own ERP / AP workflow &mdash; not a Hyperbots-hosted approval surface. If the product ships a hosted exception surface as a default, this framing needs adjustment.</li>
+    <li>The three operational dials (auto-accept rate, routed share, correction-to-retrain latency) are exposed to tenants in a form they can read; if they are internal-only today, the buyer-facing question set in section 7 needs softening.</li>
+    <li>"Open-source fine-tuned by Hyperbots (Hyperbots IP)" is the agreed external model-identity phrase; per the guardrail, no specific base-model SKU is named in this draft.</li>
+    <li>Accuracy claims are deferred to apis.hyperbots.com per guardrail; no numeric accuracy figure appears in this draft. If marketing wants a headline number in the lead, it must come from apis.hyperbots.com and be cited as such.</li>
+    <li>This is a DRAFT pending CTO + brand-owner sign-off on the item9 decision form (2026-06-09); external publication is gated on that signature.</li>
+  </ol>
+
+</div>
+
+<footer>Hyperbots content hub &middot; Item 9 reframe draft &middot; DRAFT &mdash; pending CTO + brand-owner sign-off (2026-06-09) &middot; light theme, Rubik</footer>
+</div>
+</body>
+</html>
