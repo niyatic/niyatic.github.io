@@ -38,7 +38,8 @@ tbody tr:nth-child(even){background:var(--grey-2);}
 strong{color:var(--grey-12);font-weight:600;}
 .footer{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);
   color:var(--grey-9);font-size:13px;}
-</style></head><body><div class="wrap"><div class="banner">DRAFT — pending review; external publish human-gated</div><div class="meta">Hyperbots Research · 2026-05-27</div><h1>Launching our parse testbench: 28 vendors, 4 doctypes, real gold</h1>
+</style></head><body>
+<div style="position:fixed;top:16px;right:18px;z-index:1000;background:#fff;border-radius:50%;padding:6px;box-shadow:0 2px 8px rgba(33,31,38,.12)"><a href="/" title="Hyperbots content hub"><img src="/assets/hyperbots-logo.svg" alt="Hyperbots" style="width:22px;height:22px;display:block"/></a></div><div class="wrap"><div class="banner">DRAFT — pending review; external publish human-gated</div><div class="meta">Hyperbots Research · 2026-05-27</div><h1>Launching our parse testbench: 28 vendors, 4 doctypes, real gold</h1>
 <p>A vendor&#x27;s PDF tells you what their system does on their documents, under their evaluation conditions. It does not tell you what it does on yours.</p>
 <p>That asymmetry is why we built a parse testbench. The bench covers 28 vendors across three measurement tracks — parse-intent F1, OCR edit-distance, and multi-corpus parse success rate — against three datasets with documented gold provenance. Every number on the leaderboard traces to an on-disk cell file. Cells that are PENDING-KEY or PENDING-CORPUS are honest nulls, not hidden rows.</p>
 <p>This post describes what we measure, what we have on disk today, and what&#x27;s pending.</p>
