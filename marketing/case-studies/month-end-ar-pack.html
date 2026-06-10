@@ -676,7 +676,7 @@ const TABS=[
      <span class="drill-disabled">Full latest snapshot — 11,328 rows backing Summary / Aging / Entity / Concentration (sample data not bundled)</span>
      <span class="drill-disabled">Chain 12 — every raw row, all 52 snapshots (1,503 rows) (sample data not bundled)</span>
      <span class="drill-disabled">Chain 15 — every raw row, all 52 snapshots (4,397 rows) (sample data not bundled)</span>
-     <a class="drill" href="data.json">Audited aggregate extract (data.json)</a>
+     <span class="drill-disabled">Audited aggregate extract (sample data not bundled)</span>
    </p>
    <p class="owner">Trace path: pack figure → data.json (audited aggregate) → latest-snapshot.csv
    (the 11,328 rows it aggregates) → original .xlsb. Per-customer figures drill straight to that
@@ -690,10 +690,10 @@ TABS.forEach((t,idx)=>{const b=document.createElement('button');b.innerHTML=t[0]
 const SRCBAR=`<div class="srcbar">
   <b>Source &amp; drill-down (next-level click):</b><br>
   <span class="drill-disabled">Original source file (.xlsb, 517,758 rows) (link removed in anonymized case study)</span>
-  <a class="drill" href="data.json">Audited data extract (data.json)</a>
+  <span class="drill-disabled">Audited data extract (sample data not bundled)</span>
   <span class="drill-disabled">Latest-snapshot raw rows (11,328 rows, 2026-04-26) (sample data not bundled)</span>
   <span class="drill-disabled">Raw parser view — first 200 rows (sample data not bundled)</span>
-  <a class="drill" href="../analysis/01b-data-analysis-visualized.md">Independent audit (0 discrepancies)</a>
+  <span class="drill-disabled">Independent audit (0 discrepancies) — review file not bundled</span>
   <br><span style="font-size:11.5px">Customer rows in the Concentration tab link to that customer's full raw-row history across all 52 snapshots.</span>
 </div>`;
 function sel(idx){[...tb.children].forEach((b,i)=>b.classList.toggle('on',i===idx));
