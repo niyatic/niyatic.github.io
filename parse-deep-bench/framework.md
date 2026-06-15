@@ -618,9 +618,9 @@ A=6, B=6, C=7, D=3, E=3, F=5, G=6, H=4, I=5, J=5 — **total 50.** Every categor
 
 ## §5 — Model panel
 
-**Total**: 26 commercial + 26 OSS + 8 stretch OSS = **60 rows.** Floor (≥15 each, ≥30 total) cleared. Current-frontier 2026-Q2 rows added: Claude Opus 4.8, GPT-5.5 thinking, Gemini 3 Pro, Mistral OCR 2, PaddleOCR-VL 1.6, MinerU 2.5-Pro, MonkeyOCR, MonkeyOCR-Pro-3B.
+**Total**: 46 commercial + 56 OSS + 8 stretch OSS = **110 rows.** Floor (≥15 each, ≥30 total) cleared by ~4×. Lit-sweep additions 2026-06-15 (50 rows) across enterprise IDP (ABBYY, Rossum, Hyperscience, Klippa, Mindee, Veryfi, Affinda, Sensible, Instabase, Indico, IBM Watson Discovery, Oracle DocUnderstanding), frontier multimodal hosted (xAI Grok-4 vision, Cohere Command R+ vision, DeepSeek V3 hosted, Qwen-Max, Reka Core, Fireworks AI Doc-Inlining, Together AI Llama-4-Vision), OSS layout-aware (TrOCR, Donut, LayoutLMv3, LiLT, Pix2Struct, Kosmos-2.5, Florence-2, UDOP, DocFormerV2, ERNIE-Layout, LayoutXLM, Vary-toy, MiniCPM-V 2.6 / MiniCPM-o, Idefics3, CogVLM2, InternLM-XComposer 2.5, DeepSeek-VL2, Phi-4-multimodal, Pixtral 12B, Molmo, Aria), table/structure specialists (Table Transformer / TATR, SmolDocling, olmOCR-2, RolmOCR, TextMonkey, StructEqTable, Kraken OCR, PP-StructureV3). Current-frontier 2026-Q2 rows retained: Claude Opus 4.8, GPT-5.5 thinking, Gemini 3 Pro, Mistral OCR 2, PaddleOCR-VL 1.6, MinerU 2.5-Pro, MonkeyOCR, MonkeyOCR-Pro-3B.
 
-### §5.1 — Commercial (n=22)
+### §5.1 — Commercial (n=46)
 
 | # | Model | Vendor | Access | Surface | FT? | Adapter shape | Status |
 |---|---|---|---|---|---|---|---|
@@ -650,8 +650,28 @@ A=6, B=6, C=7, D=3, E=3, F=5, G=6, H=4, I=5, J=5 — **total 50.** Every categor
 | C24 | OpenAI GPT-5.5 thinking (via Azure) | OpenAI/Azure | Azure OpenAI Service | Tx F | n | Azure OpenAI | PENDING-KEY · current-frontier-OpenAI |
 | C25 | Google Gemini 3 Pro | Google | Vertex / native | Tx F | n | hosted-REST | PENDING-KEY · current-frontier-Google |
 | C26 | Mistral OCR 2 (latest) | Mistral | hosted | Tx F | n | hosted-REST | PENDING-KEY |
+| C27 | ABBYY FineReader Engine | ABBYY | SDK / hosted | L T Tx B F | n | SDK | PENDING-KEY · enterprise-IDP incumbent |
+| C28 | ABBYY Vantage | ABBYY | hosted | L T Tx F | n | hosted-REST | PENDING-KEY |
+| C29 | Rossum | Rossum | hosted | T Tx F | n | hosted-REST | PENDING-KEY · invoice-IDP specialist |
+| C30 | Hyperscience | Hyperscience | hosted/on-prem | L T Tx F | n | hosted-REST | PENDING-KEY |
+| C31 | Klippa OCR API | Klippa | hosted | T Tx F | n | hosted-REST | PENDING-KEY · receipts/invoices |
+| C32 | Mindee docTR API | Mindee | hosted | Tx B F | n | hosted-REST | PENDING-KEY |
+| C33 | Veryfi Lens | Veryfi | hosted | T Tx F | n | hosted-REST | PENDING-KEY · receipts/expense |
+| C34 | Affinda Document AI | Affinda | hosted | T Tx F | n | hosted-REST | PENDING-KEY |
+| C35 | Sensible Configure | Sensible | hosted | Tx F | n | hosted-REST | PENDING-KEY · long-doc primitives |
+| C36 | Instabase Automation Foundation | Instabase | hosted/on-prem | L T Tx F | n | hosted-REST | PENDING-KEY · enterprise IDP |
+| C37 | Indico Intelligent Intake | Indico | hosted | T Tx F | n | hosted-REST | PENDING-KEY |
+| C38 | IBM Watson Discovery | IBM | hosted | L T Tx F | n | hosted-REST | PENDING-KEY |
+| C39 | Oracle Document Understanding | Oracle | OCI | L T Tx F | n | hosted-REST | PENDING-KEY |
+| C40 | xAI Grok-4 vision | xAI | native API | Tx F | n | OpenAI-shape chat | PENDING-KEY · frontier multimodal |
+| C41 | Cohere Command R+ vision | Cohere | native API | Tx F | n | hosted-REST | PENDING-KEY |
+| C42 | DeepSeek V3 hosted | DeepSeek | native API | Tx F | n | OpenAI-shape chat | PENDING-KEY |
+| C43 | Qwen-Max (Alibaba Cloud) | Alibaba | DashScope | Tx F | n | hosted-REST | PENDING-KEY |
+| C44 | Reka Core vision | Reka | native API | Tx F | n | hosted-REST | PENDING-KEY |
+| C45 | Fireworks AI Doc-Inlining | Fireworks | hosted | Tx F | n | hosted-REST | PENDING-KEY · low-cost VLM serving |
+| C46 | Together AI Llama-4-Vision hosted | Together | hosted | Tx F | n | hosted-REST | PENDING-KEY |
 
-### §5.2 — OSS / specialist (n=26 + 8 stretch)
+### §5.2 — OSS / specialist (n=56 + 8 stretch)
 
 | # | Model | Origin | Access | Surface | FT? | Adapter shape | Status |
 |---|---|---|---|---|---|---|---|
@@ -681,10 +701,50 @@ A=6, B=6, C=7, D=3, E=3, F=5, G=6, H=4, I=5, J=5 — **total 50.** Every categor
 | O24 | MinerU 2.5-Pro | OpenDataLab | local | L T Tx B | n | class-based | NEW · supersedes O5 for current-frontier |
 | O25 | MonkeyOCR | Yuliang-Liu | local | L T Tx B F | n | class-based vLLM | NEW |
 | O26 | MonkeyOCR-Pro-3B | Yuliang-Liu | local | L T Tx B F | n | class-based vLLM | NEW · 3B-param Pro variant |
+| O27 | TrOCR (base+large) | Microsoft | local | Tx | n | class-based HF | lit-sweep · transformer OCR baseline |
+| O28 | Donut | Naver Clova | local | Tx F | n | class-based HF | OCR-free doc understanding |
+| O29 | LayoutLMv3 | Microsoft | local | L Tx F | n | class-based HF | layout-aware classic |
+| O30 | LiLT | (community) | local | L Tx F | n | class-based HF | language-independent layout |
+| O31 | Pix2Struct | Google | local | Tx F | n | class-based HF | screenshot/doc pretraining |
+| O32 | Kosmos-2.5 | Microsoft | local | Tx B | n | class-based HF | OCR-free reading model |
+| O33 | Florence-2 (base+large) | Microsoft | local | Tx B F | n | class-based HF | grounded multimodal |
+| O34 | UDOP | Microsoft | local | L Tx F | n | class-based HF | unified doc processing |
+| O35 | DocFormerV2 | Amazon | local | L Tx F | n | class-based HF | document transformer |
+| O36 | ERNIE-Layout | Baidu | local | L Tx F | n | class-based HF | layout-pretrained, ZH-strong |
+| O37 | LayoutXLM | Microsoft | local | L Tx F | n | class-based HF | multilingual layout |
+| O38 | Vary-toy | DeepSeek | local | Tx F | n | class-based vLLM | vocab-expanded VLM (1.8B) |
+| O39 | MiniCPM-V 2.6 | OpenBMB | local | Tx F | n | class-based vLLM | 8B efficient VLM |
+| O40 | MiniCPM-o 2.6 | OpenBMB | local | Tx F | n | class-based vLLM | omni-modal extension |
+| O41 | Idefics3 | HuggingFace | local | Tx F | n | class-based vLLM | open multimodal |
+| O42 | CogVLM2 | Zhipu | local | Tx F | n | class-based vLLM | strong doc VQA |
+| O43 | InternLM-XComposer 2.5 | Shanghai AI Lab | local | Tx F | n | class-based vLLM | long-context multimodal |
+| O44 | DeepSeek-VL2 | DeepSeek | local | Tx F | n | class-based vLLM | MoE multimodal |
+| O45 | Phi-4-multimodal | Microsoft | local | Tx F | n | class-based vLLM | small but strong |
+| O46 | Pixtral 12B | Mistral | local | Tx F | n | class-based vLLM | open-weight multimodal |
+| O47 | Molmo 72B | Allen AI | local | Tx F | n | class-based vLLM | open multimodal w/ ptr-grounding |
+| O48 | Aria | Rhymes AI | local | Tx F | n | class-based vLLM | MoE multimodal |
+| O49 | Table Transformer (TATR) | Microsoft | local | T | n | class-based HF | table-detect + structure |
+| O50 | SmolDocling | HuggingFace | local | L T Tx F | n | class-based vLLM | 256M doc-converter |
+| O51 | olmOCR-2 | Allen AI | local | Tx F | n | class-based vLLM | open-license OCR, 2025 |
+| O52 | RolmOCR | Reducto | local | Tx F | n | class-based vLLM | open-weights from Reducto |
+| O53 | TextMonkey | (community) | local | Tx F | n | class-based vLLM | doc-VQA specialist |
+| O54 | StructEqTable | OpenDataLab | local | T | n | class-based HF | structured-equation tables |
+| O55 | Kraken OCR | (community) | local | Tx B | n | class-based | historical + multilingual |
+| O56 | PP-StructureV3 | PaddlePaddle | local | L T Tx | n | class-based | layout + table pipeline |
 
-**Total panel = 26 commercial + 26 OSS + 8 stretch = 60 rows (floor cleared).**
+**Total panel = 46 commercial + 56 OSS + 8 stretch = 110 rows (floor cleared by ~4×).**
 
-**Stretch OSS (n=8)** → O27 mPLUG-DocOwl 1.5 · O28 DeepSeek-OCR-2 · O29 Nanonets-OCR-s (open weights) · O30 LLaVA-1.6-34B · O31 InternVL2-26B/76B · O32 Llama-3.2-90B-Vision · O33 Llama-4-Maverick · O34 Youtu-Parsing.
+**Stretch OSS (n=8)** → O57 mPLUG-DocOwl 1.5 · O58 DeepSeek-OCR-2 · O59 Nanonets-OCR-s (open weights) · O60 LLaVA-1.6-34B · O61 InternVL2-26B/76B · O62 Llama-3.2-90B-Vision · O63 Llama-4-Maverick · O64 Youtu-Parsing.
+
+### §5.2.1 — Lit-sweep 2026-06-15 (sources surveyed for the +50)
+
+- **Enterprise IDP**: ABBYY (FineReader Engine + Vantage product line); Rossum (transactional-doc IDP); Hyperscience (DocLayNet-era leader); Klippa (receipts/IDs API); Mindee (docTR open + hosted API); Veryfi (Lens SDK); Affinda (resume + ID + invoice); Sensible (long-doc Configure); Instabase (Automation Foundation enterprise platform); Indico (Intelligent Intake); IBM (Watson Discovery); Oracle (Document Understanding on OCI).
+- **Frontier multimodal hosted (closed)**: xAI Grok-4 vision; Cohere Command R+ vision; DeepSeek V3 hosted; Alibaba Qwen-Max (DashScope); Reka Core vision; Fireworks AI Doc-Inlining; Together AI Llama-4-Vision serving tier.
+- **OSS doc-AI classics (still strong baselines)**: TrOCR · Donut · LayoutLMv3 · LiLT · Pix2Struct · Kosmos-2.5 · Florence-2 · UDOP · DocFormerV2 · ERNIE-Layout · LayoutXLM.
+- **OSS frontier open-weight VLMs**: Vary-toy · MiniCPM-V 2.6 + MiniCPM-o 2.6 · Idefics3 · CogVLM2 · InternLM-XComposer 2.5 · DeepSeek-VL2 · Phi-4-multimodal · Pixtral 12B · Molmo 72B · Aria.
+- **Table / structure / open-license OCR specialists**: Microsoft Table Transformer (TATR) · SmolDocling · Allen AI olmOCR-2 · Reducto RolmOCR · TextMonkey · OpenDataLab StructEqTable · Kraken · Paddle PP-StructureV3.
+
+Not added (deliberately out of scope): historical heuristic engines (Camelot, pdfplumber, Tabula, OCRopus) — kept as silver-source tooling per `BBOX-SILVER-PIPELINE-SPEC.md`, not as model-panel rows; sub-1B toy models without published OCR/doc evals; vendor-internal models with no API access.
 
 ### §5.3 — FT? column convention (I-4 machine-checkability)
 

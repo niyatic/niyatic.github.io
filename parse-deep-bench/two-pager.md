@@ -27,13 +27,15 @@ A pre-registered, third-party-anchored, ensemble-aware framework to defensibly a
 
 **Bijection** to the 2026-05-27 9-D spec preserved (every D-OCR/D-PARSE-INTENT/D-LAYOUT/D-BBOX/D-TABLE/D-DOC-QUALITY/D-LANG/D-DOWNSTREAM/D-COST-LATENCY maps to a D-XX). No dimension dropped.
 
-## §3 — The 60-row model panel (current-frontier-complete, 2026-Q2)
+## §3 — The 110-row model panel (lit-sweep complete, 2026-06-15)
 
-**26 commercial** + **26 OSS** + **8 stretch OSS** = 60 rows. Floor (≥15 each, ≥30 total) cleared comfortably.
+**46 commercial** + **56 OSS** + **8 stretch OSS** = **110 rows.** Floor (≥15 each, ≥30 total) cleared by ~4×. Lit-sweep 2026-06-15 added 50 rows across enterprise IDP, frontier multimodal hosted, OSS doc-AI classics, OSS frontier open-weight VLMs, and table/structure specialists — see framework §5.2.1 for the source survey.
 
-- **Frontier closed-source**: Anthropic Claude Opus 4.8 · Sonnet 4.6 · Haiku 4.5 · OpenAI GPT-5.5 thinking + GPT-5.4 + GPT-4.1 + o3 (all via Azure OpenAI Service per `[[azure-openai-preferred]]`) · Google Gemini 3 Pro + Gemini 3 Flash + Gemini 2.5 Pro · Mistral OCR 2.
-- **Doc-AI commercial**: Azure DI prebuilt-{layout,document,invoice} · AWS Textract · Google DocAI (form parser + OCR) · LlamaParse Agentic + non-agentic · Reducto · Extend Parse 2.0 · LandingAI · Unstructured.io · Nanonets.
-- **Frontier OSS / VLM-OCR**: Chandra (datalab-to/chandra-ocr-2 @ self-hosted vLLM) · MonkeyOCR + MonkeyOCR-Pro-3B (new) · PaddleOCR-VL 1.5 + 1.6 (new) · MinerU 2.5 + 2.5-Pro (new) + MinerU Pro hosted-OSS · DOTS-OCR · GLM-OCR · GOT-OCR 2.0 · Qwen 3-VL-235B · Marker 1.0 · Surya · Docling · Nougat · FireRed-OCR · Logics-Parsing-v2 · Tesseract 5.x · PaddleOCR v4 · EasyOCR · OpenOCR.
+- **Frontier closed-source**: Anthropic Claude Opus 4.8 · Sonnet 4.6 · Haiku 4.5 · OpenAI GPT-5.5 thinking + GPT-5.4 + GPT-4.1 + o3 (all via Azure OpenAI Service per `[[azure-openai-preferred]]`) · Google Gemini 3 Pro + Gemini 3 Flash + Gemini 2.5 Pro · Mistral OCR 2 · **xAI Grok-4 vision** · **Cohere Command R+ vision** · **DeepSeek V3 hosted** · **Qwen-Max** · **Reka Core**.
+- **Doc-AI commercial**: Azure DI prebuilt-{layout,document,invoice} · AWS Textract · Google DocAI (form parser + OCR) · LlamaParse Agentic + non-agentic · Reducto · Extend Parse 2.0 · LandingAI · Unstructured.io · Nanonets · **ABBYY (FineReader + Vantage)** · **Rossum** · **Hyperscience** · **Klippa** · **Mindee** · **Veryfi** · **Affinda** · **Sensible** · **Instabase** · **Indico** · **IBM Watson Discovery** · **Oracle Document Understanding** · **Fireworks AI Doc-Inlining** · **Together AI Llama-4-Vision**.
+- **Frontier OSS / VLM-OCR**: Chandra (datalab-to/chandra-ocr-2 @ self-hosted vLLM) · MonkeyOCR + MonkeyOCR-Pro-3B · PaddleOCR-VL 1.5 + 1.6 · MinerU 2.5 + 2.5-Pro + MinerU Pro hosted-OSS · DOTS-OCR · GLM-OCR · GOT-OCR 2.0 · Qwen 3-VL-235B · Marker 1.0 · Surya · Docling · Nougat · FireRed-OCR · Logics-Parsing-v2 · Tesseract 5.x · PaddleOCR v4 · EasyOCR · OpenOCR · **PP-StructureV3**.
+- **OSS doc-AI classics + open-weight VLMs (lit-sweep)**: TrOCR · Donut · LayoutLMv3 · LiLT · Pix2Struct · Kosmos-2.5 · Florence-2 · UDOP · DocFormerV2 · ERNIE-Layout · LayoutXLM · Vary-toy · MiniCPM-V 2.6 + MiniCPM-o 2.6 · Idefics3 · CogVLM2 · InternLM-XComposer 2.5 · DeepSeek-VL2 · Phi-4-multimodal · Pixtral 12B · Molmo 72B · Aria.
+- **Table / structure / open-license OCR specialists**: Microsoft Table Transformer (TATR) · SmolDocling · Allen AI olmOCR-2 · Reducto RolmOCR · TextMonkey · StructEqTable · Kraken OCR.
 - **Hyperbots-IP `[FT]`** (modesty-anchored, contamination-audited): Qwen 3.6-35B-A3B `[FT]` (also pinned as D-36 extractor) · Qwen 2.5-VL-7B-F `[FT]` · Qwen 2.5-VL-3B-F `[FT]` · hyperapi-parse-intent `[FT]`.
 - **Stretch (8)**: mPLUG-DocOwl 1.5 · DeepSeek-OCR-2 · Nanonets-OCR-s · LLaVA-1.6-34B · InternVL2-26B/76B · Llama-3.2-90B-Vision · Llama-4-Maverick · Youtu-Parsing.
 
@@ -78,7 +80,7 @@ Zero cells run · $0 burned · no quota touched · no broadcasts fired.
 ## §8 — Decisions requested from reviewer
 
 1. **APPROVE / APPROVE-WITH-CHANGES / REJECT** on the 50-dim list — anything missing? anything to cut?
-2. **Panel completeness sign-off** — the 60 rows now include Opus 4.8, GPT-5.5, Gemini 3 Pro, Mistral OCR 2, PaddleOCR-VL 1.6, MinerU 2.5-Pro, MonkeyOCR + MonkeyOCR-Pro-3B per 2026-06-11 feedback; any further additions?
+2. **Panel completeness sign-off** — 110 rows after the 2026-06-15 lit-sweep (+50 across enterprise IDP, frontier multimodal hosted, OSS doc-AI, open-weight VLMs, and table specialists). Any further additions / cuts before BUILD-v1 wires adapters?
 3. **Q-DR-5** (CEO): for D-15 capital-markets — restrict HyperAPI scope to AP/AR + payments + forms, OR fund a capital-markets fine-tune to bring T-11/T-12 into the doc-type set?
 4. **BLK-16 Option A (wait reset) vs Option B (paid-tier upgrade)** for HyperAPI quota — blocks the HyperAPI parse + classify columns.
 5. **Greenlight BUILD-v1?** — cell execution, gated on (3) + (4) + partner-corpus consent.
