@@ -1,0 +1,149 @@
+<!doctype html><html><head><meta charset=utf-8><title>Parse Deep Benchmark v1 — 2-page review brief</title><style>
+@page { size: A4; margin: 14mm 16mm; }
+body { font: 11pt/1.45 -apple-system, "Helvetica Neue", Arial, sans-serif; color:#1a1a1a; max-width: 800px; margin: 0 auto; padding: 18px 22px; }
+h1 { font-size: 18pt; margin: 0 0 4pt; }
+h2 { font-size: 13pt; margin: 14pt 0 6pt; padding-bottom: 3pt; border-bottom: 1px solid #ddd; }
+h3 { font-size: 11pt; margin: 10pt 0 4pt; color:#444; }
+p, li { font-size: 10.5pt; }
+table { border-collapse: collapse; width: 100%; font-size: 9.5pt; margin: 6pt 0 10pt; }
+th, td { border: 1px solid #ccc; padding: 4pt 6pt; text-align: left; vertical-align: top; }
+th { background: #f4f4ef; font-weight: 600; }
+code { font-family: ui-monospace, Menlo, monospace; font-size: 9.5pt; background: #f4f4ef; padding: 0 3px; border-radius: 2px; }
+hr { border: 0; border-top: 1px solid #ddd; margin: 12pt 0; }
+strong { color: #000; }
+em { color: #555; }
+ul { padding-left: 18pt; margin: 4pt 0; }
+</style></head><body><h1>Parse Deep Benchmark v1 — 2-page review brief</h1>
+<p>Date: 2026-06-11 · Status: BUILD-v0 (spec only · zero cells run · $0) · Bar: ParseBench / NeurIPS-paper, strictly above SAVIOR-Bench
+Approval: PENDING build-v0 review (chief-research-scientist · chief-architect · docs-techwriter · benchmark-format-steward)
+Companion: full spec at <code>PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-06-11-v1.md</code> · dashboard at <code>parse-deep-build-v0/index.html</code></p>
+<hr />
+<h2>§1 — What this is, in one paragraph</h2>
+<p>A pre-registered, third-party-anchored, ensemble-aware framework to defensibly answer <strong>"is the HyperAPI parse primitive the best general parsing primitive across finance documents."</strong> 50 dimensions across image / text / doc-type / language / density / CV / enterprise / NLP / print / repro. A 60-row commercial-vs-OSS model panel. A 16-type × 50-dim matrix (800 cell-classes). Engineered to <strong>succeed whether HyperAPI parse wins or loses on any dimension</strong> — researcher-not-advocate. Inherits SAVIOR-Bench Appendix D 4-part cell contract; lifts the bar to ParseBench-style per-rule = per-doc score vectors, paired-bootstrap CIs, Holm-Bonferroni multiplicity correction, contamination + held-out audit, NeurIPS reproducibility checklist.</p>
+<h2>§2 — The 50 dimensions (A–J)</h2>
+<table>
+<thead>
+<tr>
+<th>Cat</th>
+<th>#</th>
+<th>Theme</th>
+<th>Notable dims</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>6</td>
+<td>Image / scan quality</td>
+<td>D-01 DPI · D-02 MTF · D-04 dewarp · D-06 JPEG-Q</td>
+</tr>
+<tr>
+<td>B</td>
+<td>6</td>
+<td>Text / transcription</td>
+<td>D-07 recall · D-08 precision · D-11 CER · <strong>D-12 digit-MICR-fidelity</strong> (validates the "dumb-tool-wins-on-digits" F-B finding at scale)</td>
+</tr>
+<tr>
+<td>C</td>
+<td>7</td>
+<td>Doc-type strat</td>
+<td>D-13 AP/AR · D-14 payments · <strong>D-15 capital-markets</strong> (HyperAPI declared out-of-set per Q-DR-5 — honest fail expected)</td>
+</tr>
+<tr>
+<td>D</td>
+<td>3</td>
+<td>Language / script</td>
+<td>D-20 CER per script (EN/DE/FR/ES/ZH/JA/KO/AR/HI) · D-22 mixed-script</td>
+</tr>
+<tr>
+<td>E</td>
+<td>3</td>
+<td>Density / layout</td>
+<td><strong>D-23 layout-elem-accuracy</strong> (Chandra's native HTML lead) · D-25 PaIRS (PC-only secondary)</td>
+</tr>
+<tr>
+<td>F</td>
+<td>5</td>
+<td>Computer vision</td>
+<td>D-26 bbox-IoU · D-28 DocLayNet COCO-mAP · D-29 seg-IoU</td>
+</tr>
+<tr>
+<td>G</td>
+<td>6</td>
+<td>Enterprise doc AI</td>
+<td><strong>D-31 TABLE-GTRM</strong> (Chandra's F-B lead 0.800 re-anchored) · D-32 TEDS · D-34/35 KIE FUNSD/CORD · <strong>D-36 DOWNSTREAM-LIFT</strong> (CEO-required; paired-bootstrap on parse→extract chain)</td>
+</tr>
+<tr>
+<td>H</td>
+<td>4</td>
+<td>NLP / semantic</td>
+<td>D-37 parse-intent F1 · D-38 VQA-ANLS · D-40 classify</td>
+</tr>
+<tr>
+<td>I</td>
+<td>5</td>
+<td>Print / production</td>
+<td>D-41/42 lat-P50/P95-P99 · D-43 $/correct · D-45 page-scaling on ≥400pp T-11 class</td>
+</tr>
+<tr>
+<td>J</td>
+<td>5</td>
+<td>Repro / stat</td>
+<td>D-46 CI95 · D-47 paired-CI · D-48 IAA · <strong>D-49 factory-green gate</strong> · <strong>D-50 contamination-audit gate</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Bijection</strong> to the 2026-05-27 9-D spec preserved (every D-OCR/D-PARSE-INTENT/D-LAYOUT/D-BBOX/D-TABLE/D-DOC-QUALITY/D-LANG/D-DOWNSTREAM/D-COST-LATENCY maps to a D-XX). No dimension dropped.</p>
+<h2>§3 — The 60-row model panel (current-frontier-complete, 2026-Q2)</h2>
+<p><strong>26 commercial</strong> + <strong>26 OSS</strong> + <strong>8 stretch OSS</strong> = 60 rows. Floor (≥15 each, ≥30 total) cleared comfortably.</p>
+<ul>
+<li><strong>Frontier closed-source</strong>: Anthropic Claude Opus 4.8 · Sonnet 4.6 · Haiku 4.5 · OpenAI GPT-5.5 thinking + GPT-5.4 + GPT-4.1 + o3 (all via Azure OpenAI Service per <code>[[azure-openai-preferred]]</code>) · Google Gemini 3 Pro + Gemini 3 Flash + Gemini 2.5 Pro · Mistral OCR 2.</li>
+<li><strong>Doc-AI commercial</strong>: Azure DI prebuilt-{layout,document,invoice} · AWS Textract · Google DocAI (form parser + OCR) · LlamaParse Agentic + non-agentic · Reducto · Extend Parse 2.0 · LandingAI · Unstructured.io · Nanonets.</li>
+<li><strong>Frontier OSS / VLM-OCR</strong>: Chandra (datalab-to/chandra-ocr-2 @ self-hosted vLLM) · MonkeyOCR + MonkeyOCR-Pro-3B (new) · PaddleOCR-VL 1.5 + 1.6 (new) · MinerU 2.5 + 2.5-Pro (new) + MinerU Pro hosted-OSS · DOTS-OCR · GLM-OCR · GOT-OCR 2.0 · Qwen 3-VL-235B · Marker 1.0 · Surya · Docling · Nougat · FireRed-OCR · Logics-Parsing-v2 · Tesseract 5.x · PaddleOCR v4 · EasyOCR · OpenOCR.</li>
+<li><strong>Hyperbots-IP <code>[FT]</code></strong> (modesty-anchored, contamination-audited): Qwen 3.6-35B-A3B <code>[FT]</code> (also pinned as D-36 extractor) · Qwen 2.5-VL-7B-F <code>[FT]</code> · Qwen 2.5-VL-3B-F <code>[FT]</code> · hyperapi-parse-intent <code>[FT]</code>.</li>
+<li><strong>Stretch (8)</strong>: mPLUG-DocOwl 1.5 · DeepSeek-OCR-2 · Nanonets-OCR-s · LLaVA-1.6-34B · InternVL2-26B/76B · Llama-3.2-90B-Vision · Llama-4-Maverick · Youtu-Parsing.</li>
+</ul>
+<p>Adapter wires fall into 3 contract shapes (class-based image-input vLLM · hosted REST multipart · OpenAI-shape chat); 7 REGISTRY entries today vs ~53 to wire at BUILD-v1 — explicitly budgeted.</p>
+<h2>§4 — Methodology highlights (NeurIPS-bar)</h2>
+<ul>
+<li><strong>Pre-registration</strong>: this framework IS the pre-registration. Every cell ships with hypothesis · acceptance · rerunnable command · <code>nrun_status</code> (default <code>registered-not-yet-run</code>) before any number lands.</li>
+<li><strong>Decoding pins</strong> — 3 named families, machine-readable per cell:</li>
+<li><code>parse-deep</code> (T=0.1, top_p=0.9, max_tokens=2048) — 48 dimensions</li>
+<li><code>TR-000</code> (T=0, top_p=1, 4096) — D-31 GTRM, flagged <code>apples-to-oranges</code> per I-1</li>
+<li><code>extract</code> (T=0, top_p=1, 4096) — D-36 lift, flagged <code>apples-to-oranges</code></li>
+<li><strong>Stats</strong>: nonparametric bootstrap, resamples=2000, seed=20260516. Paired-bootstrap on D-36 lift. Holm-Bonferroni for cross-dimension headlines (family-wise α=0.05; per-dim α≈0.001).</li>
+<li><strong>Contamination</strong>: every <code>[FT]=y</code> row is audited vs SAVIOR-Train; unresolved overlap → cell stays <code>factory_reproduced=false</code> and renders red. Held-out 10% split per corpus.</li>
+<li><strong>Provenance</strong>: SAVIOR-Bench Appendix D 4-part contract — <code>provenance · pins · rerun_command · factory_reproduced</code> — on every cell. <code>factory_reproduced=false</code> at adapter emit time (TR-4); only <code>repro_check.py</code> flips it true.</li>
+<li><strong>Reproducibility checklist</strong>: 18 NeurIPS-2024 items answered item-by-item in <code>methodology.md §8</code>.</li>
+<li><strong>Comparative-study 8 invariants</strong> (I-1 apples-to-apples ... I-8 customer-name consent): per-claim enforced; machine-greppable.</li>
+</ul>
+<h2>§5 — Honesty register (cannot-measure-today)</h2>
+<ul>
+<li><strong>BLK-16</strong> HyperAPI quota exhausted → blocks HyperAPI parse + classify columns until reset OR CEO Option B (paid-tier upgrade).</li>
+<li><strong>BLK-17</strong> Chandra vLLM host <code>:8847</code> flaky → blocks Chandra cells; watcher armed.</li>
+<li><strong>BLK-18</strong> SAVIOR-Bench gold corpus off-disk → blocks SAVIOR-anchored D-07/08/25 rows until corpus obtained.</li>
+<li><strong>Partner consent</strong> required for T-09 pay stub · T-10 wire/ACH · T-13 tax form · T-14 insurance · T-15 loan · ZH/JA/KO/AR/HI scripts.</li>
+<li><strong>Structurally out-of-reach today</strong>: T-11 10-Q / T-12 investor-presentation — HyperAPI IDP doc-type set excludes; D-15 is an <em>expected fail</em> dimension; Q-DR-5 open to CEO (restrict scope vs fund capmkts FT).</li>
+</ul>
+<h2>§6 — License + customer-name discipline</h2>
+<p>License matrix (framework §9.1): ParseBench Apache-2.0 (the publishability anchor) · FUNSD/CORD/PubTabNet/DocLayNet/ChartQA permissive (public) · DocVQA CC-BY-NC (internal-only) · Hyperbots-internal corpora (no customer names) · SAVIOR partial (aggregate publishable per Appendix D). Customer-name 14-roster (verbatim from <code>_grep_guard.sh</code>) build-time-grep-guarded across every artifact. PII corpora synthetic-fill or partner-consent-gated.</p>
+<h2>§7 — What's in BUILD-v0 (this package)</h2>
+<ol>
+<li><code>PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-06-11-v1.md</code> — full spec (~500 LOC, §0–§14)</li>
+<li><code>parse-deep-build-v0/methodology.md</code> — NeurIPS reproducibility checklist</li>
+<li><code>parse-deep-build-v0/tasks-additive-DQ-001-050.json</code> — 50 task entries, ADDITIVE-ONLY</li>
+<li><code>parse-deep-build-v0/cell-schema-v1.1.json</code> — JSON Schema 2020-12, backward-compat</li>
+<li><code>parse-deep-build-v0/index.html</code> — dashboard scaffold (registered-not-yet-run state)</li>
+<li><code>parse-deep-build-v0/BUILD-V0-LEDGER-2026-06-11.md</code> — acceptance-criterion mapping + grep-guard self-check</li>
+</ol>
+<p>Zero cells run · $0 burned · no quota touched · no broadcasts fired.</p>
+<h2>§8 — Decisions requested from reviewer</h2>
+<ol>
+<li><strong>APPROVE / APPROVE-WITH-CHANGES / REJECT</strong> on the 50-dim list — anything missing? anything to cut?</li>
+<li><strong>Panel completeness sign-off</strong> — the 60 rows now include Opus 4.8, GPT-5.5, Gemini 3 Pro, Mistral OCR 2, PaddleOCR-VL 1.6, MinerU 2.5-Pro, MonkeyOCR + MonkeyOCR-Pro-3B per 2026-06-11 feedback; any further additions?</li>
+<li><strong>Q-DR-5</strong> (CEO): for D-15 capital-markets — restrict HyperAPI scope to AP/AR + payments + forms, OR fund a capital-markets fine-tune to bring T-11/T-12 into the doc-type set?</li>
+<li><strong>BLK-16 Option A (wait reset) vs Option B (paid-tier upgrade)</strong> for HyperAPI quota — blocks the HyperAPI parse + classify columns.</li>
+<li><strong>Greenlight BUILD-v1?</strong> — cell execution, gated on (3) + (4) + partner-corpus consent.</li>
+</ol>
+<hr />
+<p><em>Researcher-not-advocate · Hyperbots Research · 2026-06-11 · DRAFT INTERNAL until build-v0 reviewers verdict.</em></p></body></html>
