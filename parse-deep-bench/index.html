@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Parse Deep Benchmark v1 — registered-not-yet-run · BUILD-v0 scaffold</title>
+<meta name="description" content="50-dimension parse benchmark framework — pre-registration dashboard. BUILD-v0: no cells run yet." />
+<style>
+  :root {
+    --bg: #fafaf7; --fg: #1a1a1a; --muted: #6b6b6b; --line: #e5e5e0;
+    --reg: #c9a227; --running: #2a7ade; --green: #1f7a3f; --red: #b03030;
+    --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); font: 15px/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif; }
+  header { padding: 32px 48px 16px; border-bottom: 1px solid var(--line); background: #fff; }
+  header h1 { margin: 0 0 6px; font-size: 22px; font-weight: 600; }
+  header .sub { color: var(--muted); font-size: 13px; }
+  header .bar { margin-top: 14px; padding: 10px 14px; background: #fffbe6; border: 1px solid var(--reg); border-radius: 4px; font-size: 13px; }
+  header .bar strong { color: var(--reg); }
+  nav { padding: 12px 48px; border-bottom: 1px solid var(--line); background: #fff; font-size: 13px; }
+  nav a { color: var(--muted); margin-right: 16px; text-decoration: none; }
+  nav a:hover { color: var(--fg); }
+  main { padding: 32px 48px 64px; max-width: 1320px; }
+  section { margin-bottom: 48px; }
+  section h2 { font-size: 18px; font-weight: 600; margin: 0 0 12px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+  section h3 { font-size: 15px; font-weight: 600; margin: 24px 0 8px; color: var(--muted); }
+  p { margin: 0 0 12px; }
+  p.note { color: var(--muted); font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-weight: 600; background: #f4f4ef; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+  td.mono, code, pre { font-family: var(--mono); font-size: 12.5px; }
+  pre { background: #f4f4ef; padding: 10px 12px; border-radius: 3px; overflow-x: auto; }
+  .status { display: inline-block; padding: 2px 7px; border-radius: 3px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; font-family: var(--mono); }
+  .status.reg { background: #fffbe6; color: var(--reg); border: 1px solid #f0d97a; }
+  .status.running { background: #e7efff; color: var(--running); border: 1px solid #a4c0f0; }
+  .status.green { background: #e6f4ec; color: var(--green); border: 1px solid #7ac495; }
+  .status.red { background: #fbebe8; color: var(--red); border: 1px solid #e0a39a; }
+  .cat { color: var(--muted); font-size: 11px; font-family: var(--mono); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+  .card { padding: 12px 14px; border: 1px solid var(--line); border-radius: 4px; background: #fff; }
+  .card .id { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .card .name { font-weight: 600; margin: 4px 0 6px; }
+  .card .meta { font-size: 12px; color: var(--muted); }
+  footer { padding: 24px 48px; border-top: 1px solid var(--line); color: var(--muted); font-size: 12px; background: #fff; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Parse Deep Benchmark — v1 (BUILD-v0 scaffold)</h1>
+  <div class="sub">50 dimensions · 52-row commercial+OSS panel · pre-registered 2026-06-11 · ParseBench / NeurIPS-paper bar</div>
+  <div class="bar"><strong>BUILD-v0 — no cells have been run.</strong> Every cell below is in <span class="status reg">registered-not-yet-run</span> state. Numbers will only appear after `harness/repro_check.py` exits 0 on each cell at BUILD-v1.</div>
+</header>
+
+<nav>
+  <a href="#framing">Framing</a>
+  <a href="#dimensions">Dimensions (50)</a>
+  <a href="#matrix">Doc-type × dim matrix</a>
+  <a href="#panel">Model panel (52)</a>
+  <a href="#methodology">Methodology</a>
+  <a href="#ablations">Ablations</a>
+  <a href="#contamination">Contamination</a>
+  <a href="#leaderboard">Leaderboard (empty)</a>
+  <a href="#approval">Approval</a>
+</nav>
+
+<main>
+
+<section id="framing">
+  <h2>§0 — Honest framing</h2>
+  <p>Researchers, not advocates. The framework is engineered to defensibly answer "is the HyperAPI parse primitive the best general parsing primitive across finance documents" — and to do so in a way that succeeds whether parse wins or loses on any given dimension. The bar is <strong>ParseBench (arXiv:2604.08538) / NeurIPS-paper</strong>, strictly higher than SAVIOR-Bench.</p>
+  <p class="note">Inheritance: extends <code>PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-05-27.md</code> (9 dimensions D-OCR..D-COST-LATENCY) by adding 41 dimensions and renumbering all 50 into the D-01..D-50 namespace. No dimension is dropped; the bijection is at the framework spec §2.4.</p>
+</section>
+
+<section id="dimensions">
+  <h2>§3 — The 50 dimensions</h2>
+  <p class="note">Each dimension card carries: id · name · category · metric. Hypothesis + acceptance + rerunnable command live in <a href="../PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-06-11-v1.md">the framework spec §3</a>.</p>
+
+  <h3>A — Image / scan quality</h3>
+  <div class="grid">
+    <div class="card"><div class="id">D-01 · A-IMAGE · DQ-001</div><div class="name">IMG-DPI</div><div class="meta">effective_dpi+cer_delta · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-02 · A-IMAGE · DQ-002</div><div class="name">IMG-MTF</div><div class="meta">mtf_50_lp_mm · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-03 · A-IMAGE · DQ-003</div><div class="name">IMG-ILLUMINATION</div><div class="meta">illumination_uniformity_pct · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-04 · A-IMAGE · DQ-004</div><div class="name">IMG-DEWARP</div><div class="meta">dewarp_rmse_px · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-05 · A-IMAGE · DQ-005</div><div class="name">IMG-SKEW</div><div class="meta">skew_recovery_pct_cer · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-06 · A-IMAGE · DQ-006</div><div class="name">IMG-JPEG-Q</div><div class="meta">cer_delta_q40_vs_q90 · <span class="status reg">registered</span></div></div>
+  </div>
+
+  <h3>B — Text / transcription</h3>
+  <div class="grid">
+    <div class="card"><div class="id">D-07 · B-TEXT · DQ-007</div><div class="name">OCR-RECALL</div><div class="meta">savior_word_recall · <span class="status reg">registered</span> · BLK-18</div></div>
+    <div class="card"><div class="id">D-08 · B-TEXT · DQ-008</div><div class="name">OCR-PRECISION</div><div class="meta">savior_word_precision · <span class="status reg">registered</span> · BLK-18</div></div>
+    <div class="card"><div class="id">D-09 · B-TEXT · DQ-009</div><div class="name">OCR-EDIT-DISTANCE</div><div class="meta">edit_distance_norm · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-10 · B-TEXT · DQ-010</div><div class="name">OCR-WER</div><div class="meta">wer · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-11 · B-TEXT · DQ-011</div><div class="name">OCR-CER</div><div class="meta">cer_per_script · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-12 · B-TEXT · DQ-012</div><div class="name">OCR-DIGIT-MICR-FIDELITY</div><div class="meta">digit_micr_fidelity_f1 · <span class="status reg">registered</span> · headline-validation</div></div>
+  </div>
+
+  <h3>C — Document type stratification</h3>
+  <div class="grid">
+    <div class="card"><div class="id">D-13 · C-DOCTYPE · DQ-013</div><div class="name">DT-AP-AR</div><div class="meta">f1_per_type · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-14 · C-DOCTYPE · DQ-014</div><div class="name">DT-PAYMENTS</div><div class="meta">f1_per_type+per_field · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-15 · C-DOCTYPE · DQ-015</div><div class="name">DT-CAPITAL-MARKETS</div><div class="meta">f1_per_type · <span class="status reg">registered</span> · out-of-doc-type-set for HyperAPI</div></div>
+    <div class="card"><div class="id">D-16 · C-DOCTYPE · DQ-016</div><div class="name">DT-ADJACENT</div><div class="meta">f1_per_type · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-17 · C-DOCTYPE · DQ-017</div><div class="name">DT-DENSITY</div><div class="meta">metric_per_density · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-18 · C-DOCTYPE · DQ-018</div><div class="name">DT-MULTI-COL</div><div class="meta">multi_col_layout_f1 · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-19 · C-DOCTYPE · DQ-019</div><div class="name">DT-NESTED-TABLE</div><div class="meta">nested_table_cell_f1 · <span class="status reg">registered</span></div></div>
+  </div>
+
+  <h3>D — Language / script</h3>
+  <div class="grid">
+    <div class="card"><div class="id">D-20 · D-LANGUAGE · DQ-020</div><div class="name">LANG-CER-PER-SCRIPT</div><div class="meta">cer_per_script · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-21 · D-LANGUAGE · DQ-021</div><div class="name">LANG-KIE-XFUND</div><div class="meta">kie_f1_per_language · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-22 · D-LANGUAGE · DQ-022</div><div class="name">LANG-MIXED-SCRIPT</div><div class="meta">cer_mixed_script · <span class="status reg">registered</span></div></div>
+  </div>
+
+  <h3>E — Density / layout complexity</h3>
+  <div class="grid">
+    <div class="card"><div class="id">D-23 · E-DENSITY · DQ-023</div><div class="name">LAYOUT-ELEM-ACCURACY</div><div class="meta">layout_element_accuracy · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-24 · E-DENSITY · DQ-024</div><div class="name">LAYOUT-READING-ORDER</div><div class="meta">reading_order_rank_corr · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-25 · E-DENSITY · DQ-025</div><div class="name">LAYOUT-PAIRS</div><div class="meta">pairs_layout · <span class="status reg">registered</span> · PC-only</div></div>
+  </div>
+
+  <h3>F — Computer-vision metrics</h3>
+  <div class="grid">
+    <div class="card"><div class="id">D-26 · F-CV · DQ-026</div><div class="name">BBOX-IOU-TOKEN</div><div class="meta">bbox_iou_token · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-27 · F-CV · DQ-027</div><div class="name">BBOX-FIELD-TO-REGION</div><div class="meta">field_to_region_grounding_acc · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-28 · F-CV · DQ-028</div><div class="name">LAYOUT-COCO-MAP</div><div class="meta">coco_mAP_50_75_95 · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-29 · F-CV · DQ-029</div><div class="name">SEG-IOU</div><div class="meta">seg_pixel_iou · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-30 · F-CV · DQ-030</div><div class="name">VLM-PAGE-IMAGE-FIDELITY</div><div class="meta">psnr+ssim · <span class="status reg">registered</span></div></div>
+  </div>
+
+  <h3>G — Enterprise document AI</h3>
+  <div class="grid">
+    <div class="card"><div class="id">D-31 · G-ENTERPRISE · DQ-031</div><div class="name">TABLE-GTRM</div><div class="meta">grits+gtrm · <span class="status reg">registered</span> · pin TR-000 · apples-to-oranges</div></div>
+    <div class="card"><div class="id">D-32 · G-ENTERPRISE · DQ-032</div><div class="name">TABLE-TEDS</div><div class="meta">teds · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-33 · G-ENTERPRISE · DQ-033</div><div class="name">TABLE-CELL-F1</div><div class="meta">cell_content_f1 · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-34 · G-ENTERPRISE · DQ-034</div><div class="name">KIE-FUNSD-F1</div><div class="meta">entity_f1 · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-35 · G-ENTERPRISE · DQ-035</div><div class="name">KIE-CORD-F1</div><div class="meta">entity_f1 · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-36 · G-ENTERPRISE · DQ-036</div><div class="name">DOWNSTREAM-LIFT</div><div class="meta">parse_lift_paired_bootstrap · <span class="status reg">registered</span> · pin extract · apples-to-oranges · CEO-required</div></div>
+  </div>
+
+  <h3>H — NLP / semantic</h3>
+  <div class="grid">
+    <div class="card"><div class="id">D-37 · H-NLP · DQ-037</div><div class="name">PARSE-INTENT-F1</div><div class="meta">parse_intent_f1+wer · <span class="status reg">registered</span> · BLK-3</div></div>
+    <div class="card"><div class="id">D-38 · H-NLP · DQ-038</div><div class="name">VQA-ANLS</div><div class="meta">anls · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-39 · H-NLP · DQ-039</div><div class="name">SEMANTIC-BERTSCORE</div><div class="meta">bertscore_f1 · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-40 · H-NLP · DQ-040</div><div class="name">INTENT-CLASSIFICATION</div><div class="meta">classify_accuracy_per_type · <span class="status reg">registered</span> · BLK-16</div></div>
+  </div>
+
+  <h3>I — Print / production</h3>
+  <div class="grid">
+    <div class="card"><div class="id">D-41 · I-PRINT · DQ-041</div><div class="name">LAT-P50</div><div class="meta">latency_p50_ms · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-42 · I-PRINT · DQ-042</div><div class="name">LAT-P95-P99</div><div class="meta">latency_p95_ms+p99_ms · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-43 · I-PRINT · DQ-043</div><div class="name">COST-DOLLAR-PER-CORRECT</div><div class="meta">dollars_per_correct_call · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-44 · I-PRINT · DQ-044</div><div class="name">FAILURE-RATE</div><div class="meta">failure_rate_pct · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-45 · I-PRINT · DQ-045</div><div class="name">PAGE-SCALING</div><div class="meta">cer_per_page_band+timeout_rate · <span class="status reg">registered</span></div></div>
+  </div>
+
+  <h3>J — Reproducibility / statistical</h3>
+  <div class="grid">
+    <div class="card"><div class="id">D-46 · J-REPRO · DQ-046</div><div class="name">STAT-CI95</div><div class="meta">ci95_bootstrap · <span class="status reg">registered</span> · discipline gate</div></div>
+    <div class="card"><div class="id">D-47 · J-REPRO · DQ-047</div><div class="name">STAT-PAIRED-CI</div><div class="meta">paired_bootstrap · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-48 · J-REPRO · DQ-048</div><div class="name">STAT-IAA</div><div class="meta">kappa+krippendorff_alpha · <span class="status reg">registered</span></div></div>
+    <div class="card"><div class="id">D-49 · J-REPRO · DQ-049</div><div class="name">REPRO-FACTORY-GREEN</div><div class="meta">factory_reproduced_bool · <span class="status reg">registered</span> · gate</div></div>
+    <div class="card"><div class="id">D-50 · J-REPRO · DQ-050</div><div class="name">REPRO-CONTAMINATION</div><div class="meta">contamination_audit_pass · <span class="status reg">registered</span> · gate</div></div>
+  </div>
+</section>
+
+<section id="matrix">
+  <h2>§4 — Doc-type × dimension matrix</h2>
+  <p>16 doc-types (T-01..T-16) × 50 dimensions = <strong>800 cell-classes</strong>. Gold availability summary inherited from <code>DOC-TYPE-GAPS.json</code>:</p>
+  <table>
+    <thead><tr><th>Tier</th><th>Cell-classes</th><th>Where</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>G — gold today</td><td>~150</td><td>T-01 / T-04 / T-06 / T-07 / T-16 × cat B/E/F/G/I</td><td>runnable BUILD-v1</td></tr>
+      <tr><td>S — silver (synthetic / PyMuPDF / Inv3D upstream)</td><td>~200</td><td>mostly cat A and F</td><td>runnable BUILD-v1</td></tr>
+      <tr><td>P — partner-gated</td><td>~450</td><td>T-09 / T-10 / T-13 / T-14 / T-15 + L-non-EN</td><td>PENDING consent</td></tr>
+    </tbody>
+  </table>
+  <p class="note">No cell is fabricated to fill a P cell. The matrix shape is the contract; per-cell gold availability is auditable from <code>DOC-TYPE-GAPS.json</code>.</p>
+</section>
+
+<section id="panel">
+  <h2>§5 — Model panel (60 rows)</h2>
+  <p>26 commercial · 26 OSS · 8 stretch OSS. Full enumeration in framework spec §5. Current-frontier 2026-Q2 rows added: Claude Opus 4.8, GPT-5.5 thinking, Gemini 3 Pro, Mistral OCR 2, PaddleOCR-VL 1.6, MinerU 2.5-Pro, MonkeyOCR, MonkeyOCR-Pro-3B. Cells in v0: zero (none have run).</p>
+  <table>
+    <thead><tr><th>#</th><th>Row</th><th>Access</th><th>FT?</th><th>Adapter shape</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td>C1</td><td>Azure DI prebuilt-layout</td><td>Azure REST</td><td>n</td><td>hosted-REST</td><td><span class="status reg">registered</span></td></tr>
+      <tr><td>C3</td><td>Azure DI prebuilt-invoice</td><td>Azure REST</td><td>n</td><td>hosted-REST</td><td><span class="status reg">registered</span></td></tr>
+      <tr><td>C7</td><td>LlamaParse Agentic</td><td>hosted</td><td>n</td><td>hosted-REST</td><td><span class="status reg">registered</span> · PENDING-KEY</td></tr>
+      <tr><td>C18</td><td>OpenAI GPT-5.4 thinking (via Azure)</td><td>Azure OpenAI Service</td><td>n</td><td>Azure OpenAI</td><td><span class="status reg">registered</span> · PENDING-KEY</td></tr>
+      <tr><td>O1</td><td>Tesseract 5.x</td><td>local</td><td>n</td><td>class-based</td><td><span class="status reg">registered</span></td></tr>
+      <tr><td>O11</td><td>Chandra (chandra-ocr-2)</td><td>self-hosted vLLM 8847</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · BLK-17</td></tr>
+      <tr><td>O12</td><td>Qwen 3.6-35B-A3B [FT]</td><td>self-hosted 6006</td><td>y</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · D-36 extractor pin</td></tr>
+      <tr><td>O13</td><td>Qwen 2.5-VL-7B-F [FT]</td><td>local weights</td><td>y</td><td>class-based vLLM</td><td><span class="status reg">registered</span></td></tr>
+      <tr><td>C23</td><td>Anthropic Claude Opus 4.8</td><td>native API</td><td>n</td><td>OpenAI-shape chat</td><td><span class="status reg">registered</span> · current-frontier</td></tr>
+      <tr><td>C24</td><td>OpenAI GPT-5.5 thinking (via Azure)</td><td>Azure OpenAI Service</td><td>n</td><td>Azure OpenAI</td><td><span class="status reg">registered</span> · current-frontier</td></tr>
+      <tr><td>C25</td><td>Google Gemini 3 Pro</td><td>Vertex / native</td><td>n</td><td>hosted-REST</td><td><span class="status reg">registered</span> · current-frontier</td></tr>
+      <tr><td>O23</td><td>PaddleOCR-VL-1.6</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span></td></tr>
+      <tr><td>O24</td><td>MinerU 2.5-Pro</td><td>local</td><td>n</td><td>class-based</td><td><span class="status reg">registered</span></td></tr>
+      <tr><td>O25</td><td>MonkeyOCR</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span></td></tr>
+      <tr><td>O26</td><td>MonkeyOCR-Pro-3B</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span></td></tr>
+    </tbody>
+  </table>
+  <p class="note">Full 52-row table in framework spec §5.1–§5.2. <code>FT?</code> column is machine-greppable per I-4; <code>repro_check.py</code> rejects any cell whose <code>ft_flag</code> disagrees with the Model name's <code>[FT]</code> marker.</p>
+</section>
+
+<section id="methodology">
+  <h2>§6 — Methodology snapshot</h2>
+  <p>Full doc: <a href="methodology.md">methodology.md</a>. Highlights:</p>
+  <ul>
+    <li><strong>Bootstrap</strong> — 2000 resamples, seed 20260516; per-doc score vectors mandatory; aggregate-only cells ship literal <code>n</code> never inferred.</li>
+    <li><strong>Paired bootstrap</strong> — D-36 lift + any paired comparison.</li>
+    <li><strong>Multiplicity</strong> — Holm-Bonferroni on cross-dimension headline claims (family-wise α=0.05; per-dim α≈0.001).</li>
+    <li><strong>Pin families</strong> — parse-deep (T=0.1, top_p=0.9, max_tokens=2048) · TR-000 (T=0, top_p=1, 4096) · extract (T=0, top_p=1, 4096). Cross-family cells (D-31, D-36) flagged <code>apples-to-oranges</code>.</li>
+    <li><strong>NeurIPS reproducibility checklist</strong> — answered item-by-item in methodology §8.</li>
+  </ul>
+</section>
+
+<section id="ablations">
+  <h2>§7 — Ablations (E1–E9)</h2>
+  <p>Every ensemble claim ships with its named ablation. Comparative-study I-7: ship-claim ensembles include HyperAPI parse; <strong>E8 OSS-only is the explicit control</strong>.</p>
+  <ul>
+    <li>E1 production parse→extract chain — with-HyperAPI-parse vs without (replaced by Qwen-3.6 parse only)</li>
+    <li>E2 doc-type router — with router vs uniform-routing</li>
+    <li>E3 field-level confidence-weighted vote</li>
+    <li>E4 OCR + LLM reconciler</li>
+    <li>E5 cost-cascade (Pareto cost-vs-accuracy)</li>
+    <li>E6 page-chunked long-doc (D-45 lift on T-11 ≥400pp class)</li>
+    <li>E7 layout-aware tri-engine — drop-one ablations</li>
+    <li>E8 OSS-only control — the explicit baseline for "what HyperAPI-anchored adds"</li>
+    <li>E9 Chandra-anchored layout-aware</li>
+  </ul>
+</section>
+
+<section id="contamination">
+  <h2>§8 — Contamination + held-out audit</h2>
+  <p>Per FT row (today: O12, O13, O14, hyperapi-parse-intent): contamination audit between SAVIOR-Train and every test corpus. Output to <code>contamination/&lt;model&gt;__&lt;test&gt;.json</code>. Unresolved overlap → cell stays <code>factory_reproduced: false</code> and renders red. Held-out splits 10% random, seed 20260516.</p>
+  <p class="note">v0 status: registered-not-yet-built (factory subdir wired at BUILD-v1).</p>
+</section>
+
+<section id="leaderboard">
+  <h2>§9 — Leaderboard</h2>
+  <p><strong>EMPTY by design.</strong> BUILD-v0 ships zero cells. The leaderboard fills at BUILD-v1, gated on:</p>
+  <ul>
+    <li>This v0 artifact passing build-v0 review (chief-research-scientist + chief-architect + docs-techwriter + benchmark-format-steward)</li>
+    <li>CEO sign-off on paid-panel budget for C-rows</li>
+    <li>Partner-corpus consent for P-tier cells</li>
+    <li>BLK-16 / BLK-17 / BLK-18 resolution for affected rows</li>
+  </ul>
+  <table>
+    <thead><tr><th>Cell ID</th><th>Dim</th><th>Model</th><th>Corpus</th><th>Score</th><th>CI95</th><th>n</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td colspan="8" style="text-align:center;color:var(--muted);padding:24px;">No cells run. BUILD-v0 scaffold only.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="approval">
+  <h2>§14 — Approval</h2>
+  <p>This dashboard is <strong>PENDING build-v0 review</strong>. Reviewers: chief-research-scientist + chief-architect + docs-techwriter + benchmark-format-steward, applying the 8 P0 / 6 P1 / 3 P2 (research-head) + 8 (tech) + 8 (content) + 10 (research-format) criteria from the 2026-06-11 plan review chain, plus the 10-item NeurIPS-bar amendment.</p>
+  <p class="note">DRAFT INTERNAL ONLY until verdict files land at <code>hyperapi-cto-org/command-center/REVIEW-VERDICT-PARSE-FRAMEWORK-V1-*-2026-06-11.md</code>. NOT self-approved.</p>
+</section>
+
+</main>
+
+<footer>
+  Parse Deep Benchmark v1 · BUILD-v0 · 2026-06-11 · pre-registration anchor: <code>PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-06-11-v1.md</code> · ParseBench / NeurIPS bar · Hyperbots Research · researcher-not-advocate
+</footer>
+
+</body>
+</html>

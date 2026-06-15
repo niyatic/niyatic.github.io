@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://hyprbots.internal/schemas/parse-deep-cell-v1.1.json",
+  "title": "Parse Deep Benchmark cell schema — v1.1",
+  "description": "Backward-compatible extension of CONSOLIDATED-150 cell schema; adds parse-deep-v1 dimension fields. v0 = registered-not-yet-run; v1 = cells filled.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["cell_id", "task_id", "model_id", "dimension_id", "category_id", "nrun_status", "_meta"],
+  "properties": {
+    "cell_id": {
+      "type": "string",
+      "pattern": "^DQ-[0-9]{3}__[a-z0-9._-]+__[a-z0-9.-]+$",
+      "description": "DQ-<dim>__<model-slug>__<corpus-slug>"
+    },
+    "task_id": {
+      "type": "string",
+      "pattern": "^DQ-[0-9]{3}$"
+    },
+    "model_id": {
+      "type": "string",
+      "description": "Adapter slug, e.g. chandra, qwen36-a3b, tesseract"
+    },
+    "dimension_id": {
+      "type": "string",
+      "pattern": "^D-[0-9]{2}$",
+      "description": "Parse-deep dimension D-01..D-50"
+    },
+    "category_id": {
+      "type": "string",
+      "enum": [
+        "A-IMAGE",
+        "B-TEXT",
+        "C-DOCTYPE",
+        "D-LANGUAGE",
+        "E-DENSITY",
+        "F-CV",
+        "G-ENTERPRISE",
+        "H-NLP",
+        "I-PRINT",
+        "J-REPRO"
+      ]
+    },
+    "nrun_status": {
+      "type": "string",
+      "enum": ["registered-not-yet-run", "running", "green", "red"],
+      "description": "v0 default: registered-not-yet-run. green only after repro_check.py passes."
+    },
+    "ablation_id": {
+      "type": ["string", "null"],
+      "pattern": "^E[1-9]$",
+      "description": "Names the ensemble ablation (E1..E9) this cell belongs to, when applicable. NULL for non-ensemble cells."
+    },
+    "pre_registration_id": {
+      "type": "string",
+      "description": "Path or URL to the pre-registration document (the framework spec)."
+    },
+    "n": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Per-doc score-vector length. LITERAL; never inferred. null if aggregate-only."
+    },
+    "score": {
+      "type": ["number", "null"],
+      "description": "Primary metric value for this dimension."
+    },
+    "score_vector_path": {
+      "type": ["string", "null"],
+      "description": "Path to per-doc score vector JSON; null if aggregate-only."
+    },
+    "ci95_low": {
+      "type": ["number", "null"]
+    },
+    "ci95_high": {
+      "type": ["number", "null"]
+    },
+    "ci_method": {
+      "type": "string",
+      "enum": ["bootstrap", "paired-bootstrap", "n/a-binary-gate", "n/a-aggregate"]
+    },
+    "_meta": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["provenance", "pins", "rerun_command", "factory_reproduced", "pin_family", "env_hash"],
+      "properties": {
+        "provenance": {
+          "type": "string",
+          "description": "Free-text + URL/path to source-of-truth artifact. Per SAVIOR Appendix D 4-part contract."
+        },
+        "pins": {
+          "type": "object",
+          "additionalProperties": true,
+          "required": ["model_version", "sdk_commit", "harness_commit", "prompt_id", "env_hash"],
+          "properties": {
+            "model_version": {"type": "string"},
+            "sdk_commit": {"type": "string"},
+            "harness_commit": {"type": "string"},
+            "prompt_id": {"type": "string"},
+            "env_hash": {"type": "string"}
+          }
+        },
+        "pin_family": {
+          "type": "string",
+          "enum": ["parse-deep", "TR-000", "extract"],
+          "description": "Decoding pin family per methodology §2. Cross-family (TR-000, extract) cells must set apples_to_oranges=true."
+        },
+        "apples_to_oranges": {
+          "type": "boolean",
+          "description": "True only if cell uses a pin family different from the dimension's home family per comparative-study I-1."
+        },
+        "rerun_command": {
+          "type": "string",
+          "description": "Single shell line that reproduces this cell from repo root with the pinned env."
+        },
+        "factory_reproduced": {
+          "type": "boolean",
+          "description": "FALSE at adapter emit time (TR-4). TRUE only after harness/repro_check.py exits 0."
+        },
+        "env_hash": {
+          "type": "string",
+          "description": "sha256(pyproject.toml + uv.lock + harness/_pin_manifest.json) at cell-write time."
+        },
+        "contamination_audit": {
+          "type": ["object", "null"],
+          "additionalProperties": true,
+          "properties": {
+            "train_corpus_id": {"type": "string"},
+            "test_corpus_id": {"type": "string"},
+            "overlap_doc_count": {"type": "integer", "minimum": 0},
+            "overlap_pct": {"type": "number", "minimum": 0, "maximum": 100},
+            "mitigation": {
+              "type": "string",
+              "enum": ["held-out", "re-scored", "accepted-with-flag", "unresolved"]
+            },
+            "report_path": {"type": "string"}
+          },
+          "description": "Mandatory when model_id carries [FT]; nullable for zero-shot rows."
+        },
+        "held_out_ci95": {
+          "type": ["object", "null"],
+          "additionalProperties": true,
+          "properties": {
+            "ci95_low": {"type": "number"},
+            "ci95_high": {"type": "number"},
+            "held_out_n": {"type": "integer"}
+          }
+        },
+        "ft_flag": {
+          "type": "boolean",
+          "description": "Y/N from the Model name [FT] marker. Machine-greppable per I-4."
+        },
+        "baseline_anchor": {
+          "type": "string",
+          "description": "Name of the pre-registered baseline this cell is reported against."
+        },
+        "license_id": {
+          "type": "string",
+          "description": "Test-corpus license tag per framework §9.1."
+        },
+        "iaa": {
+          "type": ["object", "null"],
+          "properties": {
+            "kappa": {"type": "number"},
+            "alpha": {"type": "number"},
+            "pairs_n": {"type": "integer"}
+          },
+          "description": "Required only for net-new gold corpora per D-48; null when inherited."
+        },
+        "compute": {
+          "type": ["object", "null"],
+          "properties": {
+            "gpu": {"type": "string"},
+            "wall_clock_s": {"type": "number"},
+            "mean_latency_ms": {"type": "number"}
+          },
+          "description": "Populated at cell-run time; null in v0 registered-not-yet-run state."
+        },
+        "failure_modes": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "F1..F11 + F11-DICT-LITERAL tags when observed."
+        }
+      }
+    }
+  }
+}
