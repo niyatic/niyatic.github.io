@@ -49,15 +49,15 @@
 
 <header>
   <h1>Parse Deep Benchmark — v1 (BUILD-v0 scaffold)</h1>
-  <div class="sub">50 dimensions · 52-row commercial+OSS panel · pre-registered 2026-06-11 · ParseBench / NeurIPS-paper bar</div>
+  <div class="sub">51 dimensions (incl. D-51 UEM v1.1) · 130-row commercial+OSS panel · pre-registered 2026-06-11 · ParseBench / NeurIPS-paper bar</div>
   <div class="bar"><strong>BUILD-v0 — no cells have been run.</strong> Every cell below is in <span class="status reg">registered-not-yet-run</span> state. Numbers will only appear after `harness/repro_check.py` exits 0 on each cell at BUILD-v1.</div>
 </header>
 
 <nav>
   <a href="#framing">Framing</a>
-  <a href="#dimensions">Dimensions (50)</a>
+  <a href="#dimensions">Dimensions (51)</a>
   <a href="#matrix">Doc-type × dim matrix</a>
-  <a href="#panel">Model panel (110)</a>
+  <a href="#panel">Model panel (130)</a>
   <a href="#methodology">Methodology</a>
   <a href="#ablations">Ablations</a>
   <a href="#contamination">Contamination</a>
@@ -74,7 +74,7 @@
 </section>
 
 <section id="dimensions">
-  <h2>§3 — The 50 dimensions</h2>
+  <h2>§3 — The 51 dimensions (50 + D-51 UEM v1.1 amendment)</h2>
   <p class="note">Each dimension card carries: id · name · category · metric. Hypothesis + acceptance + rerunnable command live in <a href="../PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-06-11-v1.md">the framework spec §3</a>.</p>
 
   <h3>A — Image / scan quality</h3>
@@ -166,6 +166,11 @@
     <div class="card"><div class="id">D-49 · J-REPRO · DQ-049</div><div class="name">REPRO-FACTORY-GREEN</div><div class="meta">factory_reproduced_bool · <span class="status reg">registered</span> · gate</div></div>
     <div class="card"><div class="id">D-50 · J-REPRO · DQ-050</div><div class="name">REPRO-CONTAMINATION</div><div class="meta">contamination_audit_pass · <span class="status reg">registered</span> · gate</div></div>
   </div>
+
+  <h3>K — Universal eval-metric (v1.1 amendment 2026-06-15)</h3>
+  <div class="grid">
+    <div class="card"><div class="id">D-51 · K-UEM · DQ-051</div><div class="name">UEM-UNIVERSAL-OCR-METRIC</div><div class="meta">uem_score over {HOF, Markdown, HTML, Tokens+BB} · <span class="status reg">registered</span> · K-1..K-4 gates open · judge GPT-5.4 mini via Azure</div></div>
+  </div>
 </section>
 
 <section id="matrix">
@@ -184,7 +189,7 @@
 
 <section id="panel">
   <h2>§5 — Model panel (110 rows)</h2>
-  <p>46 commercial · 56 OSS · 8 stretch OSS. Full enumeration in framework spec §5. Lit-sweep 2026-06-15 adds 50 rows across enterprise IDP (ABBYY, Rossum, Hyperscience, Klippa, Mindee, Veryfi, Affinda, Sensible, Instabase, Indico, IBM Watson Discovery, Oracle DocUnderstanding), frontier multimodal hosted (xAI Grok-4, Cohere Command R+ vision, DeepSeek V3, Qwen-Max, Reka Core, Fireworks AI, Together AI Llama-4-Vision), OSS doc-AI (TrOCR, Donut, LayoutLMv3, LiLT, Pix2Struct, Kosmos-2.5, Florence-2, UDOP, DocFormerV2, ERNIE-Layout, LayoutXLM, Vary-toy, MiniCPM-V 2.6/MiniCPM-o, Idefics3, CogVLM2, InternLM-XComposer 2.5, DeepSeek-VL2, Phi-4-multimodal, Pixtral 12B, Molmo, Aria), and table/structure specialists (Table Transformer, SmolDocling, olmOCR-2, RolmOCR, TextMonkey, StructEqTable, Kraken, PP-StructureV3). Cells in v0: zero (none have run).</p>
+  <p>56 commercial · 66 OSS · 8 stretch OSS. Full enumeration in framework spec §5. Lit-sweep 2026-06-15 adds 50 rows across enterprise IDP (ABBYY, Rossum, Hyperscience, Klippa, Mindee, Veryfi, Affinda, Sensible, Instabase, Indico, IBM Watson Discovery, Oracle DocUnderstanding), frontier multimodal hosted (xAI Grok-4, Cohere Command R+ vision, DeepSeek V3, Qwen-Max, Reka Core, Fireworks AI, Together AI Llama-4-Vision), OSS doc-AI (TrOCR, Donut, LayoutLMv3, LiLT, Pix2Struct, Kosmos-2.5, Florence-2, UDOP, DocFormerV2, ERNIE-Layout, LayoutXLM, Vary-toy, MiniCPM-V 2.6/MiniCPM-o, Idefics3, CogVLM2, InternLM-XComposer 2.5, DeepSeek-VL2, Phi-4-multimodal, Pixtral 12B, Molmo, Aria), and table/structure specialists (Table Transformer, SmolDocling, olmOCR-2, RolmOCR, TextMonkey, StructEqTable, Kraken, PP-StructureV3). Cells in v0: zero (none have run).</p>
   <table>
     <thead><tr><th>#</th><th>Row</th><th>Access</th><th>FT?</th><th>Adapter shape</th><th>Status</th></tr></thead>
     <tbody>
@@ -234,6 +239,16 @@
       <tr><td>C44</td><td>Reka Core vision</td><td>native API</td><td>n</td><td>hosted-REST</td><td><span class="status reg">registered</span> · PENDING-KEY</td></tr>
       <tr><td>C45</td><td>Fireworks AI Doc-Inlining</td><td>hosted</td><td>n</td><td>hosted-REST</td><td><span class="status reg">registered</span> · PENDING-KEY · low-cost VLM serving</td></tr>
       <tr><td>C46</td><td>Together AI Llama-4-Vision hosted</td><td>hosted</td><td>n</td><td>hosted-REST</td><td><span class="status reg">registered</span> · PENDING-KEY</td></tr>
+      <tr><td>C47</td><td>Adobe Acrobat AI Extract</td><td>hosted</td><td>n</td><td>hosted-REST</td><td><span class="status reg">registered</span> · PENDING-KEY · enterprise PDF</td></tr>
+      <tr><td>C48</td><td>Foxit AI Document Intelligence</td><td>hosted/on-prem</td><td>n</td><td>hosted-REST</td><td><span class="status reg">registered</span> · PENDING-KEY</td></tr>
+      <tr><td>C49</td><td>Konfuzio</td><td>hosted</td><td>n</td><td>hosted-REST</td><td><span class="status reg">registered</span> · PENDING-KEY · DE enterprise IDP</td></tr>
+      <tr><td>C50</td><td>HyperVerge OCR</td><td>hosted</td><td>n</td><td>hosted-REST</td><td><span class="status reg">registered</span> · PENDING-KEY · KYC/ID focus</td></tr>
+      <tr><td>C51</td><td>Eden AI (meta-router)</td><td>hosted</td><td>n</td><td>hosted-REST</td><td><span class="status reg">registered</span> · PENDING-KEY · multi-engine router</td></tr>
+      <tr><td>C52</td><td>OCR.space API</td><td>hosted</td><td>n</td><td>hosted-REST</td><td><span class="status reg">registered</span> · PENDING-KEY · low-cost baseline</td></tr>
+      <tr><td>C53</td><td>Scribe OCR</td><td>hosted</td><td>n</td><td>hosted-REST</td><td><span class="status reg">registered</span> · PENDING-KEY · handwriting/historical</td></tr>
+      <tr><td>C54</td><td>Iron OCR</td><td>SDK</td><td>n</td><td>SDK</td><td><span class="status reg">registered</span> · PENDING-KEY</td></tr>
+      <tr><td>C55</td><td>Aspose OCR</td><td>SDK</td><td>n</td><td>SDK</td><td><span class="status reg">registered</span> · PENDING-KEY</td></tr>
+      <tr><td>C56</td><td>A2iA (Mitek)</td><td>SDK / hosted</td><td>n</td><td>SDK</td><td><span class="status reg">registered</span> · PENDING-KEY · check + form handwriting</td></tr>
       <tr><td>O1</td><td>Tesseract 5.x</td><td>local</td><td>n</td><td>class-based (pytesseract)</td><td><span class="status reg">registered</span> · Have adapter</td></tr>
       <tr><td>O2</td><td>PaddleOCR v4</td><td>local</td><td>n</td><td>class-based</td><td><span class="status reg">registered</span> · Have attested</td></tr>
       <tr><td>O3</td><td>PaddleOCR-VL-1.5</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · Have attested</td></tr>
@@ -290,14 +305,24 @@
       <tr><td>O54</td><td>StructEqTable</td><td>local</td><td>n</td><td>class-based HF</td><td><span class="status reg">registered</span> · structured-equation tables</td></tr>
       <tr><td>O55</td><td>Kraken OCR</td><td>local</td><td>n</td><td>class-based</td><td><span class="status reg">registered</span> · historical + multilingual</td></tr>
       <tr><td>O56</td><td>PP-StructureV3</td><td>local</td><td>n</td><td>class-based</td><td><span class="status reg">registered</span> · layout + table pipeline</td></tr>
-      <tr><td>O57</td><td>mPLUG-DocOwl 1.5</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
-      <tr><td>O58</td><td>DeepSeek-OCR-2</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
-      <tr><td>O59</td><td>Nanonets-OCR-s (open weights)</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
-      <tr><td>O60</td><td>LLaVA-1.6-34B</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
-      <tr><td>O61</td><td>InternVL2-26B/76B</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
-      <tr><td>O62</td><td>Llama-3.2-90B-Vision</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
-      <tr><td>O63</td><td>Llama-4-Maverick</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
-      <tr><td>O64</td><td>Youtu-Parsing</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
+      <tr><td>O57</td><td>Llama-3.2-11B-Vision Instruct</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · NEW · 2026-06-15 sweep</td></tr>
+      <tr><td>O58</td><td>DeepSeek-Janus-Pro 7B</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · NEW · unified multimodal</td></tr>
+      <tr><td>O59</td><td>GLM-4V 9B</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · NEW · strong VQA</td></tr>
+      <tr><td>O60</td><td>InternVL3 (8B + 26B + 78B)</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · NEW · 2025/26 leaderboard top</td></tr>
+      <tr><td>O61</td><td>Cambrian-1 (34B)</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · NEW · vision-centric tuning</td></tr>
+      <tr><td>O62</td><td>NVIDIA VILA</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · NEW · long-context multimodal</td></tr>
+      <tr><td>O63</td><td>Mini-Gemini</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · NEW · efficient dual-encoder</td></tr>
+      <tr><td>O64</td><td>MAmmoTH-VL</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · NEW · math + chart heavy</td></tr>
+      <tr><td>O65</td><td>Apple OpenELM-VL</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · NEW · on-device baseline</td></tr>
+      <tr><td>O66</td><td>LG EXAONE 3.5 VL</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · NEW · KO-strong VLM</td></tr>
+      <tr><td>O75</td><td>mPLUG-DocOwl 1.5</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
+      <tr><td>O76</td><td>DeepSeek-OCR-2</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
+      <tr><td>O77</td><td>Nanonets-OCR-s (open weights)</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
+      <tr><td>O78</td><td>LLaVA-1.6-34B</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
+      <tr><td>O79</td><td>InternVL2-26B/76B</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
+      <tr><td>O80</td><td>Llama-3.2-90B-Vision</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
+      <tr><td>O81</td><td>Llama-4-Maverick</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
+      <tr><td>O82</td><td>Youtu-Parsing</td><td>local</td><td>n</td><td>class-based vLLM</td><td><span class="status reg">registered</span> · stretch · PENDING-INSTALL</td></tr>
     </tbody>
   </table>
   <p class="note">Full 52-row table in framework spec §5.1–§5.2. <code>FT?</code> column is machine-greppable per I-4; <code>repro_check.py</code> rejects any cell whose <code>ft_flag</code> disagrees with the Model name's <code>[FT]</code> marker.</p>

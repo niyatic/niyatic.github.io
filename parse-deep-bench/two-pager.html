@@ -20,7 +20,7 @@ Companion: full spec at <code>PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-06-11-v1.md</c
 <hr />
 <h2>§1 — What this is, in one paragraph</h2>
 <p>A pre-registered, third-party-anchored, ensemble-aware framework to defensibly answer <strong>"is the HyperAPI parse primitive the best general parsing primitive across finance documents."</strong> 50 dimensions across image / text / doc-type / language / density / CV / enterprise / NLP / print / repro. A 60-row commercial-vs-OSS model panel. A 16-type × 50-dim matrix (800 cell-classes). Engineered to <strong>succeed whether HyperAPI parse wins or loses on any dimension</strong> — researcher-not-advocate. Inherits SAVIOR-Bench Appendix D 4-part cell contract; lifts the bar to ParseBench-style per-rule = per-doc score vectors, paired-bootstrap CIs, Holm-Bonferroni multiplicity correction, contamination + held-out audit, NeurIPS reproducibility checklist.</p>
-<h2>§2 — The 50 dimensions (A–J)</h2>
+<h2>§2 — The 51 dimensions (A–K · 50 v1 + D-51 UEM v1.1 amendment 2026-06-15)</h2>
 <table>
 <thead>
 <tr>
@@ -91,11 +91,17 @@ Companion: full spec at <code>PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-06-11-v1.md</c
 <td>Repro / stat</td>
 <td>D-46 CI95 · D-47 paired-CI · D-48 IAA · <strong>D-49 factory-green gate</strong> · <strong>D-50 contamination-audit gate</strong></td>
 </tr>
+<tr>
+<td><strong>K</strong></td>
+<td><strong>1</strong></td>
+<td><strong>Universal eval-metric (v1.1)</strong></td>
+<td><strong>D-51 UEM — uem_score over {HOF · Markdown · HTML · Tokens+BB} · cross-format judge = GPT-5.4 mini via Azure · K-1..K-4 gates open before BUILD-v1</strong></td>
+</tr>
 </tbody>
 </table>
 <p><strong>Bijection</strong> to the 2026-05-27 9-D spec preserved (every D-OCR/D-PARSE-INTENT/D-LAYOUT/D-BBOX/D-TABLE/D-DOC-QUALITY/D-LANG/D-DOWNSTREAM/D-COST-LATENCY maps to a D-XX). No dimension dropped.</p>
-<h2>§3 — The 110-row model panel (lit-sweep complete, 2026-06-15)</h2>
-<p><strong>46 commercial</strong> + <strong>56 OSS</strong> + <strong>8 stretch OSS</strong> = <strong>110 rows.</strong> Floor (≥15 each, ≥30 total) cleared by ~4×. Lit-sweep 2026-06-15 added 50 rows across enterprise IDP, frontier multimodal hosted, OSS doc-AI classics, OSS frontier open-weight VLMs, and table/structure specialists — see framework §5.2.1 for the source survey.</p>
+<h2>§3 — The 130-row model panel (lit-sweep complete, 2026-06-15)</h2>
+<p><strong>56 commercial</strong> + <strong>66 OSS</strong> + <strong>8 stretch OSS</strong> = <strong>130 rows.</strong> Floor (≥15 each, ≥30 total) cleared by ~5×. Two rounds of lit-sweep on 2026-06-15 added 70 rows total: round-1 (+50) across enterprise IDP, frontier multimodal hosted, OSS doc-AI classics, OSS frontier open-weight VLMs, and table/structure specialists; round-2 (+20) adds Adobe Acrobat AI Extract, Foxit AI Doc Intelligence, Konfuzio, HyperVerge OCR, Eden AI (meta-router), OCR.space, Scribe OCR, Iron OCR, Aspose OCR, A2iA (Mitek) — plus OSS Llama-3.2-11B-Vision, DeepSeek-Janus-Pro 7B, GLM-4V 9B, InternVL3, Cambrian-1, NVIDIA VILA, Mini-Gemini, MAmmoTH-VL, Apple OpenELM-VL, LG EXAONE 3.5 VL. <strong>Audit gap closed</strong>: Extend Parse 2.0 is present as <strong>C10</strong> (PENDING-KEY, gap-report contrast per Extend RealDocBench).</p>
 <ul>
 <li><strong>Frontier closed-source</strong>: Anthropic Claude Opus 4.8 · Sonnet 4.6 · Haiku 4.5 · OpenAI GPT-5.5 thinking + GPT-5.4 + GPT-4.1 + o3 (all via Azure OpenAI Service per <code>[[azure-openai-preferred]]</code>) · Google Gemini 3 Pro + Gemini 3 Flash + Gemini 2.5 Pro · Mistral OCR 2 · <strong>xAI Grok-4 vision</strong> · <strong>Cohere Command R+ vision</strong> · <strong>DeepSeek V3 hosted</strong> · <strong>Qwen-Max</strong> · <strong>Reka Core</strong>.</li>
 <li><strong>Doc-AI commercial</strong>: Azure DI prebuilt-{layout,document,invoice} · AWS Textract · Google DocAI (form parser + OCR) · LlamaParse Agentic + non-agentic · Reducto · Extend Parse 2.0 · LandingAI · Unstructured.io · Nanonets · <strong>ABBYY (FineReader + Vantage)</strong> · <strong>Rossum</strong> · <strong>Hyperscience</strong> · <strong>Klippa</strong> · <strong>Mindee</strong> · <strong>Veryfi</strong> · <strong>Affinda</strong> · <strong>Sensible</strong> · <strong>Instabase</strong> · <strong>Indico</strong> · <strong>IBM Watson Discovery</strong> · <strong>Oracle Document Understanding</strong> · <strong>Fireworks AI Doc-Inlining</strong> · <strong>Together AI Llama-4-Vision</strong>.</li>

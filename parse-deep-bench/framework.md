@@ -602,9 +602,32 @@ Each is a per-type stratification contract: every leaderboard row reports the pr
 - **CI**: n/a (binary gate).
 - **Status**: `registered-not-yet-run`.
 
-### Category tally + integrity
+### Category K — Universal eval-metric (v1.1 amendment, 2026-06-15)
 
-A=6, B=6, C=7, D=3, E=3, F=5, G=6, H=4, I=5, J=5 — **total 50.** Every category represented; every dimension cites at least one reference from §2; every D-* from `PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-05-27.md` is present per the §2.4 bijection.
+#### D-51 — UEM-UNIVERSAL-OCR-METRIC (v1.1 amendment per drift policy §10)
+- **Source**: "Universal Eval Metric for OCR" design doc (Hyperbots, 2026-06-15) — provided by CEO.
+- **In-scope / out-of-scope (verbatim from source)**: in-scope = **text**; out-of-scope = bounding box (handled separately by D-26/D-27).
+- **Methodology (verbatim)**:
+  - **Cross-format** (e.g. HOF ↔ Markdown / HTML / Tokens+BB): `model_input = (output_a, output_b) → judge-LLM (e.g. GPT-5.4 mini via Azure per [[azure-openai-preferred]]) → diff-derived features → eval metric → score`.
+  - **Same-format** (HOF↔HOF or Markdown↔Markdown): `model-free → diff-derived features → eval metric → score`.
+- **Output format coverage**: Hyperbots OCR Format (HOF) · Markdown · HTML · Tokens+BB.
+- **Metric**: `uem_score ∈ [0, 1]`, monotone-decreasing in diff-derived feature distance; per-doc score vector required (D-46 inheritance).
+- **Hypothesis**: UEM ranks model panel within ±2 ranks of dimension-specific gold metrics (D-09 edit-distance · D-11 CER · D-31 GTRM · D-32 TEDS) on at least 3 of the 4 output formats — validating UEM as a universal-comparator that survives output-format heterogeneity.
+- **Acceptance**: (a) feature set defined + frozen before any cell runs (per pre-registration §1); (b) judge-LLM pin (`Azure OpenAI Service — deployment=<gpt-5-4-mini>, api_version=<v>`) declared per cell; (c) per-doc UEM vector ships; (d) rank-correlation vs each gold metric reported with CI; (e) the cross-format vs same-format gap is reported (model-error vs metric-floor).
+- **Gold**: ParseBench rules (text_content + table) + SAVIOR-Bench corpus when BLK-18 clears + dataset_95 KIE.
+- **Panel applicability**: every row that emits at least one of {HOF, Markdown, HTML, Tokens+BB}. **CROSS-FAMILY flag** per I-1 when the judge-LLM is invoked (cross-format branch); same-format branch is pin-clean.
+- **Stage gates (open work, before BUILD-v1)**:
+  - **K-1 Feature identification**: enumerate the diff-derived features (length-delta · token-overlap · structural-edit-cost · numeric-fidelity · table-shape-match · reading-order-rank · …) → frozen list before cells run.
+  - **K-2 Model/algo design**: ML model · SLM · or LLM-prompt route — choice declared in v1.2 amendment; FT-vs-zero-shot per `[FT]` discipline (I-4).
+  - **K-3 Calibration**: human-IAA on a 187-pair UEM annotation subset (D-48 protocol).
+  - **K-4 Cross-format validation**: rank-correlation vs the 4 gold metrics above.
+- **Command**: `python harness/run.py --task DQ-051 --dataset uem-corpus-v1 --model <m> --judge azure-gpt-5-4-mini --features-frozen-at <commit>`.
+- **CI**: per-doc UEM vector → bootstrap; paired-bootstrap UEM-vs-gold-metric rank delta.
+- **Status**: `registered-not-yet-run` · **K-1..K-4 stage gates open**.
+
+### Category tally + integrity (v1.1)
+
+A=6, B=6, C=7, D=3, E=3, F=5, G=6, H=4, I=5, J=5, K=1 — **total 51** (v1.1 amendment adds D-51 UEM per drift policy §10). Every category represented; every dimension cites at least one reference from §2; every D-* from `PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-05-27.md` is present per the §2.4 bijection.
 
 ## §4 — Doc-type × dimension matrix
 
@@ -618,9 +641,9 @@ A=6, B=6, C=7, D=3, E=3, F=5, G=6, H=4, I=5, J=5 — **total 50.** Every categor
 
 ## §5 — Model panel
 
-**Total**: 46 commercial + 56 OSS + 8 stretch OSS = **110 rows.** Floor (≥15 each, ≥30 total) cleared by ~4×. Lit-sweep additions 2026-06-15 (50 rows) across enterprise IDP (ABBYY, Rossum, Hyperscience, Klippa, Mindee, Veryfi, Affinda, Sensible, Instabase, Indico, IBM Watson Discovery, Oracle DocUnderstanding), frontier multimodal hosted (xAI Grok-4 vision, Cohere Command R+ vision, DeepSeek V3 hosted, Qwen-Max, Reka Core, Fireworks AI Doc-Inlining, Together AI Llama-4-Vision), OSS layout-aware (TrOCR, Donut, LayoutLMv3, LiLT, Pix2Struct, Kosmos-2.5, Florence-2, UDOP, DocFormerV2, ERNIE-Layout, LayoutXLM, Vary-toy, MiniCPM-V 2.6 / MiniCPM-o, Idefics3, CogVLM2, InternLM-XComposer 2.5, DeepSeek-VL2, Phi-4-multimodal, Pixtral 12B, Molmo, Aria), table/structure specialists (Table Transformer / TATR, SmolDocling, olmOCR-2, RolmOCR, TextMonkey, StructEqTable, Kraken OCR, PP-StructureV3). Current-frontier 2026-Q2 rows retained: Claude Opus 4.8, GPT-5.5 thinking, Gemini 3 Pro, Mistral OCR 2, PaddleOCR-VL 1.6, MinerU 2.5-Pro, MonkeyOCR, MonkeyOCR-Pro-3B.
+**Total**: 56 commercial + 66 OSS + 8 stretch OSS = **130 rows.** Floor (≥15 each, ≥30 total) cleared by ~4×. Lit-sweep additions 2026-06-15 (50 rows) across enterprise IDP (ABBYY, Rossum, Hyperscience, Klippa, Mindee, Veryfi, Affinda, Sensible, Instabase, Indico, IBM Watson Discovery, Oracle DocUnderstanding), frontier multimodal hosted (xAI Grok-4 vision, Cohere Command R+ vision, DeepSeek V3 hosted, Qwen-Max, Reka Core, Fireworks AI Doc-Inlining, Together AI Llama-4-Vision), OSS layout-aware (TrOCR, Donut, LayoutLMv3, LiLT, Pix2Struct, Kosmos-2.5, Florence-2, UDOP, DocFormerV2, ERNIE-Layout, LayoutXLM, Vary-toy, MiniCPM-V 2.6 / MiniCPM-o, Idefics3, CogVLM2, InternLM-XComposer 2.5, DeepSeek-VL2, Phi-4-multimodal, Pixtral 12B, Molmo, Aria), table/structure specialists (Table Transformer / TATR, SmolDocling, olmOCR-2, RolmOCR, TextMonkey, StructEqTable, Kraken OCR, PP-StructureV3). Current-frontier 2026-Q2 rows retained: Claude Opus 4.8, GPT-5.5 thinking, Gemini 3 Pro, Mistral OCR 2, PaddleOCR-VL 1.6, MinerU 2.5-Pro, MonkeyOCR, MonkeyOCR-Pro-3B.
 
-### §5.1 — Commercial (n=46)
+### §5.1 — Commercial (n=56)
 
 | # | Model | Vendor | Access | Surface | FT? | Adapter shape | Status |
 |---|---|---|---|---|---|---|---|
@@ -670,8 +693,18 @@ A=6, B=6, C=7, D=3, E=3, F=5, G=6, H=4, I=5, J=5 — **total 50.** Every categor
 | C44 | Reka Core vision | Reka | native API | Tx F | n | hosted-REST | PENDING-KEY |
 | C45 | Fireworks AI Doc-Inlining | Fireworks | hosted | Tx F | n | hosted-REST | PENDING-KEY · low-cost VLM serving |
 | C46 | Together AI Llama-4-Vision hosted | Together | hosted | Tx F | n | hosted-REST | PENDING-KEY |
+| C47 | Adobe Acrobat AI Extract | Adobe | hosted | L T Tx F | n | hosted-REST | PENDING-KEY · enterprise PDF |
+| C48 | Foxit AI Document Intelligence | Foxit | hosted/on-prem | L T Tx F | n | hosted-REST | PENDING-KEY |
+| C49 | Konfuzio | Konfuzio | hosted | T Tx F | n | hosted-REST | PENDING-KEY · DE enterprise IDP |
+| C50 | HyperVerge OCR | HyperVerge | hosted | T Tx F | n | hosted-REST | PENDING-KEY · KYC/ID focus |
+| C51 | Eden AI (meta-router) | Eden AI | hosted | Tx F | n | hosted-REST | PENDING-KEY · multi-engine router |
+| C52 | OCR.space API | OCR.space | hosted | Tx | n | hosted-REST | PENDING-KEY · low-cost baseline |
+| C53 | Scribe OCR | Scribe | hosted | Tx | n | hosted-REST | PENDING-KEY · handwriting/historical |
+| C54 | Iron OCR | IronSoftware | SDK | Tx B | n | SDK | PENDING-KEY |
+| C55 | Aspose OCR | Aspose | SDK | Tx | n | SDK | PENDING-KEY |
+| C56 | A2iA (Mitek) | Mitek | SDK / hosted | Tx F | n | SDK | PENDING-KEY · check + form handwriting |
 
-### §5.2 — OSS / specialist (n=56 + 8 stretch)
+### §5.2 — OSS / specialist (n=66 + 8 stretch)
 
 | # | Model | Origin | Access | Surface | FT? | Adapter shape | Status |
 |---|---|---|---|---|---|---|---|
@@ -731,10 +764,20 @@ A=6, B=6, C=7, D=3, E=3, F=5, G=6, H=4, I=5, J=5 — **total 50.** Every categor
 | O54 | StructEqTable | OpenDataLab | local | T | n | class-based HF | structured-equation tables |
 | O55 | Kraken OCR | (community) | local | Tx B | n | class-based | historical + multilingual |
 | O56 | PP-StructureV3 | PaddlePaddle | local | L T Tx | n | class-based | layout + table pipeline |
+| O57 | Llama-3.2-11B-Vision Instruct | Meta | local | Tx F | n | class-based vLLM | NEW · 2026-06-15 sweep |
+| O58 | DeepSeek-Janus-Pro 7B | DeepSeek | local | Tx F | n | class-based vLLM | NEW · unified multimodal |
+| O59 | GLM-4V 9B | Zhipu | local | Tx F | n | class-based vLLM | NEW · strong VQA |
+| O60 | InternVL3 (8B + 26B + 78B) | Shanghai AI Lab | local | Tx F | n | class-based vLLM | NEW · 2025/26 leaderboard top |
+| O61 | Cambrian-1 (34B) | NYU | local | Tx F | n | class-based vLLM | NEW · vision-centric tuning |
+| O62 | NVIDIA VILA | NVIDIA | local | Tx F | n | class-based vLLM | NEW · long-context multimodal |
+| O63 | Mini-Gemini | (community) | local | Tx F | n | class-based vLLM | NEW · efficient dual-encoder |
+| O64 | MAmmoTH-VL | (community) | local | Tx F | n | class-based vLLM | NEW · math + chart heavy |
+| O65 | Apple OpenELM-VL | Apple | local | Tx F | n | class-based vLLM | NEW · on-device baseline |
+| O66 | LG EXAONE 3.5 VL | LG AI Research | local | Tx F | n | class-based vLLM | NEW · KO-strong VLM |
 
-**Total panel = 46 commercial + 56 OSS + 8 stretch = 110 rows (floor cleared by ~4×).**
+**Total panel = 56 commercial + 66 OSS + 8 stretch = 130 rows (floor cleared by ~5×).**
 
-**Stretch OSS (n=8)** → O57 mPLUG-DocOwl 1.5 · O58 DeepSeek-OCR-2 · O59 Nanonets-OCR-s (open weights) · O60 LLaVA-1.6-34B · O61 InternVL2-26B/76B · O62 Llama-3.2-90B-Vision · O63 Llama-4-Maverick · O64 Youtu-Parsing.
+**Stretch OSS (n=8)** → O75 mPLUG-DocOwl 1.5 · O76 DeepSeek-OCR-2 · O77 Nanonets-OCR-s (open weights) · O78 LLaVA-1.6-34B · O79 InternVL2-26B/76B · O80 Llama-3.2-90B-Vision · O81 Llama-4-Maverick · O82 Youtu-Parsing.
 
 ### §5.2.1 — Lit-sweep 2026-06-15 (sources surveyed for the +50)
 

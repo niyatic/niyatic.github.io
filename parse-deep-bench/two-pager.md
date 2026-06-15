@@ -10,7 +10,7 @@ Companion: full spec at `PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-06-11-v1.md` · das
 
 A pre-registered, third-party-anchored, ensemble-aware framework to defensibly answer **"is the HyperAPI parse primitive the best general parsing primitive across finance documents."** 50 dimensions across image / text / doc-type / language / density / CV / enterprise / NLP / print / repro. A 60-row commercial-vs-OSS model panel. A 16-type × 50-dim matrix (800 cell-classes). Engineered to **succeed whether HyperAPI parse wins or loses on any dimension** — researcher-not-advocate. Inherits SAVIOR-Bench Appendix D 4-part cell contract; lifts the bar to ParseBench-style per-rule = per-doc score vectors, paired-bootstrap CIs, Holm-Bonferroni multiplicity correction, contamination + held-out audit, NeurIPS reproducibility checklist.
 
-## §2 — The 50 dimensions (A–J)
+## §2 — The 51 dimensions (A–K · 50 v1 + D-51 UEM v1.1 amendment 2026-06-15)
 
 | Cat | # | Theme | Notable dims |
 |---|---|---|---|
@@ -24,12 +24,13 @@ A pre-registered, third-party-anchored, ensemble-aware framework to defensibly a
 | H | 4 | NLP / semantic | D-37 parse-intent F1 · D-38 VQA-ANLS · D-40 classify |
 | I | 5 | Print / production | D-41/42 lat-P50/P95-P99 · D-43 $/correct · D-45 page-scaling on ≥400pp T-11 class |
 | J | 5 | Repro / stat | D-46 CI95 · D-47 paired-CI · D-48 IAA · **D-49 factory-green gate** · **D-50 contamination-audit gate** |
+| **K** | **1** | **Universal eval-metric (v1.1)** | **D-51 UEM — uem_score over {HOF · Markdown · HTML · Tokens+BB} · cross-format judge = GPT-5.4 mini via Azure · K-1..K-4 gates open before BUILD-v1** |
 
 **Bijection** to the 2026-05-27 9-D spec preserved (every D-OCR/D-PARSE-INTENT/D-LAYOUT/D-BBOX/D-TABLE/D-DOC-QUALITY/D-LANG/D-DOWNSTREAM/D-COST-LATENCY maps to a D-XX). No dimension dropped.
 
-## §3 — The 110-row model panel (lit-sweep complete, 2026-06-15)
+## §3 — The 130-row model panel (lit-sweep complete, 2026-06-15)
 
-**46 commercial** + **56 OSS** + **8 stretch OSS** = **110 rows.** Floor (≥15 each, ≥30 total) cleared by ~4×. Lit-sweep 2026-06-15 added 50 rows across enterprise IDP, frontier multimodal hosted, OSS doc-AI classics, OSS frontier open-weight VLMs, and table/structure specialists — see framework §5.2.1 for the source survey.
+**56 commercial** + **66 OSS** + **8 stretch OSS** = **130 rows.** Floor (≥15 each, ≥30 total) cleared by ~5×. Two rounds of lit-sweep on 2026-06-15 added 70 rows total: round-1 (+50) across enterprise IDP, frontier multimodal hosted, OSS doc-AI classics, OSS frontier open-weight VLMs, and table/structure specialists; round-2 (+20) adds Adobe Acrobat AI Extract, Foxit AI Doc Intelligence, Konfuzio, HyperVerge OCR, Eden AI (meta-router), OCR.space, Scribe OCR, Iron OCR, Aspose OCR, A2iA (Mitek) — plus OSS Llama-3.2-11B-Vision, DeepSeek-Janus-Pro 7B, GLM-4V 9B, InternVL3, Cambrian-1, NVIDIA VILA, Mini-Gemini, MAmmoTH-VL, Apple OpenELM-VL, LG EXAONE 3.5 VL. **Audit gap closed**: Extend Parse 2.0 is present as **C10** (PENDING-KEY, gap-report contrast per Extend RealDocBench).
 
 - **Frontier closed-source**: Anthropic Claude Opus 4.8 · Sonnet 4.6 · Haiku 4.5 · OpenAI GPT-5.5 thinking + GPT-5.4 + GPT-4.1 + o3 (all via Azure OpenAI Service per `[[azure-openai-preferred]]`) · Google Gemini 3 Pro + Gemini 3 Flash + Gemini 2.5 Pro · Mistral OCR 2 · **xAI Grok-4 vision** · **Cohere Command R+ vision** · **DeepSeek V3 hosted** · **Qwen-Max** · **Reka Core**.
 - **Doc-AI commercial**: Azure DI prebuilt-{layout,document,invoice} · AWS Textract · Google DocAI (form parser + OCR) · LlamaParse Agentic + non-agentic · Reducto · Extend Parse 2.0 · LandingAI · Unstructured.io · Nanonets · **ABBYY (FineReader + Vantage)** · **Rossum** · **Hyperscience** · **Klippa** · **Mindee** · **Veryfi** · **Affinda** · **Sensible** · **Instabase** · **Indico** · **IBM Watson Discovery** · **Oracle Document Understanding** · **Fireworks AI Doc-Inlining** · **Together AI Llama-4-Vision**.
