@@ -512,7 +512,7 @@ Each is a per-type stratification contract: every leaderboard row reports the pr
 
 #### D-42 — LAT-P95-P99 (inherits D-COST-LATENCY portion 2)
 - **Metric**: `latency_p95_ms`, `latency_p99_ms` (tail latency).
-- **Hypothesis**: Tail-latency surfaces page-shape outliers (Eskimo 140pp class); D-45 page-scaling correlates.
+- **Hypothesis**: Tail-latency surfaces page-shape outliers (mid-long-doc ~140pp class); D-45 page-scaling correlates.
 - **Acceptance**: p95/p99 per cell; the outlier-doc-IDs cited.
 - **Gold**: observed.
 - **Panel**: all rows.
@@ -544,7 +544,7 @@ Each is a per-type stratification contract: every leaderboard row reports the pr
 - **Metric**: CER-by-pages curve at {1pp, 10pp, 50pp, 200pp+}.
 - **Hypothesis**: 300s server-side extract timeout (BLK-4 cross-vendor) inflates the long-doc-T-11 class (≥400pp) tail; E6 page-chunk ensemble is the named fix.
 - **Acceptance**: per-page-count CER + timeout-rate; long-doc T-11 class (≥400pp) reported separately.
-- **Gold**: parsing-dataset (Mahindra-era 10-Q class, internal-only filename — renamed to "long-doc T-11 class").
+- **Gold**: parsing-dataset long-doc T-11 class (≥400pp 10-Q class; internal-only filename, customer-name scrubbed).
 - **Panel**: all rows.
 - **Command**: `python harness/run.py --task DQ-045 --dataset page-scaling-v1 --model <m>`.
 - **CI**: per-doc CER vector per page-band → bootstrap.
