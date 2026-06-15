@@ -54,19 +54,11 @@ Adapter wires fall into 3 contract shapes (class-based image-input vLLM · hoste
 - **Reproducibility checklist**: 18 NeurIPS-2024 items answered item-by-item in `methodology.md §8`.
 - **Comparative-study 8 invariants** (I-1 apples-to-apples ... I-8 customer-name consent): per-claim enforced; machine-greppable.
 
-## §5 — Honesty register (cannot-measure-today)
-
-- **BLK-16** HyperAPI quota exhausted → blocks HyperAPI parse + classify columns until reset OR CEO Option B (paid-tier upgrade).
-- **BLK-17** Chandra vLLM host `:8847` flaky → blocks Chandra cells; watcher armed.
-- **BLK-18** SAVIOR-Bench gold corpus off-disk → blocks SAVIOR-anchored D-07/08/25 rows until corpus obtained.
-- **Partner consent** required for T-09 pay stub · T-10 wire/ACH · T-13 tax form · T-14 insurance · T-15 loan · ZH/JA/KO/AR/HI scripts.
-- **Structurally out-of-reach today**: T-11 10-Q / T-12 investor-presentation — HyperAPI IDP doc-type set excludes; D-15 is an *expected fail* dimension; Q-DR-5 open to CEO (restrict scope vs fund capmkts FT).
-
-## §6 — License + customer-name discipline
+## §5 — License + customer-name discipline
 
 License matrix (framework §9.1): ParseBench Apache-2.0 (the publishability anchor) · FUNSD/CORD/PubTabNet/DocLayNet/ChartQA permissive (public) · DocVQA CC-BY-NC (internal-only) · Hyperbots-internal corpora (no customer names) · SAVIOR partial (aggregate publishable per Appendix D). Customer-name 14-roster (verbatim from `_grep_guard.sh`) build-time-grep-guarded across every artifact. PII corpora synthetic-fill or partner-consent-gated.
 
-## §7 — What's in BUILD-v0 (this package)
+## §6 — What's in BUILD-v0 (this package)
 
 1. `PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-06-11-v1.md` — full spec (~500 LOC, §0–§14)
 2. `parse-deep-build-v0/methodology.md` — NeurIPS reproducibility checklist
@@ -77,7 +69,7 @@ License matrix (framework §9.1): ParseBench Apache-2.0 (the publishability anch
 
 Zero cells run · $0 burned · no quota touched · no broadcasts fired.
 
-## §8 — Decisions requested from reviewer
+## §7 — Decisions requested from reviewer
 
 1. **APPROVE / APPROVE-WITH-CHANGES / REJECT** on the 50-dim list — anything missing? anything to cut?
 2. **Panel completeness sign-off** — 110 rows after the 2026-06-15 lit-sweep (+50 across enterprise IDP, frontier multimodal hosted, OSS doc-AI, open-weight VLMs, and table specialists). Any further additions / cuts before BUILD-v1 wires adapters?
