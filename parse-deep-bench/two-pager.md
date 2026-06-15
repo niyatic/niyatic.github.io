@@ -10,37 +10,80 @@ Companion: full spec at `PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-06-11-v1.md` · das
 
 A pre-registered, third-party-anchored, ensemble-aware framework to defensibly answer **"is the HyperAPI parse primitive the best general parsing primitive across finance documents."** 50 dimensions across image / text / doc-type / language / density / CV / enterprise / NLP / print / repro. A 60-row commercial-vs-OSS model panel. A 16-type × 50-dim matrix (800 cell-classes). Engineered to **succeed whether HyperAPI parse wins or loses on any dimension** — researcher-not-advocate. Inherits SAVIOR-Bench Appendix D 4-part cell contract; lifts the bar to ParseBench-style per-rule = per-doc score vectors, paired-bootstrap CIs, Holm-Bonferroni multiplicity correction, contamination + held-out audit, NeurIPS reproducibility checklist.
 
-## §2 — The 51 dimensions (A–K · 50 v1 + D-51 UEM v1.1 amendment 2026-06-15)
+## §2 — All 51 metrics (A–K · 50 v1 + D-51 UEM v1.1 amendment 2026-06-15)
 
-| Cat | # | Theme | Notable dims |
+| Dim | Cat | Name | Metric |
 |---|---|---|---|
-| A | 6 | Image / scan quality | D-01 DPI · D-02 MTF · D-04 dewarp · D-06 JPEG-Q |
-| B | 6 | Text / transcription | D-07 recall · D-08 precision · D-11 CER · **D-12 digit-MICR-fidelity** (validates the "dumb-tool-wins-on-digits" F-B finding at scale) |
-| C | 7 | Doc-type strat | D-13 AP/AR · D-14 payments · **D-15 capital-markets** (HyperAPI declared out-of-set per Q-DR-5 — honest fail expected) |
-| D | 3 | Language / script | D-20 CER per script (EN/DE/FR/ES/ZH/JA/KO/AR/HI) · D-22 mixed-script |
-| E | 3 | Density / layout | **D-23 layout-elem-accuracy** (Chandra's native HTML lead) · D-25 PaIRS (PC-only secondary) |
-| F | 5 | Computer vision | D-26 bbox-IoU · D-28 DocLayNet COCO-mAP · D-29 seg-IoU |
-| G | 6 | Enterprise doc AI | **D-31 TABLE-GTRM** (Chandra's F-B lead 0.800 re-anchored) · D-32 TEDS · D-34/35 KIE FUNSD/CORD · **D-36 DOWNSTREAM-LIFT** (CEO-required; paired-bootstrap on parse→extract chain) |
-| H | 4 | NLP / semantic | D-37 parse-intent F1 · D-38 VQA-ANLS · D-40 classify |
-| I | 5 | Print / production | D-41/42 lat-P50/P95-P99 · D-43 $/correct · D-45 page-scaling on ≥400pp T-11 class |
-| J | 5 | Repro / stat | D-46 CI95 · D-47 paired-CI · D-48 IAA · **D-49 factory-green gate** · **D-50 contamination-audit gate** |
-| **K** | **1** | **Universal eval-metric (v1.1)** | **D-51 UEM — uem_score over {HOF · Markdown · HTML · Tokens+BB} · cross-format judge = GPT-5.4 mini via Azure · K-1..K-4 gates open before BUILD-v1** |
+| D-01 | A-IMAGE | IMG-DPI | `effective_dpi + cer_delta_strat` |
+| D-02 | A-IMAGE | IMG-MTF | `mtf_50_lp_mm + cer_delta` |
+| D-03 | A-IMAGE | IMG-ILLUMINATION | `illumination_uniformity_pct + cer_delta + bbox_iou_delta` |
+| D-04 | A-IMAGE | IMG-DEWARP | `dewarp_rmse_px + cer_delta` |
+| D-05 | A-IMAGE | IMG-SKEW | `skew_recovery_pct_cer` |
+| D-06 | A-IMAGE | IMG-JPEG-Q | `cer_delta_q40_vs_q90` |
+| D-07 | B-TEXT | OCR-RECALL | `savior_word_recall` |
+| D-08 | B-TEXT | OCR-PRECISION | `savior_word_precision + hallucinated_token_count` |
+| D-09 | B-TEXT | OCR-EDIT-DISTANCE | `ocr_edit_distance_norm` |
+| D-10 | B-TEXT | OCR-WER | `wer` |
+| D-11 | B-TEXT | OCR-CER | `cer_per_script` |
+| D-12 | B-TEXT | OCR-DIGIT-MICR-FIDELITY | `digit_micr_fidelity_f1` |
+| D-13 | C-DOCTYPE | DT-AP-AR | `f1_per_type` |
+| D-14 | C-DOCTYPE | DT-PAYMENTS | `f1_per_type + per_field` |
+| D-15 | C-DOCTYPE | DT-CAPITAL-MARKETS | `f1_per_type` |
+| D-16 | C-DOCTYPE | DT-ADJACENT | `f1_per_type` |
+| D-17 | C-DOCTYPE | DT-DENSITY | `metric_per_density_stratum` |
+| D-18 | C-DOCTYPE | DT-MULTI-COL | `multi_col_layout_f1 + column_count_err` |
+| D-19 | C-DOCTYPE | DT-NESTED-TABLE | `nested_table_cell_f1` |
+| D-20 | D-LANGUAGE | LANG-CER-PER-SCRIPT | `cer_per_script` |
+| D-21 | D-LANGUAGE | LANG-KIE-XFUND | `kie_f1_per_language` |
+| D-22 | D-LANGUAGE | LANG-MIXED-SCRIPT | `cer_mixed_script` |
+| D-23 | E-DENSITY | LAYOUT-ELEM-ACCURACY | `layout_element_accuracy` |
+| D-24 | E-DENSITY | LAYOUT-READING-ORDER | `reading_order_rank_correlation` |
+| D-25 | E-DENSITY | LAYOUT-PAIRS | `pairs_layout_zeuclidean` |
+| D-26 | F-CV | BBOX-IOU-TOKEN | `bbox_iou_token + match_rate` |
+| D-27 | F-CV | BBOX-FIELD-TO-REGION | `field_to_region_grounding_acc_iou50` |
+| D-28 | F-CV | LAYOUT-COCO-MAP | `coco_mAP_50_75_95 + per_class_AP` |
+| D-29 | F-CV | SEG-IOU | `seg_pixel_iou` |
+| D-30 | F-CV | VLM-PAGE-IMAGE-FIDELITY | `psnr + ssim` |
+| D-31 | G-ENTERPRISE | TABLE-GTRM | `grits + tablerecordmatch + gtrm` |
+| D-32 | G-ENTERPRISE | TABLE-TEDS | `teds` |
+| D-33 | G-ENTERPRISE | TABLE-CELL-F1 | `cell_content_f1 + per_row_type` |
+| D-34 | G-ENTERPRISE | KIE-FUNSD-F1 | `entity_f1` |
+| D-35 | G-ENTERPRISE | KIE-CORD-F1 | `entity_f1` |
+| D-36 | G-ENTERPRISE | DOWNSTREAM-LIFT | `parse_lift_paired_bootstrap` |
+| D-37 | H-NLP | PARSE-INTENT-F1 | `parse_intent_f1 + wer` |
+| D-38 | H-NLP | VQA-ANLS | `anls` |
+| D-39 | H-NLP | SEMANTIC-BERTSCORE | `bertscore_f1` |
+| D-40 | H-NLP | INTENT-CLASSIFICATION | `classify_accuracy_per_type` |
+| D-41 | I-PRINT | LAT-P50 | `latency_p50_ms` |
+| D-42 | I-PRINT | LAT-P95-P99 | `latency_p95_ms + latency_p99_ms` |
+| D-43 | I-PRINT | COST-DOLLAR-PER-CORRECT | `dollars_per_correct_call` |
+| D-44 | I-PRINT | FAILURE-RATE | `failure_rate_pct + per_mode_tally` |
+| D-45 | I-PRINT | PAGE-SCALING | `cer_per_page_band + timeout_rate` |
+| D-46 | J-REPRO | STAT-CI95 | `ci95_bootstrap_2000_seed_20260516` |
+| D-47 | J-REPRO | STAT-PAIRED-CI | `paired_bootstrap_ci` |
+| D-48 | J-REPRO | STAT-IAA | `cohens_kappa + krippendorff_alpha` |
+| D-49 | J-REPRO | REPRO-FACTORY-GREEN | `factory_reproduced_bool` |
+| D-50 | J-REPRO | REPRO-CONTAMINATION | `contamination_audit_pass_bool` |
+| **D-51** | **K-UEM** | **UEM-UNIVERSAL-OCR-METRIC** | `uem_score` over {HOF · Markdown · HTML · Tokens+BB} · cross-format judge=GPT-5.4-mini (Azure) · same-format model-free |
 
 **Bijection** to the 2026-05-27 9-D spec preserved (every D-OCR/D-PARSE-INTENT/D-LAYOUT/D-BBOX/D-TABLE/D-DOC-QUALITY/D-LANG/D-DOWNSTREAM/D-COST-LATENCY maps to a D-XX). No dimension dropped.
 
-## §3 — The 130-row model panel (lit-sweep complete, 2026-06-15)
+## §3 — The 130-row model panel
 
-**56 commercial** + **66 OSS** + **8 stretch OSS** = **130 rows.** Floor (≥15 each, ≥30 total) cleared by ~5×. Two rounds of lit-sweep on 2026-06-15 added 70 rows total: round-1 (+50) across enterprise IDP, frontier multimodal hosted, OSS doc-AI classics, OSS frontier open-weight VLMs, and table/structure specialists; round-2 (+20) adds Adobe Acrobat AI Extract, Foxit AI Doc Intelligence, Konfuzio, HyperVerge OCR, Eden AI (meta-router), OCR.space, Scribe OCR, Iron OCR, Aspose OCR, A2iA (Mitek) — plus OSS Llama-3.2-11B-Vision, DeepSeek-Janus-Pro 7B, GLM-4V 9B, InternVL3, Cambrian-1, NVIDIA VILA, Mini-Gemini, MAmmoTH-VL, Apple OpenELM-VL, LG EXAONE 3.5 VL. **Audit gap closed**: Extend Parse 2.0 is present as **C10** (PENDING-KEY, gap-report contrast per Extend RealDocBench).
+**56 commercial · 66 OSS · 8 stretch OSS = 130 rows.** Floor cleared by ~5×.
 
-- **Frontier closed-source**: Anthropic Claude Opus 4.8 · Sonnet 4.6 · Haiku 4.5 · OpenAI GPT-5.5 thinking + GPT-5.4 + GPT-4.1 + o3 (all via Azure OpenAI Service per `[[azure-openai-preferred]]`) · Google Gemini 3 Pro + Gemini 3 Flash + Gemini 2.5 Pro · Mistral OCR 2 · **xAI Grok-4 vision** · **Cohere Command R+ vision** · **DeepSeek V3 hosted** · **Qwen-Max** · **Reka Core**.
-- **Doc-AI commercial**: Azure DI prebuilt-{layout,document,invoice} · AWS Textract · Google DocAI (form parser + OCR) · LlamaParse Agentic + non-agentic · Reducto · Extend Parse 2.0 · LandingAI · Unstructured.io · Nanonets · **ABBYY (FineReader + Vantage)** · **Rossum** · **Hyperscience** · **Klippa** · **Mindee** · **Veryfi** · **Affinda** · **Sensible** · **Instabase** · **Indico** · **IBM Watson Discovery** · **Oracle Document Understanding** · **Fireworks AI Doc-Inlining** · **Together AI Llama-4-Vision**.
-- **Frontier OSS / VLM-OCR**: Chandra (datalab-to/chandra-ocr-2 @ self-hosted vLLM) · MonkeyOCR + MonkeyOCR-Pro-3B · PaddleOCR-VL 1.5 + 1.6 · MinerU 2.5 + 2.5-Pro + MinerU Pro hosted-OSS · DOTS-OCR · GLM-OCR · GOT-OCR 2.0 · Qwen 3-VL-235B · Marker 1.0 · Surya · Docling · Nougat · FireRed-OCR · Logics-Parsing-v2 · Tesseract 5.x · PaddleOCR v4 · EasyOCR · OpenOCR · **PP-StructureV3**.
-- **OSS doc-AI classics + open-weight VLMs (lit-sweep)**: TrOCR · Donut · LayoutLMv3 · LiLT · Pix2Struct · Kosmos-2.5 · Florence-2 · UDOP · DocFormerV2 · ERNIE-Layout · LayoutXLM · Vary-toy · MiniCPM-V 2.6 + MiniCPM-o 2.6 · Idefics3 · CogVLM2 · InternLM-XComposer 2.5 · DeepSeek-VL2 · Phi-4-multimodal · Pixtral 12B · Molmo 72B · Aria.
-- **Table / structure / open-license OCR specialists**: Microsoft Table Transformer (TATR) · SmolDocling · Allen AI olmOCR-2 · Reducto RolmOCR · TextMonkey · StructEqTable · Kraken OCR.
-- **Hyperbots-IP `[FT]`** (modesty-anchored, contamination-audited): Qwen 3.6-35B-A3B `[FT]` (also pinned as D-36 extractor) · Qwen 2.5-VL-7B-F `[FT]` · Qwen 2.5-VL-3B-F `[FT]` · hyperapi-parse-intent `[FT]`.
-- **Stretch (8)**: mPLUG-DocOwl 1.5 · DeepSeek-OCR-2 · Nanonets-OCR-s · LLaVA-1.6-34B · InternVL2-26B/76B · Llama-3.2-90B-Vision · Llama-4-Maverick · Youtu-Parsing.
+| Bucket | Count | Examples |
+|---|---|---|
+| Frontier closed-source LLM/VLM | 13 | Claude Opus 4.8 / Sonnet 4.6 / Haiku 4.5 · GPT-5.5/5.4/4.1/o3 (via Azure) · Gemini 3 Pro/Flash + 2.5 Pro · xAI Grok-4 · Cohere CR+ vision · Reka Core |
+| Doc-AI / IDP commercial | 33 | Azure DI · AWS Textract · Google DocAI · LlamaParse · Reducto · **Extend Parse 2.0 (C10)** · Nanonets · Mistral OCR 2 · ABBYY · Rossum · Hyperscience · Klippa · Mindee · Veryfi · Affinda · Sensible · Instabase · Indico · IBM Watson · Oracle · Adobe · Foxit · Konfuzio · HyperVerge · Eden AI · OCR.space · Scribe · Iron OCR · Aspose · A2iA |
+| Frontier OSS VLM-OCR | 21 | Chandra · MonkeyOCR + Pro-3B · PaddleOCR-VL 1.5/1.6 · MinerU 2.5/2.5-Pro/Pro · DOTS-OCR · GLM-OCR · GOT-OCR 2.0 · Qwen 3-VL-235B · Marker · Surya · Docling · Nougat · FireRed · PP-StructureV3 |
+| OSS doc-AI classics | 11 | TrOCR · Donut · LayoutLMv3 · LiLT · Pix2Struct · Kosmos-2.5 · Florence-2 · UDOP · DocFormerV2 · ERNIE-Layout · LayoutXLM |
+| OSS open-weight VLMs (sweep) | 21 | Vary-toy · MiniCPM-V/o 2.6 · Idefics3 · CogVLM2 · InternLM-XC 2.5 · DeepSeek-VL2 · Phi-4-mm · Pixtral 12B · Molmo 72B · Aria · Llama-3.2-11B-Vision · Janus-Pro · GLM-4V · InternVL3 · Cambrian-1 · VILA · Mini-Gemini · MAmmoTH-VL · OpenELM-VL · EXAONE 3.5 VL |
+| Table / structure / open-OCR | 7 | TATR · SmolDocling · olmOCR-2 · RolmOCR · TextMonkey · StructEqTable · Kraken |
+| Hyperbots-IP `[FT]` | 4 | Qwen 3.6-35B-A3B `[FT]` (D-36 extractor pin) · Qwen 2.5-VL-7B/3B-F `[FT]` · hyperapi-parse-intent `[FT]` |
+| Stretch | 8 | mPLUG-DocOwl 1.5 · DeepSeek-OCR-2 · Nanonets-OCR-s · LLaVA-1.6-34B · InternVL2 · Llama-3.2-90B-V · Llama-4-Maverick · Youtu-Parsing |
 
-Adapter wires fall into 3 contract shapes (class-based image-input vLLM · hosted REST multipart · OpenAI-shape chat); 7 REGISTRY entries today vs ~53 to wire at BUILD-v1 — explicitly budgeted.
+**Audit gap closed**: Extend Parse 2.0 is **C10** (PENDING-KEY, gap-report contrast per Extend RealDocBench). Adapter wires fall into 3 contract shapes (class-based image-input vLLM · hosted REST multipart · OpenAI-shape chat); 7 REGISTRY entries today vs ~123 to wire at BUILD-v1.
 
 ## §4 — Methodology highlights (NeurIPS-bar)
 

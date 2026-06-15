@@ -1,18 +1,25 @@
 <!doctype html><html><head><meta charset=utf-8><title>Parse Deep Benchmark v1 — 2-page review brief</title><style>
-@page { size: A4; margin: 14mm 16mm; }
-body { font: 11pt/1.45 -apple-system, "Helvetica Neue", Arial, sans-serif; color:#1a1a1a; max-width: 800px; margin: 0 auto; padding: 18px 22px; }
-h1 { font-size: 18pt; margin: 0 0 4pt; }
-h2 { font-size: 13pt; margin: 14pt 0 6pt; padding-bottom: 3pt; border-bottom: 1px solid #ddd; }
-h3 { font-size: 11pt; margin: 10pt 0 4pt; color:#444; }
-p, li { font-size: 10.5pt; }
-table { border-collapse: collapse; width: 100%; font-size: 9.5pt; margin: 6pt 0 10pt; }
-th, td { border: 1px solid #ccc; padding: 4pt 6pt; text-align: left; vertical-align: top; }
-th { background: #f4f4ef; font-weight: 600; }
-code { font-family: ui-monospace, Menlo, monospace; font-size: 9.5pt; background: #f4f4ef; padding: 0 3px; border-radius: 2px; }
-hr { border: 0; border-top: 1px solid #ddd; margin: 12pt 0; }
+@page { size: A4; margin: 12mm 14mm; }
+* { box-sizing: border-box; }
+body { font: 10.5pt/1.42 -apple-system, "Helvetica Neue", Arial, sans-serif; color:#1a1a1a; margin: 0; }
+h1 { font-size: 17pt; margin: 0 0 4pt; }
+h2 { font-size: 12.5pt; margin: 12pt 0 5pt; padding-bottom: 3pt; border-bottom: 1px solid #ccc; }
+h3 { font-size: 10.5pt; margin: 9pt 0 4pt; color:#444; }
+p, li { font-size: 10pt; }
+ul, ol { padding-left: 16pt; margin: 4pt 0; }
+li { margin-bottom: 2pt; word-wrap: break-word; overflow-wrap: anywhere; }
 strong { color: #000; }
 em { color: #555; }
-ul { padding-left: 18pt; margin: 4pt 0; }
+hr { border: 0; border-top: 1px solid #ccc; margin: 10pt 0; }
+code { font-family: ui-monospace, Menlo, monospace; font-size: 9pt; background: #f4f4ef; padding: 0 3px; border-radius: 2px; word-wrap: break-word; overflow-wrap: anywhere; }
+table { border-collapse: collapse; width: 100%; font-size: 8.5pt; margin: 5pt 0 8pt; table-layout: fixed; }
+th, td { border: 1px solid #ccc; padding: 3pt 5pt; text-align: left; vertical-align: top; word-wrap: break-word; overflow-wrap: anywhere; hyphens: auto; }
+th { background: #f4f4ef; font-weight: 600; }
+table tr { page-break-inside: avoid; }
+table.dim-table th:nth-child(1), table.dim-table td:nth-child(1) { width: 7%; }
+table.dim-table th:nth-child(2), table.dim-table td:nth-child(2) { width: 6%; }
+table.dim-table th:nth-child(3), table.dim-table td:nth-child(3) { width: 20%; }
+table.dim-table th:nth-child(4), table.dim-table td:nth-child(4) { width: 67%; }
 </style></head><body><h1>Parse Deep Benchmark v1 — 2-page review brief</h1>
 <p>Date: 2026-06-11 · Status: BUILD-v0 (spec only · zero cells run · $0) · Bar: ParseBench / NeurIPS-paper, strictly above SAVIOR-Bench
 Approval: PENDING build-v0 review (chief-research-scientist · chief-architect · docs-techwriter · benchmark-format-steward)
@@ -20,98 +27,380 @@ Companion: full spec at <code>PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-06-11-v1.md</c
 <hr />
 <h2>§1 — What this is, in one paragraph</h2>
 <p>A pre-registered, third-party-anchored, ensemble-aware framework to defensibly answer <strong>"is the HyperAPI parse primitive the best general parsing primitive across finance documents."</strong> 50 dimensions across image / text / doc-type / language / density / CV / enterprise / NLP / print / repro. A 60-row commercial-vs-OSS model panel. A 16-type × 50-dim matrix (800 cell-classes). Engineered to <strong>succeed whether HyperAPI parse wins or loses on any dimension</strong> — researcher-not-advocate. Inherits SAVIOR-Bench Appendix D 4-part cell contract; lifts the bar to ParseBench-style per-rule = per-doc score vectors, paired-bootstrap CIs, Holm-Bonferroni multiplicity correction, contamination + held-out audit, NeurIPS reproducibility checklist.</p>
-<h2>§2 — The 51 dimensions (A–K · 50 v1 + D-51 UEM v1.1 amendment 2026-06-15)</h2>
-<table>
+<h2>§2 — All 51 metrics (A–K · 50 v1 + D-51 UEM v1.1 amendment 2026-06-15)</h2>
+<table class="dim-table">
 <thead>
 <tr>
+<th>Dim</th>
 <th>Cat</th>
-<th>#</th>
-<th>Theme</th>
-<th>Notable dims</th>
+<th>Name</th>
+<th>Metric</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>A</td>
-<td>6</td>
-<td>Image / scan quality</td>
-<td>D-01 DPI · D-02 MTF · D-04 dewarp · D-06 JPEG-Q</td>
+<td>D-01</td>
+<td>A-IMAGE</td>
+<td>IMG-DPI</td>
+<td><code>effective_dpi + cer_delta_strat</code></td>
 </tr>
 <tr>
-<td>B</td>
-<td>6</td>
-<td>Text / transcription</td>
-<td>D-07 recall · D-08 precision · D-11 CER · <strong>D-12 digit-MICR-fidelity</strong> (validates the "dumb-tool-wins-on-digits" F-B finding at scale)</td>
+<td>D-02</td>
+<td>A-IMAGE</td>
+<td>IMG-MTF</td>
+<td><code>mtf_50_lp_mm + cer_delta</code></td>
 </tr>
 <tr>
-<td>C</td>
-<td>7</td>
-<td>Doc-type strat</td>
-<td>D-13 AP/AR · D-14 payments · <strong>D-15 capital-markets</strong> (HyperAPI declared out-of-set per Q-DR-5 — honest fail expected)</td>
+<td>D-03</td>
+<td>A-IMAGE</td>
+<td>IMG-ILLUMINATION</td>
+<td><code>illumination_uniformity_pct + cer_delta + bbox_iou_delta</code></td>
 </tr>
 <tr>
-<td>D</td>
-<td>3</td>
-<td>Language / script</td>
-<td>D-20 CER per script (EN/DE/FR/ES/ZH/JA/KO/AR/HI) · D-22 mixed-script</td>
+<td>D-04</td>
+<td>A-IMAGE</td>
+<td>IMG-DEWARP</td>
+<td><code>dewarp_rmse_px + cer_delta</code></td>
 </tr>
 <tr>
-<td>E</td>
-<td>3</td>
-<td>Density / layout</td>
-<td><strong>D-23 layout-elem-accuracy</strong> (Chandra's native HTML lead) · D-25 PaIRS (PC-only secondary)</td>
+<td>D-05</td>
+<td>A-IMAGE</td>
+<td>IMG-SKEW</td>
+<td><code>skew_recovery_pct_cer</code></td>
 </tr>
 <tr>
-<td>F</td>
-<td>5</td>
-<td>Computer vision</td>
-<td>D-26 bbox-IoU · D-28 DocLayNet COCO-mAP · D-29 seg-IoU</td>
+<td>D-06</td>
+<td>A-IMAGE</td>
+<td>IMG-JPEG-Q</td>
+<td><code>cer_delta_q40_vs_q90</code></td>
 </tr>
 <tr>
-<td>G</td>
-<td>6</td>
-<td>Enterprise doc AI</td>
-<td><strong>D-31 TABLE-GTRM</strong> (Chandra's F-B lead 0.800 re-anchored) · D-32 TEDS · D-34/35 KIE FUNSD/CORD · <strong>D-36 DOWNSTREAM-LIFT</strong> (CEO-required; paired-bootstrap on parse→extract chain)</td>
+<td>D-07</td>
+<td>B-TEXT</td>
+<td>OCR-RECALL</td>
+<td><code>savior_word_recall</code></td>
 </tr>
 <tr>
-<td>H</td>
-<td>4</td>
-<td>NLP / semantic</td>
-<td>D-37 parse-intent F1 · D-38 VQA-ANLS · D-40 classify</td>
+<td>D-08</td>
+<td>B-TEXT</td>
+<td>OCR-PRECISION</td>
+<td><code>savior_word_precision + hallucinated_token_count</code></td>
 </tr>
 <tr>
-<td>I</td>
-<td>5</td>
-<td>Print / production</td>
-<td>D-41/42 lat-P50/P95-P99 · D-43 $/correct · D-45 page-scaling on ≥400pp T-11 class</td>
+<td>D-09</td>
+<td>B-TEXT</td>
+<td>OCR-EDIT-DISTANCE</td>
+<td><code>ocr_edit_distance_norm</code></td>
 </tr>
 <tr>
-<td>J</td>
-<td>5</td>
-<td>Repro / stat</td>
-<td>D-46 CI95 · D-47 paired-CI · D-48 IAA · <strong>D-49 factory-green gate</strong> · <strong>D-50 contamination-audit gate</strong></td>
+<td>D-10</td>
+<td>B-TEXT</td>
+<td>OCR-WER</td>
+<td><code>wer</code></td>
 </tr>
 <tr>
-<td><strong>K</strong></td>
-<td><strong>1</strong></td>
-<td><strong>Universal eval-metric (v1.1)</strong></td>
-<td><strong>D-51 UEM — uem_score over {HOF · Markdown · HTML · Tokens+BB} · cross-format judge = GPT-5.4 mini via Azure · K-1..K-4 gates open before BUILD-v1</strong></td>
+<td>D-11</td>
+<td>B-TEXT</td>
+<td>OCR-CER</td>
+<td><code>cer_per_script</code></td>
+</tr>
+<tr>
+<td>D-12</td>
+<td>B-TEXT</td>
+<td>OCR-DIGIT-MICR-FIDELITY</td>
+<td><code>digit_micr_fidelity_f1</code></td>
+</tr>
+<tr>
+<td>D-13</td>
+<td>C-DOCTYPE</td>
+<td>DT-AP-AR</td>
+<td><code>f1_per_type</code></td>
+</tr>
+<tr>
+<td>D-14</td>
+<td>C-DOCTYPE</td>
+<td>DT-PAYMENTS</td>
+<td><code>f1_per_type + per_field</code></td>
+</tr>
+<tr>
+<td>D-15</td>
+<td>C-DOCTYPE</td>
+<td>DT-CAPITAL-MARKETS</td>
+<td><code>f1_per_type</code></td>
+</tr>
+<tr>
+<td>D-16</td>
+<td>C-DOCTYPE</td>
+<td>DT-ADJACENT</td>
+<td><code>f1_per_type</code></td>
+</tr>
+<tr>
+<td>D-17</td>
+<td>C-DOCTYPE</td>
+<td>DT-DENSITY</td>
+<td><code>metric_per_density_stratum</code></td>
+</tr>
+<tr>
+<td>D-18</td>
+<td>C-DOCTYPE</td>
+<td>DT-MULTI-COL</td>
+<td><code>multi_col_layout_f1 + column_count_err</code></td>
+</tr>
+<tr>
+<td>D-19</td>
+<td>C-DOCTYPE</td>
+<td>DT-NESTED-TABLE</td>
+<td><code>nested_table_cell_f1</code></td>
+</tr>
+<tr>
+<td>D-20</td>
+<td>D-LANGUAGE</td>
+<td>LANG-CER-PER-SCRIPT</td>
+<td><code>cer_per_script</code></td>
+</tr>
+<tr>
+<td>D-21</td>
+<td>D-LANGUAGE</td>
+<td>LANG-KIE-XFUND</td>
+<td><code>kie_f1_per_language</code></td>
+</tr>
+<tr>
+<td>D-22</td>
+<td>D-LANGUAGE</td>
+<td>LANG-MIXED-SCRIPT</td>
+<td><code>cer_mixed_script</code></td>
+</tr>
+<tr>
+<td>D-23</td>
+<td>E-DENSITY</td>
+<td>LAYOUT-ELEM-ACCURACY</td>
+<td><code>layout_element_accuracy</code></td>
+</tr>
+<tr>
+<td>D-24</td>
+<td>E-DENSITY</td>
+<td>LAYOUT-READING-ORDER</td>
+<td><code>reading_order_rank_correlation</code></td>
+</tr>
+<tr>
+<td>D-25</td>
+<td>E-DENSITY</td>
+<td>LAYOUT-PAIRS</td>
+<td><code>pairs_layout_zeuclidean</code></td>
+</tr>
+<tr>
+<td>D-26</td>
+<td>F-CV</td>
+<td>BBOX-IOU-TOKEN</td>
+<td><code>bbox_iou_token + match_rate</code></td>
+</tr>
+<tr>
+<td>D-27</td>
+<td>F-CV</td>
+<td>BBOX-FIELD-TO-REGION</td>
+<td><code>field_to_region_grounding_acc_iou50</code></td>
+</tr>
+<tr>
+<td>D-28</td>
+<td>F-CV</td>
+<td>LAYOUT-COCO-MAP</td>
+<td><code>coco_mAP_50_75_95 + per_class_AP</code></td>
+</tr>
+<tr>
+<td>D-29</td>
+<td>F-CV</td>
+<td>SEG-IOU</td>
+<td><code>seg_pixel_iou</code></td>
+</tr>
+<tr>
+<td>D-30</td>
+<td>F-CV</td>
+<td>VLM-PAGE-IMAGE-FIDELITY</td>
+<td><code>psnr + ssim</code></td>
+</tr>
+<tr>
+<td>D-31</td>
+<td>G-ENTERPRISE</td>
+<td>TABLE-GTRM</td>
+<td><code>grits + tablerecordmatch + gtrm</code></td>
+</tr>
+<tr>
+<td>D-32</td>
+<td>G-ENTERPRISE</td>
+<td>TABLE-TEDS</td>
+<td><code>teds</code></td>
+</tr>
+<tr>
+<td>D-33</td>
+<td>G-ENTERPRISE</td>
+<td>TABLE-CELL-F1</td>
+<td><code>cell_content_f1 + per_row_type</code></td>
+</tr>
+<tr>
+<td>D-34</td>
+<td>G-ENTERPRISE</td>
+<td>KIE-FUNSD-F1</td>
+<td><code>entity_f1</code></td>
+</tr>
+<tr>
+<td>D-35</td>
+<td>G-ENTERPRISE</td>
+<td>KIE-CORD-F1</td>
+<td><code>entity_f1</code></td>
+</tr>
+<tr>
+<td>D-36</td>
+<td>G-ENTERPRISE</td>
+<td>DOWNSTREAM-LIFT</td>
+<td><code>parse_lift_paired_bootstrap</code></td>
+</tr>
+<tr>
+<td>D-37</td>
+<td>H-NLP</td>
+<td>PARSE-INTENT-F1</td>
+<td><code>parse_intent_f1 + wer</code></td>
+</tr>
+<tr>
+<td>D-38</td>
+<td>H-NLP</td>
+<td>VQA-ANLS</td>
+<td><code>anls</code></td>
+</tr>
+<tr>
+<td>D-39</td>
+<td>H-NLP</td>
+<td>SEMANTIC-BERTSCORE</td>
+<td><code>bertscore_f1</code></td>
+</tr>
+<tr>
+<td>D-40</td>
+<td>H-NLP</td>
+<td>INTENT-CLASSIFICATION</td>
+<td><code>classify_accuracy_per_type</code></td>
+</tr>
+<tr>
+<td>D-41</td>
+<td>I-PRINT</td>
+<td>LAT-P50</td>
+<td><code>latency_p50_ms</code></td>
+</tr>
+<tr>
+<td>D-42</td>
+<td>I-PRINT</td>
+<td>LAT-P95-P99</td>
+<td><code>latency_p95_ms + latency_p99_ms</code></td>
+</tr>
+<tr>
+<td>D-43</td>
+<td>I-PRINT</td>
+<td>COST-DOLLAR-PER-CORRECT</td>
+<td><code>dollars_per_correct_call</code></td>
+</tr>
+<tr>
+<td>D-44</td>
+<td>I-PRINT</td>
+<td>FAILURE-RATE</td>
+<td><code>failure_rate_pct + per_mode_tally</code></td>
+</tr>
+<tr>
+<td>D-45</td>
+<td>I-PRINT</td>
+<td>PAGE-SCALING</td>
+<td><code>cer_per_page_band + timeout_rate</code></td>
+</tr>
+<tr>
+<td>D-46</td>
+<td>J-REPRO</td>
+<td>STAT-CI95</td>
+<td><code>ci95_bootstrap_2000_seed_20260516</code></td>
+</tr>
+<tr>
+<td>D-47</td>
+<td>J-REPRO</td>
+<td>STAT-PAIRED-CI</td>
+<td><code>paired_bootstrap_ci</code></td>
+</tr>
+<tr>
+<td>D-48</td>
+<td>J-REPRO</td>
+<td>STAT-IAA</td>
+<td><code>cohens_kappa + krippendorff_alpha</code></td>
+</tr>
+<tr>
+<td>D-49</td>
+<td>J-REPRO</td>
+<td>REPRO-FACTORY-GREEN</td>
+<td><code>factory_reproduced_bool</code></td>
+</tr>
+<tr>
+<td>D-50</td>
+<td>J-REPRO</td>
+<td>REPRO-CONTAMINATION</td>
+<td><code>contamination_audit_pass_bool</code></td>
+</tr>
+<tr>
+<td><strong>D-51</strong></td>
+<td><strong>K-UEM</strong></td>
+<td><strong>UEM-UNIVERSAL-OCR-METRIC</strong></td>
+<td><code>uem_score</code> over {HOF · Markdown · HTML · Tokens+BB} · cross-format judge=GPT-5.4-mini (Azure) · same-format model-free</td>
 </tr>
 </tbody>
 </table>
 <p><strong>Bijection</strong> to the 2026-05-27 9-D spec preserved (every D-OCR/D-PARSE-INTENT/D-LAYOUT/D-BBOX/D-TABLE/D-DOC-QUALITY/D-LANG/D-DOWNSTREAM/D-COST-LATENCY maps to a D-XX). No dimension dropped.</p>
-<h2>§3 — The 130-row model panel (lit-sweep complete, 2026-06-15)</h2>
-<p><strong>56 commercial</strong> + <strong>66 OSS</strong> + <strong>8 stretch OSS</strong> = <strong>130 rows.</strong> Floor (≥15 each, ≥30 total) cleared by ~5×. Two rounds of lit-sweep on 2026-06-15 added 70 rows total: round-1 (+50) across enterprise IDP, frontier multimodal hosted, OSS doc-AI classics, OSS frontier open-weight VLMs, and table/structure specialists; round-2 (+20) adds Adobe Acrobat AI Extract, Foxit AI Doc Intelligence, Konfuzio, HyperVerge OCR, Eden AI (meta-router), OCR.space, Scribe OCR, Iron OCR, Aspose OCR, A2iA (Mitek) — plus OSS Llama-3.2-11B-Vision, DeepSeek-Janus-Pro 7B, GLM-4V 9B, InternVL3, Cambrian-1, NVIDIA VILA, Mini-Gemini, MAmmoTH-VL, Apple OpenELM-VL, LG EXAONE 3.5 VL. <strong>Audit gap closed</strong>: Extend Parse 2.0 is present as <strong>C10</strong> (PENDING-KEY, gap-report contrast per Extend RealDocBench).</p>
-<ul>
-<li><strong>Frontier closed-source</strong>: Anthropic Claude Opus 4.8 · Sonnet 4.6 · Haiku 4.5 · OpenAI GPT-5.5 thinking + GPT-5.4 + GPT-4.1 + o3 (all via Azure OpenAI Service per <code>[[azure-openai-preferred]]</code>) · Google Gemini 3 Pro + Gemini 3 Flash + Gemini 2.5 Pro · Mistral OCR 2 · <strong>xAI Grok-4 vision</strong> · <strong>Cohere Command R+ vision</strong> · <strong>DeepSeek V3 hosted</strong> · <strong>Qwen-Max</strong> · <strong>Reka Core</strong>.</li>
-<li><strong>Doc-AI commercial</strong>: Azure DI prebuilt-{layout,document,invoice} · AWS Textract · Google DocAI (form parser + OCR) · LlamaParse Agentic + non-agentic · Reducto · Extend Parse 2.0 · LandingAI · Unstructured.io · Nanonets · <strong>ABBYY (FineReader + Vantage)</strong> · <strong>Rossum</strong> · <strong>Hyperscience</strong> · <strong>Klippa</strong> · <strong>Mindee</strong> · <strong>Veryfi</strong> · <strong>Affinda</strong> · <strong>Sensible</strong> · <strong>Instabase</strong> · <strong>Indico</strong> · <strong>IBM Watson Discovery</strong> · <strong>Oracle Document Understanding</strong> · <strong>Fireworks AI Doc-Inlining</strong> · <strong>Together AI Llama-4-Vision</strong>.</li>
-<li><strong>Frontier OSS / VLM-OCR</strong>: Chandra (datalab-to/chandra-ocr-2 @ self-hosted vLLM) · MonkeyOCR + MonkeyOCR-Pro-3B · PaddleOCR-VL 1.5 + 1.6 · MinerU 2.5 + 2.5-Pro + MinerU Pro hosted-OSS · DOTS-OCR · GLM-OCR · GOT-OCR 2.0 · Qwen 3-VL-235B · Marker 1.0 · Surya · Docling · Nougat · FireRed-OCR · Logics-Parsing-v2 · Tesseract 5.x · PaddleOCR v4 · EasyOCR · OpenOCR · <strong>PP-StructureV3</strong>.</li>
-<li><strong>OSS doc-AI classics + open-weight VLMs (lit-sweep)</strong>: TrOCR · Donut · LayoutLMv3 · LiLT · Pix2Struct · Kosmos-2.5 · Florence-2 · UDOP · DocFormerV2 · ERNIE-Layout · LayoutXLM · Vary-toy · MiniCPM-V 2.6 + MiniCPM-o 2.6 · Idefics3 · CogVLM2 · InternLM-XComposer 2.5 · DeepSeek-VL2 · Phi-4-multimodal · Pixtral 12B · Molmo 72B · Aria.</li>
-<li><strong>Table / structure / open-license OCR specialists</strong>: Microsoft Table Transformer (TATR) · SmolDocling · Allen AI olmOCR-2 · Reducto RolmOCR · TextMonkey · StructEqTable · Kraken OCR.</li>
-<li><strong>Hyperbots-IP <code>[FT]</code></strong> (modesty-anchored, contamination-audited): Qwen 3.6-35B-A3B <code>[FT]</code> (also pinned as D-36 extractor) · Qwen 2.5-VL-7B-F <code>[FT]</code> · Qwen 2.5-VL-3B-F <code>[FT]</code> · hyperapi-parse-intent <code>[FT]</code>.</li>
-<li><strong>Stretch (8)</strong>: mPLUG-DocOwl 1.5 · DeepSeek-OCR-2 · Nanonets-OCR-s · LLaVA-1.6-34B · InternVL2-26B/76B · Llama-3.2-90B-Vision · Llama-4-Maverick · Youtu-Parsing.</li>
-</ul>
-<p>Adapter wires fall into 3 contract shapes (class-based image-input vLLM · hosted REST multipart · OpenAI-shape chat); 7 REGISTRY entries today vs ~53 to wire at BUILD-v1 — explicitly budgeted.</p>
+<h2>§3 — The 130-row model panel</h2>
+<p><strong>56 commercial · 66 OSS · 8 stretch OSS = 130 rows.</strong> Floor cleared by ~5×.</p>
+<table>
+<thead>
+<tr>
+<th>Bucket</th>
+<th>Count</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Frontier closed-source LLM/VLM</td>
+<td>13</td>
+<td>Claude Opus 4.8 / Sonnet 4.6 / Haiku 4.5 · GPT-5.5/5.4/4.1/o3 (via Azure) · Gemini 3 Pro/Flash + 2.5 Pro · xAI Grok-4 · Cohere CR+ vision · Reka Core</td>
+</tr>
+<tr>
+<td>Doc-AI / IDP commercial</td>
+<td>33</td>
+<td>Azure DI · AWS Textract · Google DocAI · LlamaParse · Reducto · <strong>Extend Parse 2.0 (C10)</strong> · Nanonets · Mistral OCR 2 · ABBYY · Rossum · Hyperscience · Klippa · Mindee · Veryfi · Affinda · Sensible · Instabase · Indico · IBM Watson · Oracle · Adobe · Foxit · Konfuzio · HyperVerge · Eden AI · OCR.space · Scribe · Iron OCR · Aspose · A2iA</td>
+</tr>
+<tr>
+<td>Frontier OSS VLM-OCR</td>
+<td>21</td>
+<td>Chandra · MonkeyOCR + Pro-3B · PaddleOCR-VL 1.5/1.6 · MinerU 2.5/2.5-Pro/Pro · DOTS-OCR · GLM-OCR · GOT-OCR 2.0 · Qwen 3-VL-235B · Marker · Surya · Docling · Nougat · FireRed · PP-StructureV3</td>
+</tr>
+<tr>
+<td>OSS doc-AI classics</td>
+<td>11</td>
+<td>TrOCR · Donut · LayoutLMv3 · LiLT · Pix2Struct · Kosmos-2.5 · Florence-2 · UDOP · DocFormerV2 · ERNIE-Layout · LayoutXLM</td>
+</tr>
+<tr>
+<td>OSS open-weight VLMs (sweep)</td>
+<td>21</td>
+<td>Vary-toy · MiniCPM-V/o 2.6 · Idefics3 · CogVLM2 · InternLM-XC 2.5 · DeepSeek-VL2 · Phi-4-mm · Pixtral 12B · Molmo 72B · Aria · Llama-3.2-11B-Vision · Janus-Pro · GLM-4V · InternVL3 · Cambrian-1 · VILA · Mini-Gemini · MAmmoTH-VL · OpenELM-VL · EXAONE 3.5 VL</td>
+</tr>
+<tr>
+<td>Table / structure / open-OCR</td>
+<td>7</td>
+<td>TATR · SmolDocling · olmOCR-2 · RolmOCR · TextMonkey · StructEqTable · Kraken</td>
+</tr>
+<tr>
+<td>Hyperbots-IP <code>[FT]</code></td>
+<td>4</td>
+<td>Qwen 3.6-35B-A3B <code>[FT]</code> (D-36 extractor pin) · Qwen 2.5-VL-7B/3B-F <code>[FT]</code> · hyperapi-parse-intent <code>[FT]</code></td>
+</tr>
+<tr>
+<td>Stretch</td>
+<td>8</td>
+<td>mPLUG-DocOwl 1.5 · DeepSeek-OCR-2 · Nanonets-OCR-s · LLaVA-1.6-34B · InternVL2 · Llama-3.2-90B-V · Llama-4-Maverick · Youtu-Parsing</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Audit gap closed</strong>: Extend Parse 2.0 is <strong>C10</strong> (PENDING-KEY, gap-report contrast per Extend RealDocBench). Adapter wires fall into 3 contract shapes (class-based image-input vLLM · hosted REST multipart · OpenAI-shape chat); 7 REGISTRY entries today vs ~123 to wire at BUILD-v1.</p>
 <h2>§4 — Methodology highlights (NeurIPS-bar)</h2>
 <ul>
 <li><strong>Pre-registration</strong>: this framework IS the pre-registration. Every cell ships with hypothesis · acceptance · rerunnable command · <code>nrun_status</code> (default <code>registered-not-yet-run</code>) before any number lands.</li>
