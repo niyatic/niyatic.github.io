@@ -54,7 +54,7 @@ strong{color:var(--grey-12);font-weight:600;}
 <hr>
 <h2>1. Campaign architecture</h2>
 <h3>1.1 Cadence (per segment, per contact — 6 weeks, 5 emails + 3 LinkedIn touches)</h3>
-<table><thead><tr><th>Day</th><th>Touch</th><th>Angle</th><th>CTA stage</th></tr></thead><tbody><tr><td>1</td><td><strong>E1</strong> email</td><td>Doc-pain touchbase + segment artifact</td><td>Soft (reply one word for artifact)</td></tr><tr><td>3</td><td><strong>L1</strong> LinkedIn</td><td>Connection note (template T1)</td><td>None — connect only</td></tr><tr><td>8</td><td><strong>E2</strong> email</td><td>Primitive mapping on their doc class + artifact</td><td>Value (artifact)</td></tr><tr><td>17</td><td><strong>E3</strong> email</td><td>Honest-benchmark proof (&quot;we publish our losing rows&quot;) + methods artifact</td><td>Proof (artifact)</td></tr><tr><td>19</td><td><strong>L2</strong> LinkedIn</td><td>Value-share (template T2)</td><td>Soft (artifact)</td></tr><tr><td>29</td><td><strong>E4</strong> email</td><td>Per-page economics ($0.05/page, published)</td><td><strong>Clear ask: 20-min discovery call</strong></td></tr><tr><td>31</td><td><strong>L3</strong> LinkedIn</td><td>Soft-CTA (template T3)</td><td>Soft (one question)</td></tr><tr><td>40</td><td><strong>E5</strong> email</td><td>Break-up + full artifact bundle</td><td>Break-up</td></tr></tbody></table>
+<table><thead><tr><th>Day</th><th>Touch</th><th>Angle</th><th>CTA stage</th></tr></thead><tbody><tr><td>1</td><td><strong>E1</strong> email</td><td>Doc-pain touchbase + segment artifact</td><td>Soft (reply one word for artifact)</td></tr><tr><td>3</td><td><strong>L1</strong> LinkedIn</td><td>Connection note (template T1)</td><td>None — connect only</td></tr><tr><td>8</td><td><strong>E2</strong> email</td><td>Primitive mapping on their doc class + artifact</td><td>Value (artifact)</td></tr><tr><td>17</td><td><strong>E3</strong> email</td><td>Honest-benchmark proof (&quot;we&#x27;ll show where it struggles on your docs&quot;) + methods artifact</td><td>Proof (artifact)</td></tr><tr><td>19</td><td><strong>L2</strong> LinkedIn</td><td>Value-share (template T2)</td><td>Soft (artifact)</td></tr><tr><td>29</td><td><strong>E4</strong> email</td><td>Per-page economics ($0.05/page, published)</td><td><strong>Clear ask: 20-min discovery call</strong></td></tr><tr><td>31</td><td><strong>L3</strong> LinkedIn</td><td>Soft-CTA (template T3)</td><td>Soft (one question)</td></tr><tr><td>40</td><td><strong>E5</strong> email</td><td>Break-up + full artifact bundle</td><td>Break-up</td></tr></tbody></table>
 <p><strong>Collision rules (hard):</strong> max 2 touches per contact per week; never email + LinkedIn on the same day; never a nurture touch on the same day as any sales touch — nurture send waves check the sales-sequence calendar first (abm-marketing-play §4: marketing warms → sales reaches → marketing retargets non-responders).</p>
 <h3>1.2 Persona split (two tracks, same cadence, one-line swap)</h3>
 <ul>
@@ -84,7 +84,7 @@ strong{color:var(--grey-12);font-weight:600;}
 <p><strong>Explicit non-signals (never MQL alone):</strong> opens; a single anonymous form-fill with no role match; LinkedIn accept without reply. No vanity metrics as success criteria.</p>
 <p><strong>Handoff packet to sales (SDR/AE owns from here):</strong> account + segment/vertical; doc-class hypothesis; full engagement trail (which artifacts pulled, which email/touch got the reply, exact words of the reply); suggested first ask = <strong>discovery call</strong>, run on the P2P/O2C discovery framework mapped to their highest-volume doc class (gtm-high-openrate R6).</p>
 <h3>1.6 Deal motion this nurture ladders into (so every touch has a destination)</h3>
-<p>Discovery call (20 min, agenda + 5–7 doc-class questions) → <strong>the specific HyperAPI demo on their doc class</strong> (e.g., a representative customs packet, remit file, mill cert batch, or lease set they bring) → pricing conversation framed ONLY on the published usage model: <strong>$0.05/page; accuracy/SLA per apis.hyperbots.com; volume/enterprise terms sized on the call — never an invented quote, ACV, or discount</strong> → mutual close plan with owner/date/success criterion. The ONE ask of this campaign is the discovery call; E1–E3 buy permission for E4 to make it.</p>
+<p>Discovery call (20 min, agenda + 5–7 doc-class questions) → <strong>the specific HyperAPI demo on their doc class</strong> (e.g., a representative customs packet, remit file, mill cert batch, or lease set they bring) → pricing conversation framed ONLY on the published model: <strong>simple per-page pricing, from $0.05/page; accuracy/SLA per apis.hyperbots.com; volume/enterprise terms sized on the call — never an invented quote, ACV, or discount</strong> → mutual close plan with owner/date/success criterion. The ONE ask of this campaign is the discovery call; E1–E3 buy permission for E4 to make it.</p>
 <hr>
 <h2>2. Per-segment sequences (4 segments × 5 emails)</h2>
 <p>Format per email: <strong>Subject</strong> (&lt;60 chars) · <strong>Preview</strong> · <strong>Body</strong> (blockquoted, ~120–180 words) · <strong>Artifact</strong> · <strong>CTA</strong>. Merge fields: <code>{{first_name}}</code> only — everything else is segment-level by design (this is nurture, not per-account outbound; per-account customization happens post-MQL in the sales motion).</p>
@@ -100,7 +100,7 @@ strong{color:var(--grey-12);font-weight:600;}
 <p>&gt;</p>
 <blockquote>Most ops teams absorb that variety with re-keying. Not because anyone likes it, but because generic OCR falls apart the moment a carrier changes its BOL template.</blockquote>
 <p>&gt;</p>
-<blockquote>We build HyperAPI at Hyperbots: seven document primitives — parse, classify, split, match, validate, augment, reason — served as APIs, on open-source models we fine-tune ourselves (our IP).</blockquote>
+<blockquote>We build HyperAPI at Hyperbots: a set of document primitives — Parse, Split, Classify, Extract, Validate, Redact, and Extract Omni — served as APIs, on open-source models we fine-tune ourselves (our IP).</blockquote>
 <p>&gt;</p>
 <blockquote>Before any of that matters to you, the document landscape has to be mapped. So we wrote it down: a doc-type taxonomy for freight forwarders and customs brokers — every document class in a typical shipment file, the fields that matter, and where each usually breaks.</blockquote>
 <p>&gt;</p>
@@ -113,35 +113,35 @@ strong{color:var(--grey-12);font-weight:600;}
 <p>&gt;</p>
 <blockquote>Shipment files rarely arrive as tidy single documents. They arrive as one 40-page PDF: BOL on top, then the invoice, a packing list, an inspection cert, sometimes a grain settlement sheet stapled in by a counterparty.</blockquote>
 <p>&gt;</p>
-<blockquote>Parsing fails when the splitting fails. That&#x27;s why split and classify are first-class primitives in HyperAPI, not preprocessing afterthoughts — the packet gets cut into documents, each document gets typed, and only then does field extraction run.</blockquote>
+<blockquote>Parsing fails when the splitting fails. That&#x27;s why Split and Classify are first-class primitives in HyperAPI, not preprocessing afterthoughts — the packet gets cut into documents, each document gets typed, and only then does Extract run.</blockquote>
 <p>&gt;</p>
-<blockquote>Downstream, match and validate cross-check what came out: does the invoice quantity agree with the packing list? Does the BOL consignee match the customs entry?</blockquote>
+<blockquote>Downstream, Validate cross-checks what came out: does the invoice quantity agree with the packing list? Does the BOL consignee match the customs entry?</blockquote>
 <p>&gt;</p>
 <blockquote>We put those cross-checks in a checklist — the 12 field-pairs that must agree across a shipment file before it clears your system. Reply &quot;checklist&quot; for a copy.</blockquote>
 <p><strong>Artifact:</strong> A2 — Shipment-file cross-check checklist. <strong>CTA:</strong> one-word reply.</p>
 <p>#### S1-E3 — proof / honest benchmark (Day 17)</p>
-<p><strong>Subject:</strong> Our benchmark table includes the rows we lost</p>
-<p><strong>Preview:</strong> Why we publish losses, and what that means for your customs docs.</p>
+<p><strong>Subject:</strong> We&#x27;ll show you where we struggle on your docs</p>
+<p><strong>Preview:</strong> Accuracy on your own customs documents — including where it stumbles — before you commit.</p>
 <blockquote>Hi {{first_name}},</blockquote>
 <p>&gt;</p>
-<blockquote>Every document-AI vendor claims high accuracy. Almost none show you the documents where they were beaten.</blockquote>
+<blockquote>Every document-AI vendor claims high accuracy. Almost none will show you, up front, the documents where they stumble.</blockquote>
 <p>&gt;</p>
-<blockquote>We do. When Hyperbots benchmarks HyperAPI, we publish the winning rows and the losing rows — the doc types and layouts where another approach did better. Current accuracy figures live at apis.hyperbots.com; we keep them there, not in emails, so what you read is always the published, current number.</blockquote>
+<blockquote>We will. Before you commit to anything, we&#x27;ll run HyperAPI on a sample of your own documents and show you the field-level results — including the doc types and layouts where it struggles, not just where it shines. Current accuracy figures live at apis.hyperbots.com; we keep them there, not in emails, so what you read is always the published, current number.</blockquote>
 <p>&gt;</p>
-<blockquote>Why this matters for shipping documents specifically: BOLs and customs forms are a long tail of carrier templates and national formats. A vendor who only shows averages can hide a lot of failure in that tail. A published loss table can&#x27;t.</blockquote>
+<blockquote>Why this matters for shipping documents specifically: BOLs and customs forms are a long tail of carrier templates and national formats. A vendor who only shows you averages can hide a lot of failure in that tail. Seeing it run on your own packets can&#x27;t.</blockquote>
 <p>&gt;</p>
-<blockquote>I wrote up the methodology — how we benchmark, losses included. Reply &quot;methods&quot; and I&#x27;ll send it. If your team is evaluating parsing vendors this quarter, it doubles as a question list to put to all of us.</blockquote>
+<blockquote>I wrote up how we&#x27;d run that on your documents — a short methods note plus a vendor-evaluation question list. Reply &quot;methods&quot; and I&#x27;ll send it. If your team is evaluating parsing vendors this quarter, it doubles as a question list to put to all of us.</blockquote>
 <p><strong>Artifact:</strong> A10 — &quot;How we benchmark, losses included&quot; methods note. <strong>CTA:</strong> one-word reply.</p>
 <p>#### S1-E4 — economics + clear ask (Day 29)</p>
-<p><strong>Subject:</strong> Pricing a million customs pages: $0.05/page</p>
+<p><strong>Subject:</strong> Pricing a million customs pages: from $0.05/page</p>
 <p><strong>Preview:</strong> The published per-page model, and a 20-minute call to size it on your volume.</p>
 <blockquote>Hi {{first_name}},</blockquote>
 <p>&gt;</p>
-<blockquote>Pricing for HyperAPI is public and flat: $0.05 per page on the usage model. No per-field upcharges, no per-template setup fees inside that number.</blockquote>
+<blockquote>Pricing for HyperAPI is public and simple: per-page, from $0.05/page, published at apis.hyperbots.com. No per-field upcharges, no per-template setup fees.</blockquote>
 <p>&gt;</p>
-<blockquote>That makes the math yours to run: monthly page volume across BOLs, customs entries, and commercial invoices, times five cents, against what re-keying and exception handling cost you today.</blockquote>
+<blockquote>That makes the math yours to run: monthly page volume across BOLs, customs entries, and commercial invoices, against what re-keying and exception handling cost you today.</blockquote>
 <p>&gt;</p>
-<blockquote>What the flat number can&#x27;t tell you is fit: which of the seven primitives your flow actually needs, and how your hardest doc class — usually the multi-format customs packet — performs. That part takes 20 minutes, not a sales cycle.</blockquote>
+<blockquote>What the per-page number can&#x27;t tell you is fit: which primitives your flow actually needs, and how your hardest doc class — usually the multi-format customs packet — performs. That part takes 20 minutes, not a sales cycle.</blockquote>
 <p>&gt;</p>
 <blockquote>If you&#x27;ll bring a representative shipment file, we&#x27;ll bring the field-by-field output on it. Volume and enterprise terms get sized on that call; accuracy stays where it&#x27;s published, at apis.hyperbots.com.</blockquote>
 <p>&gt;</p>
@@ -152,7 +152,7 @@ strong{color:var(--grey-12);font-weight:600;}
 <p><strong>Preview:</strong> Closing this out — the four artifacts in one place, door stays open.</p>
 <blockquote>Hi {{first_name}},</blockquote>
 <p>&gt;</p>
-<blockquote>I&#x27;ve sent four notes over six weeks: the freight doc taxonomy, the 12-field cross-check checklist, our benchmark methodology with losses included, and the $0.05/page math.</blockquote>
+<blockquote>I&#x27;ve sent four notes over six weeks: the freight doc taxonomy, the 12-field cross-check checklist, how we show accuracy on your own documents, and the from-$0.05/page math.</blockquote>
 <p>&gt;</p>
 <blockquote>No response usually means one of three things: wrong person, wrong time, or genuinely no document pain. All three are fine — and only the first is something I can fix, so this is my last email.</blockquote>
 <p>&gt;</p>
@@ -172,7 +172,7 @@ strong{color:var(--grey-12);font-weight:600;}
 <p>&gt;</p>
 <blockquote>Re-keying those isn&#x27;t just slow — it&#x27;s where posting errors and missed denial codes enter the system.</blockquote>
 <p>&gt;</p>
-<blockquote>We build HyperAPI at Hyperbots: seven document primitives — parse, classify, split, match, validate, augment, reason — served as APIs, on open-source models we fine-tune in-house (our IP).</blockquote>
+<blockquote>We build HyperAPI at Hyperbots: a set of document primitives — Parse, Split, Classify, Extract, Validate, Redact, and Extract Omni — served as APIs, on open-source models we fine-tune in-house (our IP).</blockquote>
 <p>&gt;</p>
 <blockquote>Step one is knowing what&#x27;s on the page. We mapped it: an EOB and prior-auth field map — the fields that drive posting and appeals, per document type, with the common failure spots marked.</blockquote>
 <p>&gt;</p>
@@ -185,14 +185,14 @@ strong{color:var(--grey-12);font-weight:600;}
 <p>&gt;</p>
 <blockquote>Pharma quality teams sit on some of the hardest documents in industry: executed batch records, certificates of analysis, supplier CoCs — dense tables, stamps, signatures, occasional handwriting, and zero tolerance for silently wrong values.</blockquote>
 <p>&gt;</p>
-<blockquote>That last part is why validate is a separate primitive in HyperAPI, not a marketing word. Extraction output gets checked against expected ranges and cross-document consistency — a CoA result that disagrees with the spec sheet gets flagged, not passed through.</blockquote>
+<blockquote>That last part is why Validate is a separate primitive in HyperAPI, not a marketing word. Extraction output gets checked against expected ranges and cross-document consistency — a CoA result that disagrees with the spec sheet gets flagged, not passed through.</blockquote>
 <p>&gt;</p>
-<blockquote>For the extraction itself: parse handles the tables, classify and split handle the mixed packets that come out of scanners, match ties supplier documents to your materials.</blockquote>
+<blockquote>For the extraction itself: Parse and Extract handle the tables, Classify and Split handle the mixed packets that come out of scanners, and Validate ties supplier documents back to your materials.</blockquote>
 <p>&gt;</p>
 <blockquote>We wrote a batch-record and CoA extraction spec — fields, structures, and the validation rules worth running on each. Reply &quot;spec&quot; for a copy.</blockquote>
 <p><strong>Artifact:</strong> A4 — Batch-record &amp; CoA extraction spec. <strong>CTA:</strong> one-word reply.</p>
 <p>#### S2-E3 — proof / honest benchmark (Day 17)</p>
-<p><strong>Subject:</strong> We publish our losing rows, too</p>
+<p><strong>Subject:</strong> We&#x27;ll show you where it struggles, too</p>
 <p><strong>Preview:</strong> Benchmark methodology, losses included — and the questions to ask any vendor.</p>
 <blockquote>Hi {{first_name}},</blockquote>
 <p>&gt;</p>
@@ -200,18 +200,18 @@ strong{color:var(--grey-12);font-weight:600;}
 <p>&gt;</p>
 <blockquote>Hyperbots publishes both. Our benchmark tables include the rows where another approach beat HyperAPI — by doc type and layout. Current accuracy figures live at apis.hyperbots.com, where they stay published and current instead of frozen in a sales deck.</blockquote>
 <p>&gt;</p>
-<blockquote>For EOBs and prior-auth documents this matters more than usual: payer layouts are a long tail, and averages hide tail failure. A published loss table can&#x27;t.</blockquote>
+<blockquote>For EOBs and prior-auth documents this matters more than usual: payer layouts are a long tail, and averages hide tail failure — which is why we&#x27;d rather run your own layouts than quote you an average.</blockquote>
 <p>&gt;</p>
 <blockquote>The methodology is written up — how we benchmark, losses included. It doubles as a question list for any vendor you evaluate, us included. Reply &quot;methods&quot; and it&#x27;s yours.</blockquote>
 <p><strong>Artifact:</strong> A10. <strong>CTA:</strong> one-word reply.</p>
 <p>#### S2-E4 — economics + clear ask (Day 29)</p>
 <p><strong>Subject:</strong> The per-page math on EOB parsing</p>
-<p><strong>Preview:</strong> $0.05/page published. Twenty minutes to size it on your remit volume.</p>
+<p><strong>Preview:</strong> From $0.05/page, published. Twenty minutes to size it on your remit volume.</p>
 <blockquote>Hi {{first_name}},</blockquote>
 <p>&gt;</p>
-<blockquote>HyperAPI pricing is published and flat: $0.05 per page. You can run the math without me: monthly pages across paper remits, prior-auth correspondence, and quality documents, times five cents, against what manual posting and rework cost today.</blockquote>
+<blockquote>HyperAPI pricing is published and simple: per-page, from $0.05/page (apis.hyperbots.com). You can run the math without me: monthly pages across paper remits, prior-auth correspondence, and quality documents, against what re-keying and rework cost today.</blockquote>
 <p>&gt;</p>
-<blockquote>What the flat rate can&#x27;t tell you is performance on your hardest payer formats and your batch-record structures. That&#x27;s a 20-minute conversation, not a procurement cycle: you bring a representative remit file or executed batch record, we walk through the field-level output on it together, and you leave with a yes-or-no read on fit.</blockquote>
+<blockquote>What the per-page rate can&#x27;t tell you is performance on your hardest payer formats and your batch-record structures. That&#x27;s a 20-minute conversation, not a procurement cycle: you bring a representative remit file or executed batch record, we walk through the field-level output on it together, and you leave with a yes-or-no read on fit.</blockquote>
 <p>&gt;</p>
 <blockquote>Accuracy claims stay where they belong — published at apis.hyperbots.com — not improvised on a call. Volume and enterprise terms get sized on the call itself.</blockquote>
 <p>&gt;</p>
@@ -222,7 +222,7 @@ strong{color:var(--grey-12);font-weight:600;}
 <p><strong>Preview:</strong> Last note — all four artifacts bundled, door open whenever.</p>
 <blockquote>Hi {{first_name}},</blockquote>
 <p>&gt;</p>
-<blockquote>Over six weeks I&#x27;ve sent: the EOB and prior-auth field map, the batch-record and CoA extraction spec, our benchmark methodology with the losses left in, and the $0.05/page math.</blockquote>
+<blockquote>Over six weeks I&#x27;ve sent: the EOB and prior-auth field map, the batch-record and CoA extraction spec, how we show accuracy on your own documents, and the from-$0.05/page math.</blockquote>
 <p>&gt;</p>
 <blockquote>Silence usually means wrong person, wrong quarter, or no real pain. All legitimate — and this is my last note either way.</blockquote>
 <p>&gt;</p>
@@ -242,7 +242,7 @@ strong{color:var(--grey-12);font-weight:600;}
 <p>&gt;</p>
 <blockquote>Between receiving dock and ERP, somebody turns that PDF into data. Usually by typing.</blockquote>
 <p>&gt;</p>
-<blockquote>We build HyperAPI at Hyperbots: seven document primitives — parse, classify, split, match, validate, augment, reason — served as APIs, on open-source models we fine-tune ourselves (our IP). Parse handles the chemistry tables; validate checks values against spec ranges; match ties the cert to the PO and heat number.</blockquote>
+<blockquote>We build HyperAPI at Hyperbots: a set of document primitives — Parse, Split, Classify, Extract, Validate, Redact, and Extract Omni — served as APIs, on open-source models we fine-tune ourselves (our IP). Parse and Extract handle the chemistry tables; Validate checks the extracted values against spec ranges and cross-references the cert to the PO and heat number.</blockquote>
 <p>&gt;</p>
 <blockquote>The useful first step is agreeing on the fields. We built the template: an MTR-to-ERP field mapping — chemistry, mechanicals, heat traceability — ready to adapt to your item master.</blockquote>
 <p>&gt;</p>
@@ -255,7 +255,7 @@ strong{color:var(--grey-12);font-weight:600;}
 <p>&gt;</p>
 <blockquote>Three-way match is simple in theory: PO, receipt, and invoice agree, payment flows. In practice your AP and procurement teams burn hours on &quot;exceptions&quot; that aren&#x27;t business problems at all — they&#x27;re parsing problems. A unit of measure read wrong off a packing slip. A field-ticket quantity that never survived the scan. A supplier invoice whose line items didn&#x27;t split cleanly.</blockquote>
 <p>&gt;</p>
-<blockquote>HyperAPI treats match as its own primitive: documents get parsed, then line-level matching runs across PO, receipt, and invoice, and validate separates what genuinely disagrees from what was merely misread.</blockquote>
+<blockquote>HyperAPI handles this with Extract and Validate: documents get parsed and their line items extracted, then Validate runs line-level cross-checks across PO, receipt, and invoice — separating what genuinely disagrees from what was merely misread.</blockquote>
 <p>&gt;</p>
 <blockquote>We collected the patterns into a 3-way-match exception checklist — the recurring false exceptions, what causes each, and the check that catches it. Reply &quot;checklist&quot; for a copy.</blockquote>
 <p><strong>Artifact:</strong> A6 — 3-way-match exception checklist. <strong>CTA:</strong> one-word reply.</p>
@@ -266,20 +266,20 @@ strong{color:var(--grey-12);font-weight:600;}
 <p>&gt;</p>
 <blockquote>Field tickets, AFEs, pay applications, mill certs — industrial paperwork is a long tail of formats, and long tails are where accuracy averages go to hide.</blockquote>
 <p>&gt;</p>
-<blockquote>So here&#x27;s our position at Hyperbots: when we benchmark HyperAPI, we publish the losing rows alongside the winning ones — the document types and layouts where another approach did better. Current figures stay at apis.hyperbots.com, published and maintained, not pasted into pitch decks where they age.</blockquote>
+<blockquote>So here&#x27;s our position at Hyperbots: we&#x27;d rather show you HyperAPI on your own documents — including the document types and layouts where it struggles — than hand you an average. Current accuracy figures stay at apis.hyperbots.com, not pasted into pitch decks where they age.</blockquote>
 <p>&gt;</p>
-<blockquote>If you&#x27;re evaluating extraction for plant, field, or site paperwork, the loss table is arguably the more useful half: it tells you exactly where to probe with your own documents.</blockquote>
+<blockquote>If you&#x27;re evaluating extraction for plant, field, or site paperwork, seeing where it struggles on your own documents is arguably the more useful half: it tells you exactly where to probe.</blockquote>
 <p>&gt;</p>
 <blockquote>The methodology is written up — how we benchmark, losses included, plus the questions worth asking every vendor in the category. Reply &quot;methods&quot; and I&#x27;ll send it.</blockquote>
 <p><strong>Artifact:</strong> A10. <strong>CTA:</strong> one-word reply.</p>
 <p>#### S3-E4 — economics + clear ask (Day 29)</p>
-<p><strong>Subject:</strong> Pay apps, lien waivers, and $0.05/page</p>
+<p><strong>Subject:</strong> Pay apps, lien waivers, from $0.05/page</p>
 <p><strong>Preview:</strong> The published per-page model, sized on your project paperwork in 20 minutes.</p>
 <blockquote>Hi {{first_name}},</blockquote>
 <p>&gt;</p>
 <blockquote>Construction billing runs on document packets: the pay application, its continuation sheets, conditional and unconditional lien waivers, change orders behind the line items. Energy has its own stack — field tickets, AFEs. All of it gets reconciled by hand somewhere.</blockquote>
 <p>&gt;</p>
-<blockquote>HyperAPI pricing is published and flat: $0.05 per page on the usage model. Monthly packet volume times five cents — you can run that against the cost of manual reconciliation without talking to anyone.</blockquote>
+<blockquote>HyperAPI pricing is published and simple: per-page, from $0.05/page (apis.hyperbots.com). Monthly packet volume against your per-page rate — you can run that against the cost of reconciling packets by hand without talking to anyone.</blockquote>
 <p>&gt;</p>
 <blockquote>The 20-minute conversation is for what the math can&#x27;t show: how your actual packets perform, primitive by primitive. Bring a representative pay app or field-ticket batch; we&#x27;ll walk the field-level output together. Volume and enterprise terms get sized on that call; accuracy stays published at apis.hyperbots.com.</blockquote>
 <p>&gt;</p>
@@ -292,7 +292,7 @@ strong{color:var(--grey-12);font-weight:600;}
 <p><strong>Preview:</strong> Closing out — all four artifacts at one link, no drip follows.</p>
 <blockquote>Hi {{first_name}},</blockquote>
 <p>&gt;</p>
-<blockquote>Six weeks, four notes: the MTR-to-ERP field template, the 3-way-match exception checklist, our benchmark methodology with losses included, and the pay-app parsing checklist with the $0.05/page math.</blockquote>
+<blockquote>Six weeks, four notes: the MTR-to-ERP field template, the 3-way-match exception checklist, how we show accuracy on your own documents, and the pay-app parsing checklist with the from-$0.05/page math.</blockquote>
 <p>&gt;</p>
 <blockquote>No reply usually means wrong person, wrong timing, or no real document pain — and only the first one is fixable from my side. So this is the last email.</blockquote>
 <p>&gt;</p>
@@ -313,7 +313,7 @@ strong{color:var(--grey-12);font-weight:600;}
 <p>&gt;</p>
 <blockquote>Teams handle it with reading and re-keying, because generic extraction tools choke on documents where the answer is a paragraph, not a labeled box.</blockquote>
 <p>&gt;</p>
-<blockquote>That&#x27;s why reason is one of HyperAPI&#x27;s seven primitives, alongside parse, classify, split, match, validate, and augment: some fields are extracted, others have to be derived from clause language. Open-source models, fine-tuned by Hyperbots — our IP — served as APIs.</blockquote>
+<blockquote>That&#x27;s why HyperAPI leans on Extract and Extract Omni, alongside Parse, Split, Classify, and Validate: some fields are a clean box-extract, others have to be read out of dense clause language. Open-source models, fine-tuned by Hyperbots — our IP — served as APIs.</blockquote>
 <p>&gt;</p>
 <blockquote>We codified the target: a lease-abstract field schema, adaptable to title commitments and tower leases too. Reply &quot;schema&quot; and I&#x27;ll send it.</blockquote>
 <p><strong>Artifact:</strong> A8 — Lease-abstract field schema. <strong>CTA:</strong> one-word reply.</p>
@@ -326,13 +326,13 @@ strong{color:var(--grey-12);font-weight:600;}
 <p>&gt;</p>
 <blockquote>Researching one deduction is annoying. Researching thousands is a department.</blockquote>
 <p>&gt;</p>
-<blockquote>This is split, classify, and match territory in HyperAPI: cut the packet into its documents, type each one, extract the fields, and tie POD quantities back to the invoice and claim. Validate flags where the evidence genuinely disagrees — separating disputes worth fighting from noise.</blockquote>
+<blockquote>This is Split, Classify, and Extract territory in HyperAPI: cut the packet into its documents, type each one, and extract the fields. Then Validate ties POD quantities back to the invoice and claim and flags where the evidence genuinely disagrees — separating disputes worth fighting from noise.</blockquote>
 <p>&gt;</p>
 <blockquote>We mapped the territory: a deduction and chargeback evidence-packet taxonomy — the doc types in a typical dispute file and the fields that settle each one. Reply &quot;taxonomy&quot; for a copy.</blockquote>
 <p><strong>Artifact:</strong> A9 — Deduction/chargeback evidence-packet taxonomy. <strong>CTA:</strong> one-word reply.</p>
 <p>#### S4-E3 — proof / honest benchmark (Day 17)</p>
 <p><strong>Subject:</strong> The benchmark rows we didn&#x27;t win</p>
-<p><strong>Preview:</strong> Published wins and losses — and why that matters for long-tail formats.</p>
+<p><strong>Preview:</strong> Where it wins — and where it struggles — on long-tail formats.</p>
 <blockquote>Hi {{first_name}},</blockquote>
 <p>&gt;</p>
 <blockquote>Retail deductions, lease files, government contract mods, interconnect invoices — the documents in your world don&#x27;t look like the clean samples vendors demo with. They&#x27;re the long tail, and the long tail is where accuracy averages flatter everyone.</blockquote>
@@ -344,13 +344,13 @@ strong{color:var(--grey-12);font-weight:600;}
 <blockquote>The methodology is written up — how we benchmark, losses included, with a question list to put to any vendor in the category. Reply &quot;methods&quot; and it&#x27;s yours.</blockquote>
 <p><strong>Artifact:</strong> A10. <strong>CTA:</strong> one-word reply.</p>
 <p>#### S4-E4 — economics + clear ask (Day 29)</p>
-<p><strong>Subject:</strong> Long-tail formats at $0.05/page, sized in 20 min</p>
+<p><strong>Subject:</strong> Long-tail formats from $0.05/page, sized in 20 min</p>
 <p><strong>Preview:</strong> Contract mods, tower leases, discovery sets — the published per-page math plus a call.</p>
 <blockquote>Hi {{first_name}},</blockquote>
 <p>&gt;</p>
 <blockquote>The formats vary — government contract mods and invoice submissions, telecom tower leases and interconnect billing, legal contract sets — but the economics question is the same: what does it cost to turn pages into reliable data?</blockquote>
 <p>&gt;</p>
-<blockquote>HyperAPI&#x27;s answer is published and flat: $0.05 per page on the usage model. Your monthly page volume times five cents, against what reading and re-keying cost now. No invented enterprise quote from me — volume and enterprise terms get sized on a call, and accuracy stays where it&#x27;s published, at apis.hyperbots.com.</blockquote>
+<blockquote>HyperAPI&#x27;s answer is published and simple: per-page, from $0.05/page (apis.hyperbots.com). Your monthly page volume against your per-page rate, weighed against what reading and re-keying cost now. No invented enterprise quote from me — volume and enterprise terms get sized on a call, and accuracy stays where it&#x27;s published, at apis.hyperbots.com.</blockquote>
 <p>&gt;</p>
 <blockquote>The call is 20 minutes: bring a representative document set — your hardest, not your cleanest — and we&#x27;ll walk the field-level output on it together.</blockquote>
 <p>&gt;</p>
@@ -361,7 +361,7 @@ strong{color:var(--grey-12);font-weight:600;}
 <p><strong>Preview:</strong> Last note — four artifacts bundled at one link, no sequence follows.</p>
 <blockquote>Hi {{first_name}},</blockquote>
 <p>&gt;</p>
-<blockquote>Four notes over six weeks: the lease-abstract field schema, the deduction evidence-packet taxonomy, our benchmark methodology with the losses left in, and the $0.05/page math on long-tail formats.</blockquote>
+<blockquote>Four notes over six weeks: the lease-abstract field schema, the deduction evidence-packet taxonomy, how we show accuracy on your own documents, and the from-$0.05/page math on long-tail formats.</blockquote>
 <p>&gt;</p>
 <blockquote>Silence usually means wrong person, wrong time, or no document pain worth solving. All three are reasonable, and this is my last email regardless.</blockquote>
 <p>&gt;</p>
@@ -373,14 +373,14 @@ strong{color:var(--grey-12);font-weight:600;}
 <h2>3. LinkedIn touch templates (persona-neutral, reusable across segments)</h2>
 <p>Merge fields: <code>{{doc_class}}</code> = the segment&#x27;s lead doc class (S1: BOLs/customs packets · S2: EOBs/batch records · S3: mill certs/pay apps · S4: lease abstracts/deduction packets). <code>{{artifact}}</code> = the segment&#x27;s E1 artifact name. All DRAFT; human-gated like every send.</p>
 <h3>T1 — Connection note (Day 3; ≤300 chars)</h3>
-<blockquote>I work on document-parsing APIs at Hyperbots — we publish our benchmark losses, which is rare enough in this category that I lead with it. I write practical notes on hard formats ({{doc_class}} included). Connecting in case those are ever useful — no pitch.</blockquote>
+<blockquote>I work on document-parsing APIs at Hyperbots — we&#x27;re upfront about where our parsing struggles, which is rare enough in this category that I lead with it. I write practical notes on hard formats ({{doc_class}} included). Connecting in case those are ever useful — no pitch.</blockquote>
 <h3>T2 — Value-share (Day 19, after E3)</h3>
-<blockquote>You may have seen my note on how we benchmark at Hyperbots — wins and losses both published; current figures stay at apis.hyperbots.com. The write-up is here: [link to A10]. The loss table is the half most people find useful: it tells you where to stress-test any vendor (us included) with your own documents. If your team is looking at document extraction this year, happy to send the {{artifact}} as well — it&#x27;s the one that gets forwarded.</blockquote>
+<blockquote>You may have seen my note on how we benchmark at Hyperbots — we&#x27;re candid about where it wins and where it struggles; current figures stay at apis.hyperbots.com. The write-up is here: [link to A10]. The most useful part is the vendor-evaluation question list: it tells you where to stress-test any vendor (us included) with your own documents. If your team is looking at document extraction this year, happy to send the {{artifact}} as well — it&#x27;s the one that gets forwarded.</blockquote>
 <h3>T3 — Soft-CTA (Day 31, after E4)</h3>
-<blockquote>Not trying to turn LinkedIn into a sales channel — one question and I&#x27;ll leave it: is parsing {{doc_class}} something your team handles in-house today? If yes, 20 minutes on your hardest document set is the fastest way to know whether HyperAPI fits — pricing is published ($0.05/page) and accuracy is published (apis.hyperbots.com), so the call is about your documents, not slides. If no, the artifacts are yours to keep either way.</blockquote>
+<blockquote>Not trying to turn LinkedIn into a sales channel — one question and I&#x27;ll leave it: is parsing {{doc_class}} something your team handles in-house today? If yes, 20 minutes on your hardest document set is the fastest way to know whether HyperAPI fits — pricing is published (simple per-page, from $0.05/page) and accuracy is published (apis.hyperbots.com), so the call is about your documents, not slides. If no, the artifacts are yours to keep either way.</blockquote>
 <hr>
 <h2>4. Artifact backlog (10 gated artifacts — build before wave start, §1.3.4)</h2>
-<table><thead><tr><th>ID</th><th>Artifact</th><th>2-line spec</th><th>Used in</th></tr></thead><tbody><tr><td>A1</td><td><strong>Freight &amp; customs doc-type taxonomy</strong></td><td>Every doc class in a typical ocean/air shipment file (BOL, commercial invoice, packing list, CoO, phyto/inspection certs, customs entry, arrival notice) with key fields and typical failure points per class. Format: 2–3 pp note + CSV field list; gated reply-to-get.</td><td>S1-E1, bundle</td></tr><tr><td>A2</td><td><strong>Shipment-file cross-check checklist</strong></td><td>The 12 field-pairs that must agree across BOL / invoice / packing list / customs entry (consignee, quantities, weights, HS codes, incoterms…), each with the discrepancy it catches. 1-pager.</td><td>S1-E2, S1-E4</td></tr><tr><td>A3</td><td><strong>EOB &amp; prior-auth field map</strong></td><td>Posting- and appeal-driving fields per document type, payer-layout variance notes, common failure spots marked. 2 pp + CSV.</td><td>S2-E1, S2-E4</td></tr><tr><td>A4</td><td><strong>Batch-record &amp; CoA extraction spec</strong></td><td>Field/structure inventory for executed batch records, CoAs, supplier CoCs; validation rules worth running on each (range checks, spec cross-checks, cross-document consistency). 3 pp.</td><td>S2-E2, S2-E4</td></tr><tr><td>A5</td><td><strong>MTR-to-ERP field-mapping template</strong></td><td>Chemistry / mechanical / heat-traceability fields from mill test reports mapped to ERP item- and lot-level fields; adaptable spreadsheet with notes on layout variance across mills.</td><td>S3-E1</td></tr><tr><td>A6</td><td><strong>3-way-match exception checklist</strong></td><td>Recurring false exceptions (UoM misreads, line-split errors, lost field-ticket quantities), root cause of each, and the parse/match/validate check that catches it. 1-pager.</td><td>S3-E2</td></tr><tr><td>A7</td><td><strong>Pay-application &amp; lien-waiver parsing checklist</strong></td><td>Pay-app + continuation-sheet + waiver field inventory, retention-math consistency checks, packet-ordering pitfalls. 2 pp.</td><td>S3-E4</td></tr><tr><td>A8</td><td><strong>Lease-abstract field schema</strong></td><td>~40-field schema (term, options, escalations, CAM, co-tenancy…), each field flagged box-extracted vs clause-derived (reason-primitive territory); variants for title commitments and telecom tower leases. Spreadsheet + notes.</td><td>S4-E1, S4-E4</td></tr><tr><td>A9</td><td><strong>Deduction/chargeback evidence-packet taxonomy</strong></td><td>Doc types in a typical retail dispute file (claim, POD, BOL, compliance scorecard) and the fields that settle each dispute type. 2 pp.</td><td>S4-E2, S4-E4</td></tr><tr><td>A10</td><td><strong>&quot;How we benchmark, losses included&quot; methods note</strong></td><td>The honest-benchmark (SAVIOR-Bench-discipline) explainer: dataset construction, scoring, why losing rows are published; plus a vendor-evaluation question list. Strictly qualitative — all figures referenced to apis.hyperbots.com, none reproduced. 3–4 pp.</td><td>All E3s, T2, bundles</td></tr></tbody></table>
+<table><thead><tr><th>ID</th><th>Artifact</th><th>2-line spec</th><th>Used in</th></tr></thead><tbody><tr><td>A1</td><td><strong>Freight &amp; customs doc-type taxonomy</strong></td><td>Every doc class in a typical ocean/air shipment file (BOL, commercial invoice, packing list, CoO, phyto/inspection certs, customs entry, arrival notice) with key fields and typical failure points per class. Format: 2–3 pp note + CSV field list; gated reply-to-get.</td><td>S1-E1, bundle</td></tr><tr><td>A2</td><td><strong>Shipment-file cross-check checklist</strong></td><td>The 12 field-pairs that must agree across BOL / invoice / packing list / customs entry (consignee, quantities, weights, HS codes, incoterms…), each with the discrepancy it catches. 1-pager.</td><td>S1-E2, S1-E4</td></tr><tr><td>A3</td><td><strong>EOB &amp; prior-auth field map</strong></td><td>Posting- and appeal-driving fields per document type, payer-layout variance notes, common failure spots marked. 2 pp + CSV.</td><td>S2-E1, S2-E4</td></tr><tr><td>A4</td><td><strong>Batch-record &amp; CoA extraction spec</strong></td><td>Field/structure inventory for executed batch records, CoAs, supplier CoCs; validation rules worth running on each (range checks, spec cross-checks, cross-document consistency). 3 pp.</td><td>S2-E2, S2-E4</td></tr><tr><td>A5</td><td><strong>MTR-to-ERP field-mapping template</strong></td><td>Chemistry / mechanical / heat-traceability fields from mill test reports mapped to ERP item- and lot-level fields; adaptable spreadsheet with notes on layout variance across mills.</td><td>S3-E1</td></tr><tr><td>A6</td><td><strong>3-way-match exception checklist</strong></td><td>Recurring false exceptions (UoM misreads, line-split errors, lost field-ticket quantities), root cause of each, and the Parse/Extract/Validate check that catches it. 1-pager.</td><td>S3-E2</td></tr><tr><td>A7</td><td><strong>Pay-application &amp; lien-waiver parsing checklist</strong></td><td>Pay-app + continuation-sheet + waiver field inventory, retention-math consistency checks, packet-ordering pitfalls. 2 pp.</td><td>S3-E4</td></tr><tr><td>A8</td><td><strong>Lease-abstract field schema</strong></td><td>~40-field schema (term, options, escalations, CAM, co-tenancy…), each field flagged box-extracted vs clause-derived (Extract / Extract Omni territory); variants for title commitments and telecom tower leases. Spreadsheet + notes.</td><td>S4-E1, S4-E4</td></tr><tr><td>A9</td><td><strong>Deduction/chargeback evidence-packet taxonomy</strong></td><td>Doc types in a typical retail dispute file (claim, POD, BOL, compliance scorecard) and the fields that settle each dispute type. 2 pp.</td><td>S4-E2, S4-E4</td></tr><tr><td>A10</td><td><strong>&quot;How we benchmark, losses included&quot; methods note</strong></td><td>The honest-benchmark (SAVIOR-Bench-discipline) explainer: dataset construction, scoring, why we show customers where it struggles on their own documents; plus a vendor-evaluation question list. Strictly qualitative — all figures referenced to apis.hyperbots.com, none reproduced. 3–4 pp.</td><td>All E3s, T2, bundles</td></tr></tbody></table>
 <p><strong>Assembly task (not a new artifact):</strong> per-segment bundle link for E5 = the segment&#x27;s artifacts on one gated page. Every artifact passes <code>comparative-study</code> review if it touches benchmark content (A10 does) and abm-qa before gating goes live.</p>
 <hr>
 <h2>5. Measurement plan (per gtm-high-openrate)</h2>
@@ -392,7 +392,7 @@ strong{color:var(--grey-12);font-weight:600;}
 </ul>
 <h3>5.2 A/B plan — subject lines (one variable at a time)</h3>
 <p>50/50 split on each segment&#x27;s first wave; decide on unique opens after 72h; winner ships to the remainder and to wave 2. Variant A = doc-named (as written in §2); Variant B below. CTA-line tests come later, judged on replies, never run simultaneously with subject tests.</p>
-<table><thead><tr><th>Email</th><th>Variant B subject</th></tr></thead><tbody><tr><td>S1-E1</td><td>Where customs entries get hand-keyed</td></tr><tr><td>S1-E4</td><td>Five cents a page, your BOL volume</td></tr><tr><td>S2-E1</td><td>The fax queue behind your clean claims</td></tr><tr><td>S2-E4</td><td>Five cents a page, your remit volume</td></tr><tr><td>S3-E1</td><td>From heat number to ERP without typing</td></tr><tr><td>S3-E4</td><td>Five cents a page across project paperwork</td></tr><tr><td>S4-E1</td><td>Forty fields buried in a hundred pages</td></tr><tr><td>S4-E4</td><td>Five cents a page on your hardest formats</td></tr></tbody></table>
+<table><thead><tr><th>Email</th><th>Variant B subject</th></tr></thead><tbody><tr><td>S1-E1</td><td>Where customs entries get hand-keyed</td></tr><tr><td>S1-E4</td><td>From five cents a page, your BOL volume</td></tr><tr><td>S2-E1</td><td>The fax queue behind your clean claims</td></tr><tr><td>S2-E4</td><td>From five cents a page, your remit volume</td></tr><tr><td>S3-E1</td><td>From heat number to ERP without typing</td></tr><tr><td>S3-E4</td><td>From five cents a page across project paperwork</td></tr><tr><td>S4-E1</td><td>Forty fields buried in a hundred pages</td></tr><tr><td>S4-E4</td><td>From five cents a page on your hardest formats</td></tr></tbody></table>
 <h3>5.3 Send ops</h3>
 <p>Tue–Thu sends, recipient-local mornings; per-domain daily throttle set by deliverability ops; plain-text-styled emails (no image-heavy templates); every wave is released by a human — drafts queue, nothing auto-fires.</p>
 <h3>5.4 Suppression rules (screened at entry AND before every wave)</h3>
@@ -408,7 +408,7 @@ strong{color:var(--grey-12);font-weight:600;}
 <hr>
 <h2>6. Self-validation — content-marketing-validate, item by item</h2>
 <p>Run 2026-06-12 against <code>content-marketing-validate</code> (plus the gtm-high-openrate gates it enforces). Mechanical checks (grep for banned framing/buzzwords, word counts via blockquote-block count, subject-length scan) executed on §1–§5 before this section was written.</p>
-<table><thead><tr><th>#</th><th>Check</th><th>Verdict</th><th>Evidence (one line)</th></tr></thead><tbody><tr><td>1</td><td><strong>Hook</strong> — subject earns attention &lt;5s, specific to them</td><td>PASS</td><td>All 20 subjects are doc-class-named insider language (&quot;Mill certs: the PDF between receiving and ERP&quot;), 24–48 chars, all &lt;60; &quot;Why this opens&quot; notes on every E1.</td></tr><tr><td>2</td><td><strong>One-idea discipline</strong> — one idea per email, finishable</td><td>PASS</td><td>Fixed angle arc per segment (touchbase → primitive-value → honest-benchmark → economics → break-up); no angle repeats within a segment; bodies 112–159 words.</td></tr><tr><td>3</td><td><strong>Clarity / voice</strong> — plain, technical, confident, zero buzzwords</td><td>PASS</td><td>Buzzword/banned-framing grep returned CLEAN (no HITL/manual-review framing, no &quot;seamless/leverage/revolution…&quot; hits); founder voice, concrete nouns throughout.</td></tr><tr><td>4</td><td><strong>Conversion</strong> — each email one job + one next action, CTA &lt;2 min</td><td>PASS</td><td>Every email exactly one CTA: one-word reply (E1–E3), two-slots/book-link (E4), 10-second forward (E5); all &lt;2 min.</td></tr><tr><td>5</td><td><strong>Coherence</strong> — marketing + sales = one story, cadence interlocked</td><td>PASS</td><td>§1.1 collision rules (no same-day with sales touches), §1.5 handoff packet, §1.6 deal motion; nurture&#x27;s ONE ask ladders into the P2P/O2C discovery → doc-class demo → pricing loop.</td></tr><tr><td>6</td><td><strong>Guardrails</strong> — no competitor names, accuracy per apis.hyperbots.com, Hyperbots IP, no HITL, sources resolve</td><td>PASS</td><td>Category labels only (&quot;document-AI vendor&quot;, &quot;another approach&quot;); zero accuracy figures — every accuracy mention deferred to apis.hyperbots.com; &quot;open-source models fine-tuned by Hyperbots (our IP)&quot; stated in all four E1s; no customer names; grep CLEAN.</td></tr><tr><td>7</td><td><strong>Deal-motion bar</strong> — THE ONE ASK = discovery call; demo + pricing framing; no invented pricing</td><td>PASS</td><td>E4 in all 4 segments makes the clear discovery-call ask with the doc-class demo offer; only price anywhere is the published $0.05/page; &quot;volume/enterprise sized on the call&quot;; no ACV/quote/discount appears.</td></tr><tr><td>8</td><td><strong>Outreach-ready bar</strong> — copy-paste-ready, zero extra research forced on the sender</td><td>PASS (1 dependency flagged)</td><td>Subjects/previews/bodies are send-ready with only <code>{{first_name}}</code> (+ segment-level <code>{{doc_class}}</code>/<code>{{artifact}}</code> on LinkedIn templates); the named dependency is artifact builds (§4) — gated by entry criterion §1.3.4 so no wave can start with a dead link.</td></tr><tr><td>9</td><td><strong>Fortune-100 word-limit gate</strong></td><td>PASS (scope-adapted, declared)</td><td>Gate as written governs per-account sequences (touchbase ≤200, follow-ups ≤100). This is a segment-level nurture whose campaign spec sets ~120–180/email; measured: touchbase max 159 (≤200 ✓), follow-ups 112–146 — within campaign spec, above the per-account ≤100 bar by design. Adaptation declared here and in Open assumptions; post-MQL per-account emails revert to the strict gate.</td></tr><tr><td>10</td><td><strong>3-part structure</strong> — ice-breaker / WIIFT / stage-correct CTA</td><td>PASS</td><td>Every email opens on the segment&#x27;s doc reality (never &quot;hope you&#x27;re well&quot;), gives doc-class-specific WIIFT, and CTAs progress soft → value → proof → clear ask → break-up per R3.</td></tr><tr><td>11</td><td><strong>Generic-email test</strong> — would it survive a swap?</td><td>PASS (segment level)</td><td>Each email fails the swap-the-*segment* test (mill certs ≠ EOBs ≠ BOLs ≠ lease abstracts); account-level personalization is intentionally out of scope for nurture and owned by the post-MQL sales sequence (§1.5–1.6).</td></tr><tr><td>12</td><td><strong>Fabrication check</strong> — contacts, numbers, customers, GAAP/IFRS</td><td>PASS</td><td>No contacts fabricated (§1.2 sourcing rules); % grep shows only the campaign&#x27;s own open/pickup targets; no customer names, no benchmark figures, no accounting cites.</td></tr><tr><td>13</td><td><strong>Honest-benchmark positioning</strong> — qualitative only</td><td>PASS</td><td>E3s say &quot;we publish the losing rows&quot; and point to apis.hyperbots.com; A10 spec explicitly bans reproducing figures.</td></tr><tr><td>14</td><td><strong>DRAFT / human-gate status</strong></td><td>PASS</td><td>Header + §5.3: all sends human-gated; no broadcast fired for this milestone (explicit-ask-only rule).</td></tr></tbody></table>
+<table><thead><tr><th>#</th><th>Check</th><th>Verdict</th><th>Evidence (one line)</th></tr></thead><tbody><tr><td>1</td><td><strong>Hook</strong> — subject earns attention &lt;5s, specific to them</td><td>PASS</td><td>All 20 subjects are doc-class-named insider language (&quot;Mill certs: the PDF between receiving and ERP&quot;), 24–48 chars, all &lt;60; &quot;Why this opens&quot; notes on every E1.</td></tr><tr><td>2</td><td><strong>One-idea discipline</strong> — one idea per email, finishable</td><td>PASS</td><td>Fixed angle arc per segment (touchbase → primitive-value → honest-benchmark → economics → break-up); no angle repeats within a segment; bodies 112–159 words.</td></tr><tr><td>3</td><td><strong>Clarity / voice</strong> — plain, technical, confident, zero buzzwords</td><td>PASS</td><td>Buzzword/banned-framing grep returned CLEAN (no HITL/manual-review framing, no &quot;seamless/leverage/revolution…&quot; hits); founder voice, concrete nouns throughout.</td></tr><tr><td>4</td><td><strong>Conversion</strong> — each email one job + one next action, CTA &lt;2 min</td><td>PASS</td><td>Every email exactly one CTA: one-word reply (E1–E3), two-slots/book-link (E4), 10-second forward (E5); all &lt;2 min.</td></tr><tr><td>5</td><td><strong>Coherence</strong> — marketing + sales = one story, cadence interlocked</td><td>PASS</td><td>§1.1 collision rules (no same-day with sales touches), §1.5 handoff packet, §1.6 deal motion; nurture&#x27;s ONE ask ladders into the P2P/O2C discovery → doc-class demo → pricing loop.</td></tr><tr><td>6</td><td><strong>Guardrails</strong> — no competitor names, accuracy per apis.hyperbots.com, Hyperbots IP, no HITL, sources resolve</td><td>PASS</td><td>Category labels only (&quot;document-AI vendor&quot;, &quot;another approach&quot;); zero accuracy figures — every accuracy mention deferred to apis.hyperbots.com; &quot;open-source models fine-tuned by Hyperbots (our IP)&quot; stated in all four E1s; no customer names; grep CLEAN.</td></tr><tr><td>7</td><td><strong>Deal-motion bar</strong> — THE ONE ASK = discovery call; demo + pricing framing; no invented pricing</td><td>PASS</td><td>E4 in all 4 segments makes the clear discovery-call ask with the doc-class demo offer; only price anywhere is the published $0.05/page; &quot;volume/enterprise sized on the call&quot;; no ACV/quote/discount appears.</td></tr><tr><td>8</td><td><strong>Outreach-ready bar</strong> — copy-paste-ready, zero extra research forced on the sender</td><td>PASS (1 dependency flagged)</td><td>Subjects/previews/bodies are send-ready with only <code>{{first_name}}</code> (+ segment-level <code>{{doc_class}}</code>/<code>{{artifact}}</code> on LinkedIn templates); the named dependency is artifact builds (§4) — gated by entry criterion §1.3.4 so no wave can start with a dead link.</td></tr><tr><td>9</td><td><strong>Fortune-100 word-limit gate</strong></td><td>PASS (scope-adapted, declared)</td><td>Gate as written governs per-account sequences (touchbase ≤200, follow-ups ≤100). This is a segment-level nurture whose campaign spec sets ~120–180/email; measured: touchbase max 159 (≤200 ✓), follow-ups 112–146 — within campaign spec, above the per-account ≤100 bar by design. Adaptation declared here and in Open assumptions; post-MQL per-account emails revert to the strict gate.</td></tr><tr><td>10</td><td><strong>3-part structure</strong> — ice-breaker / WIIFT / stage-correct CTA</td><td>PASS</td><td>Every email opens on the segment&#x27;s doc reality (never &quot;hope you&#x27;re well&quot;), gives doc-class-specific WIIFT, and CTAs progress soft → value → proof → clear ask → break-up per R3.</td></tr><tr><td>11</td><td><strong>Generic-email test</strong> — would it survive a swap?</td><td>PASS (segment level)</td><td>Each email fails the swap-the-*segment* test (mill certs ≠ EOBs ≠ BOLs ≠ lease abstracts); account-level personalization is intentionally out of scope for nurture and owned by the post-MQL sales sequence (§1.5–1.6).</td></tr><tr><td>12</td><td><strong>Fabrication check</strong> — contacts, numbers, customers, GAAP/IFRS</td><td>PASS</td><td>No contacts fabricated (§1.2 sourcing rules); % grep shows only the campaign&#x27;s own open/pickup targets; no customer names, no benchmark figures, no accounting cites.</td></tr><tr><td>13</td><td><strong>Honest-benchmark positioning</strong> — qualitative only</td><td>PASS</td><td>E3s offer to show accuracy on the prospect&#x27;s own documents (incl. where it struggles) and point to apis.hyperbots.com; no public &quot;loss table&quot; is claimed; A10 spec bans reproducing figures.</td></tr><tr><td>14</td><td><strong>DRAFT / human-gate status</strong></td><td>PASS</td><td>Header + §5.3: all sends human-gated; no broadcast fired for this milestone (explicit-ask-only rule).</td></tr></tbody></table>
 <p><strong>Word-limit compliance line:</strong> max touchbase body = 159 words (≤200 ✓); max follow-up body = 146 words (≤180 campaign spec ✓; per-account ≤100 gate scope-adapted per item 9).</p>
 <p><strong>FAILs found and fixed during drafting:</strong> S4-E2 originally framed validate&#x27;s output as needing &quot;a human decision-maker&#x27;s judgment&quot; — cut as adjacent to review framing; replaced with &quot;separating disputes worth fighting from noise.&quot;</p>
 <p><strong>Verdict: CERTIFIED (self-assessed)</strong> — formal certification still requires the independent <code>abm-qa</code> / <code>vp-abm-review</code> pass before any wave is released; this document self-certifies content discipline only, not send authorization.</p>
@@ -429,4 +429,14 @@ strong{color:var(--grey-12);font-weight:600;}
 <p>5. <strong>&quot;11 doc types&quot; (S1-E1) and &quot;~40 fields&quot; (S4-E1 / A8) are counts the artifacts must substantiate</strong> — A1 and A8 must enumerate at least those counts or the copy gets adjusted to the artifact, never vice versa.</p>
 <p>6. <strong>G0 list, customer list, and open-opp data</strong> are available from CRM at suppression-screen time; suppression is re-run before every wave, not just at entry.</p>
 <p>7. <strong>Open-rate measurement</strong> is pixel-based and distorted by mail-privacy proxies; the &gt;60% bar is judged directionally, with artifact requests and replies as ground truth (§5.1).</p>
-<p>8. This campaign is <strong>nurture (segment-level)</strong>; per-account Fortune-100 cadence (7 touches, cold-call scripts, discovery docs) applies post-MQL in the sales motion and is intentionally not duplicated here.</p><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>
+<p>8. This campaign is <strong>nurture (segment-level)</strong>; per-account Fortune-100 cadence (7 touches, cold-call scripts, discovery docs) applies post-MQL in the sales motion and is intentionally not duplicated here.</p>
+<h2>Fact-check table (2026-06-16)</h2>
+<table><thead><tr><th>Claim used in copy</th><th>Source</th><th>Status</th></tr></thead><tbody><tr><td>HyperAPI = Finance Document AI, developer-first APIs, &quot;by Hyperbots&quot;, apis.hyperbots.com</td><td>Hyperbots Offerings flyer p.1</td><td>VERIFIED</td></tr><tr><td>Primitives: Parse, Split, Classify, Extract, Extract/Parse-Intent, Validate, Redact, Extract Omni</td><td>flyer p.1 &quot;The API Suite&quot;</td><td>VERIFIED (only these named)</td></tr><tr><td>99%+ production accuracy / &lt;2s latency / 99.9% uptime / 35+ doc types / 100+ languages</td><td>flyer p.1 stat band</td><td>VERIFIED — cite &quot;per apis.hyperbots.com&quot;</td></tr><tr><td>Pricing &quot;from $0.05/page&quot;, simple per-page</td><td>flyer p.1 (&quot;from $0.05/page&quot;)</td><td>VERIFIED — never &quot;flat&quot;</td></tr><tr><td>Honest-benchmark angle (show wins + where it struggles on YOUR docs)</td><td>reframed as private-POC offer; no public loss-table claimed</td><td>VERIFIED (defect-2 fix)</td></tr><tr><td>Founded 2023; Rajeev Pathak, Ram Jayaraman, Niyati Chhaya</td><td>flyer p.2</td><td>VERIFIED</td></tr><tr><td>Finance-native &gt; general models</td><td>flyer p.2 &quot;Why finance-native AI&quot; — NOT used as a stat in nurture copy</td><td>VERIFIED (kept qualitative)</td></tr></tbody></table>
+<h2>REWORK log — 2026-06-16</h2>
+<ul>
+<li><strong>CRITICAL-1 pricing:</strong> all &quot;flat $0.05/page&quot; → &quot;from $0.05/page&quot; (E4×4, E5 recaps, T3, Variant-B subjects). 0 &quot;flat&quot; remaining.</li>
+<li><strong>CRITICAL-2 honest-benchmark:</strong> removed all claims of a publicly-published &quot;loss table&quot; at apis.hyperbots.com; reframed to a private-POC honesty offer (&quot;we&#x27;ll show you where it struggles on your own documents&quot;). Updated E3×4, T2, T3, A10 spec, self-validation row 13, artifact-row 17, S1-E3 preview.</li>
+<li><strong>CRITICAL-3 primitives:</strong> &quot;augment&quot; and &quot;reason&quot; removed as named primitives (prior pass); only the flyer&#x27;s 8 primitives referenced. &quot;match&quot; retained only as plain English (&quot;3-way match&quot;, &quot;consignee match&quot;) — not a primitive claim.</li>
+<li><strong>MAJOR:</strong> added this Fact-check table; word-limit scope deviation already noted in Open Assumptions.</li>
+<li>Guardrails re-grepped CLEAN: no &quot;flat $0.05&quot;, no published-loss-table claim, no augment/reason primitives, no competitor names, no HITL/manual-review phrasing.</li>
+</ul><div class="footer">Hyperbots — light theme. Generated from the Markdown source; external publication is human-gated.</div></div></body></html>
