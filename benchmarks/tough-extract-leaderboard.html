@@ -1,0 +1,57 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tough Dataset Extract Benchmark — all doctypes, all models</title><style>
+:root{--bg:#F6F8FA;--card:#fff;--ink:#211F26;--muted:#5d6470;--teal:#07658D;--border:#E2E8EE;--alt:#F0F4F8;--green:#039855}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 -apple-system,"Segoe UI",Arial,sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:34px 28px 80px}h1{color:var(--teal);font-size:26px;margin:0 0 4px}
+.sub{color:var(--muted);font-size:14px;margin-bottom:8px}
+table{width:100%;border-collapse:collapse;font-size:14px;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:14px}
+th{background:var(--teal);color:#fff;text-align:left;padding:10px 11px;font-size:12px;text-transform:uppercase;letter-spacing:.03em}
+td{padding:8px 11px;border-top:1px solid var(--border)}td.num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600}
+td.lead{background:#E3F6E8;color:var(--green)}td.fab{color:#b3261e;font-size:11px}td.pend{color:#a66100;font-size:11px}
+tr:nth-child(even) td{background:var(--alt)}tr:nth-child(even) td.lead{background:#E3F6E8}
+.pill{color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:9px}
+.strip{background:#E3F6E8;border:1px solid #B8E0C4;border-radius:8px;padding:11px 15px;font-size:13px;margin:12px 0;color:#0a4b2e}
+.note-box{background:#EDFAFF;border:1px solid #BDDFEE;border-radius:8px;padding:13px 16px;font-size:13px;margin:12px 0}
+.legend{font-size:12px;color:var(--muted);margin:10px 0}</style></head><body><div class="wrap">
+<h1>Tough Dataset — Extract Benchmark (all doctypes)</h1>
+<div class="sub"><b>tough</b>: bank_statement(50) · cheque(21) · credit_note(50) · remittance(75) — gold = meta.json · metric <b>extract_entity_micro_f1 V3-canonical</b> · snapshot 2026-06-16</div>
+<div class="strip">Per-doctype leader (any panel) — <b>bank_stmt</b>: claude-sonnet-4-6-LLM 0.803 · <b>cheque</b>: claude-sonnet-4-6-LLM 0.685 · <b>credit_note</b>: hyperapi-extract-bs 0.720 · <b>remittance</b>: hf-qwen3-vl-235b-instruct 0.460</div>
+<div class="legend">Panel: <span class="pill" style="background:#1B7DA7">N</span> native image-fed &nbsp; <span class="pill" style="background:#07658D">T</span> text-fed (local OCR) &nbsp; <span class="pill" style="background:#039855">E2E</span> end-to-end classify→extract &nbsp; <span class="pill" style="background:#a66100">api</span> SDK direct &nbsp;— <b>compare within a panel</b>; green = column leader.</div>
+<div class="note-box"><b>Honesty rails:</b> HyperAPI rows per apis.hyperbots.com. FAB = byte-identical-to-gold (invalidated). PEND = insufficient-n / no-key. V3-canonical (judge-calibrated, AUDIT-extract-metric-2026-06-11.md). Native May cells backfilled from run JSONLs. <b>results.zip NOT used here — all gold-scored.</b></div>
+<table><thead><tr><th>Model</th><th>Panel</th><th>bank_stmt</th><th>cheque</th><th>credit_note</th><th>remittance</th></tr></thead><tbody>
+<tr><td>claude-sonnet-4-6-LLM</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num lead">0.803</td><td class="num lead">0.685</td><td class="num">0.631</td><td class="num">0.295</td></tr>
+<tr><td>hyperapi-extract-bs</td><td><span class="pill" style="background:#039855">E2E</span></td><td class="num">0.560</td><td class="num">0.504</td><td class="num lead">0.720</td><td class="num">0.427</td></tr>
+<tr><td>gemini-2.5-pro</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.585</td><td class="num">0.477</td><td class="num">0.559</td><td class="num">0.388</td></tr>
+<tr><td>claude-sonnet-4-6-LLM-vision</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">—</td><td class="num">0.610</td><td class="num">0.523</td><td class="num">0.343</td></tr>
+<tr><td>gemini-2.5-flash</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.469</td><td class="num">0.473</td><td class="num">0.576</td><td class="num">0.424</td></tr>
+<tr><td>hf-qwen3-vl-235b-thinking</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.606</td><td class="num">0.446</td><td class="num">0.438</td><td class="num">0.436</td></tr>
+<tr><td>gemini-2.5-flash-lite</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.600</td><td class="num">0.416</td><td class="num">0.543</td><td class="num">0.365</td></tr>
+<tr><td>azure-gpt-5.4</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.513</td><td class="num">0.472</td><td class="num">0.520</td><td class="num">0.407</td></tr>
+<tr><td>hf-qwen3-vl-235b-instruct</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.561</td><td class="num">0.383</td><td class="num">0.387</td><td class="num lead">0.460</td></tr>
+<tr><td>claude-opus-4-7-LLM</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.291</td><td class="num">0.599</td><td class="num">0.550</td><td class="num">0.331</td></tr>
+<tr><td>hyperapi-parse-qwen-chain</td><td><span class="pill" style="background:#07658D">T</span></td><td class="num">0.617</td><td class="num">0.316</td><td class="num">0.500</td><td class="num">0.314</td></tr>
+<tr><td>hf-qwen25-vl-72b</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.579</td><td class="num">0.348</td><td class="num">0.392</td><td class="num">0.426</td></tr>
+<tr><td>hf-ernie-4.5-vl-424b</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.536</td><td class="num">0.357</td><td class="num">0.398</td><td class="num">0.393</td></tr>
+<tr><td>claude-fable-5</td><td><span class="pill" style="background:#07658D">T</span></td><td class="num">0.683</td><td class="num">0.263</td><td class="num">0.256</td><td class="num">0.326</td></tr>
+<tr><td>claude-opus-4.6</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.376</td><td class="num pend">PEND</td><td class="num pend">PEND</td><td class="num pend">PEND</td></tr>
+<tr><td>claude-opus-4-7</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.376</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr><td>qwen-3.6</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.476</td><td class="num">0.278</td><td class="num">0.345</td><td class="num">0.373</td></tr>
+<tr><td>hf-llama4-maverick</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.562</td><td class="num pend">PEND</td><td class="num">0.143</td><td class="num pend">PEND</td></tr>
+<tr><td>claude-haiku-4-5-LLM_v2</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.310</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr><td>hf-kimi-k2</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.536</td><td class="num">0.229</td><td class="num">0.165</td><td class="num">0.283</td></tr>
+<tr><td>claude-sonnet-4.6</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.272</td><td class="num pend">PEND</td><td class="num pend">PEND</td><td class="num pend">PEND</td></tr>
+<tr><td>claude-sonnet-4-6</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.267</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr><td>hf-qwen3-235b-thinking</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.581</td><td class="num">0.176</td><td class="num">0.148</td><td class="num">0.136</td></tr>
+<tr><td>qwen-3.6-local</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">—</td><td class="num">0.278</td><td class="num">0.209</td><td class="num">0.258</td></tr>
+<tr><td>azure-gpt-5.4-sweep2026-06-11</td><td><span class="pill" style="background:#07658D">T</span></td><td class="num">—</td><td class="num">0.232</td><td class="num">0.166</td><td class="num">0.303</td></tr>
+<tr><td>hf-aya-vision-32b</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">—</td><td class="num">0.275</td><td class="num">0.217</td><td class="num">0.112</td></tr>
+<tr><td>claude-sonnet-4-6-sweep2026-06-11</td><td><span class="pill" style="background:#07658D">T</span></td><td class="num">—</td><td class="num">0.211</td><td class="num">0.193</td><td class="num">0.185</td></tr>
+<tr><td>hyperapi-process-generic</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">—</td><td class="num">—</td><td class="num">—</td><td class="num">0.194</td></tr>
+<tr><td>hyperapi-extract-sdk</td><td><span class="pill" style="background:#a66100">api</span></td><td class="num">0.116</td><td class="num">0.056</td><td class="num">0.184</td><td class="num">0.085</td></tr>
+<tr><td>claude-haiku-4-5-LLM</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">0.089</td><td class="num fab">FAB</td><td class="num fab">FAB</td><td class="num fab">FAB</td></tr>
+<tr><td>azure-di</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num">—</td><td class="num">—</td><td class="num">0.093</td><td class="num">0.051</td></tr>
+<tr><td>hyperapi-extract@v0.1.0</td><td><span class="pill" style="background:#a66100">api</span></td><td class="num">0.064</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
+<tr><td>claude-haiku-4.6</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num pend">PEND</td><td class="num pend">PEND</td><td class="num pend">PEND</td><td class="num pend">PEND</td></tr>
+</tbody></table>
+<p class="legend">Source: results/DC-013__tough-*.json + all-vendors V3 rescore. dataset-95 + results.zip invoices → broader extract leaderboard (separate, WIP).</p>
+</div></body></html>
