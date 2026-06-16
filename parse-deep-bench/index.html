@@ -63,6 +63,7 @@
   <a href="#contamination">Contamination</a>
   <a href="#leaderboard">Leaderboard (empty)</a>
   <a href="#approval">Approval</a>
+  <a href="#related">Related artifacts</a>
 </nav>
 
 <main>
@@ -385,10 +386,27 @@
   <p class="note">DRAFT INTERNAL ONLY until verdict files land at <code>hyperapi-cto-org/command-center/REVIEW-VERDICT-PARSE-FRAMEWORK-V1-*-2026-06-11.md</code>. NOT self-approved.</p>
 </section>
 
+<section id="related">
+  <h2>§15 — Related artifacts</h2>
+  <p>All artifacts live in this directory; same set mirrored at <code>hyprbots/hyperapi-gtm-hub/docs/parse-deep-bench/</code>.</p>
+  <table>
+    <thead><tr><th>Artifact</th><th>What it is</th><th>Link</th></tr></thead>
+    <tbody>
+      <tr><td>Framework spec v1.1</td><td>Full 51-dimension specification with all §X blocks, 130-row panel, methodology, ablations, license matrix</td><td><a href="framework.md">framework.md</a></td></tr>
+      <tr><td>2-pager (review brief)</td><td>Full 51-metric table + 130-row panel bucket table + 5 decisions for reviewer</td><td><a href="two-pager.md">md</a> · <a href="two-pager.html">html</a> · <a href="two-pager.pdf">pdf</a></td></tr>
+      <tr><td>Literature review</td><td>~6.2k-word document-AI lit review: benchmark lineage, metric lineage, architecture map, finance-doc subfield, 10 open problems, 55-entry annotated bibliography</td><td><a href="lit-review.md">lit-review.md</a></td></tr>
+      <tr><td>Methodology</td><td>NeurIPS-2024 reproducibility-checklist item-by-item; pin families; bootstrap + paired-bootstrap + Holm-Bonferroni; contamination protocol</td><td><a href="methodology.md">methodology.md</a></td></tr>
+      <tr><td>Tasks JSON (additive)</td><td>50 DQ-* entries; ADDITIVE-ONLY; matches D-01..D-50 (D-51 in v1.1 amendment, not yet in tasks JSON)</td><td><a href="tasks-additive-DQ-001-050.json">tasks-additive-DQ-001-050.json</a></td></tr>
+      <tr><td>Cell schema v1.1</td><td>JSON Schema Draft 2020-12; backward-compat with CONSOLIDATED-150; adds dimension_id, category_id, nrun_status, ablation_id, contamination_audit, pre_registration_id</td><td><a href="cell-schema-v1.1.json">cell-schema-v1.1.json</a></td></tr>
+      <tr><td>BUILD-v0 ledger</td><td>Acceptance-criterion mapping per artifact; customer-name grep-guard self-check; drift log; guardrails honored</td><td><a href="BUILD-V0-LEDGER-2026-06-11.md">BUILD-V0-LEDGER-2026-06-11.md</a></td></tr>
+    </tbody>
+  </table>
+</section>
+
 </main>
 
 <footer>
-  Parse Deep Benchmark v1 · BUILD-v0 · 2026-06-11 · pre-registration anchor: <code>PARSE-DEEP-BENCHMARK-FRAMEWORK-2026-06-11-v1.md</code> · ParseBench / NeurIPS bar · Hyperbots Research · researcher-not-advocate
+  Parse Deep Benchmark v1.1 · BUILD-v0 · pre-registered 2026-06-11 · v1.1 amendment (D-51 UEM + 70 panel rows) 2026-06-15 · lit review 2026-06-16 · ParseBench / NeurIPS bar · Hyperbots Research · researcher-not-advocate
 </footer>
 
 </body>
