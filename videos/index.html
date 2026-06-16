@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Product videos — Hyperbots content hub</title>
+<style>
+  :root { --teal:#156783; --ink:#0f2730; --muted:#5b7682; --bg:#f4f8fa; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif; color:var(--ink); background:var(--bg); }
+  header { background:var(--teal); color:#fff; padding:38px 24px; }
+  header h1 { margin:0 0 6px; font-size:30px; }
+  header p { margin:0; opacity:.9; }
+  header a { color:#cfe6ef; }
+  main { max-width:1100px; margin:0 auto; padding:28px 24px 60px; }
+  .product { margin:34px 0; }
+  .product h2 { font-size:22px; border-left:5px solid var(--teal); padding-left:12px; margin-bottom:4px; }
+  .product .sub { color:var(--muted); margin:0 0 16px; padding-left:17px; font-size:14px; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(420px,1fr)); gap:22px; }
+  .card { background:#fff; border-radius:12px; box-shadow:0 1px 4px rgba(0,0,0,.08); overflow:hidden; }
+  .card video { width:100%; display:block; background:#000; }
+  .card .body { padding:14px 16px 16px; }
+  .card .tag { display:inline-block; font-size:12px; font-weight:600; color:var(--teal); background:#e3eff4; padding:2px 9px; border-radius:20px; margin-bottom:8px; }
+  .card h3 { margin:0 0 10px; font-size:16px; }
+  .dl { display:inline-block; background:var(--teal); color:#fff; text-decoration:none; font-size:13px; font-weight:600; padding:8px 14px; border-radius:8px; }
+  .dl:hover { background:#0f4f64; }
+  footer { text-align:center; color:var(--muted); font-size:13px; padding:24px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Product tour videos</h1>
+  <p>Recorded walkthroughs of HyperAPI and the P2P suite — each in a narrated and a captioned (no-voice) version. Stream below or download. · <a href="/">← content hub</a></p>
+</header>
+<main>
+
+  <section class="product">
+    <h2>HyperAPI — Document Intelligence APIs</h2>
+    <p class="sub">Parse · Extract · Classify · Split · Redact · Extract Omni — run live on a complex multi-page document, with the original shown in-app.</p>
+    <div class="grid">
+      <div class="card">
+        <video controls preload="metadata" src="hyperapi-product-tour-voiced.mp4"></video>
+        <div class="body"><span class="tag">Narrated</span><h3>HyperAPI Product Tour — voiceover</h3>
+        <a class="dl" href="hyperapi-product-tour-voiced.mp4" download>⬇ Download MP4</a></div>
+      </div>
+      <div class="card">
+        <video controls preload="metadata" src="hyperapi-product-tour-captioned.mp4"></video>
+        <div class="body"><span class="tag">Captioned · no voice</span><h3>HyperAPI Product Tour — captions + music</h3>
+        <a class="dl" href="hyperapi-product-tour-captioned.mp4" download>⬇ Download MP4</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="product">
+    <h2>HyperAPI — Kong Gateway deployment</h2>
+    <p class="sub">Same APIs on the gateway deployment, showing each API's Fast and Advanced modes and the live output.</p>
+    <div class="grid">
+      <div class="card">
+        <video controls preload="metadata" src="hyperapi-kong-gateway-tour-voiced.mp4"></video>
+        <div class="body"><span class="tag">Narrated</span><h3>Kong Gateway Tour — voiceover</h3>
+        <a class="dl" href="hyperapi-kong-gateway-tour-voiced.mp4" download>⬇ Download MP4</a></div>
+      </div>
+      <div class="card">
+        <video controls preload="metadata" src="hyperapi-kong-gateway-tour-captioned.mp4"></video>
+        <div class="body"><span class="tag">Captioned · no voice</span><h3>Kong Gateway Tour — captions + music</h3>
+        <a class="dl" href="hyperapi-kong-gateway-tour-captioned.mp4" download>⬇ Download MP4</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="product">
+    <h2>Hyperbots P2P — AP Automation</h2>
+    <p class="sub">Invoice workspace, discovery, AI extraction, real-time 3-way match, audit trail, procurement, vendor management, accruals, and configurations.</p>
+    <div class="grid">
+      <div class="card">
+        <video controls preload="metadata" src="p2p-product-tour-voiced.mp4"></video>
+        <div class="body"><span class="tag">Narrated</span><h3>P2P Product Tour — voiceover</h3>
+        <a class="dl" href="p2p-product-tour-voiced.mp4" download>⬇ Download MP4</a></div>
+      </div>
+      <div class="card">
+        <video controls preload="metadata" src="p2p-product-tour-captioned.mp4"></video>
+        <div class="body"><span class="tag">Captioned · no voice</span><h3>P2P Product Tour — captions + music</h3>
+        <a class="dl" href="p2p-product-tour-captioned.mp4" download>⬇ Download MP4</a></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<footer>© Hyperbots Inc. · Private &amp; Confidential — internal demo assets.</footer>
+</body>
+</html>
