@@ -53,5 +53,15 @@ tr:nth-child(even) td{background:var(--alt)}tr:nth-child(even) td.lead{backgroun
 <tr><td>hyperapi-extract@v0.1.0</td><td><span class="pill" style="background:#a66100">api</span></td><td class="num">0.064</td><td class="num">—</td><td class="num">—</td><td class="num">—</td></tr>
 <tr><td>claude-haiku-4.6</td><td><span class="pill" style="background:#1B7DA7">N</span></td><td class="num pend">PEND</td><td class="num pend">PEND</td><td class="num pend">PEND</td><td class="num pend">PEND</td></tr>
 </tbody></table>
+
+<h2>GPT-5.4-thinking — prompt × modality 2×2 (model fixed)</h2>
+<div class="note-box"><b>Isolation experiment</b> (tough, gold-scored, V3): same model (azure-gpt-5.4-thinking), vary only prompt &amp; input. <b>Finding: modality dominates, prompt helps modestly</b> — swapping the generic prompt for the curated "bs" prompt gains +0.03–0.09; going text→image gains +0.15–0.32. Highest-leverage fix for any text lane is better OCR input, not better prompts. Per apis.hyperbots.com N/A (no HyperAPI here). gold=meta.json, NOT results.zip.</div>
+<table><thead><tr><th>doctype</th><th>generic + text<br>(June)</th><th>curated "bs" + text<br>(new)</th><th>curated + image<br>(native)</th><th>prompt Δ</th><th>modality Δ</th></tr></thead><tbody>
+<tr><td>bank_statement</td><td class="num">—</td><td class="num">0.550</td><td class="num">0.511</td><td class="num">—</td><td class="num">—</td></tr>
+<tr><td>cheque</td><td class="num">0.232</td><td class="num">0.325</td><td class="num lead">0.472</td><td class="num">+0.093</td><td class="num">+0.147</td></tr>
+<tr><td>credit_note</td><td class="num">0.166</td><td class="num">0.197</td><td class="num lead">0.520</td><td class="num">+0.031</td><td class="num">+0.323</td></tr>
+<tr><td>remittance_advice</td><td class="num">0.303</td><td class="num">0.334</td><td class="num lead">0.407</td><td class="num">+0.031</td><td class="num">+0.073</td></tr>
+</tbody></table>
+<p class="legend">curated "bs"+text cells: results/DC-013__tough-*__azure-gpt-5.4-bsprompt-text.json (CI95 bootstrap, B=2000). bank_statement: curated+text 0.550 slightly &gt; native-image 0.511 — a dense multi-page doctype where OCR text helps the long ledger; the small-doctypes show the opposite. Note: native bank_statement 0.511 is the V3 azure-gpt native cell.</p>
 <p class="legend">Source: results/DC-013__tough-*.json + all-vendors V3 rescore. dataset-95 + results.zip invoices → broader extract leaderboard (separate, WIP).</p>
 </div></body></html>
