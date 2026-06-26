@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="/gate.js"></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Content library — faceted search — Hyperbots content hub</title>
+<style>
+:root{--blue:#1B7DA7;--blue2:#07658D;--ink:#0f2730;--muted:#5b7682;--bg:#f4f8fa;--line:#dce8ee;}
+*{box-sizing:border-box;}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--bg);}
+header{background:linear-gradient(135deg,var(--blue),var(--blue2));color:#fff;padding:34px 24px;}
+header h1{margin:0 0 8px;font-size:28px;}header p{margin:0;opacity:.92;max-width:840px;}
+header a{color:#cfe6ef;}
+main{max-width:1200px;margin:0 auto;padding:24px;display:grid;grid-template-columns:250px 1fr;gap:24px;}
+@media(max-width:820px){main{grid-template-columns:1fr;}}
+.filters{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 16px 6px;align-self:start;position:sticky;top:16px;}
+.filters h2{font-size:14px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 12px;}
+.fg{margin:0 0 14px;}
+.fg label{display:block;font-size:12.5px;font-weight:600;color:var(--ink);margin:0 0 5px;}
+.fg select,.fg input{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;font-size:13px;background:#fff;color:var(--ink);}
+.fg .row{display:flex;gap:8px;}
+.clear{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;background:#eef6f9;color:var(--blue2);font-weight:600;font-size:13px;cursor:pointer;}
+.clear:hover{background:#e0eef3;}
+.count{font-size:13px;color:var(--muted);margin:0 0 14px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:15px 16px;display:flex;flex-direction:column;}
+.card h3{margin:0 0 6px;font-size:15.5px;line-height:1.3;}
+.card .topic{font-size:12px;color:var(--muted);margin:0 0 10px;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px;}
+.chip{font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;}
+.c-channel{color:#fff;background:var(--blue);}
+.c-type{color:var(--blue2);background:#e3eff4;}
+.c-status{color:#1d7a3f;background:#e4f4ea;}
+.c-status.draft,.c-status.idea,.c-status.drafting,.c-status.review{color:#a05a00;background:#fbeccf;}
+.c-date{color:var(--muted);background:#eef2f4;}
+.tagline{font-size:11.5px;color:var(--muted);margin:0 0 10px;}
+.link{display:inline-block;background:var(--blue);color:#fff;text-decoration:none;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:8px;align-self:flex-start;margin-top:auto;}
+.link:hover{background:var(--blue2);}
+.empty{color:var(--muted);padding:40px;text-align:center;}
+footer{text-align:center;color:var(--muted);font-size:13px;padding:24px;border-top:1px solid var(--line);}
+</style></head><body>
+<header>
+<h1>Content library — faceted search</h1>
+<p>Find any published piece across the Hyperbots content hub by topic, channel, type, date, or status. Indexed from <code>content-index.json</code>. · <a href="/">content hub</a> · <a href="/library/videos/">video library</a></p>
+</header>
+<main>
+<aside class="filters">
+  <h2>Filters</h2>
+  <div class="fg"><label for="q">Search title / tags</label><input id="q" type="search" placeholder="e.g. savior-bench, parse…"></div>
+  <div class="fg"><label for="f-topic">Topic</label><select id="f-topic"><option value="">All topics</option></select></div>
+  <div class="fg"><label for="f-channel">Channel</label><select id="f-channel"><option value="">All channels</option></select></div>
+  <div class="fg"><label for="f-type">Type</label><select id="f-type"><option value="">All types</option></select></div>
+  <div class="fg"><label for="f-status">Status</label><select id="f-status"><option value="">All statuses</option></select></div>
+  <div class="fg"><label>Date range</label><div class="row"><input id="f-from" type="date" title="from"><input id="f-to" type="date" title="to"></div></div>
+  <div class="fg"><label for="f-sort">Sort by date</label><select id="f-sort"><option value="desc">Newest first</option><option value="asc">Oldest first</option></select></div>
+  <button class="clear" id="clear">Clear all filters</button>
+</aside>
+<section>
+  <p class="count" id="count">Loading…</p>
+  <div class="grid" id="results"></div>
+</section>
+</main>
+<footer>© Hyperbots Inc. · Private &amp; Confidential — internal content index. · Soft-gated (gate.js).</footer>
+
+<script>
+const KNOWN_CHANNELS = ["blog","linkedin","tweet","huggingface","hackernews","video","reddit"];
+let RECORDS = [];
+
+const $ = id => document.getElementById(id);
+const els = {
+  q:$("q"), topic:$("f-topic"), channel:$("f-channel"), type:$("f-type"),
+  status:$("f-status"), from:$("f-from"), to:$("f-to"), sort:$("f-sort"),
+  results:$("results"), count:$("count")
+};
+
+function uniq(arr){ return [...new Set(arr.filter(Boolean))].sort(); }
+function fillSelect(sel, values){
+  values.forEach(v => { const o=document.createElement("option"); o.value=v; o.textContent=v; sel.appendChild(o); });
+}
+function esc(s){ const d=document.createElement("div"); d.textContent=s==null?"":String(s); return d.innerHTML; }
+
+function render(){
+  const q = els.q.value.trim().toLowerCase();
+  const ft=els.topic.value, fc=els.channel.value, fy=els.type.value, fs=els.status.value;
+  const from=els.from.value, to=els.to.value;
+
+  let out = RECORDS.filter(r => {
+    if(ft && r.topic!==ft) return false;
+    if(fc && r.channel!==fc) return false;
+    if(fy && r.type!==fy) return false;
+    if(fs && r.status!==fs) return false;
+    if(from && r.date && r.date < from) return false;
+    if(to && r.date && r.date > to) return false;
+    if(q){
+      const hay = (r.title+" "+(r.tags||[]).join(" ")).toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+
+  const dir = els.sort.value==="asc" ? 1 : -1;
+  out.sort((a,b)=> (a.date<b.date?-1:a.date>b.date?1:0)*dir || a.title.localeCompare(b.title));
+
+  els.count.textContent = out.length+" of "+RECORDS.length+" pieces";
+  if(!out.length){ els.results.innerHTML='<p class="empty">No content matches these filters.</p>'; return; }
+
+  els.results.innerHTML = out.map(r => {
+    const tags = (r.tags||[]).length ? '<p class="tagline">'+esc(r.tags.join(" · "))+'</p>' : '';
+    const ss = esc(r.status).toLowerCase();
+    return '<div class="card">'
+      + '<h3>'+esc(r.title||"(untitled)")+'</h3>'
+      + (r.topic?'<p class="topic">topic: '+esc(r.topic)+(r.audience?' · '+esc(r.audience):'')+'</p>':'')
+      + '<div class="chips">'
+        + (r.channel?'<span class="chip c-channel">'+esc(r.channel)+'</span>':'')
+        + (r.type?'<span class="chip c-type">'+esc(r.type)+'</span>':'')
+        + (r.status?'<span class="chip c-status '+ss+'">'+esc(r.status)+'</span>':'')
+        + (r.date?'<span class="chip c-date">'+esc(r.date)+'</span>':'')
+      + '</div>'
+      + tags
+      + (r.url?'<a class="link" href="'+esc(r.url)+'">Open ▸</a>':'')
+      + '</div>';
+  }).join("");
+}
+
+function init(records){
+  RECORDS = records;
+  // Channels: known order first, then any extras present.
+  const present = uniq(records.map(r=>r.channel));
+  const ordered = KNOWN_CHANNELS.filter(c=>present.includes(c)).concat(present.filter(c=>!KNOWN_CHANNELS.includes(c)));
+  fillSelect(els.channel, ordered);
+  fillSelect(els.topic, uniq(records.map(r=>r.topic)));
+  fillSelect(els.type, uniq(records.map(r=>r.type)));
+  fillSelect(els.status, uniq(records.map(r=>r.status)));
+  ["input","change"].forEach(ev=>{
+    [els.q,els.topic,els.channel,els.type,els.status,els.from,els.to,els.sort].forEach(e=>e.addEventListener(ev,render));
+  });
+  $("clear").addEventListener("click",()=>{
+    [els.q,els.from,els.to].forEach(e=>e.value="");
+    [els.topic,els.channel,els.type,els.status].forEach(e=>e.value="");
+    els.sort.value="desc"; render();
+  });
+  render();
+}
+
+fetch("content-index.json")
+  .then(r => { if(!r.ok) throw new Error(r.status); return r.json(); })
+  .then(d => init(Array.isArray(d) ? d : (d.records||[])))
+  .catch(e => { els.count.textContent="Could not load content-index.json ("+e.message+")."; });
+</script>
+</body></html>
