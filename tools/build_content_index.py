@@ -8,12 +8,17 @@ emits library/content-index.json — one record per content piece:
 Harvest sources:
   - _internal/topics/**/*.md  -- YAML front-matter blocks
   - library/videos/index.html -- per-card data-* attributes (channel=video)
-  - repos/                    -- SKIPPED by default (see REPOS note below): the
-                                 repo holds ~1,650 blog dirs, which would dwarf
-                                 the index. Light per-concept harvest is opt-in
-                                 via --include-repos (capped).
+  - marketing/**/*.html       -- published/draft marketing pages (title<-page,
+                                 channel/type/date inferred from path+name)
+  - benchmarks/**/*.html
+    parse-deep-bench/**/*.html -- research studies/leaderboards/papers
+  - repos/*/blog.html         -- one record PER CONCEPT (slugs deduped to base
+                                 concepts the same way build_repos_index.py does,
+                                 ~683 records), url = English blog.html.
 
-Robust: skips files without front-matter; never crashes on a malformed block.
+This indexes the real published corpus (~1,400+ records), not just the 26
+scaffold records. Robust: skips non-content (assets, gate.js, index pages),
+never crashes on a malformed page, and dedupes by url.
 """
 import html
 import json
@@ -25,13 +30,28 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TOPICS_DIR = os.path.join(REPO_ROOT, "_internal", "topics")
 VIDEOS_HTML = os.path.join(REPO_ROOT, "library", "videos", "index.html")
 REPOS_DIR = os.path.join(REPO_ROOT, "repos")
+MARKETING_DIR = os.path.join(REPO_ROOT, "marketing")
+# Research-linked content dirs (channel=research).
+RESEARCH_DIRS = (os.path.join(REPO_ROOT, "benchmarks"),
+                 os.path.join(REPO_ROOT, "parse-deep-bench"))
 OUT_PATH = os.path.join(REPO_ROOT, "library", "content-index.json")
-
-# Cap for the optional repos harvest so it can never bloat the index.
-REPOS_CAP = 60
 
 FIELDS = ("title", "topic", "channel", "type", "audience", "date", "status",
           "url", "tags")
+
+# Recognized language suffixes (slug suffix -> display language), longest first
+# so "-zh-hans" wins over "-zh". Mirrors tools/build_repos_index.py so the
+# concept dedup matches the repos index exactly.
+LANG_SUFFIXES = [
+    "zh-hans", "zh-hant", "pt-br", "ar", "de", "es", "fr", "hi", "it", "ja",
+    "ko", "nl", "pt", "ru", "tr", "pl", "vi", "th", "id", "ms", "sv", "da",
+    "no", "fi", "cs", "el", "he", "uk", "ro", "hu", "zh",
+]
+
+_DATE_RE = re.compile(r"(\d{4}-\d{2}-\d{2})")
+_TITLE_TAG_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.I | re.S)
+_H1_TAG_RE = re.compile(r"<h1[^>]*>(.*?)</h1>", re.I | re.S)
+_TAGSTRIP_RE = re.compile(r"<[^>]+>")
 
 
 def _strip(v):
@@ -162,45 +182,196 @@ def harvest_videos(records):
         })
 
 
-def harvest_repos(records):
-    """OPTIONAL/light: one blog record per repo concept, capped.
+# ---------------------------------------------------------------------------
+# HTML helpers (shared by marketing / research / repos harvests).
+# ---------------------------------------------------------------------------
 
-    Off by default (see REPOS note in the module docstring). Enable with
-    --include-repos. Capped at REPOS_CAP to keep the index from bloating.
+def _clean_text(s):
+    s = _TAGSTRIP_RE.sub("", s)
+    s = html.unescape(s)
+    s = re.sub(r"\s+", " ", s).strip()
+    # Drop a trailing site-name suffix like " · Hyperbots …" / " | Hyperbots …".
+    s = re.split(r"\s+[·|—-]\s+Hyperbots", s)[0].strip()
+    return s
+
+
+def _page_title(path, fallback):
+    """Title from <h1> then <title>, else a prettified fallback. Never raises."""
+    try:
+        with open(path, "r", encoding="utf-8", errors="replace") as f:
+            txt = f.read(20000)
+    except OSError:
+        return fallback
+    for rx in (_H1_TAG_RE, _TITLE_TAG_RE):
+        m = rx.search(txt)
+        if m:
+            t = _clean_text(m.group(1))
+            if t:
+                return t
+    return fallback
+
+
+def _prettify(slug):
+    s = slug
+    if s.startswith("hyperapi-"):
+        s = s[len("hyperapi-"):]
+    s = s.replace("-", " ").strip()
+    return (s[:1].upper() + s[1:]) if s else slug
+
+
+def _date_from(text):
+    m = _DATE_RE.search(text)
+    return m.group(1) if m else ""
+
+
+# Files / dirs that are not content pieces themselves.
+_SKIP_NAMES = {"index.html", "gate.js"}
+_SKIP_DIR_PARTS = {"assets", "_assets", "img", "images", "css", "js", "static"}
+
+
+def _is_content_html(dirpath, fn):
+    if not fn.endswith(".html"):
+        return False
+    if fn in _SKIP_NAMES:
+        return False
+    rel = os.path.relpath(dirpath, REPO_ROOT).split(os.sep)
+    if any(p in _SKIP_DIR_PARTS for p in rel):
+        return False
+    return True
+
+
+def harvest_marketing(records):
+    """One record per published/draft marketing HTML page."""
+    if not os.path.isdir(MARKETING_DIR):
+        return
+    for dirpath, _dirs, files in os.walk(MARKETING_DIR):
+        for fn in sorted(files):
+            if not _is_content_html(dirpath, fn):
+                continue
+            path = os.path.join(dirpath, fn)
+            rel = os.path.relpath(path, REPO_ROOT).replace(os.sep, "/")
+            rell = rel.lower()
+            # Channel from filename hints.
+            if "linkedin" in fn.lower():
+                channel = "linkedin"
+            elif "tweet" in fn.lower() or "twitter" in fn.lower():
+                channel = "tweet"
+            else:
+                channel = "blog"
+            ctype = "draft" if ("draft" in rell) else "published"
+            title = _page_title(path, _prettify(fn[:-5]))
+            records.append({
+                "title": title,
+                "topic": "",
+                "channel": channel,
+                "type": ctype,
+                "audience": "marketing",
+                "date": _date_from(rel),
+                "status": ctype,
+                "url": "/" + rel,
+                "tags": [],
+            })
+
+
+def harvest_research(records):
+    """One record per research study/leaderboard/paper HTML page."""
+    for base in RESEARCH_DIRS:
+        if not os.path.isdir(base):
+            continue
+        for dirpath, _dirs, files in os.walk(base):
+            for fn in sorted(files):
+                if not _is_content_html(dirpath, fn):
+                    continue
+                path = os.path.join(dirpath, fn)
+                rel = os.path.relpath(path, REPO_ROOT).replace(os.sep, "/")
+                title = _page_title(path, _prettify(fn[:-5]))
+                records.append({
+                    "title": title,
+                    "topic": "",
+                    "channel": "research",
+                    "type": "published",
+                    "audience": "research",
+                    "date": _date_from(rel),
+                    "status": "published",
+                    "url": "/" + rel,
+                    "tags": [],
+                })
+
+
+def _split_lang(slug):
+    """Return (base_concept, is_english). Mirrors build_repos_index.py."""
+    for suf in LANG_SUFFIXES:
+        if slug.endswith("-" + suf):
+            return slug[: -(len(suf) + 1)], False
+    return slug, True
+
+
+def harvest_repos(records):
+    """One blog record PER CONCEPT (slugs deduped to base concepts).
+
+    ~1,650 repos/<slug>/blog.html dirs collapse to ~683 base concepts (slug
+    minus a trailing language suffix). The English variant's slug + title is
+    preferred; url points at that English blog.html.
     """
     if not os.path.isdir(REPOS_DIR):
         return
-    count = 0
-    for name in sorted(os.listdir(REPOS_DIR)):
-        if count >= REPOS_CAP:
-            break
-        d = os.path.join(REPOS_DIR, name)
+    concepts = {}  # base -> {"slug":.., "title":.., "english": bool}
+    for slug in sorted(os.listdir(REPOS_DIR)):
+        d = os.path.join(REPOS_DIR, slug)
         if not os.path.isdir(d):
             continue
         blog = os.path.join(d, "blog.html")
         if not os.path.isfile(blog):
             continue
+        base, is_en = _split_lang(slug)
+        c = concepts.get(base)
+        # Prefer the English variant for both slug (url) and title.
+        if c is None:
+            concepts[base] = {
+                "slug": slug,
+                "title": _page_title(blog, _prettify(base)),
+                "english": is_en,
+            }
+        elif is_en and not c["english"]:
+            concepts[base] = {
+                "slug": slug,
+                "title": _page_title(blog, _prettify(base)),
+                "english": True,
+            }
+    for base in sorted(concepts):
+        c = concepts[base]
         records.append({
-            "title": name.replace("-", " ").strip(),
-            "topic": name,
+            "title": c["title"],
+            "topic": base,
             "channel": "blog",
             "type": "published",
-            "audience": "developer",
+            "audience": "marketing",
             "date": "",
             "status": "published",
-            "url": "/repos/{}/blog.html".format(name),
+            "url": "/repos/{}/blog.html".format(c["slug"]),
             "tags": [],
         })
-        count += 1
 
 
 def main(argv):
-    include_repos = "--include-repos" in argv
     records = []
     harvest_topics(records)
     harvest_videos(records)
-    if include_repos:
-        harvest_repos(records)
+    harvest_marketing(records)
+    harvest_research(records)
+    harvest_repos(records)
+
+    # Dedupe by url (first occurrence wins; topics/videos harvested first).
+    seen = set()
+    deduped = []
+    for r in records:
+        u = r.get("url", "")
+        if u and u in seen:
+            continue
+        if u:
+            seen.add(u)
+        deduped.append(r)
+    records = deduped
 
     # Stable sort: newest date first, then title.
     records.sort(key=lambda r: (r.get("date", ""), r.get("title", "")),
@@ -219,12 +390,13 @@ def main(argv):
     by_channel = {}
     for r in records:
         by_channel[r["channel"]] = by_channel.get(r["channel"], 0) + 1
+    by_type = {}
+    for r in records:
+        by_type[r["type"]] = by_type.get(r["type"], 0) + 1
     print("Wrote {} ({} records)".format(
         os.path.relpath(OUT_PATH, REPO_ROOT), len(records)))
     print("By channel: {}".format(by_channel))
-    if not include_repos:
-        print("Note: repos/ harvest skipped (would bloat index with ~1,650 "
-              "blogs); pass --include-repos for a capped sample.")
+    print("By type: {}".format(by_type))
     return 0
 
 
