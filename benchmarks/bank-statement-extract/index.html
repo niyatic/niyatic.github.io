@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script src="/gate.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bank Statement Extraction Benchmark</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #16202a;
+      --muted: #5b6673;
+      --line: #d8dee6;
+      --panel: #f7f9fb;
+      --accent: #0f766e;
+      --warn: #9a3412;
+    }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #ffffff;
+    }
+    header {
+      padding: 32px 40px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    main {
+      padding: 28px 40px 44px;
+      max-width: 1180px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      line-height: 1.15;
+    }
+    p {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .meta {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 22px 0;
+    }
+    .card {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      border-radius: 8px;
+      padding: 14px;
+    }
+    .label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 4px;
+    }
+    .value {
+      font-size: 18px;
+      font-weight: 700;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 18px;
+      font-size: 14px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .score {
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+    }
+    .planned {
+      color: var(--warn);
+      font-weight: 700;
+    }
+    .note {
+      margin-top: 22px;
+      padding: 14px;
+      border-left: 4px solid var(--accent);
+      background: #eefaf7;
+      color: #164e48;
+    }
+    @media (max-width: 860px) {
+      header, main { padding-left: 18px; padding-right: 18px; }
+      .meta { grid-template-columns: 1fr 1fr; }
+      table { display: block; overflow-x: auto; white-space: nowrap; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Bank Statement Extraction Benchmark</h1>
+    <p>OpenAI model endpoints vs HyperAPI extract-omni on bank-statement extraction. Public dashboard shows aggregate metrics only.</p>
+  </header>
+  <main>
+    <section class="meta" id="meta"></section>
+    <section>
+      <h2>Leaderboard</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>Model</th>
+            <th>Endpoint</th>
+            <th>Sample</th>
+            <th>Overall</th>
+            <th>Header F1</th>
+            <th>Txn Record F1</th>
+            <th>Txn Field F1</th>
+            <th>Amount Acc.</th>
+            <th>Date Acc.</th>
+            <th>Failure</th>
+            <th>P95 Latency</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </section>
+    <section class="note">
+      HyperAPI is labeled as <strong>extract-omni via UI upload</strong> until SDK support exists. No raw bank statement content, account numbers, or credentials should be published here.
+    </section>
+  </main>
+  <script>
+    function pct(value) {
+      if (value === null || value === undefined) return "pending";
+      return `${(value * 100).toFixed(1)}%`;
+    }
+    function num(value) {
+      if (value === null || value === undefined) return "pending";
+      return Number(value).toFixed(2);
+    }
+    async function load() {
+      const res = await fetch("./results.json", { cache: "no-store" });
+      const data = await res.json();
+      const meta = document.getElementById("meta");
+      meta.innerHTML = `
+        <div class="card"><div class="label">Benchmark</div><div class="value">${data.benchmark}</div></div>
+        <div class="card"><div class="label">Sample mode</div><div class="value">${data.dataset.sample_mode}</div></div>
+        <div class="card"><div class="label">Sample size</div><div class="value">${data.dataset.sample_size}</div></div>
+        <div class="card"><div class="label">Generated</div><div class="value">${data.generated_at || "not run"}</div></div>
+      `;
+      const rows = document.getElementById("rows");
+      rows.innerHTML = data.rows.map(row => `
+        <tr>
+          <td>${row.provider}</td>
+          <td>${row.model}</td>
+          <td>${row.endpoint}<br><small>${row.collection_method}</small></td>
+          <td>${row.sample_size}</td>
+          <td class="score">${pct(row.overall)}</td>
+          <td>${pct(row.header_macro_f1)}</td>
+          <td>${pct(row.transaction_record_f1)}</td>
+          <td>${pct(row.transaction_field_f1)}</td>
+          <td>${pct(row.amount_accuracy)}</td>
+          <td>${pct(row.date_accuracy)}</td>
+          <td>${pct(row.failure_rate)}</td>
+          <td>${num(row.latency_p95_seconds)}s</td>
+          <td class="${row.status === "planned" ? "planned" : ""}">${row.status}</td>
+        </tr>
+      `).join("");
+    }
+    load().catch(err => {
+      document.getElementById("rows").innerHTML = `<tr><td colspan="13">Failed to load results: ${err.message}</td></tr>`;
+    });
+  </script>
+</body>
+</html>
+
