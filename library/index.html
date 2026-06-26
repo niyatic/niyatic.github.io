@@ -62,7 +62,8 @@ footer{text-align:center;color:var(--muted);font-size:13px;padding:24px;border-t
 <footer>© Hyperbots Inc. · Private &amp; Confidential — internal content index. · Soft-gated (gate.js).</footer>
 
 <script>
-const KNOWN_CHANNELS = ["blog","linkedin","tweet","huggingface","hackernews","video","reddit"];
+const KNOWN_CHANNELS = ["blog","linkedin","tweet","huggingface","hackernews","video","reddit","research"];
+const MAX_SHOWN = 500; // cap rendered cards; refine filters to see the rest
 let RECORDS = [];
 
 const $ = id => document.getElementById(id);
@@ -100,10 +101,14 @@ function render(){
   const dir = els.sort.value==="asc" ? 1 : -1;
   out.sort((a,b)=> (a.date<b.date?-1:a.date>b.date?1:0)*dir || a.title.localeCompare(b.title));
 
-  els.count.textContent = out.length+" of "+RECORDS.length+" pieces";
+  const capped = out.length > MAX_SHOWN;
+  els.count.textContent = capped
+    ? ("showing "+MAX_SHOWN+" of "+out.length+" matches ("+RECORDS.length+" total) — refine filters to narrow")
+    : (out.length+" of "+RECORDS.length+" pieces");
   if(!out.length){ els.results.innerHTML='<p class="empty">No content matches these filters.</p>'; return; }
+  const shownList = capped ? out.slice(0, MAX_SHOWN) : out;
 
-  els.results.innerHTML = out.map(r => {
+  els.results.innerHTML = shownList.map(r => {
     const tags = (r.tags||[]).length ? '<p class="tagline">'+esc(r.tags.join(" · "))+'</p>' : '';
     const ss = esc(r.status).toLowerCase();
     return '<div class="card">'
