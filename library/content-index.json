@@ -1,0 +1,429 @@
+{
+  "generated_by": "tools/build_content_index.py",
+  "count": 26,
+  "fields": [
+    "title",
+    "topic",
+    "channel",
+    "type",
+    "audience",
+    "date",
+    "status",
+    "url",
+    "tags"
+  ],
+  "records": [
+    {
+      "title": "HyperAPI teaser + use-case clips",
+      "topic": "hyperapi-teaser",
+      "channel": "video",
+      "type": "marketing",
+      "audience": "marketing",
+      "date": "2026-06-16",
+      "status": "published",
+      "url": "/videos_marketing/",
+      "tags": [
+        "marketing",
+        "marketing"
+      ]
+    },
+    {
+      "title": "HyperAPI — full product tour",
+      "topic": "hyperapi-product-tour",
+      "channel": "video",
+      "type": "product-tour",
+      "audience": "developer",
+      "date": "2026-06-15",
+      "status": "published",
+      "url": "/videos/",
+      "tags": [
+        "product-tour",
+        "developer"
+      ]
+    },
+    {
+      "title": "HyperAPI — Kong Gateway deployment tour",
+      "topic": "hyperapi-kong-gateway-tour",
+      "channel": "video",
+      "type": "product-tour",
+      "audience": "developer",
+      "date": "2026-06-15",
+      "status": "published",
+      "url": "/videos/",
+      "tags": [
+        "product-tour",
+        "developer"
+      ]
+    },
+    {
+      "title": "HyperAPI Playground — deep walkthrough",
+      "topic": "hyperapi-playground-walkthrough",
+      "channel": "video",
+      "type": "product-tour",
+      "audience": "developer",
+      "date": "2026-06-15",
+      "status": "partial",
+      "url": "/videos_walkthrough/",
+      "tags": [
+        "product-tour",
+        "developer"
+      ]
+    },
+    {
+      "title": "CFO Copilot (cfo-nanoclaw) demo cuts",
+      "topic": "cfo-nanoclaw-demo",
+      "channel": "video",
+      "type": "demo",
+      "audience": "cfo",
+      "date": "2026-06-15",
+      "status": "published",
+      "url": "/library/videos/",
+      "tags": [
+        "demo",
+        "cfo"
+      ]
+    },
+    {
+      "title": "parse-x benchmark explainer",
+      "topic": "parse-x-benchmark-explainer",
+      "channel": "video",
+      "type": "explainer",
+      "audience": "developer",
+      "date": "2026-06-13",
+      "status": "published",
+      "url": "/videos_litreview/",
+      "tags": [
+        "explainer",
+        "developer"
+      ]
+    },
+    {
+      "title": "Vera (HyperLM) product tour",
+      "topic": "vera-hyperlm-tour",
+      "channel": "video",
+      "type": "product-tour",
+      "audience": "cfo",
+      "date": "2026-06-13",
+      "status": "published",
+      "url": "/videos_others/",
+      "tags": [
+        "product-tour",
+        "cfo"
+      ]
+    },
+    {
+      "title": "Parse — per-document-type demos",
+      "topic": "parse-doc-types",
+      "channel": "video",
+      "type": "demo",
+      "audience": "developer",
+      "date": "2026-06-13",
+      "status": "published",
+      "url": "/videos_parse/",
+      "tags": [
+        "demo",
+        "developer"
+      ]
+    },
+    {
+      "title": "P2P (Procure-to-Pay) product tour",
+      "topic": "p2p-product-tour",
+      "channel": "video",
+      "type": "product-tour",
+      "audience": "cfo",
+      "date": "2026-06-13",
+      "status": "published",
+      "url": "/videos_others/",
+      "tags": [
+        "product-tour",
+        "cfo"
+      ]
+    },
+    {
+      "title": "HyperAPI vs Reducto — comparison",
+      "topic": "hyperapi-vs-reducto",
+      "channel": "video",
+      "type": "comparison",
+      "audience": "sales",
+      "date": "2026-06-13",
+      "status": "published-internal",
+      "url": "/videos_compare/",
+      "tags": [
+        "comparison",
+        "sales"
+      ]
+    },
+    {
+      "title": "Different doctypes need different extraction surfaces — video",
+      "topic": "bank-statement-extract",
+      "channel": "video",
+      "type": "draft",
+      "audience": "marketing",
+      "date": "2026-06-10",
+      "status": "idea",
+      "url": "/_internal/topics/bank-statement-extract/video.md",
+      "tags": [
+        "bank-statement",
+        "bfsi",
+        "doctype",
+        "schema-fit",
+        "honest-benchmark"
+      ]
+    },
+    {
+      "title": "Different doctypes need different extraction surfaces — tweet",
+      "topic": "bank-statement-extract",
+      "channel": "tweet",
+      "type": "draft",
+      "audience": "marketing",
+      "date": "2026-06-10",
+      "status": "idea",
+      "url": "/_internal/topics/bank-statement-extract/tweet.md",
+      "tags": [
+        "bank-statement",
+        "bfsi",
+        "doctype",
+        "schema-fit",
+        "honest-benchmark"
+      ]
+    },
+    {
+      "title": "Different doctypes need different extraction surfaces — reddit",
+      "topic": "bank-statement-extract",
+      "channel": "reddit",
+      "type": "draft",
+      "audience": "marketing",
+      "date": "2026-06-10",
+      "status": "idea",
+      "url": "/_internal/topics/bank-statement-extract/reddit.md",
+      "tags": [
+        "bank-statement",
+        "bfsi",
+        "doctype",
+        "schema-fit",
+        "honest-benchmark"
+      ]
+    },
+    {
+      "title": "Different doctypes need different extraction surfaces — linkedin",
+      "topic": "bank-statement-extract",
+      "channel": "linkedin",
+      "type": "draft",
+      "audience": "cfo",
+      "date": "2026-06-10",
+      "status": "idea",
+      "url": "/_internal/topics/bank-statement-extract/linkedin.md",
+      "tags": [
+        "bank-statement",
+        "bfsi",
+        "doctype",
+        "schema-fit",
+        "honest-benchmark"
+      ]
+    },
+    {
+      "title": "Different doctypes need different extraction surfaces — huggingface",
+      "topic": "bank-statement-extract",
+      "channel": "huggingface",
+      "type": "strategy",
+      "audience": "developer",
+      "date": "2026-06-10",
+      "status": "na",
+      "url": "/_internal/topics/bank-statement-extract/huggingface.md",
+      "tags": [
+        "bank-statement",
+        "bfsi",
+        "doctype",
+        "schema-fit",
+        "honest-benchmark"
+      ]
+    },
+    {
+      "title": "Different doctypes need different extraction surfaces — hackernews",
+      "topic": "bank-statement-extract",
+      "channel": "hackernews",
+      "type": "draft",
+      "audience": "developer",
+      "date": "2026-06-10",
+      "status": "idea",
+      "url": "/_internal/topics/bank-statement-extract/hackernews.md",
+      "tags": [
+        "bank-statement",
+        "bfsi",
+        "doctype",
+        "schema-fit",
+        "honest-benchmark"
+      ]
+    },
+    {
+      "title": "Different doctypes need different extraction surfaces — blog",
+      "topic": "bank-statement-extract",
+      "channel": "blog",
+      "type": "published",
+      "audience": "cfo",
+      "date": "2026-06-10",
+      "status": "published",
+      "url": "/_internal/topics/bank-statement-extract/blog.md",
+      "tags": [
+        "bank-statement",
+        "bfsi",
+        "doctype",
+        "schema-fit",
+        "honest-benchmark"
+      ]
+    },
+    {
+      "title": "Different doctypes need different extraction surfaces",
+      "topic": "bank-statement-extract",
+      "channel": "topic",
+      "type": "published",
+      "audience": "cfo",
+      "date": "2026-06-10",
+      "status": "published",
+      "url": "/_internal/topics/bank-statement-extract/topic.md",
+      "tags": [
+        "bank-statement",
+        "bfsi",
+        "doctype",
+        "schema-fit",
+        "honest-benchmark"
+      ]
+    },
+    {
+      "title": "Parse-intent: the honest +0.0276 F1 edge — video",
+      "topic": "parse-intent-edge",
+      "channel": "video",
+      "type": "draft",
+      "audience": "marketing",
+      "date": "2026-06-09",
+      "status": "idea",
+      "url": "/_internal/topics/parse-intent-edge/video.md",
+      "tags": [
+        "savior-bench",
+        "parse-intent",
+        "honest-benchmark",
+        "fine-tune",
+        "ocr"
+      ]
+    },
+    {
+      "title": "Parse-intent: the honest +0.0276 F1 edge — tweet",
+      "topic": "parse-intent-edge",
+      "channel": "tweet",
+      "type": "draft",
+      "audience": "marketing",
+      "date": "2026-06-09",
+      "status": "idea",
+      "url": "/_internal/topics/parse-intent-edge/tweet.md",
+      "tags": [
+        "savior-bench",
+        "parse-intent",
+        "honest-benchmark",
+        "fine-tune",
+        "ocr"
+      ]
+    },
+    {
+      "title": "Parse-intent: the honest +0.0276 F1 edge — reddit",
+      "topic": "parse-intent-edge",
+      "channel": "reddit",
+      "type": "draft",
+      "audience": "marketing",
+      "date": "2026-06-09",
+      "status": "idea",
+      "url": "/_internal/topics/parse-intent-edge/reddit.md",
+      "tags": [
+        "savior-bench",
+        "parse-intent",
+        "honest-benchmark",
+        "fine-tune",
+        "ocr"
+      ]
+    },
+    {
+      "title": "Parse-intent: the honest +0.0276 F1 edge — linkedin",
+      "topic": "parse-intent-edge",
+      "channel": "linkedin",
+      "type": "draft",
+      "audience": "marketing",
+      "date": "2026-06-09",
+      "status": "drafting",
+      "url": "/_internal/topics/parse-intent-edge/linkedin.md",
+      "tags": [
+        "savior-bench",
+        "parse-intent",
+        "honest-benchmark",
+        "fine-tune",
+        "ocr"
+      ]
+    },
+    {
+      "title": "Parse-intent: the honest +0.0276 F1 edge — hackernews",
+      "topic": "parse-intent-edge",
+      "channel": "hackernews",
+      "type": "draft",
+      "audience": "developer",
+      "date": "2026-06-09",
+      "status": "idea",
+      "url": "/_internal/topics/parse-intent-edge/hackernews.md",
+      "tags": [
+        "savior-bench",
+        "parse-intent",
+        "honest-benchmark",
+        "fine-tune",
+        "ocr"
+      ]
+    },
+    {
+      "title": "Parse-intent: the honest +0.0276 F1 edge — blog",
+      "topic": "parse-intent-edge",
+      "channel": "blog",
+      "type": "published",
+      "audience": "developer",
+      "date": "2026-06-09",
+      "status": "published",
+      "url": "/_internal/topics/parse-intent-edge/blog.md",
+      "tags": [
+        "savior-bench",
+        "parse-intent",
+        "honest-benchmark",
+        "fine-tune",
+        "ocr"
+      ]
+    },
+    {
+      "title": "Parse-intent: the honest +0.0276 F1 edge",
+      "topic": "parse-intent-edge",
+      "channel": "topic",
+      "type": "published",
+      "audience": "developer",
+      "date": "2026-06-09",
+      "status": "published",
+      "url": "/_internal/topics/parse-intent-edge/topic.md",
+      "tags": [
+        "savior-bench",
+        "parse-intent",
+        "honest-benchmark",
+        "fine-tune",
+        "ocr"
+      ]
+    },
+    {
+      "title": "Parse-intent: the honest +0.0276 F1 edge — huggingface",
+      "topic": "parse-intent-edge",
+      "channel": "huggingface",
+      "type": "strategy",
+      "audience": "developer",
+      "date": "2026-05-28",
+      "status": "drafting",
+      "url": "/_internal/topics/parse-intent-edge/huggingface.md",
+      "tags": [
+        "savior-bench",
+        "parse-intent",
+        "honest-benchmark",
+        "fine-tune",
+        "ocr"
+      ]
+    }
+  ]
+}
