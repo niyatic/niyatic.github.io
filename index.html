@@ -31,6 +31,16 @@ body {
 .hero .sub { color:var(--grey-10); font-size:13.5px; margin-top:4px; }
 .hero .tag { font-size:11px; padding:3px 10px; background:var(--brand-2); color:var(--brand-9); border-radius:11px; font-weight:600; letter-spacing:0.04em; text-transform:uppercase; margin-left:auto; }
 .cards { display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:12px; margin:18px 0; }
+.teams { background:#fff; border:1px solid var(--grey-4); border-radius:12px; border-left:5px solid var(--brand-9); padding:18px 22px 8px; margin-bottom:24px; box-shadow:0 1px 3px rgba(33,31,38,.06); }
+.teams h2 { font-size:16px; font-weight:600; color:var(--brand-9); margin:0 0 4px; }
+.teams .sub { color:var(--grey-10); font-size:13px; margin:0 0 14px; }
+.teams .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; margin-bottom:10px; }
+.teams .door { background:var(--grey-2); border:1px solid var(--grey-4); border-radius:10px; padding:16px 18px; display:block; text-decoration:none; color:inherit; border-left:5px solid var(--brand-7); transition:box-shadow 0.15s, transform 0.15s; }
+.teams .door:hover { box-shadow:0 4px 12px rgba(33,31,38,.10); transform:translateY(-1px); }
+.teams .door .icon { font-size:24px; margin-bottom:4px; }
+.teams .door .access { display:inline-block; margin-bottom:6px; font-size:10px; padding:2px 8px; border-radius:9px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; background:var(--brand-2); color:var(--brand-9); }
+.teams .door .title { font-weight:600; font-size:15px; color:var(--brand-7); margin:0 0 4px; }
+.teams .door .desc { color:var(--grey-10); font-size:12.5px; line-height:1.5; }
 .card {
   background:#fff; border:1px solid var(--grey-4); border-radius:10px;
   padding:22px 24px; display:block; text-decoration:none; color:inherit;
@@ -62,6 +72,37 @@ code { font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:12px; backg
   </div>
   <span class="tag">private · password-gated</span>
 </header>
+
+<section class="teams">
+  <h2>Browse by team</h2>
+  <div class="sub">One front door per team. Links land on existing files in place — additive nav only, no file moves or URL changes.</div>
+  <div class="grid">
+    <a class="door" href="/research/">
+      <div class="icon">🔬</div>
+      <span class="access">Gated</span>
+      <div class="title">Research</div>
+      <div class="desc">Leaderboards, deep studies, benchmark explainers, and papers.</div>
+    </a>
+    <a class="door" href="/library/">
+      <div class="icon">📚</div>
+      <span class="access">Gated</span>
+      <div class="title">Library</div>
+      <div class="desc">Content library + search across all marketing and blog assets.</div>
+    </a>
+    <a class="door" href="/abm/">
+      <div class="icon">🎯</div>
+      <span class="access">Gated</span>
+      <div class="title">ABM / Sales</div>
+      <div class="desc">Target accounts, events calendar, and outbound assets.</div>
+    </a>
+    <a class="door" href="/_internal/">
+      <div class="icon">🛠️</div>
+      <span class="access">Gated</span>
+      <div class="title">Content ops / Internal</div>
+      <div class="desc">Internal tooling, ops dashboards, and team workflow docs.</div>
+    </a>
+  </div>
+</section>
 
 <div class="note">
   <strong>3-bucket layout</strong> (introduced 2026-05-26). Marketing content (titles · drafts · plan · competitive study) · Benchmarks (dashboard · leaderboards · studies · factory) · ABM (accounts · events). Detail views inside each.
