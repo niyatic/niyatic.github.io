@@ -43,6 +43,9 @@ body {
 .card .title { font-weight:600; font-size:18px; color:var(--brand-7); margin:0 0 6px; }
 .card .desc { color:var(--grey-10); font-size:13.5px; line-height:1.55; }
 .card .meta { margin-top:10px; color:var(--brand-9); font-size:12px; font-weight:600; }
+.card .access { display:inline-block; margin-bottom:8px; font-size:10px; padding:2px 8px; border-radius:9px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; }
+.card .access.gated { background:var(--brand-2); color:var(--brand-9); }
+.card .access.public { background:#E7F6EC; color:#027A48; }
 .note { background:var(--brand-2); border-left:3px solid var(--brand-7); padding:12px 16px; border-radius:6px; margin:14px 0; font-size:13px; color:var(--grey-12); }
 .footer { margin-top:48px; padding-top:18px; border-top:1px solid var(--grey-4); color:var(--grey-10); font-size:12px; }
 .footer a { color:var(--brand-7); text-decoration:none; }
@@ -124,6 +127,27 @@ code { font-family:"SF Mono",ui-monospace,Menlo,monospace; font-size:12px; backg
     <div class="title">HyperAPI Playground — full walkthrough</div>
     <div class="desc">Deep-technical tour of every core API (Parse · Classify · Split · Extract · Redact) — every mode/format, real documents, original previews, and the Response / JSON / Code panels. Produced for both apis.hyperbots.com and the Kong-gateway deployment.</div>
     <div class="meta">→ both deployments · captioned (voiced pending)</div>
+  </a>
+  <a class="card" href="/repos/">
+    <div class="icon">📚</div>
+    <span class="access gated">Gated</span>
+    <div class="title">HyperAPI blog index</div>
+    <div class="desc">Every generated HyperAPI blog, grouped by concept with available-language links and a live text filter. 1,650 blogs across 683 concepts.</div>
+    <div class="meta">→ filterable · multi-language</div>
+  </a>
+  <a class="card" href="/blogs/">
+    <div class="icon">🗂️</div>
+    <span class="access gated">Gated</span>
+    <div class="title">Blog plans &amp; leaderboard</div>
+    <div class="desc">Content-strategy plans (HuggingFace, LinkedIn, Reddit, Product Hunt, comparative study) plus the blog leaderboard build.</div>
+    <div class="meta">→ plans · leaderboard</div>
+  </a>
+  <a class="card" href="/parse-deep-bench/">
+    <div class="icon">🔬</div>
+    <span class="access gated">Gated</span>
+    <div class="title">Parse deep bench</div>
+    <div class="desc">The deep parsing benchmark — framework, methodology, cell schema, lit review, task sets, and the two-pager.</div>
+    <div class="meta">→ framework · methodology · tasks</div>
   </a>
 </div>
 
